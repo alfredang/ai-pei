@@ -6,8 +6,6 @@ import {
   HiVideoCamera,
   HiSparkles,
   HiUserGroup,
-  HiShieldCheck,
-  HiCreditCard,
 } from "react-icons/hi2";
 
 const FEATURES: string[] = [
@@ -18,11 +16,6 @@ const FEATURES: string[] = [
   "8 lecture types — Video, Text, Quiz, PDF, SCORM, xAPI, Voice-Over Slides, Downloadable",
   "5 quiz types — MCQ, multi-select, true/false, drag-and-drop ordering, open-ended",
   "AI-assisted authoring — outlines, objectives, quizzes, voice-over text, metadata",
-  "Stripe payments with 4-way revenue split & marketer commissions",
-  "Auto-issued certificates with QR-verified PDFs (≥50% content + ≥80% assessment)",
-  "Immutable double-entry ledger with nightly invariant checks",
-  "Catalogue governance — Academy Admin approval workflow with audit trail",
-  "GDPR / PDPA compliant — data export, soft-deactivation, 7-year audit retention",
 ];
 
 const PILLARS: Array<{
@@ -46,19 +39,9 @@ const PILLARS: Array<{
     desc: "Claude-powered course outlines, quizzes & voice-over",
   },
   {
-    icon: HiCreditCard,
-    label: "Stripe Marketplace",
-    desc: "Paid courses · marketer commissions · auto invoicing",
-  },
-  {
-    icon: HiShieldCheck,
-    label: "Compliance Built-in",
-    desc: "GDPR/PDPA · double-entry ledger · 7-yr audit log",
-  },
-  {
     icon: HiAcademicCap,
-    label: "Auto Certificates",
-    desc: "QR-verified PDFs · 90-day access · gated by mastery",
+    label: "Flexible Lecture Types",
+    desc: "8 formats · 5 quiz types · drag-and-drop builder",
   },
 ];
 

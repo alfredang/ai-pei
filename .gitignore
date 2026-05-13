@@ -31,3 +31,4 @@ tertiar2_newTIWp2025.sql
 *.sw?
 .env
 tsconfig.tsbuildinfo
+.playwright-mcp/
