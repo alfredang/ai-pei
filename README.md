@@ -16,7 +16,7 @@
 
 ## Screenshot
 
-![Screenshot](public/screenshot.png)
+![Screenshot](public/screenshot-cms.png)
 
 ## About
 
