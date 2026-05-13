@@ -10,7 +10,14 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+.next
+out
+next-env.d.ts
 *.local
+public/uploads
+public/blog
+drizzle/.snapshot
+tertiar2_newTIWp2025.sql
 
 # Editor directories and files
 .vscode/*
@@ -23,3 +30,4 @@ dist-ssr
 *.sln
 *.sw?
 .env
+tsconfig.tsbuildinfo

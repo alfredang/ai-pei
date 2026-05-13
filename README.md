@@ -1,394 +1,117 @@
-<div align="center">
+# Tertiary Infotech CMS
 
-# Tertiary Infotech Academy
+A self-hosted, full-stack CMS (Next.js 16 + Postgres + Drizzle) replacing the legacy WordPress site at **www.tertiaryinfotech.com**.
 
-[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev)
-[![Vite](https://img.shields.io/badge/Vite-7-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
-[![Framer Motion](https://img.shields.io/badge/Framer_Motion-12-FF0055?style=flat-square&logo=framer&logoColor=white)](https://www.framer.com/motion/)
-[![Express](https://img.shields.io/badge/Express-5-000000?style=flat-square&logo=express&logoColor=white)](https://expressjs.com)
-[![Gemini AI](https://img.shields.io/badge/Gemini-2.5_Flash-4285F4?style=flat-square&logo=google&logoColor=white)](https://ai.google.dev)
-[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+- **Landing page**: single-page marketing site showcasing AI-LMS-TMS (WSQ & TPQA compliant) flagship.
+- **Blog**: WordPress-style posts with categories, tags, SEO meta, JSON-LD Article schema.
+- **CMS pages**: dynamic CMS-managed pages at `/<slug>`.
+- **Admin**: `/admin` — TipTap rich editor, media library, lead inbox, menu builder, settings.
+- **AI**: public Gemini chatbot widget + admin **Claude Agent SDK** "AI Assist" buttons (authenticated via Anthropic OAuth subscription token — no per-call API billing).
 
-**Enterprise-grade portfolio website with AI chatbot & automated contact management.**
+## Stack
 
-[Live Demo](https://tertiaryinfo.tech) · [Report Bug](https://github.com/alfredang/tertiaryinfotech-landingpage/issues) · [Request Feature](https://github.com/alfredang/tertiaryinfotech-landingpage/issues)
+| Layer | |
+|---|---|
+| Framework | Next.js 16 (App Router) + React 19 + TypeScript |
+| Styling | Tailwind CSS 4 (dark + neon theme) |
+| DB | Postgres 16 |
+| ORM | Drizzle ORM + drizzle-kit |
+| Auth | Auth.js v5 (credentials provider + bcrypt) |
+| Editor | TipTap 2 |
+| AI (public) | Google Gemini 2.5 Flash |
+| AI (admin) | Claude Agent SDK via `ANTHROPIC_AUTH_TOKEN` (Claude Max subscription) |
+| Email | Nodemailer + Gmail OAuth2 |
+| Deploy | Coolify (Dockerfile + nixpacks both supported) |
 
-</div>
-
----
-
-## Screenshot
-
-![Screenshot](screenshot.png)
-
----
-
-## About
-
-**Tertiary Infotech Academy** is a leading provider of professional IT training and custom software development in Singapore. This full-stack portfolio website showcases their services, portfolio projects, and provides an AI-powered chatbot for visitor assistance with automated email contact management.
-
-### Key Features
-
-- ✨ **AI Chatbot** powered by Google Gemini 2.5 Flash with company knowledge base
-- 📧 **Smart Contact Form** with Gmail OAuth2 integration for automated email delivery
-- 🎨 **Dark Theme** with neon blue/cyan/purple accents and glassmorphism design
-- 📱 **Portfolio Showcase** with detailed project pages, live demos, and GitHub links
-- 🔍 **SEO Optimized** with react-helmet-async for dynamic meta tags
-- 🎬 **Smooth Animations** powered by Framer Motion with scroll-reveal effects
-- 🌐 **Multi-Page Routing** with React Router for seamless navigation
-- 📲 **Fully Responsive** mobile-first design across all breakpoints
-- 🚀 **Production Deployed** on Coolify with separate frontend/backend architecture
-
----
-
-## Tech Stack
-
-| Category | Technology |
-|----------|-----------|
-| **Frontend** | React 19, React Router 7, JSX |
-| **Build Tool** | Vite 7 |
-| **Styling** | Tailwind CSS 3.4 |
-| **Animation** | Framer Motion 12 |
-| **Icons** | React Icons (Heroicons 2, Font Awesome) |
-| **SEO** | react-helmet-async |
-| **Backend** | Express.js 5, Node.js 22 |
-| **AI/LLM** | Google Gemini 2.5 Flash |
-| **Email** | Nodemailer with Gmail OAuth2 |
-| **APIs** | Google Generative AI SDK, Google OAuth2 |
-| **Deployment** | Coolify (Frontend + Backend) |
-| **Language** | JavaScript (ES6+) |
-
----
-
-## Architecture
-
-```
-┌──────────────────────────────────────────────────────────┐
-│                    Browser / User                         │
-├──────────────────────────────────────────────────────────┤
-│              React 19 + Vite 7 (Frontend)                │
-│                https://tertiaryinfo.tech                 │
-├─────────────┬──────────────┬─────────────────────────────┤
-│   Layout    │   Sections   │       UI Components         │
-│   ------    │   --------   │       -------------         │
-│   Navbar    │   Hero       │   GlassCard                 │
-│   Mobile    │   About      │   GlowButton                │
-│   Menu      │   Services   │   ServiceCard               │
-│   Footer    │   WhyUs      │   ScrollReveal              │
-│   Portfolio │   Contact    │   ChatBot (Gemini)          │
-│   Mega Menu │   Portfolio  │   ContactForm (OAuth2)      │
-├─────────────┴──────────────┴─────────────────────────────┤
-│         Tailwind CSS + Framer Motion + React Router      │
-└──────────────────────────┬───────────────────────────────┘
-                           │ API Requests
-                           ↓
-┌──────────────────────────────────────────────────────────┐
-│              Express.js API (Backend)                    │
-│              https://api.tertiaryinfo.tech               │
-├──────────────────────────────────────────────────────────┤
-│   POST /api/chat      →  Gemini 2.5 Flash AI           │
-│   POST /api/contact   →  Gmail OAuth2 Email Sender      │
-├──────────────────────────────────────────────────────────┤
-│   Environment: GEMINI_API_KEY, GMAIL_OAUTH_CREDENTIALS  │
-└──────────────────────────────────────────────────────────┘
-                           │
-                           ↓
-┌──────────────────────────────────────────────────────────┐
-│              External Services                           │
-├──────────────────────────────────────────────────────────┤
-│   Google Gemini AI      →  Chatbot Responses            │
-│   Gmail API (OAuth2)    →  Contact Form Emails          │
-└──────────────────────────────────────────────────────────┘
-```
-
----
-
-## Project Structure
-
-```
-tertiaryinfotech-website/
-├── index.html                          # Entry HTML with meta tags & fonts
-├── package.json                        # Dependencies & scripts
-├── tailwind.config.js                  # Custom colors, shadows, animations
-├── postcss.config.js                   # PostCSS with Tailwind
-├── vite.config.js                      # Vite configuration
-├── server.js                           # Express backend API (chatbot + email)
-├── Dockerfile.backend                  # Backend deployment config
-├── .env                                # Environment variables (gitignored)
-├── public/
-│   └── favicon.svg                     # Gradient favicon
-└── src/
-    ├── main.jsx                        # React entry point
-    ├── App.jsx                         # Root component with routing
-    ├── index.css                       # Tailwind directives & global styles
-    ├── components/
-    │   ├── layout/
-    │   │   ├── Navbar.jsx              # Sticky nav with portfolio mega menu
-    │   │   ├── PortfolioMegaMenu.jsx   # Dropdown portfolio preview
-    │   │   ├── MobileMenu.jsx          # Full-screen slide-in menu
-    │   │   ├── Footer.jsx              # 4-column footer with links
-    │   │   └── Container.jsx           # Max-width wrapper
-    │   ├── sections/
-    │   │   ├── HeroSection.jsx         # Animated hero with gradient orbs
-    │   │   ├── AboutSection.jsx        # Company intro with stat cards
-    │   │   ├── ServicesSection.jsx     # TMS, LMS, AI service cards
-    │   │   ├── WhyChooseUs.jsx         # 6-item feature grid
-    │   │   └── ContactSection.jsx      # Gmail OAuth2 contact form
-    │   ├── ui/
-    │   │   ├── AnimatedBackground.jsx  # Floating gradient orbs
-    │   │   ├── ChatBot.jsx             # AI chatbot with Gemini integration
-    │   │   ├── FeatureItem.jsx         # Why Choose Us grid item
-    │   │   ├── GlassCard.jsx           # Glassmorphism card
-    │   │   ├── GlowButton.jsx          # Glowing CTA button
-    │   │   ├── ScrollReveal.jsx        # Scroll-triggered animation
-    │   │   ├── SectionHeading.jsx      # Section title with gradient
-    │   │   └── ServiceCard.jsx         # Service card with hover glow
-    │   └── seo/
-    │       └── SEO.jsx                 # Dynamic meta tags with Helmet
-    ├── pages/
-    │   ├── HomePage.jsx                # Main landing page
-    │   ├── PortfolioPage.jsx           # Portfolio grid page
-    │   └── ProjectPage.jsx             # Individual project details
-    ├── hooks/
-    │   ├── useScrollPosition.js        # Navbar background on scroll
-    │   └── useFormValidation.js        # Form state & validation
-    └── utils/
-        ├── animations.js               # Framer Motion variant factories
-        ├── constants.js                # Nav links, services, features data
-        └── portfolio.js                # Portfolio projects database
-```
-
----
-
-## Getting Started
-
-### Prerequisites
-
-- **Node.js** 18+ and **npm** 9+
-- **Google Cloud Console** account (for Gmail OAuth2 and Gemini API)
-
-### Installation
+## Quick start
 
 ```bash
-# Clone the repository
-git clone https://github.com/alfredang/tertiaryinfotech-landingpage.git
+cp .env.example .env
+# Fill DATABASE_URL, AUTH_SECRET, ADMIN_EMAIL, ADMIN_PASSWORD, GMAIL_*, GEMINI_API_KEY, ANTHROPIC_AUTH_TOKEN
 
-# Navigate to the project
-cd tertiaryinfotech-landingpage
-
-# Install dependencies
 npm install
+npm run db:push       # create tables from src/db/schema.ts
+npm run seed:admin    # creates admin user + default header/footer menus
+npm run migrate:wp    # one-time: imports posts/pages from tertiar2_newTIWp2025.sql
+npm run dev
 ```
 
-### Environment Setup
+Visit:
+- `http://localhost:3000` — public site
+- `http://localhost:3000/admin` — admin (redirects to `/admin/login`)
 
-Create a `.env` file in the root directory:
+## Multi-phase migration (executed)
 
-```env
-# Gmail OAuth2 Configuration
-GMAIL_USER=your-email@gmail.com
-GMAIL_CLIENT_ID=your-google-client-id
-GMAIL_CLIENT_SECRET=your-google-client-secret
-GMAIL_REFRESH_TOKEN=your-refresh-token
+| Phase | Scope |
+|---|---|
+| **0** — Bootstrap | Next.js 16, TypeScript, Tailwind 4, dark/neon theme. |
+| **1** — DB + Auth | Drizzle schema (pages, posts, categories, tags, menus, media, leads, settings, redirects, users). Auth.js credentials provider, admin shell + login. |
+| **2** — Editor & SEO | TipTap editor, server-side image upload, per-route `generateMetadata`. |
+| **3** — Public site | Hero → **AI-LMS-TMS showcase** (WSQ/TPQA badges) → Services → Why-Us → Featured posts → Lead form. Nav + footer driven by DB. |
+| **4** — WP import | `scripts/migrate-wp.ts` parses [tertiar2_newTIWp2025.sql](tertiar2_newTIWp2025.sql), downloads all referenced images from live site into `/public/blog/`, rewrites `<img src>`, preserves Yoast / RankMath SEO meta, writes 301 redirects from old WP slugs to new paths. |
+| **5** — AI | Public Gemini chatbot widget (port of legacy `/api/chat`). Admin **Claude Agent SDK** AI Assist — `Draft`, `Summarize`, `Suggest SEO meta`. |
+| **6** — Deploy | Standalone Next.js build, Dockerfile + nixpacks.toml for Coolify. |
+| **7** — Cutover | See below. |
 
-# Server Port
-PORT=3001
+## Coolify deployment
 
-# API URL (for frontend to connect to backend)
-VITE_API_URL=http://localhost:3001
+1. Provision a Postgres service in Coolify. Note the `DATABASE_URL`.
+2. Create a new application from this Git repo. Coolify auto-detects nixpacks (or use the `Dockerfile`).
+3. Set environment variables (see `.env.example`).
+4. First deploy:
+   - SSH into the container: `npm run db:push && npm run seed:admin && npm run migrate:wp`
+5. Add custom domain `www.tertiaryinfotech.com` once a staging URL is verified.
 
-# Gemini API Key
-GEMINI_API_KEY=your-gemini-api-key
+## Domain cutover (Phase 7)
+
+> Plan a low-traffic window. Keep the old WordPress instance running read-only for 7 days as a fallback.
+
+1. **Pre-flight (24h before)**: lower DNS TTL on `www.tertiaryinfotech.com` A/CNAME to 300s.
+2. **Final content sync**: re-run `npm run migrate:wp` so any new WP edits land in Postgres.
+3. **Backup**: snapshot Postgres + the WP DB dump + a full mirror of WP `/wp-content/uploads`.
+4. **Smoke test on staging subdomain**:
+   - All 13 imported posts render at `/blog/<slug>` with images.
+   - Old WP URL like `https://staging.tertiaryinfotech.com/<old-slug>/` returns 301 to the new path.
+   - Lead form submits → row in `/admin/leads` AND email to `sales@tertiarycourses.com.sg`.
+   - Public chatbot responds (Gemini).
+   - Admin AI Assist works (Claude subscription token in env).
+   - Lighthouse mobile ≥ 90 on `/` and `/blog/<slug>`.
+5. **DNS switch**: point `www` to the Coolify ingress IP / CNAME.
+6. **Post-cutover**:
+   - Submit `https://www.tertiaryinfotech.com/sitemap.xml` in Google Search Console.
+   - Monitor `/admin/leads` and server logs for 48h.
+   - Raise DNS TTL back to 3600s after a week of stability.
+
+## Folder layout
+
+```
+src/
+  app/
+    page.tsx                  Landing (Hero, AI-LMS-TMS, Services, FeaturedPosts, ContactForm)
+    blog/[slug]/page.tsx      Single post
+    [slug]/page.tsx           Dynamic CMS page (with redirects lookup)
+    admin/                    Authenticated admin (login, dashboard, posts, pages, leads, menus, …)
+    api/
+      auth/[...nextauth]/     NextAuth handlers
+      contact/                Lead form submission + email
+      chat/                   Public Gemini chatbot
+      ai/assist/              Admin Claude Agent SDK endpoint
+      upload/                 Media upload
+    sitemap.ts                Generated from DB
+    robots.ts
+  components/
+    layout/                   Navbar, Footer (DB-driven menus), Container
+    sections/                 Hero, AILmsTmsShowcase, Services, WhyChooseUs, FeaturedPosts, ContactForm
+    admin/                    Editor, PostEditorForm, AIAssistButton, MediaUploader
+    ui/                       ChatBot
+  db/                         Drizzle schema + connection
+  lib/                        auth, email, slugify, ai/claude, site-content
+scripts/
+  seed-admin.ts               One-shot: admin user + default menus + settings
+  migrate-wp.ts               WordPress → Postgres importer (images + SEO + redirects)
+legacy/                       Original Vite + Express code, kept for reference
 ```
 
-**To get OAuth credentials:**
-1. Go to [Google Cloud Console](https://console.cloud.google.com)
-2. Create a new project or select existing
-3. Enable Gmail API
-4. Create OAuth 2.0 credentials
-5. Generate refresh token using OAuth Playground
+## License
 
-**To get Gemini API key:**
-1. Go to [Google AI Studio](https://ai.google.dev)
-2. Create an API key
-3. Copy and paste into `.env`
-
-### Running Locally
-
-```bash
-# Run both frontend and backend simultaneously
-npm run dev:all
-
-# Or run separately:
-npm run dev      # Frontend only (Vite)
-npm run server   # Backend only (Express)
-```
-
-- **Frontend**: http://localhost:5176
-- **Backend API**: http://localhost:3001/api
-
-### Production Build
-
-```bash
-# Build for production
-npm run build
-
-# Preview the production build
-npm run preview
-```
-
----
-
-## Deployment
-
-### Coolify (Production Setup)
-
-**Backend Deployment:**
-
-1. Create a new service in Coolify → Docker
-2. Point to your GitHub repository
-3. Use `Dockerfile.backend` for build configuration
-4. Set environment variables:
-   ```
-   GMAIL_USER=...
-   GMAIL_CLIENT_ID=...
-   GMAIL_CLIENT_SECRET=...
-   GMAIL_REFRESH_TOKEN=...
-   GEMINI_API_KEY=...
-   PORT=3001
-   ```
-5. Configure domain: `api.tertiaryinfo.tech`
-6. Deploy
-
-**Frontend Deployment:**
-
-1. Create a new service in Coolify → Static Site
-2. Point to your GitHub repository
-3. Build command: `npm run build`
-4. Install command: `npm install --legacy-peer-deps`
-5. Set environment variable:
-   ```
-   VITE_API_URL=https://api.tertiaryinfo.tech
-   ```
-6. Configure domain: `tertiaryinfo.tech`
-7. Deploy
-
-### Vercel (Alternative)
-
-```bash
-# Frontend
-npx vercel
-
-# Backend (separate deployment)
-npx vercel --cwd . --prod
-```
-
-### Docker
-
-```bash
-# Build and run backend
-docker build -f Dockerfile.backend -t tertiaryinfotech-api .
-docker run -p 3001:3001 --env-file .env tertiaryinfotech-api
-
-# Build and run frontend
-docker build -t tertiaryinfotech-web .
-docker run -p 80:80 tertiaryinfotech-web
-```
-
----
-
-## API Endpoints
-
-### `POST /api/chat`
-
-Chat with the AI assistant powered by Gemini 2.5 Flash.
-
-**Request:**
-```json
-{
-  "message": "What services do you offer?",
-  "history": [
-    { "role": "user", "content": "Hello" },
-    { "role": "assistant", "content": "Hi! How can I help?" }
-  ]
-}
-```
-
-**Response:**
-```json
-{
-  "response": "We offer professional IT training, corporate training solutions...",
-  "success": true
-}
-```
-
-### `POST /api/contact`
-
-Send contact form submissions via Gmail OAuth2.
-
-**Request:**
-```json
-{
-  "name": "John Doe",
-  "email": "john@example.com",
-  "company": "Acme Inc",
-  "message": "I'm interested in your training programs."
-}
-```
-
-**Response:**
-```json
-{
-  "success": true,
-  "messageId": "<email-id>",
-  "message": "Email sent successfully"
-}
-```
-
----
-
-## Contributing
-
-Contributions are welcome!
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-For major changes, please open an [issue](https://github.com/alfredang/tertiaryinfotech-landingpage/issues) first to discuss what you'd like to change.
-
----
-
-## Developed By
-
-**Tertiary Infotech Academy Pte. Ltd.**
-
-📍 12 Woodlands Square, #07-85/86/87, Woods Square Tower 1, Singapore 737715
-📧 sales@tertiarycourses.com.sg
-🌐 https://tertiaryinfo.tech
-🏢 UEN: 201200606W
-
----
-
-## Acknowledgements
-
-- [React](https://react.dev) — UI library
-- [Vite](https://vite.dev) — Build tool
-- [Tailwind CSS](https://tailwindcss.com) — Utility-first CSS framework
-- [Framer Motion](https://www.framer.com/motion/) — Animation library
-- [React Icons](https://react-icons.github.io/react-icons/) — Icon library
-- [React Router](https://reactrouter.com) — Client-side routing
-- [Google Gemini AI](https://ai.google.dev) — AI chatbot
-- [Nodemailer](https://nodemailer.com) — Email sending
-- [Coolify](https://coolify.io) — Deployment platform
-
----
-
-<div align="center">
-
-**If you found this useful, please consider giving it a ⭐**
-
-</div>
+UNLICENSED — proprietary © Tertiary Infotech Pte Ltd.

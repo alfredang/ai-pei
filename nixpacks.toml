@@ -1,8 +1,11 @@
+[phases.setup]
+nixPkgs = ["nodejs_22"]
+
 [phases.install]
-cmd = "npm install --legacy-peer-deps"
+cmds = ["npm ci --no-audit --no-fund"]
 
 [phases.build]
-cmd = "echo 'Skipping build phase for backend API'"
+cmds = ["npm run build"]
 
 [start]
-cmd = "node server.js"
+cmd = "node .next/standalone/server.js"

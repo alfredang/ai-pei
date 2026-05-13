@@ -1,0 +1,97 @@
+import { notFound } from "next/navigation";
+import { db } from "@/db";
+import { posts } from "@/db/schema";
+import { and, eq } from "drizzle-orm";
+import { Container } from "@/components/layout/Container";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
+import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
+
+async function getPost(slug: string) {
+  const [p] = await db
+    .select()
+    .from(posts)
+    .where(and(eq(posts.slug, slug), eq(posts.status, "published")))
+    .limit(1);
+  return p;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getPost(slug);
+  if (!post) return { title: "Not found" };
+  return {
+    title: post.seoTitle ?? post.title,
+    description: post.seoDescription ?? post.excerpt ?? undefined,
+    keywords: post.seoKeywords ?? undefined,
+    alternates: post.canonicalUrl ? { canonical: post.canonicalUrl } : undefined,
+    robots: post.noIndex ? { index: false } : undefined,
+    openGraph: {
+      title: post.seoTitle ?? post.title,
+      description: post.seoDescription ?? post.excerpt ?? undefined,
+      images: post.ogImage ? [post.ogImage] : post.featuredImage ? [post.featuredImage] : undefined,
+      type: "article",
+      publishedTime: post.publishedAt?.toISOString(),
+    },
+  };
+}
+
+export default async function PostPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const post = await getPost(slug);
+  if (!post) notFound();
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.seoDescription ?? post.excerpt,
+    datePublished: post.publishedAt?.toISOString(),
+    image: post.featuredImage,
+  };
+
+  return (
+    <>
+      <Navbar />
+      <main className="pt-16">
+        <article className="py-16">
+          <Container className="max-w-3xl">
+            <h1 className="text-3xl md:text-5xl font-bold mb-4">{post.title}</h1>
+            {post.publishedAt && (
+              <p className="text-white/50 text-sm mb-8">
+                {new Date(post.publishedAt).toLocaleDateString()}
+              </p>
+            )}
+            {post.featuredImage && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={post.featuredImage}
+                alt={post.title}
+                className="w-full rounded-2xl mb-10"
+              />
+            )}
+            <div
+              className="prose prose-invert max-w-none"
+              dangerouslySetInnerHTML={{ __html: post.contentHtml ?? "" }}
+            />
+          </Container>
+        </article>
+      </main>
+      <Footer />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+    </>
+  );
+}
