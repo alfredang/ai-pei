@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { menus, menuItems } from "@/db/schema";
 import { eq, asc } from "drizzle-orm";
 import { Container } from "./Container";
+import { MobileMenu } from "./MobileMenu";
 import { getSiteBrand } from "@/lib/site-settings";
 
 async function loadMenu() {
@@ -28,7 +29,7 @@ export async function Navbar() {
   const links = items.length > 0 ? items : FALLBACK;
 
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-xl bg-(--color-bg)/75 border-b border-(--color-border)">
+    <header className="sticky top-0 z-50 backdrop-blur-xl bg-(--color-bg)/75 border-b border-(--color-border) relative">
       <Container className="flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group">
           {brand.logoUrl ? (
@@ -55,6 +56,13 @@ export async function Navbar() {
           Get a quote
           <span aria-hidden>→</span>
         </Link>
+        <MobileMenu
+          links={links.map((l) => ({
+            label: l.label,
+            href: l.href,
+            openInNewTab: "openInNewTab" in l ? Boolean(l.openInNewTab) : false,
+          }))}
+        />
       </Container>
     </header>
   );
