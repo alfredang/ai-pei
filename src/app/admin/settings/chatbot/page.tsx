@@ -68,7 +68,7 @@ export default async function ChatbotSettingsPage() {
               </p>
             </div>
             <button
-              type="button"
+              type="submit"
               formAction={resetPrompt}
               className="text-xs text-white/60 hover:text-(--color-cyan)"
             >
