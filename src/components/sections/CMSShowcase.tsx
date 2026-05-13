@@ -14,14 +14,10 @@ const FEATURES: string[] = [
   "Pages + Posts CRUD with Categories, Tags, and per-route SEO meta",
   "Filterable + paginated admin tables (search, status, color-coded pills)",
   "DB-driven header + footer menus — visual menu builder",
-  "Media library with server-side uploads to /public/uploads",
+  "AI-assisted Blog and Pages drafting — Claude generates full posts and pages on demand",
   "Lead inbox — every contact-form submission emails sales via Gmail OAuth2",
   "NEMO chatbot — Claude Agent SDK on your subscription OAuth token",
   "Admin AI Assist — Draft, Rewrite, Summarize, Suggest SEO meta (one click)",
-  "Encrypted credentials vault — AES-256-GCM for all third-party tokens",
-  "WordPress migration — SQL dump → Postgres with image rewrite & 301 redirects",
-  "SEO out of the box — JSON-LD Article schema, dynamic sitemap & robots",
-  "Auth.js v5 with credentials provider, JWT sessions, middleware-protected /admin/*",
 ];
 
 const PILLARS: Array<{
@@ -63,7 +59,7 @@ const PILLARS: Array<{
 
 export function CMSShowcase() {
   return (
-    <section id="cms" className="relative py-14 overflow-hidden">
+    <section id="cms" className="relative py-4 overflow-hidden">
       <div
         className="glow-blob"
         style={{
@@ -80,9 +76,8 @@ export function CMSShowcase() {
           <div>
             <div className="kicker mb-5">[ AI-POWERED CMS ]</div>
             <h2 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-extrabold leading-[1.05]">
-              Full-stack{" "}
-              <span className="gradient-text">CMS with built-in Claude</span> — no
-              metered API.
+              AI-powered{" "}
+              <span className="gradient-text">CMS for organizations</span>.
             </h2>
             <p className="mt-6 text-(--color-muted) text-lg max-w-xl">
               A self-hosted, production-grade content platform on Next.js 16, Postgres

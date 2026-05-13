@@ -5,7 +5,7 @@ import { HiCheckCircle, HiCpuChip } from "react-icons/hi2";
 
 export function AILmsTmsShowcase() {
   return (
-    <section id="ai-lms-tms" className="relative pt-4 pb-14 overflow-hidden">
+    <section id="ai-lms-tms" className="relative pt-4 pb-6 overflow-hidden">
       <div className="glow-blob" style={{ bottom: "-20%", left: "30%", width: 600, height: 600, background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)", opacity: 0.35 }} />
       <Container className="relative">
         <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-14 items-center">

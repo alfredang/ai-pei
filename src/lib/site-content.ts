@@ -8,6 +8,9 @@ import {
   HiCodeBracket,
   HiChartBar,
   HiRocketLaunch,
+  HiClipboardDocumentList,
+  HiBuildingLibrary,
+  HiCheckBadge,
 } from "react-icons/hi2";
 
 export const SERVICES = [
@@ -44,14 +47,56 @@ export const SERVICES = [
     icon: HiSparkles,
     title: "AI-Powered Solutions",
     description:
-      "Transform your business with intelligent automation. From AI-powered websites to custom workflow automation, we build the future.",
+      "Production AI systems, automations and bespoke software — from agentic workflows to full-stack web tools and mobile apps.",
     features: [
-      "Smart chatbots & virtual assistants",
-      "AI content automation",
-      "Intelligent lead generation",
-      "Custom workflow automation",
+      "Agentic AI · n8n · Claude Code · OpenCLAW",
+      "Harness Systems integration",
+      "Bespoke full-stack web tools across frameworks",
+      "Native and cross-platform mobile apps",
     ],
     accent: "purple" as const,
+  },
+  {
+    id: "course-dev",
+    icon: HiClipboardDocumentList,
+    title: "Course Development",
+    description:
+      "End-to-end development of accredited courses across Singapore's training frameworks — competency mapping, lesson plans, assessments and submission packages.",
+    features: [
+      "WSQ course development",
+      "CASL course development",
+      "IBF-STS / FTS course development",
+      "PWM course development",
+    ],
+    accent: "blue" as const,
+  },
+  {
+    id: "ato",
+    icon: HiBuildingLibrary,
+    title: "ATO Application",
+    description:
+      "Become an Approved Training Organisation (ATO) — we prepare your QMS, policies and SOPs and walk you through the SSG application from start to finish.",
+    features: [
+      "QMS, policies & SOPs",
+      "ATO submission package",
+      "Pre-audit gap assessment",
+      "Audit-readiness coaching",
+    ],
+    accent: "blue" as const,
+  },
+  {
+    id: "tpqa",
+    icon: HiCheckBadge,
+    title: "TPQA Consultancy",
+    description:
+      "Stay TPQA-compliant year-round. We run mock audits, fix gaps in your training-operations evidence, and prepare your team for the live SSG audit.",
+    features: [
+      "Mock TPQA audit",
+      "Evidence & documentation review",
+      "Gap remediation roadmap",
+      "On-site audit support",
+    ],
+    accent: "cyan" as const,
   },
 ];
 

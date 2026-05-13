@@ -10,15 +10,15 @@ const accentMap: Record<string, { glow: string; text: string; line: string }> = 
 
 export function Services() {
   return (
-    <section id="services" className="relative py-14">
+    <section id="services" className="relative py-4">
       <Container>
-        <div className="max-w-2xl mb-14">
+        <div className="max-w-5xl mb-8">
           <div className="kicker mb-4">[ WHAT WE BUILD ]</div>
           <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
-            Beyond AI-LMS-TMS — we ship <span className="gradient-text-warm">production AI</span> systems.
+            <span className="gradient-text-warm">Agentic AI</span>-powered bespoke web &amp; mobile solutions for organizations.
           </h2>
         </div>
-        <div className="grid md:grid-cols-3 gap-5">
+        <div className="grid md:grid-cols-3 gap-4">
           {SERVICES.map((s) => {
             const Icon = s.icon;
             const a = accentMap[s.accent];

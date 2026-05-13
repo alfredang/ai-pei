@@ -301,7 +301,7 @@ body::before {
 .prose-dark a { color: var(--color-cyan); text-decoration: underline; text-underline-offset: 3px; }
 .prose-dark ul, .prose-dark ol { padding-left: 1.4em; margin: 1em 0; }
 .prose-dark li { margin: 0.4em 0; }
-.prose-dark img { border-radius: 0.75rem; margin: 1.6em auto; }
+.prose-dark img { border-radius: 0.75rem; margin: 1.6em auto; max-width: 100%; max-height: 420px; width: auto; height: auto; display: block; }
 .prose-dark blockquote {
   border-left: 2px solid var(--color-cyan);
   padding-left: 1.2em;

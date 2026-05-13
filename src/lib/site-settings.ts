@@ -2,19 +2,26 @@ import { db } from "@/db";
 import { settings } from "@/db/schema";
 import { inArray } from "drizzle-orm";
 
-const BRAND_KEYS = ["company_short_name", "company_name", "company_logo_url"] as const;
+const BRAND_KEYS = [
+  "company_short_name",
+  "company_name",
+  "company_logo_url",
+  "company_uen",
+] as const;
 type BrandKey = (typeof BRAND_KEYS)[number];
 
 export type SiteBrand = {
   shortName: string;
   fullName: string;
   logoUrl: string | null;
+  uen: string | null;
 };
 
 const DEFAULTS: SiteBrand = {
   shortName: "Tertiary Infotech Academy",
   fullName: "Tertiary Infotech Academy Pte Ltd",
   logoUrl: null,
+  uen: null,
 };
 
 export async function getSiteBrand(): Promise<SiteBrand> {
@@ -32,6 +39,7 @@ export async function getSiteBrand(): Promise<SiteBrand> {
       shortName: map.get("company_short_name") || DEFAULTS.shortName,
       fullName: map.get("company_name") || DEFAULTS.fullName,
       logoUrl: map.get("company_logo_url") || null,
+      uen: map.get("company_uen") || null,
     };
   } catch {
     return DEFAULTS;

@@ -9,13 +9,13 @@ const accentMap: Record<string, string> = {
 
 export function WhyChooseUs() {
   return (
-    <section id="why-us" className="relative py-14 overflow-hidden">
+    <section id="why-us" className="relative py-4 overflow-hidden">
       <div className="grid-bg opacity-50" />
       <Container className="relative">
-        <div className="max-w-2xl mb-14">
+        <div className="max-w-3xl mb-6 ml-auto text-right">
           <div className="kicker mb-4">[ WHY TERTIARY ]</div>
           <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
-            Built for builders. Trusted by <span className="gradient-text">training providers</span>.
+            Built by <span className="gradient-text">Claude Code</span> and Agentic AI Solution Architect.
           </h2>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-white/5 rounded-2xl overflow-hidden border border-white/8">

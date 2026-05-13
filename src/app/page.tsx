@@ -4,7 +4,6 @@ import { Hero } from "@/components/sections/Hero";
 import { AILmsTmsShowcase } from "@/components/sections/AILmsTmsShowcase";
 import { ELearningShowcase } from "@/components/sections/ELearningShowcase";
 import { CMSShowcase } from "@/components/sections/CMSShowcase";
-import { EdToolsShowcase } from "@/components/sections/EdToolsShowcase";
 import { Services } from "@/components/sections/Services";
 import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
 import { FeaturedPosts } from "@/components/sections/FeaturedPosts";
@@ -21,7 +20,6 @@ export default function HomePage() {
         <AILmsTmsShowcase />
         <ELearningShowcase />
         <CMSShowcase />
-        <EdToolsShowcase />
         <Services />
         <WhyChooseUs />
         <FeaturedPosts />

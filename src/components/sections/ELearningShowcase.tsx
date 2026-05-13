@@ -47,7 +47,7 @@ const PILLARS: Array<{
 
 export function ELearningShowcase() {
   return (
-    <section id="e-learning" className="relative pt-4 pb-14 overflow-hidden">
+    <section id="e-learning" className="relative pt-4 pb-6 overflow-hidden">
       <div
         className="glow-blob"
         style={{

@@ -6,7 +6,7 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-[calc(100vh-4rem)] flex flex-col pt-6 md:pt-8 pb-10 overflow-hidden"
+      className="relative min-h-[calc(100vh-4rem)] flex flex-col pt-6 md:pt-8 pb-4 overflow-hidden"
     >
       {/* layered background effects */}
       <div className="grid-bg" />
