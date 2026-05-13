@@ -14,8 +14,6 @@ dist-ssr
 out
 next-env.d.ts
 *.local
-public/uploads
-public/blog
 drizzle/.snapshot
 tertiar2_newTIWp2025.sql
 
