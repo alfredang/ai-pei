@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import { google } from "googleapis";
+import { getLeadEmailConfig } from "./site-settings";
 
 const OAuth2 = google.auth.OAuth2;
 
@@ -27,6 +28,26 @@ async function createTransporter() {
   });
 }
 
+export const LEAD_EMAIL_VARIABLES = [
+  { token: "{NAME}", description: "Sender's name" },
+  { token: "{EMAIL}", description: "Sender's email" },
+  { token: "{PHONE}", description: "Sender's phone (blank if not provided)" },
+  { token: "{COMPANY}", description: "Sender's company (blank if not provided)" },
+  { token: "{MESSAGE}", description: "The message body" },
+  { token: "{SOURCE}", description: "Where the inquiry came from (blank if not provided)" },
+] as const;
+
+function renderTemplate(
+  tpl: string,
+  vars: Record<string, string>,
+  { escapeHtml }: { escapeHtml: boolean },
+): string {
+  return tpl.replace(/\{(NAME|EMAIL|PHONE|COMPANY|MESSAGE|SOURCE)\}/g, (_, k) => {
+    const v = vars[k] ?? "";
+    return escapeHtml ? escape(v) : v;
+  });
+}
+
 export async function sendLeadEmail(lead: {
   name: string;
   email: string;
@@ -35,22 +56,31 @@ export async function sendLeadEmail(lead: {
   message: string;
   source?: string;
 }) {
+  const cfg = await getLeadEmailConfig();
   const transporter = await createTransporter();
-  const to = process.env.LEAD_NOTIFICATION_EMAIL ?? "sales@tertiarycourses.com.sg";
-  const html = `
-    <h2>New inquiry from ${escape(lead.name)}</h2>
-    <p><strong>Email:</strong> <a href="mailto:${escape(lead.email)}">${escape(lead.email)}</a></p>
-    ${lead.company ? `<p><strong>Company:</strong> ${escape(lead.company)}</p>` : ""}
-    ${lead.phone ? `<p><strong>Phone:</strong> ${escape(lead.phone)}</p>` : ""}
-    ${lead.source ? `<p><strong>Source:</strong> ${escape(lead.source)}</p>` : ""}
-    <hr/>
-    <p style="white-space:pre-wrap">${escape(lead.message)}</p>
-  `;
+
+  const vars: Record<string, string> = {
+    NAME: lead.name,
+    EMAIL: lead.email,
+    PHONE: lead.phone ?? "",
+    COMPANY: lead.company ?? "",
+    MESSAGE: lead.message,
+    SOURCE: lead.source ?? "",
+  };
+
+  const subject = renderTemplate(cfg.subject, vars, { escapeHtml: false });
+  const html = renderTemplate(cfg.body, vars, { escapeHtml: true });
+  const cc = cfg.cc
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
   await transporter.sendMail({
     from: `"Tertiary Infotech" <${process.env.GMAIL_USER}>`,
-    to,
+    to: cfg.to,
+    cc: cc.length ? cc : undefined,
     replyTo: lead.email,
-    subject: `New inquiry from ${lead.name}`,
+    subject,
     html,
   });
 }

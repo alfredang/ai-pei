@@ -3,6 +3,7 @@ import Link from "next/link";
 const tabs = [
   { href: "/admin/settings", label: "General" },
   { href: "/admin/settings/company", label: "Company" },
+  { href: "/admin/settings/lead-email", label: "Lead Email" },
   { href: "/admin/settings/chatbot", label: "Chatbot" },
   { href: "/admin/settings/credentials", label: "Credentials" },
 ];
