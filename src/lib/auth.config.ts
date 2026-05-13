@@ -3,7 +3,9 @@ import type { NextAuthConfig } from "next-auth";
 // Edge-safe subset of the auth config used by middleware.
 // No DB imports, no bcrypt — those only live in src/lib/auth.ts.
 export const authConfig: NextAuthConfig = {
-  session: { strategy: "jwt" },
+  // 365-day rolling session — effectively "never expires" for an internal admin tool.
+  // updateAge=0 means every request refreshes the cookie expiry.
+  session: { strategy: "jwt", maxAge: 60 * 60 * 24 * 365, updateAge: 0 },
   pages: { signIn: "/admin/login" },
   providers: [],
   callbacks: {
