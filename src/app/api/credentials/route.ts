@@ -11,6 +11,10 @@ const ALLOWED: CredentialKey[] = [
   "anthropic_auth_token",
   "firecrawl_api_key",
   "tavily_api_key",
+  "gmail_user",
+  "gmail_client_id",
+  "gmail_client_secret",
+  "gmail_refresh_token",
 ];
 
 const payloadSchema = z.record(z.string(), z.string().min(1).max(2000));

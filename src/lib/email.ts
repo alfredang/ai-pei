@@ -1,16 +1,33 @@
 import nodemailer from "nodemailer";
 import { google } from "googleapis";
 import { getLeadEmailConfig } from "./site-settings";
+import { getCredential } from "./secrets";
 
 const OAuth2 = google.auth.OAuth2;
 
+async function loadGmailCreds() {
+  const [user, clientId, clientSecret, refreshToken] = await Promise.all([
+    getCredential("gmail_user"),
+    getCredential("gmail_client_id"),
+    getCredential("gmail_client_secret"),
+    getCredential("gmail_refresh_token"),
+  ]);
+  if (!user || !clientId || !clientSecret || !refreshToken) {
+    throw new Error(
+      "Gmail OAuth credentials are not configured. Set gmail_user, gmail_client_id, gmail_client_secret, gmail_refresh_token in Settings → Credentials.",
+    );
+  }
+  return { user, clientId, clientSecret, refreshToken };
+}
+
 async function createTransporter() {
+  const creds = await loadGmailCreds();
   const oauth2Client = new OAuth2(
-    process.env.GMAIL_CLIENT_ID,
-    process.env.GMAIL_CLIENT_SECRET,
+    creds.clientId,
+    creds.clientSecret,
     "https://developers.google.com/oauthplayground",
   );
-  oauth2Client.setCredentials({ refresh_token: process.env.GMAIL_REFRESH_TOKEN });
+  oauth2Client.setCredentials({ refresh_token: creds.refreshToken });
   const tokenResponse = await oauth2Client.getAccessToken();
   const accessToken = typeof tokenResponse === "string" ? tokenResponse : tokenResponse.token;
   if (!accessToken) throw new Error("Failed to retrieve Gmail OAuth access token");
@@ -19,11 +36,11 @@ async function createTransporter() {
     service: "gmail",
     auth: {
       type: "OAuth2",
-      user: process.env.GMAIL_USER,
+      user: creds.user,
       accessToken,
-      clientId: process.env.GMAIL_CLIENT_ID,
-      clientSecret: process.env.GMAIL_CLIENT_SECRET,
-      refreshToken: process.env.GMAIL_REFRESH_TOKEN,
+      clientId: creds.clientId,
+      clientSecret: creds.clientSecret,
+      refreshToken: creds.refreshToken,
     },
   });
 }
@@ -58,6 +75,7 @@ export async function sendLeadEmail(lead: {
 }) {
   const cfg = await getLeadEmailConfig();
   const transporter = await createTransporter();
+  const fromUser = await getCredential("gmail_user");
 
   const vars: Record<string, string> = {
     NAME: lead.name,
@@ -76,7 +94,7 @@ export async function sendLeadEmail(lead: {
     .filter(Boolean);
 
   await transporter.sendMail({
-    from: `"Tertiary Infotech" <${process.env.GMAIL_USER}>`,
+    from: `"Tertiary Infotech" <${fromUser}>`,
     to: cfg.to,
     cc: cc.length ? cc : undefined,
     replyTo: lead.email,

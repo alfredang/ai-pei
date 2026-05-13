@@ -33,7 +33,11 @@ export function decryptSecret(blob: string): string {
 export type CredentialKey =
   | "anthropic_auth_token"
   | "firecrawl_api_key"
-  | "tavily_api_key";
+  | "tavily_api_key"
+  | "gmail_user"
+  | "gmail_client_id"
+  | "gmail_client_secret"
+  | "gmail_refresh_token";
 
 /**
  * Read a credential. DB-stored encrypted value wins over the env var fallback.
@@ -56,6 +60,10 @@ export async function getCredential(key: CredentialKey): Promise<string | null> 
     anthropic_auth_token: process.env.ANTHROPIC_AUTH_TOKEN,
     firecrawl_api_key: process.env.FIRECRAWL_API_KEY,
     tavily_api_key: process.env.TAVILY_API_KEY,
+    gmail_user: process.env.GMAIL_USER,
+    gmail_client_id: process.env.GMAIL_CLIENT_ID,
+    gmail_client_secret: process.env.GMAIL_CLIENT_SECRET,
+    gmail_refresh_token: process.env.GMAIL_REFRESH_TOKEN,
   };
   return envMap[key] ?? null;
 }
