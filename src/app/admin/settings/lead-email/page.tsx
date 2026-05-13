@@ -1,8 +1,10 @@
 import { db } from "@/db";
 import { settings } from "@/db/schema";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { LEAD_EMAIL_DEFAULTS, getLeadEmailConfig } from "@/lib/site-settings";
 import { LEAD_EMAIL_VARIABLES } from "@/lib/email";
+import { SavedToast } from "@/app/admin/_components/SavedToast";
 
 const KEYS = {
   to: "lead_notification_email",
@@ -31,6 +33,7 @@ export default async function LeadEmailSettingsPage() {
     await upsert(KEYS.subject, String(formData.get("subject") ?? "").trim());
     await upsert(KEYS.body, String(formData.get("body") ?? ""));
     revalidatePath("/admin/settings/lead-email");
+    redirect("/admin/settings/lead-email?saved=1");
   }
 
   async function resetDefaults() {
@@ -40,10 +43,12 @@ export default async function LeadEmailSettingsPage() {
     await upsert(KEYS.subject, LEAD_EMAIL_DEFAULTS.subject);
     await upsert(KEYS.body, LEAD_EMAIL_DEFAULTS.body);
     revalidatePath("/admin/settings/lead-email");
+    redirect("/admin/settings/lead-email?saved=1");
   }
 
   return (
     <div>
+      <SavedToast />
       <div className="mb-6">
         <h2 className="font-display text-xl font-bold">Lead Notification Email</h2>
         <p className="text-sm text-(--color-muted) mt-1">

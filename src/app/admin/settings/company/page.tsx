@@ -1,6 +1,8 @@
 import { db } from "@/db";
 import { settings } from "@/db/schema";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { SavedToast } from "@/app/admin/_components/SavedToast";
 
 const FIELDS: Array<{
   key: string;
@@ -43,10 +45,12 @@ export default async function CompanyInfoPage() {
     }
     revalidatePath("/admin/settings/company");
     revalidatePath("/");
+    redirect("/admin/settings/company?saved=1");
   }
 
   return (
     <div>
+      <SavedToast />
       <div className="mb-6">
         <h2 className="font-display text-xl font-bold">Company Info</h2>
         <p className="text-sm text-(--color-muted) mt-1">

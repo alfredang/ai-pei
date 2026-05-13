@@ -1,4 +1,5 @@
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import {
   DEFAULT_SYSTEM_PROMPT,
   getChatbotSettings,
@@ -6,6 +7,7 @@ import {
   type FaqEntry,
 } from "@/lib/chatbot-settings";
 import { isCredentialSet } from "@/lib/secrets";
+import { SavedToast } from "@/app/admin/_components/SavedToast";
 
 export default async function ChatbotSettingsPage() {
   const current = await getChatbotSettings();
@@ -24,12 +26,14 @@ export default async function ChatbotSettingsPage() {
     }
     await saveChatbotSettings({ systemPrompt, faq });
     revalidatePath("/admin/settings/chatbot");
+    redirect("/admin/settings/chatbot?saved=1");
   }
 
   async function resetPrompt() {
     "use server";
     await saveChatbotSettings({ systemPrompt: DEFAULT_SYSTEM_PROMPT, faq: current.faq });
     revalidatePath("/admin/settings/chatbot");
+    redirect("/admin/settings/chatbot?saved=1");
   }
 
   const faqRows: FaqEntry[] =
@@ -39,6 +43,7 @@ export default async function ChatbotSettingsPage() {
 
   return (
     <div className="space-y-8">
+      <SavedToast />
       <div>
         <h2 className="font-display text-xl font-bold">NEMO chatbot</h2>
         <p className="text-sm text-(--color-muted) mt-1">
