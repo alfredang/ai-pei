@@ -33,7 +33,7 @@ const totalTools = EDTOOL_GROUPS.reduce((n, g) => n + g.tools.length, 0);
 
 export function EdToolsShowcase() {
   return (
-    <section id="edtools" className="relative py-24 overflow-hidden">
+    <section id="edtools" className="relative py-12 overflow-hidden">
       <div className="grid-bg opacity-40" />
       <Container className="relative">
         <div className="flex flex-wrap items-end justify-between gap-6 mb-12">

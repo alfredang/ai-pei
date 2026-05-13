@@ -9,7 +9,7 @@ const accentMap: Record<string, string> = {
 
 export function WhyChooseUs() {
   return (
-    <section id="why-us" className="relative py-28 overflow-hidden">
+    <section id="why-us" className="relative py-14 overflow-hidden">
       <div className="grid-bg opacity-50" />
       <Container className="relative">
         <div className="max-w-2xl mb-14">

@@ -22,7 +22,7 @@ export async function FeaturedPosts() {
   const items = await loadPosts();
   if (items.length === 0) return null;
   return (
-    <section className="relative py-28">
+    <section className="relative py-14">
       <Container>
         <div className="flex items-end justify-between mb-12 gap-6 flex-wrap">
           <div>

@@ -10,7 +10,7 @@ const accentMap: Record<string, { glow: string; text: string; line: string }> = 
 
 export function Services() {
   return (
-    <section id="services" className="relative py-28">
+    <section id="services" className="relative py-14">
       <Container>
         <div className="max-w-2xl mb-14">
           <div className="kicker mb-4">[ WHAT WE BUILD ]</div>

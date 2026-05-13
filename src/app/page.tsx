@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { Hero } from "@/components/sections/Hero";
 import { AILmsTmsShowcase } from "@/components/sections/AILmsTmsShowcase";
+import { ELearningShowcase } from "@/components/sections/ELearningShowcase";
 import { EdToolsShowcase } from "@/components/sections/EdToolsShowcase";
 import { Services } from "@/components/sections/Services";
 import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
@@ -17,6 +18,7 @@ export default function HomePage() {
       <main>
         <Hero />
         <AILmsTmsShowcase />
+        <ELearningShowcase />
         <EdToolsShowcase />
         <Services />
         <WhyChooseUs />
