@@ -65,10 +65,11 @@ export const WHY_CHOOSE_US = [
 ];
 
 export const AI_LMS_TMS_FEATURES = [
-  "WSQ Compliant — meets SkillsFuture Singapore training submission rules",
-  "TPQA Compliant — supports SSG / TPQA quality assurance audit trails",
-  "AI course generation — auto-draft lesson plans, assessments, and SCORM packs",
-  "AI tutor chatbot — student Q&A grounded in your course material",
-  "Attendance, certification & e-signature workflows out of the box",
-  "Multi-tenant SaaS or single-tenant on-prem deployment",
+  "WSQ and TPQA compliant out of the box",
+  "Fully SSG API integrated — TPGateway, MySkillsFuture, attendance & enrolment",
+  "50+ EdTools for trainers — quizzes, polls, breakouts, AI tutor, code sandbox",
+  "Native integration with Google Meet, Zoom, and Microsoft Teams",
+  "Auto enrolment, invoicing, and SkillsFuture claim workflows",
+  "CP & Courseware Generator — agent-built lesson plans, decks, and assessments",
+  "Claude Code-powered AI agent — content authoring, marking, and learner support",
 ];

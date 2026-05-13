@@ -43,7 +43,7 @@ async function main() {
           ? [
               { label: "Home", href: "/" },
               { label: "Services", href: "/#services" },
-              { label: "AI LMS/TMS", href: "/#ai-lms-tms" },
+              { label: "LMS/TMS", href: "/#ai-lms-tms" },
               { label: "Blog", href: "/blog" },
               { label: "Portfolio", href: "/portfolio" },
               { label: "Contact", href: "/#contact" },

@@ -5,6 +5,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { z } from "zod";
+import { authConfig } from "./auth.config";
 
 declare module "next-auth" {
   interface Session {
@@ -18,8 +19,7 @@ const credentialsSchema = z.object({
 });
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
-  session: { strategy: "jwt" },
-  pages: { signIn: "/admin/login" },
+  ...authConfig,
   providers: [
     Credentials({
       credentials: {
@@ -47,20 +47,4 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       },
     }),
   ],
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.role = (user as { role?: string }).role ?? "admin";
-        token.uid = user.id;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.id = (token.uid as string) ?? "";
-        session.user.role = (token.role as string) ?? "admin";
-      }
-      return session;
-    },
-  },
 });

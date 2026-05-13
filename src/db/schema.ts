@@ -47,7 +47,7 @@ export const tags = pgTable("tags", {
 
 // Generic SEO + content fields shared by pages and posts
 const contentColumns = {
-  slug: varchar("slug", { length: 255 }).notNull().unique(),
+  slug: varchar("slug", { length: 255 }).notNull(),
   title: varchar("title", { length: 500 }).notNull(),
   excerpt: text("excerpt"),
   content: jsonb("content").notNull(), // TipTap JSON
@@ -65,10 +65,14 @@ const contentColumns = {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 };
 
-export const pages = pgTable("pages", {
-  id: serial("id").primaryKey(),
-  ...contentColumns,
-});
+export const pages = pgTable(
+  "pages",
+  {
+    id: serial("id").primaryKey(),
+    ...contentColumns,
+  },
+  (t) => [uniqueIndex("pages_slug_uq").on(t.slug)],
+);
 
 export const posts = pgTable(
   "posts",
@@ -79,7 +83,10 @@ export const posts = pgTable(
     categoryId: integer("category_id").references(() => categories.id),
     readingTime: integer("reading_time"),
   },
-  (t) => [index("posts_status_published_idx").on(t.status, t.publishedAt)],
+  (t) => [
+    uniqueIndex("posts_slug_uq").on(t.slug),
+    index("posts_status_published_idx").on(t.status, t.publishedAt),
+  ],
 );
 
 export const postTags = pgTable(

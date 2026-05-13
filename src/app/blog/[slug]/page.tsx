@@ -81,7 +81,7 @@ export default async function PostPage({
               />
             )}
             <div
-              className="prose prose-invert max-w-none"
+              className="prose-dark"
               dangerouslySetInnerHTML={{ __html: post.contentHtml ?? "" }}
             />
           </Container>

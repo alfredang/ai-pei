@@ -1,4 +1,5 @@
 import { query } from "@anthropic-ai/claude-agent-sdk";
+import { getCredential } from "@/lib/secrets";
 
 const SYSTEM_PROMPTS: Record<string, string> = {
   generate_blog_draft:
@@ -17,8 +18,11 @@ export async function runClaudeAssist(
   mode: keyof typeof SYSTEM_PROMPTS,
   userContext: string,
 ): Promise<string> {
-  if (!process.env.ANTHROPIC_AUTH_TOKEN) {
-    throw new Error("ANTHROPIC_AUTH_TOKEN is not configured");
+  const token = await getCredential("anthropic_auth_token");
+  if (!token) {
+    throw new Error(
+      "Claude OAuth token not configured. Set it in Admin → Settings → Credentials.",
+    );
   }
   const systemPrompt = SYSTEM_PROMPTS[mode];
   if (!systemPrompt) throw new Error(`Unknown AI assist mode: ${mode}`);
@@ -30,7 +34,7 @@ export async function runClaudeAssist(
       systemPrompt,
       permissionMode: "bypassPermissions",
       allowedTools: [],
-      env: { ANTHROPIC_AUTH_TOKEN: process.env.ANTHROPIC_AUTH_TOKEN },
+      env: { ANTHROPIC_AUTH_TOKEN: token },
     },
   });
 

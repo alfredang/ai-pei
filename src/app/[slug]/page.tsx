@@ -59,7 +59,7 @@ export default async function CmsPage({
         <Container className="max-w-3xl py-16">
           <h1 className="text-3xl md:text-5xl font-bold mb-8">{page.title}</h1>
           <div
-            className="prose prose-invert max-w-none"
+            className="prose-dark"
             dangerouslySetInnerHTML={{ __html: page.contentHtml ?? "" }}
           />
         </Container>

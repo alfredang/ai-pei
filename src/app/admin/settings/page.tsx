@@ -2,7 +2,7 @@ import { db } from "@/db";
 import { settings } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 
-export default async function SettingsAdmin() {
+export default async function SettingsGeneral() {
   const all = await db.select().from(settings);
   const map = new Map(all.map((s) => [s.key, s.value]));
 
@@ -28,8 +28,13 @@ export default async function SettingsAdmin() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6">Settings</h1>
-      <form action={save} className="glass rounded-xl p-6 space-y-4 max-w-2xl">
+      <div className="mb-6">
+        <h2 className="font-display text-xl font-bold">General</h2>
+        <p className="text-sm text-(--color-muted) mt-1">
+          Site identity and contact details. Used on the public site and lead notifications.
+        </p>
+      </div>
+      <form action={save} className="glass p-6 space-y-5">
         <Field name="site_title" label="Site title" defaultValue={String(map.get("site_title") ?? "")} />
         <Field name="tagline" label="Tagline" defaultValue={String(map.get("tagline") ?? "")} />
         <Field
@@ -37,22 +42,10 @@ export default async function SettingsAdmin() {
           label="Lead notification email"
           defaultValue={String(map.get("contact_email") ?? "")}
         />
-        <button className="px-5 py-2 rounded bg-gradient-to-r from-neon-blue to-neon-cyan font-semibold">
-          Save settings
-        </button>
+        <div className="pt-2">
+          <button className="btn-primary">Save</button>
+        </div>
       </form>
-      <div className="mt-8 max-w-2xl">
-        <h2 className="font-bold mb-2">AI Assist status</h2>
-        <p className="text-sm text-white/70">
-          Claude Agent SDK is{" "}
-          {process.env.ANTHROPIC_AUTH_TOKEN ? (
-            <span className="text-neon-cyan">configured</span>
-          ) : (
-            <span className="text-red-400">not configured</span>
-          )}
-          . Set <code>ANTHROPIC_AUTH_TOKEN</code> in the environment to enable.
-        </p>
-      </div>
     </div>
   );
 }
@@ -68,11 +61,11 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="text-xs text-white/60">{label}</span>
+      <span className="kicker block mb-2">{label}</span>
       <input
         name={name}
         defaultValue={defaultValue}
-        className="w-full mt-1 px-3 py-2 bg-white/5 border border-white/10 rounded"
+        className="w-full px-4 py-3 bg-white/3 border border-white/10 rounded-lg focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition"
       />
     </label>
   );

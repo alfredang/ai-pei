@@ -29,39 +29,45 @@ export function ContactForm() {
   }
 
   return (
-    <section id="contact" className="py-24">
-      <Container className="max-w-3xl">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-5xl font-bold mb-3">Let&apos;s talk</h2>
-          <p className="text-white/70">
+    <section id="contact" className="relative py-28 overflow-hidden">
+      <div className="glow-blob" style={{ top: "10%", right: "0", width: 480, height: 480, background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)" }} />
+      <Container className="max-w-4xl relative">
+        <div className="text-center mb-12">
+          <div className="kicker mb-4">[ GET IN TOUCH ]</div>
+          <h2 className="font-display text-[clamp(2rem,5vw,3.5rem)] font-extrabold leading-[1.05] mb-4">
+            Talk to <span className="gradient-text">us</span>.
+          </h2>
+          <p className="text-(--color-muted) text-lg">
             Tell us about your training program or AI project. We respond within one business day.
           </p>
         </div>
-        <form onSubmit={onSubmit} className="glass rounded-2xl p-8 space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
+        <form onSubmit={onSubmit} className="glass p-8 md:p-10 space-y-5">
+          <div className="grid md:grid-cols-2 gap-5">
             <Input name="name" label="Your name" required />
             <Input name="email" label="Email" type="email" required />
             <Input name="company" label="Company" />
             <Input name="phone" label="Phone" />
           </div>
           <div>
-            <label className="block text-sm mb-1">How can we help?</label>
+            <label className="kicker block mb-2">Your message</label>
             <textarea
               name="message"
               required
               rows={5}
-              className="w-full px-3 py-2 rounded bg-white/5 border border-white/10 focus:outline-none focus:border-neon-blue"
+              className="w-full px-4 py-3 rounded-lg bg-white/3 border border-white/10 focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition placeholder:text-white/30"
+              placeholder="Tell us about your training program or AI initiative…"
             />
           </div>
-          <button
-            type="submit"
-            disabled={state === "sending"}
-            className="w-full md:w-auto px-6 py-3 rounded-lg bg-gradient-to-r from-neon-blue to-neon-cyan font-semibold disabled:opacity-50"
-          >
-            {state === "sending" ? "Sending…" : "Send inquiry"}
-          </button>
+          <div className="flex items-center justify-between gap-4 flex-wrap pt-2">
+            <p className="text-xs text-(--color-muted) font-mono">
+              [ We reply within 1 business day ]
+            </p>
+            <button type="submit" disabled={state === "sending"} className="btn-primary disabled:opacity-60">
+              {state === "sending" ? "Sending…" : "Send inquiry →"}
+            </button>
+          </div>
           {msg && (
-            <p className={state === "ok" ? "text-neon-cyan text-sm" : "text-red-400 text-sm"}>
+            <p className={state === "ok" ? "text-(--color-green) text-sm font-mono" : "text-red-400 text-sm font-mono"}>
               {msg}
             </p>
           )}
@@ -84,12 +90,12 @@ function Input({
 }) {
   return (
     <div>
-      <label className="block text-sm mb-1">{label}</label>
+      <label className="kicker block mb-2">{label}</label>
       <input
         type={type}
         name={name}
         required={required}
-        className="w-full px-3 py-2 rounded bg-white/5 border border-white/10 focus:outline-none focus:border-neon-blue"
+        className="w-full px-4 py-3 rounded-lg bg-white/3 border border-white/10 focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition"
       />
     </div>
   );

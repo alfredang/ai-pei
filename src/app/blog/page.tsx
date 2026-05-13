@@ -10,7 +10,7 @@ import type { Metadata } from "next";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Blog",
+  title: "Journal",
   description:
     "Insights on AI, LMS, TMS, WSQ training compliance and software development from Tertiary Infotech.",
 };
@@ -25,41 +25,59 @@ export default async function BlogIndex() {
   return (
     <>
       <Navbar />
-      <main className="pt-16">
-        <Container className="py-16">
-          <h1 className="text-4xl md:text-5xl font-bold mb-8">Blog</h1>
-          {items.length === 0 ? (
-            <p className="text-white/60">No posts yet.</p>
-          ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {items.map((p) => (
-                <Link
-                  key={p.id}
-                  href={`/blog/${p.slug}`}
-                  className="glass rounded-2xl overflow-hidden hover:translate-y-[-2px] transition group"
-                >
-                  {p.featuredImage && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={p.featuredImage} alt={p.title} className="w-full h-48 object-cover" />
-                  )}
-                  <div className="p-5">
-                    <h3 className="font-bold text-lg group-hover:text-neon-cyan transition">
-                      {p.title}
-                    </h3>
-                    {p.excerpt && (
-                      <p className="text-sm text-white/70 mt-2 line-clamp-3">{p.excerpt}</p>
-                    )}
-                    {p.publishedAt && (
-                      <p className="text-xs text-white/40 mt-3">
-                        {new Date(p.publishedAt).toLocaleDateString()}
-                      </p>
-                    )}
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-        </Container>
+      <main>
+        <section className="relative pt-24 pb-12 overflow-hidden">
+          <div className="grid-bg opacity-60" />
+          <div className="glow-blob" style={{ top: "-30%", left: "20%", width: 500, height: 500, background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)" }} />
+          <Container className="relative">
+            <div className="kicker mb-4">[ JOURNAL ]</div>
+            <h1 className="font-display text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold leading-[1.05]">
+              Field notes from <span className="gradient-text">building AI training</span>.
+            </h1>
+            <p className="mt-5 text-(--color-muted) text-lg max-w-2xl">
+              Engineering deep-dives, WSQ compliance walkthroughs, and case studies from the
+              Tertiary Infotech team.
+            </p>
+          </Container>
+        </section>
+
+        <section className="pb-24">
+          <Container>
+            {items.length === 0 ? (
+              <p className="text-(--color-muted) font-mono">[ NO POSTS YET ]</p>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {items.map((p) => (
+                  <Link
+                    key={p.id}
+                    href={`/blog/${p.slug}`}
+                    className="card-hover glass overflow-hidden flex flex-col group"
+                  >
+                    <div className="aspect-[16/10] overflow-hidden bg-(--color-bg-deeper) relative">
+                      {p.featuredImage ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={p.featuredImage} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+                      ) : (
+                        <div className="absolute inset-0 bg-gradient-to-br from-(--color-purple)/30 to-(--color-cyan)/20 flex items-center justify-center">
+                          <span className="font-mono text-xs text-white/30">{p.slug}</span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-6 flex-1 flex flex-col">
+                      {p.publishedAt && (
+                        <div className="kicker mb-3">
+                          {new Date(p.publishedAt).toLocaleDateString("en-SG", { year: "numeric", month: "short", day: "2-digit" })}
+                        </div>
+                      )}
+                      <h3 className="font-display font-bold text-lg text-white group-hover:text-(--color-cyan) transition mb-2 leading-tight">{p.title}</h3>
+                      {p.excerpt && <p className="text-sm text-(--color-muted) line-clamp-3 leading-relaxed">{p.excerpt}</p>}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </Container>
+        </section>
       </main>
       <Footer />
     </>

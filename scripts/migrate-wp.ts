@@ -159,14 +159,16 @@ async function downloadImage(url: string): Promise<string | null> {
 
 async function rewriteImages(html: string): Promise<{ html: string; first?: string }> {
   const re = /(<img[^>]+src=)["']([^"']+)["']/gi;
-  const tasks: Array<Promise<[string, string | null]>> = [];
-  let m: RegExpExecArray | null;
   const matches: Array<[number, number, string]> = [];
+  let m: RegExpExecArray | null;
   while ((m = re.exec(html)) !== null) {
     matches.push([m.index, m.index + m[0].length, m[2]]);
-    tasks.push(downloadImage(m[2]).then((p) => [m![2], p]));
   }
-  const results = new Map(await Promise.all(tasks));
+  const unique = Array.from(new Set(matches.map(([, , url]) => url)));
+  const downloaded = await Promise.all(
+    unique.map(async (url) => [url, await downloadImage(url)] as const),
+  );
+  const results = new Map<string, string | null>(downloaded);
   let first: string | undefined;
   let out = html;
   // Replace from the end to keep indices valid

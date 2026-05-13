@@ -1,17 +1,29 @@
 import Link from "next/link";
 import { auth, signOut } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import {
+  HiSquares2X2,
+  HiDocumentText,
+  HiNewspaper,
+  HiTag,
+  HiHashtag,
+  HiBars3,
+  HiPhoto,
+  HiInbox,
+  HiCog6Tooth,
+  HiArrowRightOnRectangle,
+} from "react-icons/hi2";
 
 const navItems = [
-  { href: "/admin", label: "Dashboard" },
-  { href: "/admin/pages", label: "Pages" },
-  { href: "/admin/posts", label: "Posts" },
-  { href: "/admin/categories", label: "Categories" },
-  { href: "/admin/tags", label: "Tags" },
-  { href: "/admin/menus", label: "Menus" },
-  { href: "/admin/media", label: "Media" },
-  { href: "/admin/leads", label: "Leads" },
-  { href: "/admin/settings", label: "Settings" },
+  { href: "/admin", label: "Dashboard", Icon: HiSquares2X2 },
+  { href: "/admin/pages", label: "Pages", Icon: HiDocumentText },
+  { href: "/admin/posts", label: "Posts", Icon: HiNewspaper },
+  { href: "/admin/categories", label: "Categories", Icon: HiTag },
+  { href: "/admin/tags", label: "Tags", Icon: HiHashtag },
+  { href: "/admin/menus", label: "Menus", Icon: HiBars3 },
+  { href: "/admin/media", label: "Media", Icon: HiPhoto },
+  { href: "/admin/leads", label: "Leads", Icon: HiInbox },
+  { href: "/admin/settings", label: "Settings", Icon: HiCog6Tooth },
 ];
 
 export default async function AdminLayout({
@@ -21,27 +33,32 @@ export default async function AdminLayout({
 }) {
   const session = await auth();
 
-  // /admin/login is excluded from this guard via the page itself
   if (!session?.user) {
-    // For non-login pages, middleware already redirects. For safety:
+    // /admin/login renders without the chrome; middleware guards the rest.
     return <>{children}</>;
   }
 
   return (
     <div className="min-h-screen flex">
-      <aside className="w-60 glass min-h-screen p-4 flex flex-col">
-        <div className="mb-6">
-          <h2 className="text-lg font-bold">TI CMS</h2>
-          <p className="text-xs text-white/50">{session.user.email}</p>
-        </div>
-        <nav className="flex-1 space-y-1">
-          {navItems.map((item) => (
+      <aside className="w-64 shrink-0 bg-(--color-bg-elevated) border-r border-(--color-border) min-h-screen p-5 flex flex-col">
+        <Link href="/admin" className="flex items-center gap-2 mb-8">
+          <span className="w-8 h-8 rounded-md bg-gradient-to-br from-(--color-purple) to-(--color-cyan) shadow-[var(--shadow-glow-cyan)] grid place-items-center text-xs font-mono font-bold">
+            TI
+          </span>
+          <div>
+            <div className="font-display font-bold leading-tight">TI CMS</div>
+            <div className="text-[10px] text-white/45 font-mono uppercase">{session.user.email}</div>
+          </div>
+        </Link>
+        <nav className="flex-1 space-y-0.5">
+          {navItems.map(({ href, label, Icon }) => (
             <Link
-              key={item.href}
-              href={item.href}
-              className="block px-3 py-2 rounded hover:bg-white/5 text-sm"
+              key={href}
+              href={href}
+              className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-white/5 text-sm text-white/85 hover:text-white transition"
             >
-              {item.label}
+              <Icon className="w-4 h-4 text-white/60" />
+              {label}
             </Link>
           ))}
         </nav>
@@ -54,13 +71,14 @@ export default async function AdminLayout({
         >
           <button
             type="submit"
-            className="w-full text-left px-3 py-2 rounded hover:bg-white/5 text-sm text-white/70"
+            className="w-full text-left flex items-center gap-3 px-3 py-2 rounded-md hover:bg-white/5 text-sm text-white/65 transition"
           >
+            <HiArrowRightOnRectangle className="w-4 h-4" />
             Sign out
           </button>
         </form>
       </aside>
-      <main className="flex-1 p-8">{children}</main>
+      <main className="flex-1 min-w-0 px-8 py-10">{children}</main>
     </div>
   );
 }
