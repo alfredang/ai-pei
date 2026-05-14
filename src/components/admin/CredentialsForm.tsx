@@ -15,7 +15,9 @@ type Key =
   | "r2_secret_access_key"
   | "r2_bucket"
   | "r2_public_url"
-  | "r2_endpoint";
+  | "r2_endpoint"
+  | "turnstile_site_key"
+  | "turnstile_secret";
 
 type Group = { title: string; description?: string; keys: Key[] };
 
@@ -89,6 +91,16 @@ const FIELDS: Record<
     hint: "S3-compatible endpoint for write operations (auto-derived from Account ID if blank).",
     placeholder: "https://<account>.r2.cloudflarestorage.com",
   },
+  turnstile_site_key: {
+    label: "Cloudflare Turnstile — Site key",
+    hint: "Public key embedded in the browser. Created at Cloudflare Dashboard → Turnstile → your widget (Managed mode recommended).",
+    placeholder: "0x4AAAAAAA…",
+  },
+  turnstile_secret: {
+    label: "Cloudflare Turnstile — Secret key",
+    hint: "Server-side key for verifying tokens. Shown once when the widget is created.",
+    placeholder: "0x4AAAAAAA…",
+  },
 };
 
 const GROUPS: Group[] = [
@@ -115,6 +127,12 @@ const GROUPS: Group[] = [
       "r2_public_url",
       "r2_endpoint",
     ],
+  },
+  {
+    title: "Cloudflare Turnstile (invisible anti-spam)",
+    description:
+      "Invisible CAPTCHA on public lead forms. Leave blank to disable verification (forms still work).",
+    keys: ["turnstile_site_key", "turnstile_secret"],
   },
 ];
 

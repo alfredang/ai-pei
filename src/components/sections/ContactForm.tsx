@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { Container } from "@/components/layout/Container";
+import { TurnstileWidget } from "@/components/forms/TurnstileWidget";
 
 export function ContactForm() {
   const [state, setState] = useState<"idle" | "sending" | "ok" | "err">("idle");
   const [msg, setMsg] = useState<string>("");
+  const [turnstileToken, setTurnstileToken] = useState<string>("");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -16,7 +18,7 @@ export function ContactForm() {
       const r = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...payload, source: "home" }),
+        body: JSON.stringify({ ...payload, source: "home", turnstileToken }),
       });
       if (!r.ok) throw new Error(await r.text());
       setState("ok");
@@ -71,6 +73,7 @@ export function ContactForm() {
               {msg}
             </p>
           )}
+          <TurnstileWidget onToken={setTurnstileToken} />
         </form>
       </Container>
     </section>

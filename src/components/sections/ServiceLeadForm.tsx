@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { TurnstileWidget } from "@/components/forms/TurnstileWidget";
 
 /**
  * Generic service-page lead form. Mirrors SsgAtoLeadForm but takes a
@@ -19,6 +20,7 @@ export function ServiceLeadForm({
 }) {
   const [state, setState] = useState<"idle" | "sending" | "ok" | "err">("idle");
   const [msg, setMsg] = useState<string>("");
+  const [turnstileToken, setTurnstileToken] = useState<string>("");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -29,7 +31,7 @@ export function ServiceLeadForm({
       const r = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...payload, source }),
+        body: JSON.stringify({ ...payload, source, turnstileToken }),
       });
       if (!r.ok) throw new Error(await r.text());
       setState("ok");
@@ -88,6 +90,7 @@ export function ServiceLeadForm({
           {msg}
         </p>
       )}
+      <TurnstileWidget onToken={setTurnstileToken} />
     </form>
   );
 }

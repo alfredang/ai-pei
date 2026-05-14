@@ -3,6 +3,7 @@ import { z } from "zod";
 import { db } from "@/db";
 import { leads } from "@/db/schema";
 import { sendLeadEmail } from "@/lib/email";
+import { verifyTurnstileToken } from "@/lib/turnstile";
 
 const schema = z.object({
   name: z.string().min(1).max(255),
@@ -11,6 +12,7 @@ const schema = z.object({
   company: z.string().max(255).optional().nullable(),
   message: z.string().min(1),
   source: z.string().max(100).optional().nullable(),
+  turnstileToken: z.string().max(2048).optional().nullable(),
 });
 
 export async function POST(req: Request) {
@@ -25,6 +27,18 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }
   const data = parsed.data;
+
+  const ip =
+    req.headers.get("cf-connecting-ip") ||
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    null;
+  const captcha = await verifyTurnstileToken(data.turnstileToken, ip);
+  if (!captcha.ok) {
+    return NextResponse.json(
+      { error: "Captcha verification failed", reason: captcha.reason },
+      { status: 400 },
+    );
+  }
 
   await db.insert(leads).values({
     name: data.name,

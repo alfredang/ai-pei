@@ -15,6 +15,8 @@ const KEYS: CredentialKey[] = [
   "r2_bucket",
   "r2_public_url",
   "r2_endpoint",
+  "turnstile_site_key",
+  "turnstile_secret",
 ];
 
 /**
@@ -25,7 +27,7 @@ function maskPreview(value: string | null, key: CredentialKey): string {
   if (!value) return "";
   // Email addresses are not secrets — show the local-part fully so admins can
   // tell which Gmail account is configured at a glance.
-  if (key === "gmail_user" || key === "r2_bucket" || key === "r2_public_url" || key === "r2_endpoint" || key === "r2_account_id") return value;
+  if (key === "gmail_user" || key === "r2_bucket" || key === "r2_public_url" || key === "r2_endpoint" || key === "r2_account_id" || key === "turnstile_site_key") return value;
   if (value.length <= 8) return "•".repeat(value.length);
   const head = value.slice(0, 4);
   const tail = value.slice(-4);

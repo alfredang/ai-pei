@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { TurnstileWidget } from "@/components/forms/TurnstileWidget";
 
 export function SsgAtoLeadForm({ compact = false }: { compact?: boolean }) {
   const [state, setState] = useState<"idle" | "sending" | "ok" | "err">("idle");
   const [msg, setMsg] = useState<string>("");
+  const [turnstileToken, setTurnstileToken] = useState<string>("");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -15,7 +17,7 @@ export function SsgAtoLeadForm({ compact = false }: { compact?: boolean }) {
       const r = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...payload, source: "ssg-ato-page" }),
+        body: JSON.stringify({ ...payload, source: "ssg-ato-page", turnstileToken }),
       });
       if (!r.ok) throw new Error(await r.text());
       setState("ok");
@@ -69,6 +71,7 @@ export function SsgAtoLeadForm({ compact = false }: { compact?: boolean }) {
           {msg}
         </p>
       )}
+      <TurnstileWidget onToken={setTurnstileToken} />
     </form>
   );
 }
