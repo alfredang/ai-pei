@@ -48,11 +48,10 @@ export default async function BlogIndex() {
           <Container className="relative">
             <div className="kicker mb-4">[ JOURNAL ]</div>
             <h1 className="font-display text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold leading-[1.05]">
-              Field notes from <span className="gradient-text">building AI training</span>.
+              Field notes from <span className="gradient-text">building Agentic AI Workflows</span>.
             </h1>
             <p className="mt-5 text-(--color-muted) text-lg max-w-2xl">
-              Engineering deep-dives, WSQ compliance walkthroughs, and case studies from the
-              Tertiary Infotech team.
+              AI Agents, LMS and TMS case studies from the Tertiary Infotech Academy.
             </p>
           </Container>
         </section>
