@@ -5,7 +5,16 @@ import { and, eq } from "drizzle-orm";
 import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { ShareButtons } from "@/components/blog/ShareButtons";
+import { HiUser, HiCalendar } from "react-icons/hi2";
 import type { Metadata } from "next";
+
+function formatDateDMY(d: Date | null | undefined): string {
+  if (!d) return "";
+  const day = String(d.getDate()).padStart(2, "0");
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  return `${day}-${month}-${d.getFullYear()}`;
+}
 
 export const dynamic = "force-dynamic";
 
@@ -147,11 +156,18 @@ export default async function PostPage({
                 <h1 className="text-3xl md:text-4xl font-bold mb-3 leading-tight">
                   {post.title}
                 </h1>
-                {post.publishedAt && (
-                  <p className="text-white/50 text-sm mb-4">
-                    {new Date(post.publishedAt).toLocaleDateString()}
-                  </p>
-                )}
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-white/55 text-xs font-mono mb-4">
+                  <span className="inline-flex items-center gap-1.5">
+                    <HiUser className="w-3.5 h-3.5 text-(--color-cyan)/80" />
+                    Author: Tertiary Infotech Academy
+                  </span>
+                  {post.publishedAt && (
+                    <span className="inline-flex items-center gap-1.5">
+                      <HiCalendar className="w-3.5 h-3.5 text-(--color-cyan)/80" />
+                      Created On: {formatDateDMY(post.publishedAt)}
+                    </span>
+                  )}
+                </div>
                 {post.excerpt && (
                   <p className="text-white/75 text-base leading-relaxed mb-4">
                     {post.excerpt}
@@ -169,6 +185,9 @@ export default async function PostPage({
               className="prose-dark"
               dangerouslySetInnerHTML={{ __html: restHtml }}
             />
+            <div className="mt-12 pt-6 border-t border-white/8">
+              <ShareButtons url={postUrl} title={post.title} />
+            </div>
           </Container>
         </article>
       </main>

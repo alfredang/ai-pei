@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { db } from "@/db";
-import { posts } from "@/db/schema";
-import { desc, eq } from "drizzle-orm";
+import { posts, categories, tags, postTags } from "@/db/schema";
+import { and, asc, desc, eq, inArray } from "drizzle-orm";
 import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -9,42 +9,112 @@ import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
 
+const PAGE_SIZE = 12;
+
 export const metadata: Metadata = {
   title: "Journal",
   description:
-    "Insights on AI, LMS, TMS, WSQ training compliance and software development from Tertiary Infotech.",
+    "Field notes from SSG and AI services and building Agentic AI workflows — AI Agents, LMS and TMS case studies from Tertiary Infotech Academy.",
   alternates: { canonical: "/blog" },
   openGraph: {
     type: "website",
     url: "/blog",
-    title: "Journal | Tertiary Infotech",
+    title: "Journal | Tertiary Infotech Academy",
     description:
-      "Engineering deep-dives, WSQ compliance walkthroughs, and case studies from the Tertiary Infotech team.",
+      "AI Agents, LMS and TMS case studies from the Tertiary Infotech Academy.",
     locale: "en_SG",
     siteName: "Tertiary Infotech Academy",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Journal | Tertiary Infotech",
+    title: "Journal | Tertiary Infotech Academy",
     description:
-      "Insights on AI, LMS, TMS, WSQ training compliance and software development.",
+      "AI Agents, LMS and TMS case studies from the Tertiary Infotech Academy.",
   },
 };
 
-export default async function BlogIndex() {
-  const items = await db
+type SearchParams = Promise<{
+  category?: string;
+  tag?: string;
+  page?: string;
+}>;
+
+export default async function BlogIndex({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const sp = await searchParams;
+  const selectedCategory = sp.category?.trim() || null;
+  const selectedTag = sp.tag?.trim() || null;
+  const page = Math.max(1, Number(sp.page ?? "1") || 1);
+
+  const [allCategories, allTags] = await Promise.all([
+    db.select().from(categories).orderBy(asc(categories.name)),
+    db.select().from(tags).orderBy(asc(tags.name)),
+  ]);
+
+  // Build set of post IDs that match the selected tag, if any.
+  let allowedPostIds: number[] | null = null;
+  if (selectedTag) {
+    const tagRow = allTags.find((t) => t.slug === selectedTag);
+    if (!tagRow) allowedPostIds = [];
+    else {
+      const rows = await db
+        .select({ postId: postTags.postId })
+        .from(postTags)
+        .where(eq(postTags.tagId, tagRow.id));
+      allowedPostIds = rows.map((r) => r.postId);
+      if (allowedPostIds.length === 0) allowedPostIds = [-1];
+    }
+  }
+
+  // Compose WHERE clauses.
+  const where = [eq(posts.status, "published")];
+  if (selectedCategory) {
+    const catRow = allCategories.find((c) => c.slug === selectedCategory);
+    if (catRow) where.push(eq(posts.categoryId, catRow.id));
+    else where.push(eq(posts.id, -1)); // unknown category → empty result
+  }
+  if (allowedPostIds) where.push(inArray(posts.id, allowedPostIds));
+
+  const allMatching = await db
     .select()
     .from(posts)
-    .where(eq(posts.status, "published"))
+    .where(and(...where))
     .orderBy(desc(posts.publishedAt));
+  const total = allMatching.length;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const items = allMatching.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
+  function filterHref(next: { category?: string | null; tag?: string | null; page?: number }) {
+    const params = new URLSearchParams();
+    const c = next.category === undefined ? selectedCategory : next.category;
+    const t = next.tag === undefined ? selectedTag : next.tag;
+    if (c) params.set("category", c);
+    if (t) params.set("tag", t);
+    if (next.page && next.page > 1) params.set("page", String(next.page));
+    const qs = params.toString();
+    return qs ? `/blog?${qs}` : "/blog";
+  }
 
   return (
     <>
       <Navbar />
       <main>
-        <section className="relative pt-24 pb-12 overflow-hidden">
+        <section className="relative pt-24 pb-10 overflow-hidden">
           <div className="grid-bg opacity-60" />
-          <div className="glow-blob" style={{ top: "-30%", left: "20%", width: 500, height: 500, background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)" }} />
+          <div
+            className="glow-blob"
+            style={{
+              top: "-30%",
+              left: "20%",
+              width: 500,
+              height: 500,
+              background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)",
+            }}
+          />
           <Container className="relative">
             <div className="kicker mb-4">[ JOURNAL ]</div>
             <h1 className="font-display text-[clamp(1.75rem,4vw,3rem)] font-extrabold leading-[1.15]">
@@ -57,10 +127,81 @@ export default async function BlogIndex() {
           </Container>
         </section>
 
-        <section className="pb-24">
+        {/* Filters */}
+        <section className="pb-4">
+          <Container>
+            <div className="glass p-5 space-y-4">
+              <div>
+                <div className="kicker mb-2">Categories</div>
+                <div className="flex flex-wrap gap-2">
+                  <Link
+                    href={filterHref({ category: null, page: 1 })}
+                    className={`px-3 py-1.5 rounded-full border text-xs font-mono transition ${
+                      !selectedCategory
+                        ? "bg-(--color-cyan)/15 border-(--color-cyan)/40 text-(--color-cyan)"
+                        : "bg-white/3 border-white/10 text-white/70 hover:text-white hover:border-white/30"
+                    }`}
+                  >
+                    All
+                  </Link>
+                  {allCategories.map((c) => (
+                    <Link
+                      key={c.id}
+                      href={filterHref({ category: c.slug, page: 1 })}
+                      className={`px-3 py-1.5 rounded-full border text-xs font-mono transition ${
+                        selectedCategory === c.slug
+                          ? "bg-(--color-cyan)/15 border-(--color-cyan)/40 text-(--color-cyan)"
+                          : "bg-white/3 border-white/10 text-white/70 hover:text-white hover:border-white/30"
+                      }`}
+                    >
+                      {c.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {allTags.length > 0 && (
+                <div>
+                  <div className="kicker mb-2">Tags</div>
+                  <div className="flex flex-wrap gap-2">
+                    <Link
+                      href={filterHref({ tag: null, page: 1 })}
+                      className={`px-3 py-1 rounded-full border text-xs transition ${
+                        !selectedTag
+                          ? "bg-(--color-purple)/15 border-(--color-purple)/40 text-(--color-purple)"
+                          : "bg-white/3 border-white/10 text-white/60 hover:text-white hover:border-white/30"
+                      }`}
+                    >
+                      All
+                    </Link>
+                    {allTags.map((t) => (
+                      <Link
+                        key={t.id}
+                        href={filterHref({ tag: t.slug, page: 1 })}
+                        className={`px-3 py-1 rounded-full border text-xs transition ${
+                          selectedTag === t.slug
+                            ? "bg-(--color-purple)/15 border-(--color-purple)/40 text-(--color-purple)"
+                            : "bg-white/3 border-white/10 text-white/60 hover:text-white hover:border-white/30"
+                        }`}
+                      >
+                        #{t.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <p className="text-xs text-(--color-muted) font-mono">
+                {total} post{total === 1 ? "" : "s"} · page {safePage} of {totalPages}
+              </p>
+            </div>
+          </Container>
+        </section>
+
+        <section className="pb-24 pt-6">
           <Container>
             {items.length === 0 ? (
-              <p className="text-(--color-muted) font-mono">[ NO POSTS YET ]</p>
+              <p className="text-(--color-muted) font-mono">[ NO POSTS MATCH ]</p>
             ) : (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {items.map((p) => (
@@ -72,7 +213,12 @@ export default async function BlogIndex() {
                     <div className="aspect-[16/10] overflow-hidden bg-(--color-bg-deeper) relative">
                       {p.featuredImage ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={p.featuredImage} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+                        <img
+                          src={p.featuredImage}
+                          alt={p.title}
+                          loading="lazy"
+                          className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
+                        />
                       ) : (
                         <div className="absolute inset-0 bg-gradient-to-br from-(--color-purple)/30 to-(--color-cyan)/20 flex items-center justify-center">
                           <span className="font-mono text-xs text-white/30">{p.slug}</span>
@@ -82,14 +228,61 @@ export default async function BlogIndex() {
                     <div className="p-6 flex-1 flex flex-col">
                       {p.publishedAt && (
                         <div className="kicker mb-3">
-                          {new Date(p.publishedAt).toLocaleDateString("en-SG", { year: "numeric", month: "short", day: "2-digit" })}
+                          {new Date(p.publishedAt)
+                            .toLocaleDateString("en-GB", {
+                              day: "2-digit",
+                              month: "2-digit",
+                              year: "numeric",
+                            })
+                            .replace(/\//g, "-")}
                         </div>
                       )}
-                      <h3 className="font-display font-bold text-lg text-white group-hover:text-(--color-cyan) transition mb-2 leading-tight">{p.title}</h3>
-                      {p.excerpt && <p className="text-sm text-(--color-muted) line-clamp-3 leading-relaxed">{p.excerpt}</p>}
+                      <h3 className="font-display font-bold text-lg text-white group-hover:text-(--color-cyan) transition mb-2 leading-tight">
+                        {p.title}
+                      </h3>
+                      {p.excerpt && (
+                        <p className="text-sm text-(--color-muted) line-clamp-3 leading-relaxed">
+                          {p.excerpt}
+                        </p>
+                      )}
                     </div>
                   </Link>
                 ))}
+              </div>
+            )}
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="mt-10 flex items-center justify-center gap-2 flex-wrap">
+                {safePage > 1 && (
+                  <Link
+                    href={filterHref({ page: safePage - 1 })}
+                    className="px-4 py-2 rounded-md border border-white/10 bg-white/3 text-sm hover:border-(--color-cyan)/40 hover:text-(--color-cyan) transition"
+                  >
+                    ← Previous
+                  </Link>
+                )}
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+                  <Link
+                    key={n}
+                    href={filterHref({ page: n })}
+                    className={`px-3 py-2 rounded-md border text-sm font-mono transition ${
+                      n === safePage
+                        ? "bg-(--color-cyan)/15 border-(--color-cyan)/40 text-(--color-cyan)"
+                        : "bg-white/3 border-white/10 text-white/70 hover:text-white hover:border-white/30"
+                    }`}
+                  >
+                    {n}
+                  </Link>
+                ))}
+                {safePage < totalPages && (
+                  <Link
+                    href={filterHref({ page: safePage + 1 })}
+                    className="px-4 py-2 rounded-md border border-white/10 bg-white/3 text-sm hover:border-(--color-cyan)/40 hover:text-(--color-cyan) transition"
+                  >
+                    Next →
+                  </Link>
+                )}
               </div>
             )}
           </Container>
