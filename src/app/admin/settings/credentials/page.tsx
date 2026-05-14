@@ -1,4 +1,4 @@
-import { getCredentialSource, type CredentialKey } from "@/lib/secrets";
+import { getCredential, getCredentialSource, type CredentialKey } from "@/lib/secrets";
 import { CredentialsForm } from "@/components/admin/CredentialsForm";
 
 const KEYS: CredentialKey[] = [
@@ -11,17 +11,41 @@ const KEYS: CredentialKey[] = [
   "gmail_refresh_token",
 ];
 
+/**
+ * Build a non-sensitive preview of a saved credential — first 4 + last 4 chars
+ * with middle masked. Returns "••••" if the value is too short to safely show.
+ */
+function maskPreview(value: string | null, key: CredentialKey): string {
+  if (!value) return "";
+  // Email addresses are not secrets — show the local-part fully so admins can
+  // tell which Gmail account is configured at a glance.
+  if (key === "gmail_user") return value;
+  if (value.length <= 8) return "•".repeat(value.length);
+  const head = value.slice(0, 4);
+  const tail = value.slice(-4);
+  return `${head}••••••${tail}`;
+}
+
 export default async function CredentialsPage() {
-  const sourceEntries = await Promise.all(
-    KEYS.map(async (k) => [k, await getCredentialSource(k)] as const),
+  const entries = await Promise.all(
+    KEYS.map(async (k) => {
+      const [source, value] = await Promise.all([
+        getCredentialSource(k),
+        getCredential(k),
+      ]);
+      return [k, source, value] as const;
+    }),
   );
-  const sources = Object.fromEntries(sourceEntries) as Record<
+  const sources = Object.fromEntries(entries.map(([k, s]) => [k, s])) as Record<
     CredentialKey,
     "db" | "env" | "none"
   >;
   const status = Object.fromEntries(
-    sourceEntries.map(([k, s]) => [k, s !== "none"]),
+    entries.map(([k, s]) => [k, s !== "none"]),
   ) as Record<CredentialKey, boolean>;
+  const previews = Object.fromEntries(
+    entries.map(([k, , v]) => [k, maskPreview(v, k)]),
+  ) as Record<CredentialKey, string>;
 
   return (
     <div>
@@ -39,7 +63,7 @@ export default async function CredentialsPage() {
           <span className="text-white/60">NOT SET</span> = feature is disabled
         </p>
       </div>
-      <CredentialsForm status={status} sources={sources} />
+      <CredentialsForm status={status} sources={sources} previews={previews} />
     </div>
   );
 }

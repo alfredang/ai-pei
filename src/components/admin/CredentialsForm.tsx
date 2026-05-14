@@ -73,6 +73,8 @@ type Source = "db" | "env" | "none";
 type Props = {
   status: Record<Key, boolean>;
   sources?: Record<Key, Source>;
+  /** First-4/last-4 masked preview of each saved credential. */
+  previews?: Partial<Record<Key, string>>;
 };
 
 const SOURCE_PILL: Record<Source, { label: string; className: string; title: string }> = {
@@ -93,7 +95,7 @@ const SOURCE_PILL: Record<Source, { label: string; className: string; title: str
   },
 };
 
-export function CredentialsForm({ status, sources }: Props) {
+export function CredentialsForm({ status, sources, previews }: Props) {
   const [values, setValues] = useState<Record<Key, string>>(
     Object.fromEntries(Object.keys(FIELDS).map((k) => [k, ""])) as Record<Key, string>,
   );
@@ -222,7 +224,7 @@ export function CredentialsForm({ status, sources }: Props) {
                       type={inputType}
                       value={displayValue}
                       onChange={(e) => setValues((v) => ({ ...v, [k]: e.target.value }))}
-                      placeholder={isSet ? "•••••••• (unchanged)" : f.placeholder}
+                      placeholder={isSet ? previews?.[k] || "•••••••• (unchanged)" : f.placeholder}
                       autoComplete="off"
                       spellCheck={false}
                       className="w-full px-4 py-3 pr-24 bg-white/3 border border-white/10 rounded-lg focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition font-mono text-sm"
