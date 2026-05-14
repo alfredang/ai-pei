@@ -296,16 +296,16 @@ export function CredentialsForm({ status, sources }: Props) {
         </div>
       )}
 
-      <div className="glass p-4 flex items-center justify-between">
-        <p className="text-xs text-(--color-muted) font-mono">
-          [ ENCRYPTED AT REST · AES-256-GCM ]
-        </p>
+      <div className="glass p-4 flex items-center justify-between gap-4 flex-wrap">
         <div className="flex items-center gap-3">
-          {msg && <span className="text-xs text-(--color-cyan) font-mono">{msg}</span>}
           <button onClick={submit} disabled={pending} className="btn-primary disabled:opacity-50">
             {pending ? "Saving…" : "Save"}
           </button>
+          {msg && <span className="text-xs text-(--color-cyan) font-mono">{msg}</span>}
         </div>
+        <p className="text-xs text-(--color-muted) font-mono">
+          [ ENCRYPTED AT REST · AES-256-GCM ]
+        </p>
       </div>
     </div>
   );

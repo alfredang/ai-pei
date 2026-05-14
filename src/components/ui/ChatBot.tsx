@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { HiChatBubbleLeftRight, HiXMark, HiPaperAirplane } from "react-icons/hi2";
 
 type Msg = { role: "user" | "model"; content: string };
 
 export function ChatBot() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [history, setHistory] = useState<Msg[]>([
     { role: "model", content: "Hi! I'm Tertiary Infotech's AI assistant. Ask me about our LMS, TMS, SSG services, or AI solutions." },
@@ -42,6 +44,9 @@ export function ChatBot() {
       setSending(false);
     }
   }
+
+  // Chatbot is a customer-facing widget — never render on /admin pages.
+  if (pathname?.startsWith("/admin")) return null;
 
   return (
     <>

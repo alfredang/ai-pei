@@ -78,6 +78,12 @@ To extend the sync surface to a new table, follow the pattern in [.claude/skills
 
 Both the public AI chatbot ([src/app/api/chat](src/app/api/chat)) and the admin AI Assist buttons ([src/app/api/ai/assist](src/app/api/ai/assist)) use `@anthropic-ai/claude-agent-sdk` rather than the metered Anthropic API. The `anthropic_auth_token` (an `sk-ant-oat-...` OAuth subscription token from `claude setup-token`) is read via `getCredential()` and injected into the SDK subprocess env by [src/lib/anthropic-auth.ts](src/lib/anthropic-auth.ts) — it's never exposed to the browser. No per-call API billing.
 
+**HARD POLICY — DO NOT VIOLATE:**
+- **Never** call the Anthropic Messages API (`https://api.anthropic.com/v1/messages`) directly from this codebase.
+- **Never** add an Anthropic API key (`sk-ant-api*`) anywhere — not in env, not in DB credentials, not in code.
+- The **only** LLM path in this app is the Claude Agent SDK (`@anthropic-ai/claude-agent-sdk`) authenticated with the OAuth **subscription** token (`sk-ant-oat*`) stored under `anthropic_auth_token` in the encrypted credentials store.
+- If the chatbot needs to be faster, add deterministic FAQ / pattern matching in [src/lib/chatbot-harness.ts](src/lib/chatbot-harness.ts) — never an HTTP API call.
+
 ### Public route layout & SEO
 
 - Single landing page composes section components from [src/components/sections/](src/components/sections/) — `SERVICES` in [src/lib/site-content.ts](src/lib/site-content.ts) is the source of truth for the services grid; items can carry an optional `href` to make the card route to a dedicated page (see the SSG ATO example).
