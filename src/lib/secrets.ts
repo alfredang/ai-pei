@@ -37,7 +37,13 @@ export type CredentialKey =
   | "gmail_user"
   | "gmail_client_id"
   | "gmail_client_secret"
-  | "gmail_refresh_token";
+  | "gmail_refresh_token"
+  | "r2_account_id"
+  | "r2_access_key_id"
+  | "r2_secret_access_key"
+  | "r2_bucket"
+  | "r2_public_url"
+  | "r2_endpoint";
 
 /**
  * Read a credential. DB-stored encrypted value wins over the env var fallback.
@@ -64,6 +70,12 @@ export async function getCredential(key: CredentialKey): Promise<string | null> 
     gmail_client_id: process.env.GMAIL_CLIENT_ID,
     gmail_client_secret: process.env.GMAIL_CLIENT_SECRET,
     gmail_refresh_token: process.env.GMAIL_REFRESH_TOKEN,
+    r2_account_id: process.env.R2_ACCOUNT_ID,
+    r2_access_key_id: process.env.R2_ACCESS_KEY_ID,
+    r2_secret_access_key: process.env.R2_SECRET_ACCESS_KEY,
+    r2_bucket: process.env.R2_BUCKET,
+    r2_public_url: process.env.R2_PUBLIC_URL,
+    r2_endpoint: process.env.R2_ENDPOINT,
   };
   return envMap[key] ?? null;
 }
@@ -114,6 +126,12 @@ export async function getCredentialSource(key: CredentialKey): Promise<Credentia
     gmail_client_id: process.env.GMAIL_CLIENT_ID,
     gmail_client_secret: process.env.GMAIL_CLIENT_SECRET,
     gmail_refresh_token: process.env.GMAIL_REFRESH_TOKEN,
+    r2_account_id: process.env.R2_ACCOUNT_ID,
+    r2_access_key_id: process.env.R2_ACCESS_KEY_ID,
+    r2_secret_access_key: process.env.R2_SECRET_ACCESS_KEY,
+    r2_bucket: process.env.R2_BUCKET,
+    r2_public_url: process.env.R2_PUBLIC_URL,
+    r2_endpoint: process.env.R2_ENDPOINT,
   };
   return envMap[key] ? "env" : "none";
 }

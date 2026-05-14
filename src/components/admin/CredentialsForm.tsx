@@ -9,7 +9,13 @@ type Key =
   | "gmail_user"
   | "gmail_client_id"
   | "gmail_client_secret"
-  | "gmail_refresh_token";
+  | "gmail_refresh_token"
+  | "r2_account_id"
+  | "r2_access_key_id"
+  | "r2_secret_access_key"
+  | "r2_bucket"
+  | "r2_public_url"
+  | "r2_endpoint";
 
 type Group = { title: string; description?: string; keys: Key[] };
 
@@ -53,6 +59,36 @@ const FIELDS: Record<
     hint: "Long-lived refresh token from OAuth Playground or your own consent flow. Used to mint short-lived access tokens for SMTP.",
     placeholder: "1//04…",
   },
+  r2_account_id: {
+    label: "Cloudflare R2 — Account ID",
+    hint: "Your Cloudflare account ID (visible on the R2 overview page).",
+    placeholder: "2cf6c5ccbfb5e46dbb3b8b5396867fc0",
+  },
+  r2_access_key_id: {
+    label: "Cloudflare R2 — Access Key ID",
+    hint: "From R2 → Manage API Tokens → Create Account API token (Object Read & Write).",
+    placeholder: "99f2…",
+  },
+  r2_secret_access_key: {
+    label: "Cloudflare R2 — Secret Access Key",
+    hint: "Pairs with the Access Key ID above. Shown only once on token creation.",
+    placeholder: "a541…",
+  },
+  r2_bucket: {
+    label: "Cloudflare R2 — Bucket name",
+    hint: "The bucket where uploaded images and files are stored.",
+    placeholder: "tertiary-media",
+  },
+  r2_public_url: {
+    label: "Cloudflare R2 — Public URL",
+    hint: "Public R2.dev URL (or custom domain) used to serve uploads to the public site.",
+    placeholder: "https://pub-…r2.dev",
+  },
+  r2_endpoint: {
+    label: "Cloudflare R2 — S3 Endpoint",
+    hint: "S3-compatible endpoint for write operations (auto-derived from Account ID if blank).",
+    placeholder: "https://<account>.r2.cloudflarestorage.com",
+  },
 };
 
 const GROUPS: Group[] = [
@@ -66,6 +102,19 @@ const GROUPS: Group[] = [
     description:
       "Credentials for sending lead notifications via Gmail SMTP using OAuth 2.0 (no app password).",
     keys: ["gmail_user", "gmail_client_id", "gmail_client_secret", "gmail_refresh_token"],
+  },
+  {
+    title: "Cloudflare R2 (image / file storage)",
+    description:
+      "S3-compatible object storage with zero egress fees. Uploaded blog images and media go here instead of the server disk.",
+    keys: [
+      "r2_account_id",
+      "r2_access_key_id",
+      "r2_secret_access_key",
+      "r2_bucket",
+      "r2_public_url",
+      "r2_endpoint",
+    ],
   },
 ];
 

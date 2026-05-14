@@ -17,9 +17,28 @@ const ALLOWED: CredentialKey[] = [
   "gmail_client_id",
   "gmail_client_secret",
   "gmail_refresh_token",
+  "r2_account_id",
+  "r2_access_key_id",
+  "r2_secret_access_key",
+  "r2_bucket",
+  "r2_public_url",
+  "r2_endpoint",
 ];
 
 const payloadSchema = z.record(z.string(), z.string().min(1).max(2000));
+
+/** Strip whitespace/CR/LF and wrapping quotes from a pasted credential value. */
+function normalizeCredential(raw: string): string {
+  let v = raw.replace(/\r/g, "").trim();
+  if (v.length >= 2) {
+    const first = v[0];
+    const last = v[v.length - 1];
+    if ((first === '"' && last === '"') || (first === "'" && last === "'")) {
+      v = v.slice(1, -1).trim();
+    }
+  }
+  return v;
+}
 
 /** GET ?key=<credential>&reveal=1 → returns decrypted value. Admin-only. */
 export async function GET(req: Request) {
@@ -59,8 +78,10 @@ export async function POST(req: Request) {
   const parsed = payloadSchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
 
-  for (const [key, value] of Object.entries(parsed.data)) {
+  for (const [key, raw] of Object.entries(parsed.data)) {
     if (!ALLOWED.includes(key as CredentialKey)) continue;
+    const value = normalizeCredential(raw);
+    if (!value) continue;
     await setCredential(key as CredentialKey, value);
   }
   return NextResponse.json({ ok: true });
