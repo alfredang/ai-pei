@@ -56,8 +56,16 @@ export const LEAD_EMAIL_DEFAULTS: LeadEmailConfig = {
 export const LEAD_SOURCE_LABELS_KEY = "lead_source_labels";
 
 export const DEFAULT_LEAD_SOURCE_LABELS: Record<string, string> = {
-  home: "General",
+  home: "General Inquiry",
   "ssg-ato-page": "Courseware (SSG ATO)",
+  "tpqa-page": "Courseware (TPQA)",
+  "course-dev-page": "Courseware (WSQ Course Dev)",
+  "lms-page": "Courseware (LMS)",
+  "tms-page": "Courseware (TMS)",
+  "cms-page": "Agentic (CMS)",
+  "hrms-page": "Agentic (HRMS)",
+  "ai-agent-page": "Agentic (AI Agent Deployment)",
+  "ai-solutions-page": "Agentic (Full-Stack AI Solutions)",
   "admin-test-email": "Admin Test",
 };
 
