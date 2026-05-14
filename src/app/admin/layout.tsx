@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { headers, cookies } from "next/headers";
-import { auth, signOut } from "@/lib/auth";
+import { signOut } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import {
   HiSquares2X2,
@@ -58,14 +58,10 @@ export default async function AdminLayout({
     redirect(`/admin/login?from=${encodeURIComponent(pathname || "/admin")}`);
   }
 
-  // Best-effort: try to read the email from the session, fall back gracefully.
-  let userEmail = "Admin";
-  try {
-    const session = await auth();
-    if (session?.user?.email) userEmail = session.user.email;
-  } catch {
-    /* JWT decode race — sidebar still renders */
-  }
+  // We deliberately DO NOT call auth() here. NextAuth's JWT decoder can emit a
+  // cookie-clearing Set-Cookie when it hiccups on a valid token, which logs the
+  // user out mid-session. Middleware + cookie-presence above is the only gate.
+  const userEmail = "Admin";
 
   return (
     <div className="min-h-screen flex">
