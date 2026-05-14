@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { db } from "@/db";
-import { posts } from "@/db/schema";
-import { and, desc, eq, ilike, or, sql } from "drizzle-orm";
+import { posts, postTags } from "@/db/schema";
+import { and, desc, eq, ilike, inArray, or, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { PostsBulkTable } from "@/components/admin/PostsBulkTable";
 
 type Search = {
   q?: string;
@@ -60,6 +61,18 @@ export default async function PostsList({
       .returning();
     revalidatePath("/admin/posts");
     redirect(`/admin/posts/${p.id}/edit`);
+  }
+
+  async function deleteMany(ids: number[]) {
+    "use server";
+    if (!Array.isArray(ids) || ids.length === 0) return;
+    // Clean junction rows first to satisfy the FK on post_tags.post_id.
+    await db.delete(postTags).where(inArray(postTags.postId, ids));
+    await db.delete(posts).where(inArray(posts.id, ids));
+    revalidatePath("/admin/posts");
+    revalidatePath("/blog");
+    revalidatePath("/");
+    revalidatePath("/sitemap.xml");
   }
 
   const pageHref = (p: number) => {
@@ -121,64 +134,16 @@ export default async function PostsList({
         </div>
       </form>
 
-      <div className="glass rounded-xl overflow-hidden">
-        <table className="w-full text-xs">
-          <thead className="bg-white/5 text-left text-[10px] uppercase tracking-wider text-white/60">
-            <tr>
-              <th className="px-3 py-2 font-medium">Title</th>
-              <th className="px-3 py-2 font-medium">Slug</th>
-              <th className="px-3 py-2 font-medium w-24">Status</th>
-              <th className="px-3 py-2 font-medium w-40">Updated</th>
-            </tr>
-          </thead>
-          <tbody>
-            {list.map((p) => (
-              <tr
-                key={p.id}
-                className="border-t border-white/5 hover:bg-white/5"
-              >
-                <td className="px-3 py-1.5">
-                  <Link
-                    className="hover:text-neon-cyan"
-                    href={`/admin/posts/${p.id}/edit`}
-                  >
-                    {p.title}
-                  </Link>
-                </td>
-                <td className="px-3 py-1.5 text-white/60 font-mono text-[11px]">
-                  {p.slug}
-                </td>
-                <td className="px-3 py-1.5">
-                  <span
-                    className={`px-1.5 py-0.5 rounded text-[10px] uppercase tracking-wider ${
-                      p.status === "published"
-                        ? "bg-emerald-500/15 text-emerald-300"
-                        : p.status === "draft"
-                          ? "bg-amber-500/15 text-amber-300"
-                          : "bg-white/10 text-white/60"
-                    }`}
-                  >
-                    {p.status}
-                  </span>
-                </td>
-                <td className="px-3 py-1.5 text-white/60 whitespace-nowrap">
-                  {new Date(p.updatedAt).toLocaleString()}
-                </td>
-              </tr>
-            ))}
-            {list.length === 0 && (
-              <tr>
-                <td
-                  colSpan={4}
-                  className="px-4 py-8 text-center text-white/50"
-                >
-                  No posts found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+      <PostsBulkTable
+        rows={list.map((p) => ({
+          id: p.id,
+          title: p.title,
+          slug: p.slug,
+          status: p.status,
+          updatedAt: p.updatedAt.toISOString(),
+        }))}
+        deleteMany={deleteMany}
+      />
 
       {totalPages > 1 && (
         <div className="flex items-center justify-between mt-3 text-xs text-white/60">
