@@ -54,23 +54,31 @@ export async function runClaudeAssist(
   const systemPrompt = SYSTEM_PROMPTS[mode];
   if (!systemPrompt) throw new Error(`Unknown AI assist mode: ${mode}`);
 
-  const chunks: string[] = [];
-  const response = query({
+  // Mirror /api/chat (Nemo)'s SDK options exactly — that path works on live,
+  // this one was failing with 401 because `permissionMode: "bypassPermissions"`
+  // triggers a different auth path that doesn't accept the OAuth subscription
+  // token. The combination below (maxTurns 1, allowedTools [], disallowedTools
+  // listing every potentially-auth-requiring tool) is what the chatbot uses.
+  let resultText = "";
+  for await (const msg of query({
     prompt: userContext,
     options: {
       systemPrompt,
-      permissionMode: "bypassPermissions",
-      allowedTools: [],
       env: buildClaudeEnv(token),
+      maxTurns: 1,
+      allowedTools: [],
+      disallowedTools: ["Bash", "Read", "Write", "Edit", "Glob", "Grep", "WebSearch", "WebFetch"],
     },
-  });
-
-  for await (const msg of response) {
+  })) {
+    if (msg.type === "result" && (msg as { subtype?: string }).subtype === "success") {
+      const r = (msg as { result?: string }).result;
+      if (r) resultText = r;
+    }
     if (msg.type === "assistant") {
       for (const block of msg.message.content) {
-        if (block.type === "text") chunks.push(block.text);
+        if (block.type === "text" && !resultText) resultText += block.text;
       }
     }
   }
-  return chunks.join("").trim();
+  return resultText.trim();
 }
