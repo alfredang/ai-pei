@@ -461,7 +461,7 @@ export const SERVICE_PAGES: Record<string, ServicePageContent> = {
       "Supported AI agents — OpenClaw · Hermes Agent · Nebula · Copilot Studio Agent and others",
       "Model-agnostic selection — Claude Code · Codex · MiniMax · Kimi · DeepSeek · OpenRouter",
       "Connect to multiple channels — WhatsApp · Telegram · Slack · Discord and more",
-      "Tool / API integrations (Slack, Teams, Gmail, n8n, your APIs)",
+      "Tools & skills integration — GitHub · Remotion · Hyperframe · Google Workspace · Obsidian and more",
       "30-day post-launch support",
     ],
     faq: [
