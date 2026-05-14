@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 export type AIAssistMode =
+  | "generate_full_post"
   | "generate_blog_draft"
   | "improve_seo"
   | "summarize"

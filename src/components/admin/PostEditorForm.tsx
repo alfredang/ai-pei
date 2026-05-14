@@ -30,9 +30,56 @@ export function PostEditorForm({ initial, save, kind }: Props) {
   const [data, setData] = useState<PostFormData>(initial);
   const [pending, startTransition] = useTransition();
   const [savedAt, setSavedAt] = useState<Date | null>(null);
+  const [topic, setTopic] = useState("");
 
   function update<K extends keyof PostFormData>(key: K, value: PostFormData[K]) {
     setData((d) => ({ ...d, [key]: value }));
+  }
+
+  function applyAiPost(raw: string) {
+    // Claude returns JSON; tolerate leading/trailing fences if model slips.
+    let json = raw.trim();
+    if (json.startsWith("```")) {
+      json = json.replace(/^```(?:json)?/, "").replace(/```$/, "").trim();
+    }
+    let obj: Partial<{
+      title: string;
+      slug: string;
+      excerpt: string;
+      contentHtml: string;
+      seoTitle: string;
+      seoDescription: string;
+      seoKeywords: string;
+      imageQuery: string;
+    }> = {};
+    try {
+      obj = JSON.parse(json);
+    } catch {
+      // If parse fails, dump the whole response into the body so nothing is lost.
+      update("contentHtml", raw);
+      return;
+    }
+    setData((d) => ({
+      ...d,
+      title: obj.title || d.title,
+      slug: obj.slug || d.slug,
+      excerpt: obj.excerpt || d.excerpt,
+      contentHtml: obj.contentHtml || d.contentHtml,
+      content: obj.contentHtml
+        ? {
+            type: "doc",
+            content: [
+              {
+                type: "paragraph",
+                content: [{ type: "text", text: obj.contentHtml }],
+              },
+            ],
+          }
+        : d.content,
+      seoTitle: obj.seoTitle || d.seoTitle,
+      seoDescription: obj.seoDescription || d.seoDescription,
+      seoKeywords: obj.seoKeywords || d.seoKeywords,
+    }));
   }
 
   function submit() {
@@ -45,6 +92,31 @@ export function PostEditorForm({ initial, save, kind }: Props) {
   return (
     <div className="grid lg:grid-cols-3 gap-6">
       <div className="lg:col-span-2 space-y-4">
+        {kind === "post" && (
+          <div className="glass rounded-xl p-4 space-y-2 border border-(--color-purple)/30">
+            <div className="flex items-center justify-between">
+              <label className="text-xs uppercase text-(--color-purple) tracking-wider">
+                AI prompt — generate full post
+              </label>
+              <AIAssistButton
+                mode="generate_full_post"
+                context={`TOPIC: ${topic || data.title || "(no topic)"}`}
+                onResult={applyAiPost}
+                label="Generate full post"
+              />
+            </div>
+            <textarea
+              value={topic}
+              onChange={(e) => setTopic(e.target.value)}
+              rows={2}
+              placeholder="Enter a topic. e.g. 'WSQ funding changes 2026 for SME training providers' — Claude will draft the title, slug, content, excerpt, and all SEO fields."
+              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm"
+            />
+            <p className="text-[11px] text-white/40">
+              Powered by the Claude Agent SDK with your subscription OAuth token. Populates title, slug, content, excerpt, and SEO fields below — review then click Save.
+            </p>
+          </div>
+        )}
         <div>
           <label className="text-xs uppercase text-white/50">Title</label>
           <div className="flex gap-2 items-start">

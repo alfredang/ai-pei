@@ -5,6 +5,7 @@ import { runClaudeAssist } from "@/lib/ai/claude";
 
 const schema = z.object({
   mode: z.enum([
+    "generate_full_post",
     "generate_blog_draft",
     "improve_seo",
     "summarize",
