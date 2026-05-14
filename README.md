@@ -13,7 +13,7 @@
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![License](https://img.shields.io/badge/License-Proprietary-red)](#license)
 
-**A self-hosted, full-stack content management system with a built-in Claude AI agent — for marketing sites, blogs, and lead generation. No per-call API billing.**
+**Customizable frontend and backend, AI-driven content generation, built-in AI chatbot, and SEO + lead-generation built into every page — powered by Claude Code. No vendor lock-in.**
 
 </div>
 
@@ -23,23 +23,44 @@
 
 ## About
 
-AI-Powered CMS is a production-grade headless-ish CMS built on Next.js 16. It ships with a TipTap rich editor, a multi-tenant-ready taxonomy (pages, posts, categories, tags, menus, media, leads, redirects), an encrypted credentials vault, a configurable public AI chatbot (**AI Chatbot**), and admin **AI Assist** buttons — all driven by your **Claude subscription OAuth token** through the official Claude Agent SDK. No metered API key required.
+AI-Powered CMS is a production-grade marketing platform built on Next.js 16, engineered for **organic traffic and lead capture**. Every public route ships with full SEO metadata (canonical, OG, Twitter) and JSON-LD structured data (`Organization`, `Article`, `LocalBusiness`, `Service`, `FAQPage`, `HowTo`, `BreadcrumbList`). Every page is a lead funnel: dedicated service landing pages with visual timelines, sticky lead forms, an AI chatbot that converts, and a Gmail-OAuth lead-notification pipeline that delivers submissions to your sales inbox within seconds.
 
-Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Ltd, the codebase is structured to be re-used as a starting point for any marketing site that needs a real CMS plus AI authoring.
+Frontend and backend are fully **customizable** from the admin — hero copy, KPI cards, section headings, service-page content, FAQs, menu, social links, brand identity — all editable without redeploys. AI-driven content generation is built in: admin **AI Assist** drafts, rewrites, summarizes and proposes SEO metadata; the public **AI chatbot** answers visitor questions with your FAQ as authoritative context. All AI is powered by your **Claude subscription OAuth token** through the official Claude Agent SDK — **no metered API billing, no vendor lock-in**.
+
+Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Ltd, the codebase is structured to be re-used as a starting point for any marketing site that needs a real CMS, SEO, lead-gen, and AI authoring.
 
 ## Key Features
 
-- **Public site builder** — Hero, flagship-product showcases, services, FAQ, blog, lead-capture, all driven by Postgres
-- **AI chatbot** — public Claude Agent SDK chatbot, system prompt + FAQ editable from the admin
+### SEO built into every route
+- Per-route `generateMetadata` — title, description, canonical URL, OG (with image + locale + type), Twitter card
+- Sitewide **Organization** JSON-LD with social `sameAs[]`, taxID, postal address
+- **Article** + **BreadcrumbList** schema on every blog post (author, datePublished, dateModified, image, mainEntityOfPage)
+- **LocalBusiness** schema on `/contact` with opening hours
+- **Service** + **HowTo** + **FAQPage** + **BreadcrumbList** schema on every service landing page
+- Dynamic `sitemap.xml` + `robots.txt`, regenerated on every content edit via `revalidatePath`
+- British / Singapore English spelling baked into the SEO skill
+
+### Lead generation in every page
+- **Dedicated service landing pages** with visual 5-step timeline, sticky lead form, FAQ accordion, benefits grid
+- **Persistent CTAs** — sticky Get-a-Quote button (desktop), tap-to-call + WhatsApp icons (mobile), AI chatbot above the fold
+- **Source-tagged forms** — every form POSTs to `/api/contact` with a `source` label so leads are attributable per page
+- **Gmail OAuth2 notification pipeline** — every submission lands in `/admin/leads` *and* emails sales in under 1 second
+- **Lead-magnet skill** — built-in conventions for ICP targeting, form-field rules, page anatomy
+
+### CMS — customizable frontend and backend
+- **Visual editor everywhere** — hero copy, KPI cards, section headings, service-page content, menus, brand identity, social links, FAQ, contact info — all DB-driven, all editable from `/admin/settings`
+- **TipTap rich editor** with image upload, slash commands, draft / published / archived states
+- **Pages + Posts + Categories + Tags + Menus + Media + Leads + Redirects + Settings** — full CRUD in `/admin`
+- **Encrypted credentials vault** — AES-256-GCM at rest, eye-reveal for admins, one-click env → DB migration
+- **WordPress migration** — `scripts/migrate-wp.ts` imports a `wp_*` SQL dump, downloads images, preserves Yoast/RankMath SEO, writes 301 redirects
+- **Local → Remote DB sync** — push menus, settings, pages, posts, taxonomy from local to production via a bearer-token API; no SSH, no manual copy
+
+### AI built in
+- **AI chatbot** on every page — Claude Agent SDK, system prompt + FAQ editable in admin, `{COMPANY_*}` placeholders auto-resolve at chat time
 - **Admin AI Assist** — `Draft post`, `Rewrite`, `Summarize`, `Suggest SEO meta` powered by Claude Agent SDK
-- **TipTap rich editor** with image upload, slash commands, image alt-text, draft / published / archived states
-- **Pages + Posts + Categories + Tags + Menus + Media + Leads + Redirects + Settings** — all CRUD in `/admin`
-- **Encrypted credentials vault** — AES-256-GCM at rest for Anthropic OAuth, Firecrawl, Tavily
-- **Auth.js v5** — credentials provider with bcrypt, JWT sessions, middleware-protected `/admin/*`
-- **SEO out of the box** — per-route `generateMetadata`, JSON-LD Article schema, dynamic sitemap & robots, canonical & OG tags
-- **WordPress migration** — `scripts/migrate-wp.ts` parses a `wp_*` SQL dump, downloads images, rewrites `<img src>`, preserves Yoast/RankMath SEO, writes 301 redirects from old slugs
-- **Lead inbox** — every contact-form submission lands in `/admin/leads` *and* emails sales via Gmail OAuth2
-- **Sci-fi/robotics design system** — dark theme, Exo 2 + Inter, cyan/purple/amber accents, animated glow gradients
+- **No per-call billing** — driven by your Claude subscription OAuth token, not the metered API
+- **Auth.js v5** — credentials provider with bcrypt, JWT sessions, persistent 10-year sliding cookie, middleware-protected `/admin/*`
+- **Sci-fi / robotics design system** — dark theme, Exo 2 + Inter, cyan/purple/amber accents, animated glow gradients
 
 ## Tech Stack
 
