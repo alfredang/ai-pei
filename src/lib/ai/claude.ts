@@ -28,7 +28,8 @@ Rules:
 - contentHtml must be valid HTML with paragraphs in <p> tags and headings as <h2>/<h3>.
 - Keep paragraphs short (2-3 sentences max) for scannability.
 - Open with a hook, end with a clear call to action.
-- If REFERENCE_CONTENT blocks are present in the user message, they are scraped from URLs the admin pasted. Use them as primary source material — pull concrete facts, course names, funding amounts, dates, eligibility criteria, etc. straight from them. Do not just paraphrase; weave the specifics in.`,
+- If REFERENCE_CONTENT blocks are present in the user message, they are scraped from URLs the admin pasted. Use them as primary source material — pull concrete facts, course names, funding amounts, dates, eligibility criteria, etc. straight from them. Do not just paraphrase; weave the specifics in.
+- INTERNAL & EXTERNAL LINKS: when the admin's topic / prompt mentions specific URLs (course pages, partner sites, government schemes), embed them as <a href="URL" target="_blank" rel="noopener noreferrer">descriptive anchor text</a> on the most relevant keyword in the body — never as a bare URL and never as "click here". Also link the post's primary keywords (e.g. course names like "AWS Solutions Architect", schemes like "SkillsFuture", brand names like "Skillable Builder") to their canonical pages when the admin has given the URL. Aim for 3–6 links across the article; do not over-link.`,
   generate_blog_draft:
     "You are a senior content writer for Tertiary Infotech, a Singapore B2B training-tech company. Write a structured, SEO-friendly blog draft in clean Markdown with H2/H3 headings and short paragraphs. Audience: training providers and L&D managers in Singapore.",
   improve_seo:
@@ -77,7 +78,10 @@ export async function runClaudeAssist(
       // Belt-and-braces: disable extended thinking explicitly in case any
       // SDK default ever flips it on.
       maxThinkingTokens: 0,
-      maxTurns: 1,
+      // Was 1 — but the SDK counts any tool-call attempt as a turn even with
+      // tools disabled, so 1 caused "Reached maximum number of turns" errors
+      // on longer prompts. 4 gives the model headroom while still capping cost.
+      maxTurns: 4,
       allowedTools: [],
       disallowedTools: ["Bash", "Read", "Write", "Edit", "Glob", "Grep", "WebSearch", "WebFetch"],
     },
