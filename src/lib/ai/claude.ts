@@ -90,31 +90,40 @@ export async function runClaudeAssist(
 
   let resultText = "";
   let errorResult: string | null = null;
+  let turn = 0;
+  // Match /api/chat option-for-option — that path works on prod with the same
+  // OAuth subscription token. Any extra option we add risks tripping a
+  // different upstream auth path that returns 401.
   for await (const msg of query({
     prompt: userContext,
     options: {
       systemPrompt,
       env: buildClaudeEnv(token),
-      maxThinkingTokens: 0,
-      // Was 1 — but the SDK counts any tool-call attempt as a turn even with
-      // tools disabled, so 1 caused "Reached maximum number of turns" errors
-      // on longer prompts. 4 gives the model headroom while still capping cost.
-      maxTurns: 4,
+      maxTurns: 1,
       allowedTools: [],
       disallowedTools: ["Bash", "Read", "Write", "Edit", "Glob", "Grep", "WebSearch", "WebFetch"],
     },
   })) {
+    if (msg.type === "assistant") {
+      turn++;
+      let chars = 0;
+      for (const block of msg.message.content) {
+        if (block.type === "text") {
+          chars += block.text.length;
+          if (!resultText) resultText += block.text;
+        }
+      }
+      console.log(`[ai/assist] turn=${turn} assistant chars=${chars}`);
+    }
     if (msg.type === "result") {
       const m = msg as { subtype?: string; result?: string; is_error?: boolean };
+      console.log(
+        `[ai/assist] result subtype=${m.subtype} is_error=${m.is_error} preview=${(m.result ?? "").slice(0, 200)}`,
+      );
       if (m.subtype === "success" && m.result) {
         resultText = m.result;
       } else if (m.is_error || m.subtype === "error") {
         errorResult = m.result ?? `error subtype=${m.subtype}`;
-      }
-    }
-    if (msg.type === "assistant") {
-      for (const block of msg.message.content) {
-        if (block.type === "text" && !resultText) resultText += block.text;
       }
     }
   }
