@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
-import { auth } from "@/lib/auth";
+import { isAdminRequest } from "@/lib/admin-guard";
 import { db } from "@/db";
 import { media } from "@/db/schema";
 
@@ -9,8 +9,9 @@ const PUBLIC_DIR = path.join(process.cwd(), "public");
 const UPLOAD_DIR = path.join(PUBLIC_DIR, "uploads");
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!(await isAdminRequest())) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   const url = new URL(req.url);
   const asLogo = url.searchParams.get("as-logo") === "1";
@@ -49,7 +50,7 @@ export async function POST(req: Request) {
       path: publicPath,
       mime: file.type,
       sizeBytes: buffer.byteLength,
-      uploadedById: Number(session.user.id) || null,
+      uploadedById: null,
     })
     .returning();
 

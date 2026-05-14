@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { auth } from "@/lib/auth";
+import { isAdminRequest } from "@/lib/admin-guard";
 import {
   getCredential,
   getCredentialSource,
@@ -21,15 +21,9 @@ const ALLOWED: CredentialKey[] = [
 
 const payloadSchema = z.record(z.string(), z.string().min(1).max(2000));
 
-async function requireAdmin() {
-  const session = await auth();
-  if (!session?.user) return null;
-  return session;
-}
-
 /** GET ?key=<credential>&reveal=1 → returns decrypted value. Admin-only. */
 export async function GET(req: Request) {
-  if (!(await requireAdmin())) {
+  if (!(await isAdminRequest())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const url = new URL(req.url);
@@ -43,7 +37,7 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-  if (!(await requireAdmin())) {
+  if (!(await isAdminRequest())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -73,7 +67,7 @@ export async function POST(req: Request) {
 }
 
 export async function DELETE(req: Request) {
-  if (!(await requireAdmin())) {
+  if (!(await isAdminRequest())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const key = new URL(req.url).searchParams.get("key") as CredentialKey | null;
