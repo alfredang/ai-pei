@@ -15,7 +15,9 @@ Return ONLY valid JSON matching this exact shape (no markdown fences, no prose b
   "seoTitle": "Under 60 chars, primary keyword near the start",
   "seoDescription": "Under 155 chars, compelling, includes primary keyword",
   "seoKeywords": "comma, separated, keywords, max 8",
-  "imageQuery": "A 3-6 word phrase for stock-image search that matches the post"
+  "imageQuery": "A 3-6 word phrase for stock-image search that matches the post",
+  "categorySlug": "Slug of the BEST-matching category from the EXISTING_CATEGORIES list in the user message. Only invent a new slug if none of the existing categories fit.",
+  "tagSlugs": ["3-6 tags as slugs. Reuse from EXISTING_TAGS where possible; new tags should be kebab-case and concise."]
 }
 
 Rules:

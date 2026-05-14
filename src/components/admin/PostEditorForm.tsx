@@ -18,6 +18,10 @@ export type PostFormData = {
   seoKeywords: string;
   ogImage: string;
   featuredImage: string;
+  /** Suggested category slug from AI Assist — resolved server-side on save. */
+  suggestedCategorySlug?: string;
+  /** Suggested tag slugs from AI Assist — resolved/created server-side on save. */
+  suggestedTagSlugs?: string[];
 };
 
 type Props = {
@@ -36,6 +40,30 @@ export function PostEditorForm({ initial, save, kind }: Props) {
     setData((d) => ({ ...d, [key]: value }));
   }
 
+  const [imageLoading, setImageLoading] = useState(false);
+  const [imageError, setImageError] = useState<string | null>(null);
+
+  async function fetchAndApplyImage(query: string, slug: string) {
+    setImageLoading(true);
+    setImageError(null);
+    try {
+      const res = await fetch("/api/ai/post-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query, slug }),
+      });
+      const data = (await res.json()) as { ok?: boolean; url?: string; error?: string };
+      if (!res.ok || !data.ok || !data.url) {
+        throw new Error(data.error || `Image fetch failed (${res.status})`);
+      }
+      setData((d) => ({ ...d, featuredImage: data.url! }));
+    } catch (e) {
+      setImageError(e instanceof Error ? e.message : "Image fetch failed");
+    } finally {
+      setImageLoading(false);
+    }
+  }
+
   function applyAiPost(raw: string) {
     // Claude returns JSON; tolerate leading/trailing fences if model slips.
     let json = raw.trim();
@@ -51,6 +79,8 @@ export function PostEditorForm({ initial, save, kind }: Props) {
       seoDescription: string;
       seoKeywords: string;
       imageQuery: string;
+      categorySlug: string;
+      tagSlugs: string[];
     }> = {};
     try {
       obj = JSON.parse(json);
@@ -79,7 +109,14 @@ export function PostEditorForm({ initial, save, kind }: Props) {
       seoTitle: obj.seoTitle || d.seoTitle,
       seoDescription: obj.seoDescription || d.seoDescription,
       seoKeywords: obj.seoKeywords || d.seoKeywords,
+      suggestedCategorySlug: obj.categorySlug || d.suggestedCategorySlug,
+      suggestedTagSlugs: Array.isArray(obj.tagSlugs) ? obj.tagSlugs : d.suggestedTagSlugs,
     }));
+
+    // Kick off image generation in parallel — non-blocking.
+    if (obj.imageQuery && kind === "post") {
+      void fetchAndApplyImage(obj.imageQuery, obj.slug || data.slug);
+    }
   }
 
   function submit() {
@@ -212,15 +249,45 @@ export function PostEditorForm({ initial, save, kind }: Props) {
           )}
         </div>
 
+        {kind === "post" && (data.suggestedCategorySlug || (data.suggestedTagSlugs?.length ?? 0) > 0) && (
+          <div className="glass rounded-xl p-4 space-y-2 border border-(--color-purple)/30">
+            <h3 className="font-bold text-sm">AI suggestions (applied on Save)</h3>
+            {data.suggestedCategorySlug && (
+              <p className="text-xs">
+                <span className="text-white/50">Category:</span>{" "}
+                <span className="font-mono text-(--color-cyan)">{data.suggestedCategorySlug}</span>
+              </p>
+            )}
+            {data.suggestedTagSlugs && data.suggestedTagSlugs.length > 0 && (
+              <p className="text-xs">
+                <span className="text-white/50">Tags:</span>{" "}
+                <span className="font-mono text-(--color-purple)">
+                  {data.suggestedTagSlugs.join(", ")}
+                </span>
+              </p>
+            )}
+            <p className="text-[11px] text-white/40">
+              Existing slugs are reused; unknown slugs will be created automatically on save.
+            </p>
+          </div>
+        )}
         {kind === "post" && (
           <div className="glass rounded-xl p-4 space-y-2">
-            <h3 className="font-bold">Featured image</h3>
+            <div className="flex items-center justify-between">
+              <h3 className="font-bold">Featured image</h3>
+              {imageLoading && (
+                <span className="text-xs text-(--color-purple) animate-pulse">
+                  ✨ Fetching image…
+                </span>
+              )}
+            </div>
             <input
               value={data.featuredImage}
               onChange={(e) => update("featuredImage", e.target.value)}
               placeholder="/blog/hero.jpg or absolute URL"
               className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm"
             />
+            {imageError && <p className="text-xs text-red-400">{imageError}</p>}
             {data.featuredImage && (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={data.featuredImage} alt="" className="rounded mt-2" />
