@@ -1,8 +1,13 @@
+import { redirect } from "next/navigation";
 import { db } from "@/db";
 import { pages, posts, leads } from "@/db/schema";
 import { count, eq } from "drizzle-orm";
+import { auth } from "@/lib/auth";
 
 export default async function AdminDashboard() {
+  const session = await auth();
+  if (!session?.user) redirect("/admin/login?from=/admin");
+
   const [[pagesCount], [postsCount], [leadsCount], [newLeadsCount]] =
     await Promise.all([
       db.select({ c: count() }).from(pages),
