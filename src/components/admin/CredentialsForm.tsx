@@ -97,11 +97,15 @@ export function CredentialsForm({ status, sources }: Props) {
   const [values, setValues] = useState<Record<Key, string>>(
     Object.fromEntries(Object.keys(FIELDS).map((k) => [k, ""])) as Record<Key, string>,
   );
-  const [revealed, setRevealed] = useState<Record<Key, boolean>>(
+  const [revealed, setRevealed] = useState<Record<Key, string | null>>(
+    Object.fromEntries(Object.keys(FIELDS).map((k) => [k, null])) as Record<Key, string | null>,
+  );
+  const [revealing, setRevealing] = useState<Record<Key, boolean>>(
     Object.fromEntries(Object.keys(FIELDS).map((k) => [k, false])) as Record<Key, boolean>,
   );
   const [msg, setMsg] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+  const [migrating, setMigrating] = useState(false);
 
   function submit() {
     startTransition(async () => {
@@ -131,12 +135,56 @@ export function CredentialsForm({ status, sources }: Props) {
     });
   }
 
+  async function toggleReveal(k: Key) {
+    if (revealed[k] !== null) {
+      setRevealed((r) => ({ ...r, [k]: null }));
+      return;
+    }
+    setRevealing((r) => ({ ...r, [k]: true }));
+    try {
+      const res = await fetch(`/api/credentials?key=${k}`);
+      if (!res.ok) {
+        setMsg(`Reveal failed: ${await res.text()}`);
+        return;
+      }
+      const json = (await res.json()) as { value: string | null };
+      setRevealed((r) => ({ ...r, [k]: json.value ?? "" }));
+    } finally {
+      setRevealing((r) => ({ ...r, [k]: false }));
+    }
+  }
+
   async function clearKey(key: Key) {
     if (!confirm(`Remove ${key.replace(/_/g, " ")}?`)) return;
     const res = await fetch(`/api/credentials?key=${key}`, { method: "DELETE" });
     if (res.ok) window.location.reload();
     else setMsg(`Error: ${await res.text()}`);
   }
+
+  async function migrateEnv() {
+    if (!confirm("Copy all env-fallback credentials into the encrypted DB store?")) return;
+    setMigrating(true);
+    try {
+      const res = await fetch("/api/credentials?action=migrate-env", { method: "POST" });
+      if (!res.ok) {
+        setMsg(`Migrate failed: ${await res.text()}`);
+        return;
+      }
+      const json = (await res.json()) as { migrated: string[] };
+      setMsg(
+        json.migrated.length > 0
+          ? `Migrated ${json.migrated.length} value${json.migrated.length === 1 ? "" : "s"} to DB.`
+          : "Nothing to migrate — no env fallbacks active.",
+      );
+      setTimeout(() => window.location.reload(), 800);
+    } finally {
+      setMigrating(false);
+    }
+  }
+
+  const hasEnvFallback = sources
+    ? Object.values(sources).some((s) => s === "env")
+    : false;
 
   return (
     <div className="space-y-6">
@@ -154,8 +202,10 @@ export function CredentialsForm({ status, sources }: Props) {
               const isSet = status[k];
               const source: Source = sources?.[k] ?? (isSet ? "db" : "none");
               const pill = SOURCE_PILL[source];
-              const isRevealed = revealed[k];
-              const inputType = f.type === "email" ? (isRevealed ? "email" : "email") : isRevealed ? "text" : "password";
+              const reveal = revealed[k];
+              const isRevealed = reveal !== null;
+              const displayValue = values[k] !== "" ? values[k] : reveal ?? "";
+              const inputType = !isRevealed ? "password" : f.type === "email" ? "email" : "text";
               return (
                 <div key={k} className="space-y-2">
                   <div className="flex items-center justify-between gap-3">
@@ -170,25 +220,41 @@ export function CredentialsForm({ status, sources }: Props) {
                   <div className="relative">
                     <input
                       type={inputType}
-                      value={values[k]}
+                      value={displayValue}
                       onChange={(e) => setValues((v) => ({ ...v, [k]: e.target.value }))}
                       placeholder={isSet ? "•••••••• (unchanged)" : f.placeholder}
                       autoComplete="off"
                       spellCheck={false}
-                      className="w-full px-4 py-3 pr-20 bg-white/3 border border-white/10 rounded-lg focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition font-mono text-sm"
+                      className="w-full px-4 py-3 pr-24 bg-white/3 border border-white/10 rounded-lg focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition font-mono text-sm"
                     />
                     <div className="absolute inset-y-0 right-2 flex items-center gap-1">
-                      {f.type !== "email" && (
+                      {isSet && (
                         <button
                           type="button"
-                          onClick={() =>
-                            setRevealed((r) => ({ ...r, [k]: !r[k] }))
-                          }
+                          onClick={() => toggleReveal(k)}
+                          disabled={revealing[k]}
                           aria-label={isRevealed ? "Hide" : "Show"}
-                          className="px-2 py-1 text-xs rounded hover:bg-white/10 text-white/60 hover:text-white transition"
-                          title={isRevealed ? "Hide" : "Show"}
+                          title={isRevealed ? "Hide" : "Show saved value"}
+                          className="px-1.5 py-1 text-white/60 hover:text-white hover:bg-white/10 rounded transition disabled:opacity-50"
                         >
-                          {isRevealed ? "Hide" : "Show"}
+                          {revealing[k] ? (
+                            <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                              <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" opacity="0.3" />
+                              <path d="M21 12a9 9 0 0 1-9 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                            </svg>
+                          ) : isRevealed ? (
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+                              <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+                              <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+                              <line x1="2" y1="2" x2="22" y2="22" />
+                            </svg>
+                          ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                              <circle cx="12" cy="12" r="3" />
+                            </svg>
+                          )}
                         </button>
                       )}
                       {isSet && (
@@ -196,7 +262,7 @@ export function CredentialsForm({ status, sources }: Props) {
                           type="button"
                           onClick={() => clearKey(k)}
                           aria-label="Remove"
-                          className="px-2 py-1 text-xs rounded hover:bg-red-500/15 text-red-400 transition"
+                          className="px-1.5 py-1 text-red-400 hover:bg-red-500/15 rounded transition"
                           title="Remove stored value"
                         >
                           ✕
@@ -211,6 +277,24 @@ export function CredentialsForm({ status, sources }: Props) {
           </div>
         </div>
       ))}
+
+      {hasEnvFallback && (
+        <div className="glass p-4 flex items-center justify-between gap-4 flex-wrap border border-(--color-amber)/30">
+          <p className="text-sm text-(--color-amber)">
+            <strong>One-click migration:</strong> some credentials are still
+            being served by server env vars. Copy them into the encrypted DB
+            store so this admin is the only source of truth.
+          </p>
+          <button
+            type="button"
+            onClick={migrateEnv}
+            disabled={migrating}
+            className="px-4 py-2 rounded-lg border border-(--color-amber)/40 text-(--color-amber) hover:bg-(--color-amber)/10 text-sm font-mono disabled:opacity-50"
+          >
+            {migrating ? "Migrating…" : "Migrate env values to DB"}
+          </button>
+        </div>
+      )}
 
       <div className="glass p-4 flex items-center justify-between">
         <p className="text-xs text-(--color-muted) font-mono">

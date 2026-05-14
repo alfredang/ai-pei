@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import {
+  getCredential,
+  getCredentialSource,
   setCredential,
   clearCredential,
   type CredentialKey,
@@ -19,9 +21,46 @@ const ALLOWED: CredentialKey[] = [
 
 const payloadSchema = z.record(z.string(), z.string().min(1).max(2000));
 
-export async function POST(req: Request) {
+async function requireAdmin() {
   const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!session?.user) return null;
+  return session;
+}
+
+/** GET ?key=<credential>&reveal=1 → returns decrypted value. Admin-only. */
+export async function GET(req: Request) {
+  if (!(await requireAdmin())) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  const url = new URL(req.url);
+  const key = url.searchParams.get("key") as CredentialKey | null;
+  if (!key || !ALLOWED.includes(key)) {
+    return NextResponse.json({ error: "Invalid key" }, { status: 400 });
+  }
+  const value = await getCredential(key);
+  const source = await getCredentialSource(key);
+  return NextResponse.json({ ok: true, key, source, value: value ?? null });
+}
+
+export async function POST(req: Request) {
+  if (!(await requireAdmin())) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const url = new URL(req.url);
+  // Special action: migrate all env-fallback values into the encrypted DB store.
+  if (url.searchParams.get("action") === "migrate-env") {
+    const migrated: CredentialKey[] = [];
+    for (const k of ALLOWED) {
+      const source = await getCredentialSource(k);
+      if (source !== "env") continue;
+      const value = await getCredential(k);
+      if (!value) continue;
+      await setCredential(k, value);
+      migrated.push(k);
+    }
+    return NextResponse.json({ ok: true, migrated });
+  }
 
   const parsed = payloadSchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
@@ -34,8 +73,9 @@ export async function POST(req: Request) {
 }
 
 export async function DELETE(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!(await requireAdmin())) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   const key = new URL(req.url).searchParams.get("key") as CredentialKey | null;
   if (!key || !ALLOWED.includes(key)) {
     return NextResponse.json({ error: "Invalid key" }, { status: 400 });

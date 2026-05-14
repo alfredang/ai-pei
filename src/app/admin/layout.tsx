@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { headers } from "next/headers";
 import { auth, signOut } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import {
@@ -34,7 +35,19 @@ export default async function AdminLayout({
   const session = await auth();
 
   if (!session?.user) {
-    // /admin/login renders without the chrome; middleware guards the rest.
+    // Authoritative auth check. Middleware only does a cheap cookie-presence
+    // check; this is what actually validates the JWT. Bounce unauthenticated
+    // requests for protected paths to /admin/login; the login page itself
+    // renders without the chrome.
+    const h = await headers();
+    const pathname =
+      h.get("x-pathname") ??
+      h.get("next-url") ??
+      h.get("x-invoke-path") ??
+      "";
+    if (pathname && !pathname.startsWith("/admin/login")) {
+      redirect(`/admin/login?from=${encodeURIComponent(pathname)}`);
+    }
     return <>{children}</>;
   }
 
