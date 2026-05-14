@@ -18,9 +18,9 @@ export type PostFormData = {
   seoKeywords: string;
   ogImage: string;
   featuredImage: string;
-  /** Suggested category slug from AI Assist — resolved server-side on save. */
+  /** Current category slug (editable). Resolved/created server-side on save. */
   suggestedCategorySlug?: string;
-  /** Suggested tag slugs from AI Assist — resolved/created server-side on save. */
+  /** Current tag slugs (editable, comma-separated in UI). Resolved/created server-side on save. */
   suggestedTagSlugs?: string[];
 };
 
@@ -399,25 +399,43 @@ export function PostEditorForm({ initial, save, kind }: Props) {
           )}
         </div>
 
-        {kind === "post" && (data.suggestedCategorySlug || (data.suggestedTagSlugs?.length ?? 0) > 0) && (
-          <div className="glass rounded-xl p-4 space-y-2 border border-(--color-purple)/30">
-            <h3 className="font-bold text-sm">AI suggestions (applied on Save)</h3>
-            {data.suggestedCategorySlug && (
-              <p className="text-xs">
-                <span className="text-white/50">Category:</span>{" "}
-                <span className="font-mono text-(--color-cyan)">{data.suggestedCategorySlug}</span>
-              </p>
-            )}
-            {data.suggestedTagSlugs && data.suggestedTagSlugs.length > 0 && (
-              <p className="text-xs">
-                <span className="text-white/50">Tags:</span>{" "}
-                <span className="font-mono text-(--color-purple)">
-                  {data.suggestedTagSlugs.join(", ")}
-                </span>
-              </p>
-            )}
+        {kind === "post" && (
+          <div className="glass rounded-xl p-4 space-y-3 border border-(--color-purple)/30">
+            <h3 className="font-bold text-sm">Category & Tags</h3>
+            <div>
+              <label className="kicker block mb-1" htmlFor="post-category-slug">
+                Category (slug)
+              </label>
+              <input
+                id="post-category-slug"
+                value={data.suggestedCategorySlug ?? ""}
+                onChange={(e) => update("suggestedCategorySlug", e.target.value)}
+                placeholder="ai-services"
+                className="w-full px-3 py-2 bg-white/3 border border-white/10 rounded-lg focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition text-sm font-mono"
+              />
+            </div>
+            <div>
+              <label className="kicker block mb-1" htmlFor="post-tag-slugs">
+                Tags (comma-separated slugs)
+              </label>
+              <input
+                id="post-tag-slugs"
+                value={(data.suggestedTagSlugs ?? []).join(", ")}
+                onChange={(e) =>
+                  update(
+                    "suggestedTagSlugs",
+                    e.target.value
+                      .split(",")
+                      .map((s) => s.trim())
+                      .filter(Boolean),
+                  )
+                }
+                placeholder="claude-code, agentic-ai, wsq"
+                className="w-full px-3 py-2 bg-white/3 border border-white/10 rounded-lg focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition text-sm font-mono"
+              />
+            </div>
             <p className="text-[11px] text-white/40">
-              Existing slugs are reused; unknown slugs will be created automatically on save.
+              Existing slugs are reused; unknown slugs will be created on save. Clear a field to remove all values.
             </p>
           </div>
         )}

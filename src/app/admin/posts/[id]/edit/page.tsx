@@ -90,6 +90,16 @@ export default async function EditPost({
       ? p.contentHtml
       : (p.content as JSONContent);
 
+  // Load current category + tag slugs so the editor can display + edit them.
+  const [currentCat] = p.categoryId
+    ? await db.select().from(categories).where(eq(categories.id, p.categoryId)).limit(1)
+    : [null];
+  const currentTagRows = await db
+    .select({ slug: tags.slug })
+    .from(postTags)
+    .innerJoin(tags, eq(tags.id, postTags.tagId))
+    .where(eq(postTags.postId, p.id));
+
   const initial: PostFormData = {
     id: p.id,
     title: p.title,
@@ -103,6 +113,8 @@ export default async function EditPost({
     seoKeywords: p.seoKeywords ?? "",
     ogImage: p.ogImage ?? "",
     featuredImage: p.featuredImage ?? "",
+    suggestedCategorySlug: currentCat?.slug ?? "",
+    suggestedTagSlugs: currentTagRows.map((t) => t.slug),
   };
 
   async function save(data: PostFormData) {
@@ -132,9 +144,11 @@ export default async function EditPost({
       })
       .where(eq(posts.id, data.id));
 
-    if (data.suggestedTagSlugs && data.suggestedTagSlugs.length > 0) {
+    // Replace tag links to match the user's input (treats the field as
+    // authoritative). Clearing the field removes all tags.
+    if (Array.isArray(data.suggestedTagSlugs)) {
+      await db.delete(postTags).where(eq(postTags.postId, data.id));
       const tagIds = await resolveTagIds(data.suggestedTagSlugs);
-      // Append-only: don't drop existing tag links, just add the new ones.
       if (tagIds.length > 0) {
         await db
           .insert(postTags)
