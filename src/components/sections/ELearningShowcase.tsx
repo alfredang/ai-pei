@@ -1,12 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
-import {
-  HiCheckCircle,
-  HiAcademicCap,
-  HiVideoCamera,
-  HiSparkles,
-  HiUserGroup,
-} from "react-icons/hi2";
+import { HiCheckCircle, HiAcademicCap } from "react-icons/hi2";
 
 const FEATURES: string[] = [
   "Multi-tenant — isolated academies on a shared platform",
@@ -18,31 +12,13 @@ const FEATURES: string[] = [
   "AI-assisted authoring — outlines, objectives, quizzes, voice-over text, metadata",
 ];
 
-const PILLARS: Array<{
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  desc: string;
-}> = [
-  {
-    icon: HiUserGroup,
-    label: "Multi-Tenant",
-    desc: "One platform · many academies · isolated data",
-  },
-  {
-    icon: HiVideoCamera,
-    label: "Video + SCORM/xAPI",
-    desc: "Upload, transcode, deliver · SCORM 1.2/2004 + TinCan",
-  },
-  {
-    icon: HiSparkles,
-    label: "AI Authoring",
-    desc: "Claude-powered course outlines, quizzes & voice-over",
-  },
-  {
-    icon: HiAcademicCap,
-    label: "Flexible Lecture Types",
-    desc: "8 formats · 5 quiz types · drag-and-drop builder",
-  },
+const READY_ITEMS: Array<{ label: string; desc: string }> = [
+  { label: "Multi-Tenant", desc: "One platform · many academies · isolated data" },
+  { label: "Video + SCORM/xAPI", desc: "Upload, transcode, deliver · SCORM 1.2/2004 + TinCan" },
+  { label: "AI Authoring", desc: "Claude-powered course outlines, quizzes & voice-over" },
+  { label: "Flexible Lecture Types", desc: "8 formats · 5 quiz types · drag-and-drop builder" },
+  { label: "Auto Expiry", desc: "Course / certificate expiry with auto-renewal reminders" },
+  { label: "CPD Point", desc: "CPD tracking, accreditation logging, learner transcripts" },
 ];
 
 export function ELearningShowcase() {
@@ -74,26 +50,21 @@ export function ELearningShowcase() {
                   <div className="font-display font-bold text-lg">Learnify Multi-Tenant LMS</div>
                 </div>
               </div>
-              <div className="grid sm:grid-cols-2 gap-3">
-                {PILLARS.map((p) => {
-                  const Icon = p.icon;
-                  return (
-                    <div
-                      key={p.label}
-                      className="px-4 py-3 rounded-lg bg-white/3 border border-white/8 hover:border-(--color-purple)/50 transition group"
-                    >
-                      <div className="flex items-center gap-2.5 mb-1.5">
-                        <Icon className="w-5 h-5 text-(--color-cyan) group-hover:text-(--color-purple) transition" />
-                        <div className="font-display font-bold text-white text-sm">
-                          {p.label}
-                        </div>
-                      </div>
-                      <div className="text-[11px] leading-snug text-(--color-muted)">
-                        {p.desc}
-                      </div>
+              <div className="space-y-3">
+                {READY_ITEMS.map((item) => (
+                  <div
+                    key={item.label}
+                    className="flex items-center justify-between gap-3 px-4 py-3 rounded-lg bg-white/3 border border-white/8 hover:border-(--color-purple)/40 transition"
+                  >
+                    <div>
+                      <div className="font-display font-bold text-white">{item.label}</div>
+                      <div className="text-xs text-(--color-muted) mt-0.5">{item.desc}</div>
                     </div>
-                  );
-                })}
+                    <span className="text-(--color-green) font-mono text-xs whitespace-nowrap">
+                      ✓ READY
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
