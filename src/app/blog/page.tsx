@@ -47,8 +47,9 @@ export default async function BlogIndex() {
           <div className="glow-blob" style={{ top: "-30%", left: "20%", width: 500, height: 500, background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)" }} />
           <Container className="relative">
             <div className="kicker mb-4">[ JOURNAL ]</div>
-            <h1 className="font-display text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold leading-[1.05]">
-              Field notes from <span className="gradient-text">building Agentic AI Workflows</span>.
+            <h1 className="font-display text-[clamp(1.75rem,4vw,3rem)] font-extrabold leading-[1.15]">
+              Field notes from SSG and AI services and{" "}
+              <span className="gradient-text">building Agentic AI workflows</span>.
             </h1>
             <p className="mt-5 text-(--color-muted) text-lg max-w-2xl">
               AI Agents, LMS and TMS case studies from the Tertiary Infotech Academy.

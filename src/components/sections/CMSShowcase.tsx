@@ -46,10 +46,14 @@ export function CMSShowcase() {
               <span className="gradient-text">CMS for organizations</span>.
             </h2>
             <p className="mt-6 text-(--color-muted) text-lg max-w-xl">
-              A self-hosted, production-grade content platform on Next.js 16, Postgres
-              and Drizzle. Bring your Claude subscription OAuth token and get a
-              chatbot, AI authoring, and a TipTap editor — no per-call billing, no
-              vendor lock-in.
+              A self-hosted, production-grade CMS platform on Next.js 16, Postgres and
+              Drizzle. Bring your Claude subscription OAuth token and get a AI chatbot,
+              AI authoring, and a TipTap editor.
+            </p>
+            <p className="mt-5 font-display font-bold text-xl max-w-xl">
+              <span className="gradient-text-warm">
+                No recurring cost, No vendor lock-in, Fully Customizable.
+              </span>
             </p>
             <ul className="mt-8 space-y-2.5">
               {FEATURES.map((f) => (
