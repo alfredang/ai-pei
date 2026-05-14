@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { db } from "@/db";
 import { posts, categories, tags, postTags } from "@/db/schema";
-import { and, asc, desc, eq, inArray } from "drizzle-orm";
+import { and, asc, desc, eq, ilike, inArray, or } from "drizzle-orm";
 import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -41,6 +41,7 @@ type SearchParams = Promise<{
   category?: string;
   tag?: string;
   page?: string;
+  q?: string;
 }>;
 
 export default async function BlogIndex({
@@ -51,6 +52,7 @@ export default async function BlogIndex({
   const sp = await searchParams;
   const selectedCategory = sp.category?.trim() || null;
   const selectedTag = sp.tag?.trim() || null;
+  const q = sp.q?.trim() || "";
   const page = Math.max(1, Number(sp.page ?? "1") || 1);
 
   const [allCategories, allTags] = await Promise.all([
@@ -81,6 +83,16 @@ export default async function BlogIndex({
     else where.push(eq(posts.id, -1)); // unknown category → empty result
   }
   if (allowedPostIds) where.push(inArray(posts.id, allowedPostIds));
+  if (q) {
+    const like = `%${q}%`;
+    const matchesText = or(
+      ilike(posts.title, like),
+      ilike(posts.excerpt, like),
+      ilike(posts.contentHtml, like),
+      ilike(posts.slug, like),
+    );
+    if (matchesText) where.push(matchesText);
+  }
 
   const allMatching = await db
     .select()
@@ -92,12 +104,19 @@ export default async function BlogIndex({
   const safePage = Math.min(page, totalPages);
   const items = allMatching.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
 
-  function filterHref(next: { category?: string | null; tag?: string | null; page?: number }) {
+  function filterHref(next: {
+    category?: string | null;
+    tag?: string | null;
+    page?: number;
+    q?: string | null;
+  }) {
     const params = new URLSearchParams();
     const c = next.category === undefined ? selectedCategory : next.category;
     const t = next.tag === undefined ? selectedTag : next.tag;
+    const query = next.q === undefined ? q : next.q;
     if (c) params.set("category", c);
     if (t) params.set("tag", t);
+    if (query) params.set("q", query);
     if (next.page && next.page > 1) params.set("page", String(next.page));
     const qs = params.toString();
     return qs ? `/blog?${qs}` : "/blog";
@@ -135,6 +154,34 @@ export default async function BlogIndex({
         <section className="pb-4">
           <Container>
             <div className="glass p-5 space-y-4">
+              <form method="get" action="/blog" className="flex flex-wrap items-center gap-2">
+                {selectedCategory && (
+                  <input type="hidden" name="category" value={selectedCategory} />
+                )}
+                {selectedTag && <input type="hidden" name="tag" value={selectedTag} />}
+                <input
+                  type="search"
+                  name="q"
+                  defaultValue={q}
+                  placeholder="Search posts by title, excerpt, or content…"
+                  aria-label="Search posts"
+                  className="flex-1 min-w-[220px] px-4 py-2.5 text-sm rounded-md bg-white/3 border border-white/10 focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition placeholder:text-white/35"
+                />
+                <button
+                  type="submit"
+                  className="px-4 py-2.5 text-sm rounded-md bg-(--color-cyan)/15 border border-(--color-cyan)/40 text-(--color-cyan) hover:bg-(--color-cyan)/25 transition"
+                >
+                  Search
+                </button>
+                {q && (
+                  <Link
+                    href={filterHref({ q: null, page: 1 })}
+                    className="px-4 py-2.5 text-sm rounded-md text-white/60 hover:text-white border border-white/10"
+                  >
+                    Clear
+                  </Link>
+                )}
+              </form>
               <div>
                 <div className="kicker mb-2">Categories</div>
                 <div className="flex flex-wrap gap-2">
@@ -196,7 +243,8 @@ export default async function BlogIndex({
               )}
 
               <p className="text-xs text-(--color-muted) font-mono">
-                {total} post{total === 1 ? "" : "s"} · page {safePage} of {totalPages}
+                {total} post{total === 1 ? "" : "s"}
+                {q ? ` matching "${q}"` : ""} · page {safePage} of {totalPages}
               </p>
             </div>
           </Container>
