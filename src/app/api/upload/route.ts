@@ -5,11 +5,15 @@ import { auth } from "@/lib/auth";
 import { db } from "@/db";
 import { media } from "@/db/schema";
 
-const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
+const PUBLIC_DIR = path.join(process.cwd(), "public");
+const UPLOAD_DIR = path.join(PUBLIC_DIR, "uploads");
 
 export async function POST(req: Request) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const url = new URL(req.url);
+  const asLogo = url.searchParams.get("as-logo") === "1";
 
   const form = await req.formData();
   const file = form.get("file");
@@ -25,6 +29,19 @@ export async function POST(req: Request) {
   await writeFile(path.join(UPLOAD_DIR, filename), buffer);
 
   const publicPath = `/uploads/${filename}`;
+
+  // When uploading as the company logo, also write the same bytes to
+  // public/icon.png so Next.js auto-serves it as the favicon.
+  if (asLogo) {
+    try {
+      await writeFile(path.join(PUBLIC_DIR, "icon.png"), buffer);
+      await writeFile(path.join(PUBLIC_DIR, "apple-icon.png"), buffer);
+      await writeFile(path.join(PUBLIC_DIR, "favicon.ico"), buffer);
+    } catch (e) {
+      console.error("[upload as-logo] favicon write failed", e);
+    }
+  }
+
   const [row] = await db
     .insert(media)
     .values({

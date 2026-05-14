@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { SavedToast } from "@/app/admin/_components/SavedToast";
 import { SOCIAL_DEFAULTS, type SocialLink } from "@/lib/site-settings";
+import { LogoUploader } from "@/components/admin/LogoUploader";
 
 const FIELDS: Array<{
   key: string;
@@ -16,7 +17,6 @@ const FIELDS: Array<{
 }> = [
   { key: "company_name", label: "Company Name", defaultValue: "Tertiary Infotech Academy Pte Ltd" },
   { key: "company_short_name", label: "Company Short Name (shown in nav & footer)", defaultValue: "Tertiary Infotech Academy" },
-  { key: "company_logo_url", label: "Company Logo URL (optional)", placeholder: "/uploads/your-logo.png" },
   { key: "company_uen", label: "UEN", defaultValue: "201200696W" },
   { key: "company_website", label: "Company Website", type: "url", defaultValue: "https://www.tertiarycourses.com.sg/" },
   { key: "company_email", label: "Sales / Lead Email", type: "email", defaultValue: "sales@tertiarycourses.com.sg" },
@@ -117,6 +117,14 @@ export default async function CompanyInfoPage() {
         </p>
       </div>
       <form action={save} className="glass p-6 space-y-8">
+        <div>
+          <label className="kicker block mb-3">Company logo + favicon</label>
+          <LogoUploader
+            name="company_logo_url"
+            initialValue={String(map.get("company_logo_url") ?? "")}
+          />
+        </div>
+
         <div className="grid md:grid-cols-3 gap-x-5 gap-y-5">
           {FIELDS.map((f) => (
             <div key={f.key} className={f.full ? "md:col-span-3" : undefined}>

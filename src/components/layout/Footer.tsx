@@ -114,20 +114,21 @@ export async function Footer() {
               <span>{contact.address}</span>
             </div>
             <div className="mt-3 space-y-1.5 text-sm">
-              <a
-                href={`mailto:${contact.email}`}
-                className="flex items-center gap-2.5 text-(--color-cyan) hover:underline"
-              >
-                <HiEnvelope className="w-4 h-4 shrink-0 text-(--color-cyan)/80" />
-                {contact.email}
-              </a>
-              {contact.supportEmail && contact.supportEmail !== contact.email && (
+              {contact.supportEmail ? (
                 <a
                   href={`mailto:${contact.supportEmail}`}
                   className="flex items-center gap-2.5 text-(--color-cyan) hover:underline"
                 >
                   <HiEnvelope className="w-4 h-4 shrink-0 text-(--color-cyan)/80" />
                   {contact.supportEmail}
+                </a>
+              ) : (
+                <a
+                  href={`mailto:${contact.email}`}
+                  className="flex items-center gap-2.5 text-(--color-cyan) hover:underline"
+                >
+                  <HiEnvelope className="w-4 h-4 shrink-0 text-(--color-cyan)/80" />
+                  {contact.email}
                 </a>
               )}
               <a

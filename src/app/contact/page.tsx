@@ -127,10 +127,10 @@ export default async function ContactPage() {
                 <div className="flex items-start gap-3">
                   <HiEnvelope className="w-5 h-5 mt-0.5 shrink-0 text-(--color-cyan)" />
                   <a
-                    href={`mailto:${contact.email}`}
+                    href={`mailto:${contact.supportEmail || contact.email}`}
                     className="text-sm text-white hover:text-(--color-cyan) transition"
                   >
-                    {contact.email}
+                    {contact.supportEmail || contact.email}
                   </a>
                 </div>
 
