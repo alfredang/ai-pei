@@ -59,7 +59,13 @@ export async function runClaudeAssist(
   // triggers a different auth path that doesn't accept the OAuth subscription
   // token. The combination below (maxTurns 1, allowedTools [], disallowedTools
   // listing every potentially-auth-requiring tool) is what the chatbot uses.
+  // Log the fingerprint of the token actually being used so we can confirm
+  // it matches the one Nemo uses on live (which works). Never the full token.
+  const tokenFp = `${token.slice(0, 12)}…${token.slice(-4)}(len=${token.length})`;
+  console.log(`[ai/assist] mode=${mode} token=${tokenFp} promptLen=${userContext.length}`);
+
   let resultText = "";
+  let errorResult: string | null = null;
   for await (const msg of query({
     prompt: userContext,
     options: {
@@ -70,15 +76,23 @@ export async function runClaudeAssist(
       disallowedTools: ["Bash", "Read", "Write", "Edit", "Glob", "Grep", "WebSearch", "WebFetch"],
     },
   })) {
-    if (msg.type === "result" && (msg as { subtype?: string }).subtype === "success") {
-      const r = (msg as { result?: string }).result;
-      if (r) resultText = r;
+    if (msg.type === "result") {
+      const m = msg as { subtype?: string; result?: string; is_error?: boolean };
+      if (m.subtype === "success" && m.result) {
+        resultText = m.result;
+      } else if (m.is_error || m.subtype === "error") {
+        errorResult = m.result ?? `error subtype=${m.subtype}`;
+      }
     }
     if (msg.type === "assistant") {
       for (const block of msg.message.content) {
         if (block.type === "text" && !resultText) resultText += block.text;
       }
     }
+  }
+  if (!resultText && errorResult) {
+    console.error(`[ai/assist] SDK returned error: ${errorResult}`);
+    throw new Error(errorResult);
   }
   return resultText.trim();
 }
