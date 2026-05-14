@@ -46,5 +46,5 @@ export function tryFaqMatch(message: string, faq: FaqEntry[]): string | null {
 const GREETING_REGEX = /^(hi|hello|hey|yo|hola|sup|good\s*(morning|afternoon|evening))[!\.\?]*$/i;
 export function tryGreeting(message: string, brand: string): string | null {
   if (!GREETING_REGEX.test(message.trim())) return null;
-  return `Hi there! I'm the AI assistant for ${brand}. Ask me about our LMS, TMS, SSG funding, AI solutions, or anything else — happy to help.`;
+  return `Hi there! I'm Nemo, an AI assistant for ${brand}. Ask me about our SSG service, LMS, TMS, AI solutions, or anything else — happy to help.`;
 }

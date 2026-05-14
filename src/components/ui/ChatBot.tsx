@@ -10,7 +10,7 @@ export function ChatBot() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [history, setHistory] = useState<Msg[]>([
-    { role: "model", content: "Hi! I'm Tertiary Infotech's AI assistant. Ask me about our LMS, TMS, SSG services, or AI solutions." },
+    { role: "model", content: "Hi there! I'm Nemo, an AI assistant for Tertiary Infotech Academy. Ask me about our SSG service, LMS, TMS, AI solutions, or anything else — happy to help." },
   ]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
@@ -61,7 +61,7 @@ export function ChatBot() {
       {open && (
         <div className="fixed bottom-24 right-6 z-50 w-[min(92vw,380px)] h-[min(70vh,520px)] glass rounded-2xl flex flex-col overflow-hidden border border-white/15">
           <header className="px-4 py-3 border-b border-white/10">
-            <h3 className="font-bold">AI Chatbot</h3>
+            <h3 className="font-bold">Nemo</h3>
             <p className="text-xs text-white/60">Powered by Claude Agent SDK</p>
           </header>
           <div className="flex-1 overflow-y-auto p-3 space-y-3 text-sm">
