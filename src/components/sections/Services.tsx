@@ -79,7 +79,7 @@ export async function Services() {
       {/* SSG Services — rendered first */}
       <section id="ssg-services" className="relative py-4 scroll-mt-20">
         <Container>
-          <div className="max-w-5xl mb-8">
+          <div className="max-w-5xl mb-8 ml-auto text-right">
             <div className="kicker mb-4">{copy.ssgKicker}</div>
             <h2
               className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]"
