@@ -1,5 +1,6 @@
 import { query } from "@anthropic-ai/claude-agent-sdk";
 import { getCredential } from "@/lib/secrets";
+import { buildClaudeEnv } from "@/lib/anthropic-auth";
 
 const SYSTEM_PROMPTS: Record<string, string> = {
   generate_full_post: `You are a senior content writer and SEO specialist for Tertiary Infotech Academy, a Singapore B2B training-tech company. Audience: training providers, L&D managers, and tech leaders in Singapore.
@@ -60,7 +61,7 @@ export async function runClaudeAssist(
       systemPrompt,
       permissionMode: "bypassPermissions",
       allowedTools: [],
-      env: { ANTHROPIC_AUTH_TOKEN: token },
+      env: buildClaudeEnv(token),
     },
   });
 
