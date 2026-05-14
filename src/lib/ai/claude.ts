@@ -26,7 +26,8 @@ Rules:
 - Brand name in copy: "Tertiary Infotech Academy" (not "Tertiary Infotech").
 - contentHtml must be valid HTML with paragraphs in <p> tags and headings as <h2>/<h3>.
 - Keep paragraphs short (2-3 sentences max) for scannability.
-- Open with a hook, end with a clear call to action.`,
+- Open with a hook, end with a clear call to action.
+- If REFERENCE_CONTENT blocks are present in the user message, they are scraped from URLs the admin pasted. Use them as primary source material — pull concrete facts, course names, funding amounts, dates, eligibility criteria, etc. straight from them. Do not just paraphrase; weave the specifics in.`,
   generate_blog_draft:
     "You are a senior content writer for Tertiary Infotech, a Singapore B2B training-tech company. Write a structured, SEO-friendly blog draft in clean Markdown with H2/H3 headings and short paragraphs. Audience: training providers and L&D managers in Singapore.",
   improve_seo:

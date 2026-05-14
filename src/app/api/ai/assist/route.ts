@@ -5,6 +5,7 @@ import { runClaudeAssist } from "@/lib/ai/claude";
 import { db } from "@/db";
 import { categories, tags } from "@/db/schema";
 import { asc } from "drizzle-orm";
+import { buildUrlContext } from "@/lib/firecrawl";
 
 const schema = z.object({
   mode: z.enum([
@@ -23,13 +24,14 @@ const schema = z.object({
  * context so Claude prefers reusing them over inventing new ones.
  */
 async function enrichContextForFullPost(userContext: string): Promise<string> {
-  const [cats, allTags] = await Promise.all([
+  const [cats, allTags, urlContext] = await Promise.all([
     db.select().from(categories).orderBy(asc(categories.name)),
     db.select().from(tags).orderBy(asc(tags.name)),
+    buildUrlContext(userContext),
   ]);
   const catLines = cats.map((c) => `  - ${c.slug} — ${c.name}`).join("\n") || "  (none yet)";
   const tagLines = allTags.map((t) => `  - ${t.slug} — ${t.name}`).join("\n") || "  (none yet)";
-  return `EXISTING_CATEGORIES (prefer reusing one of these slugs):
+  return `${urlContext}EXISTING_CATEGORIES (prefer reusing one of these slugs):
 ${catLines}
 
 EXISTING_TAGS (prefer reusing 3-6 of these slugs):
