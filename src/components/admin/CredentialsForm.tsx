@@ -108,6 +108,30 @@ export function CredentialsForm({ status, sources, previews }: Props) {
   const [msg, setMsg] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
   const [migrating, setMigrating] = useState(false);
+  const [testingEmail, setTestingEmail] = useState(false);
+
+  async function testEmail() {
+    setTestingEmail(true);
+    setMsg(null);
+    try {
+      const res = await fetch("/api/admin/test-email", { method: "POST" });
+      const data = (await res.json()) as {
+        ok?: boolean;
+        sentTo?: string;
+        error?: string;
+        recipient?: string;
+      };
+      if (res.ok && data.ok) {
+        setMsg(`Test email sent to ${data.sentTo}. Check the inbox.`);
+      } else {
+        setMsg(`Email failed: ${data.error ?? "unknown error"}`);
+      }
+    } catch (e) {
+      setMsg(`Email failed: ${e instanceof Error ? e.message : String(e)}`);
+    } finally {
+      setTestingEmail(false);
+    }
+  }
 
   function submit() {
     startTransition(async () => {
@@ -299,11 +323,20 @@ export function CredentialsForm({ status, sources, previews }: Props) {
       )}
 
       <div className="glass p-4 flex items-center justify-between gap-4 flex-wrap">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
           <button onClick={submit} disabled={pending} className="btn-primary disabled:opacity-50">
             {pending ? "Saving…" : "Save"}
           </button>
-          {msg && <span className="text-xs text-(--color-cyan) font-mono">{msg}</span>}
+          <button
+            type="button"
+            onClick={testEmail}
+            disabled={testingEmail}
+            className="px-4 py-2 rounded-lg border border-white/15 text-sm font-mono text-white/80 hover:border-(--color-cyan)/50 hover:text-(--color-cyan) hover:bg-(--color-cyan)/5 transition disabled:opacity-50"
+            title="Send a diagnostic email through the Gmail OAuth pipeline and surface any error."
+          >
+            {testingEmail ? "Sending…" : "Send test email"}
+          </button>
+          {msg && <span className="text-xs text-(--color-cyan) font-mono max-w-md break-words">{msg}</span>}
         </div>
         <p className="text-xs text-(--color-muted) font-mono">
           [ ENCRYPTED AT REST · AES-256-GCM ]
