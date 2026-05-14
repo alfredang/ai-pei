@@ -360,7 +360,7 @@ export const HERO_KPI_DEFAULTS: HeroKpi[] = [
     value: "10+",
     label: "AI Agents Deployed",
     sublabel: "OpenClaw · Hermes Agent · Nebula",
-    href: "/ai-solutions",
+    href: "/ai-agent-deployment",
   },
 ];
 
