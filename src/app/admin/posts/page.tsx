@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { db } from "@/db";
-import { posts, postTags } from "@/db/schema";
-import { and, desc, eq, ilike, inArray, or, sql } from "drizzle-orm";
+import { posts, postTags, categories, tags } from "@/db/schema";
+import { and, asc, desc, eq, gte, ilike, inArray, lte, or, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { PostsBulkTable } from "@/components/admin/PostsBulkTable";
@@ -9,10 +9,21 @@ import { PostsBulkTable } from "@/components/admin/PostsBulkTable";
 type Search = {
   q?: string;
   status?: string;
+  category?: string;
+  sort?: string;
+  from?: string;
+  to?: string;
   page?: string;
 };
 
 const PAGE_SIZE = 20;
+
+const SORTS = {
+  created_desc: { col: posts.createdAt, dir: "desc" as const, label: "Newest first" },
+  created_asc: { col: posts.createdAt, dir: "asc" as const, label: "Oldest first" },
+  updated_desc: { col: posts.updatedAt, dir: "desc" as const, label: "Recently updated" },
+  updated_asc: { col: posts.updatedAt, dir: "asc" as const, label: "Least recently updated" },
+};
 
 export default async function PostsList({
   searchParams,
@@ -22,7 +33,15 @@ export default async function PostsList({
   const sp = await searchParams;
   const q = (sp.q ?? "").trim();
   const status = sp.status ?? "";
+  const categorySlug = sp.category ?? "";
+  const sortKey = (sp.sort && sp.sort in SORTS ? sp.sort : "created_desc") as keyof typeof SORTS;
+  const from = sp.from ?? "";
+  const to = sp.to ?? "";
   const page = Math.max(1, parseInt(sp.page ?? "1", 10) || 1);
+
+  // Resolve category filter to id (if any).
+  const allCats = await db.select().from(categories).orderBy(asc(categories.name));
+  const cat = categorySlug ? allCats.find((c) => c.slug === categorySlug) : null;
 
   const filters = [] as any[];
   if (q) {
@@ -30,6 +49,21 @@ export default async function PostsList({
   }
   if (status === "draft" || status === "published" || status === "archived") {
     filters.push(eq(posts.status, status));
+  }
+  if (cat) {
+    filters.push(eq(posts.categoryId, cat.id));
+  }
+  if (from) {
+    const d = new Date(from);
+    if (!isNaN(d.getTime())) filters.push(gte(posts.createdAt, d));
+  }
+  if (to) {
+    // Inclusive end-of-day.
+    const d = new Date(to);
+    if (!isNaN(d.getTime())) {
+      d.setHours(23, 59, 59, 999);
+      filters.push(lte(posts.createdAt, d));
+    }
   }
   const where = filters.length ? and(...filters) : undefined;
 
@@ -40,13 +74,39 @@ export default async function PostsList({
   const totalPages = Math.max(1, Math.ceil(count / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
 
+  const sortDef = SORTS[sortKey];
+  const orderClause = sortDef.dir === "desc" ? desc(sortDef.col) : asc(sortDef.col);
+
   const list = await db
     .select()
     .from(posts)
     .where(where)
-    .orderBy(desc(posts.updatedAt))
+    .orderBy(orderClause)
     .limit(PAGE_SIZE)
     .offset((currentPage - 1) * PAGE_SIZE);
+
+  // Fetch tags + categories for the visible rows in one query each.
+  const visibleIds = list.map((p) => p.id);
+  const catById = new Map(allCats.map((c) => [c.id, c]));
+
+  const tagRows = visibleIds.length
+    ? await db
+        .select({
+          postId: postTags.postId,
+          tagId: tags.id,
+          name: tags.name,
+          slug: tags.slug,
+        })
+        .from(postTags)
+        .innerJoin(tags, eq(tags.id, postTags.tagId))
+        .where(inArray(postTags.postId, visibleIds))
+    : [];
+  const tagsByPostId = new Map<number, { name: string; slug: string }[]>();
+  for (const t of tagRows) {
+    const arr = tagsByPostId.get(t.postId) ?? [];
+    arr.push({ name: t.name, slug: t.slug });
+    tagsByPostId.set(t.postId, arr);
+  }
 
   async function createPost() {
     "use server";
@@ -66,7 +126,6 @@ export default async function PostsList({
   async function deleteMany(ids: number[]) {
     "use server";
     if (!Array.isArray(ids) || ids.length === 0) return;
-    // Clean junction rows first to satisfy the FK on post_tags.post_id.
     await db.delete(postTags).where(inArray(postTags.postId, ids));
     await db.delete(posts).where(inArray(posts.id, ids));
     revalidatePath("/admin/posts");
@@ -75,14 +134,21 @@ export default async function PostsList({
     revalidatePath("/sitemap.xml");
   }
 
-  const pageHref = (p: number) => {
+  const buildHref = (overrides: Partial<Search>) => {
     const params = new URLSearchParams();
-    if (q) params.set("q", q);
-    if (status) params.set("status", status);
-    if (p > 1) params.set("page", String(p));
+    const merged: Search = { q, status, category: categorySlug, sort: sortKey, from, to, ...overrides };
+    if (merged.q) params.set("q", merged.q);
+    if (merged.status) params.set("status", merged.status);
+    if (merged.category) params.set("category", merged.category);
+    if (merged.sort && merged.sort !== "created_desc") params.set("sort", merged.sort);
+    if (merged.from) params.set("from", merged.from);
+    if (merged.to) params.set("to", merged.to);
+    if (merged.page && merged.page !== "1") params.set("page", merged.page);
     const qs = params.toString();
     return qs ? `/admin/posts?${qs}` : "/admin/posts";
   };
+
+  const hasAnyFilter = !!(q || status || categorySlug || from || to || sortKey !== "created_desc");
 
   return (
     <div>
@@ -115,13 +181,54 @@ export default async function PostsList({
           <option value="published">Published</option>
           <option value="archived">Archived</option>
         </select>
+        <select
+          name="category"
+          defaultValue={categorySlug}
+          className="px-3 py-1.5 text-sm rounded-md bg-white/5 border border-white/10 focus:outline-none focus:border-(--color-cyan)"
+        >
+          <option value="">All categories</option>
+          {allCats.map((c) => (
+            <option key={c.id} value={c.slug}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+        <select
+          name="sort"
+          defaultValue={sortKey}
+          className="px-3 py-1.5 text-sm rounded-md bg-white/5 border border-white/10 focus:outline-none focus:border-(--color-cyan)"
+        >
+          {Object.entries(SORTS).map(([k, v]) => (
+            <option key={k} value={k}>
+              {v.label}
+            </option>
+          ))}
+        </select>
+        <label className="text-xs text-white/50 flex items-center gap-1">
+          From
+          <input
+            type="date"
+            name="from"
+            defaultValue={from}
+            className="px-2 py-1.5 text-sm rounded-md bg-white/5 border border-white/10 focus:outline-none focus:border-(--color-cyan)"
+          />
+        </label>
+        <label className="text-xs text-white/50 flex items-center gap-1">
+          To
+          <input
+            type="date"
+            name="to"
+            defaultValue={to}
+            className="px-2 py-1.5 text-sm rounded-md bg-white/5 border border-white/10 focus:outline-none focus:border-(--color-cyan)"
+          />
+        </label>
         <button
           type="submit"
           className="px-3 py-1.5 text-sm rounded-md bg-white/10 hover:bg-white/15 border border-white/10"
         >
           Filter
         </button>
-        {(q || status) && (
+        {hasAnyFilter && (
           <Link
             href="/admin/posts"
             className="px-3 py-1.5 text-sm rounded-md text-white/60 hover:text-white"
@@ -140,7 +247,10 @@ export default async function PostsList({
           title: p.title,
           slug: p.slug,
           status: p.status,
+          createdAt: p.createdAt.toISOString(),
           updatedAt: p.updatedAt.toISOString(),
+          category: p.categoryId ? catById.get(p.categoryId)?.name ?? null : null,
+          tags: tagsByPostId.get(p.id) ?? [],
         }))}
         deleteMany={deleteMany}
       />
@@ -152,7 +262,7 @@ export default async function PostsList({
           </div>
           <div className="flex items-center gap-1">
             <PageLink
-              href={pageHref(Math.max(1, currentPage - 1))}
+              href={buildHref({ page: String(Math.max(1, currentPage - 1)) })}
               disabled={currentPage === 1}
             >
               ← Prev
@@ -165,7 +275,7 @@ export default async function PostsList({
               ) : (
                 <Link
                   key={n}
-                  href={pageHref(n)}
+                  href={buildHref({ page: String(n) })}
                   className={`px-2.5 py-1 rounded ${
                     n === currentPage
                       ? "bg-(--color-cyan)/20 text-(--color-cyan) border border-(--color-cyan)/40"
@@ -177,7 +287,7 @@ export default async function PostsList({
               ),
             )}
             <PageLink
-              href={pageHref(Math.min(totalPages, currentPage + 1))}
+              href={buildHref({ page: String(Math.min(totalPages, currentPage + 1)) })}
               disabled={currentPage === totalPages}
             >
               Next →

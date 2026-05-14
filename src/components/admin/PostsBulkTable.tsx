@@ -8,7 +8,10 @@ export type PostRow = {
   title: string;
   slug: string;
   status: "draft" | "published" | "archived";
+  createdAt: string; // ISO
   updatedAt: string; // ISO
+  category: string | null;
+  tags: { name: string; slug: string }[];
 };
 
 type Props = {
@@ -106,6 +109,9 @@ export function PostsBulkTable({ rows, deleteMany }: Props) {
               <th className="px-4 py-3 font-medium">Title</th>
               <th className="px-4 py-3 font-medium">Slug</th>
               <th className="px-4 py-3 font-medium">Status</th>
+              <th className="px-4 py-3 font-medium">Category</th>
+              <th className="px-4 py-3 font-medium">Tags</th>
+              <th className="px-4 py-3 font-medium">Created</th>
               <th className="px-4 py-3 font-medium">Updated</th>
             </tr>
           </thead>
@@ -140,6 +146,34 @@ export function PostsBulkTable({ rows, deleteMany }: Props) {
                     {p.status}
                   </span>
                 </td>
+                <td className="px-4 py-3 text-white/70">
+                  {p.category ? (
+                    <span className="px-2 py-0.5 rounded text-xs bg-(--color-purple)/15 text-(--color-purple) border border-(--color-purple)/30">
+                      {p.category}
+                    </span>
+                  ) : (
+                    <span className="text-white/30 text-xs">—</span>
+                  )}
+                </td>
+                <td className="px-4 py-3">
+                  {p.tags.length === 0 ? (
+                    <span className="text-white/30 text-xs">—</span>
+                  ) : (
+                    <div className="flex flex-wrap gap-1 max-w-[260px]">
+                      {p.tags.map((t) => (
+                        <span
+                          key={t.slug}
+                          className="px-1.5 py-0.5 rounded text-[10px] bg-white/5 border border-white/10 text-white/70"
+                        >
+                          {t.name}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </td>
+                <td className="px-4 py-3 text-white/60">
+                  {new Date(p.createdAt).toLocaleString()}
+                </td>
                 <td className="px-4 py-3 text-white/60">
                   {new Date(p.updatedAt).toLocaleString()}
                 </td>
@@ -147,7 +181,7 @@ export function PostsBulkTable({ rows, deleteMany }: Props) {
             ))}
             {rows.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-4 py-10 text-center text-white/50">
+                <td colSpan={8} className="px-4 py-10 text-center text-white/50">
                   No posts found.
                 </td>
               </tr>
