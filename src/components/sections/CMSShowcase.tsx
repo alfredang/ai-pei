@@ -1,60 +1,24 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
-import {
-  HiCheckCircle,
-  HiCpuChip,
-  HiPencilSquare,
-  HiSparkles,
-  HiInboxArrowDown,
-  HiLockClosed,
-} from "react-icons/hi2";
+import { HiCheckCircle, HiCpuChip } from "react-icons/hi2";
 
 const FEATURES: string[] = [
   "TipTap rich editor — image upload, slash commands, alt text, draft / published / archived",
   "Pages + Posts CRUD with Categories, Tags, and per-route SEO meta",
-  "Filterable + paginated admin tables (search, status, color-coded pills)",
-  "DB-driven header + footer menus — visual menu builder",
   "AI-assisted Blog and Pages drafting — Claude generates full posts and pages on demand",
   "Lead inbox — every contact-form submission emails sales via Gmail OAuth2",
   "AI chatbot — Claude Agent SDK on your subscription OAuth token",
   "Admin AI Assist — Draft, Rewrite, Summarize, Suggest SEO meta (one click)",
 ];
 
-const PILLARS: Array<{
-  icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  desc: string;
-}> = [
-  {
-    icon: HiPencilSquare,
-    label: "TipTap Editor",
-    desc: "Rich text · images · slash commands · drafts",
-  },
-  {
-    icon: HiSparkles,
-    label: "Claude AI Assist",
-    desc: "Draft posts · summarize · SEO meta — one click",
-  },
-  {
-    icon: HiCpuChip,
-    label: "AI Chatbot Chatbot",
-    desc: "Configurable system prompt + FAQ · OAuth token",
-  },
-  {
-    icon: HiInboxArrowDown,
-    label: "Lead Capture",
-    desc: "Contact form → admin inbox + Gmail OAuth2 email",
-  },
-  {
-    icon: HiLockClosed,
-    label: "Encrypted Vault",
-    desc: "AES-256-GCM secrets · never returned to browser",
-  },
-  {
-    icon: HiCheckCircle,
-    label: "WP Migration",
-    desc: "Import SQL dump · rewrite images · 301 redirects",
-  },
+const READY_ITEMS: Array<{ label: string; desc: string }> = [
+  { label: "TipTap Editor", desc: "Rich text · images · slash commands · drafts" },
+  { label: "Claude AI Assist", desc: "Draft posts · summarize · SEO meta — one click" },
+  { label: "AI Chatbot", desc: "Configurable system prompt + FAQ · OAuth token" },
+  { label: "Lead Capture", desc: "Contact form → admin inbox + Gmail OAuth2 email" },
+  { label: "Encrypted Vault", desc: "AES-256-GCM secrets · never returned to browser" },
+  { label: "SEO Built-In", desc: "Per-route metadata · JSON-LD · sitemap · canonical · OG" },
+  { label: "WP Migration", desc: "Import SQL dump · rewrite images · 301 redirects" },
 ];
 
 export function CMSShowcase() {
@@ -123,26 +87,21 @@ export function CMSShowcase() {
                   </div>
                 </div>
               </div>
-              <div className="grid sm:grid-cols-2 gap-3">
-                {PILLARS.map((p) => {
-                  const Icon = p.icon;
-                  return (
-                    <div
-                      key={p.label}
-                      className="px-4 py-3 rounded-lg bg-white/3 border border-white/8 hover:border-(--color-cyan)/50 transition group"
-                    >
-                      <div className="flex items-center gap-2.5 mb-1.5">
-                        <Icon className="w-5 h-5 text-(--color-purple-light) group-hover:text-(--color-cyan) transition" />
-                        <div className="font-display font-bold text-white text-sm">
-                          {p.label}
-                        </div>
-                      </div>
-                      <div className="text-[11px] leading-snug text-(--color-muted)">
-                        {p.desc}
-                      </div>
+              <div className="space-y-3">
+                {READY_ITEMS.map((item) => (
+                  <div
+                    key={item.label}
+                    className="flex items-center justify-between gap-3 px-4 py-3 rounded-lg bg-white/3 border border-white/8 hover:border-(--color-cyan)/40 transition"
+                  >
+                    <div>
+                      <div className="font-display font-bold text-white">{item.label}</div>
+                      <div className="text-xs text-(--color-muted) mt-0.5">{item.desc}</div>
                     </div>
-                  );
-                })}
+                    <span className="text-(--color-green) font-mono text-xs whitespace-nowrap">
+                      ✓ READY
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
