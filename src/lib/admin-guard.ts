@@ -16,12 +16,20 @@
  */
 import { cookies } from "next/headers";
 
+import { verifyAdminSessionValue, ADMIN_COOKIE_NAME } from "./admin-session";
+
 const SESSION_COOKIE_NAMES = [
+  ADMIN_COOKIE_NAME,
   "__Secure-authjs.session-token",
   "authjs.session-token",
 ];
 
 export async function isAdminRequest(): Promise<boolean> {
   const jar = await cookies();
-  return SESSION_COOKIE_NAMES.some((name) => Boolean(jar.get(name)?.value));
+  // Strong path: verify the HMAC signature on our own cookie.
+  const ours = jar.get(ADMIN_COOKIE_NAME)?.value;
+  if (ours && verifyAdminSessionValue(ours)) return true;
+  // Fallback: presence of NextAuth's legacy session cookie. We don't decode
+  // it (that's the flaky path) — presence is enough for backwards compat.
+  return SESSION_COOKIE_NAMES.slice(1).some((name) => Boolean(jar.get(name)?.value));
 }

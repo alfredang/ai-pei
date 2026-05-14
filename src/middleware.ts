@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 // validation. Edge-runtime JWT decoding was flaky and was kicking signed-in
 // users back to /admin/login even when the server saw a valid session.
 const SESSION_COOKIE_NAMES = [
+  "ti_admin_session", // primary — our own HMAC cookie, immune to NextAuth hiccups
   "__Secure-authjs.session-token",
   "authjs.session-token",
 ];

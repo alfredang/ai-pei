@@ -1,6 +1,5 @@
 "use client";
 
-import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -17,18 +16,22 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    const res = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-      callbackUrl: from,
-    });
-    setLoading(false);
-    if (res?.error) {
-      setError("Invalid email or password");
-      return;
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      if (!res.ok) {
+        setError("Invalid email or password");
+        return;
+      }
+      window.location.href = from;
+    } catch {
+      setError("Login failed — please try again");
+    } finally {
+      setLoading(false);
     }
-    window.location.href = res?.url ?? from;
   }
 
   return (

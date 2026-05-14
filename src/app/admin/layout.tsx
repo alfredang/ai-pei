@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { headers, cookies } from "next/headers";
-import { signOut } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { ADMIN_COOKIE_NAME } from "@/lib/admin-session";
 import {
   HiSquares2X2,
   HiDocumentText,
@@ -48,6 +48,7 @@ export default async function AdminLayout({
 
   const cookieStore = await cookies();
   const hasSessionCookie =
+    Boolean(cookieStore.get(ADMIN_COOKIE_NAME)?.value) ||
     Boolean(cookieStore.get("__Secure-authjs.session-token")?.value) ||
     Boolean(cookieStore.get("authjs.session-token")?.value);
 
@@ -90,7 +91,10 @@ export default async function AdminLayout({
         <form
           action={async () => {
             "use server";
-            await signOut({ redirectTo: "/admin/login" });
+            const jar = await cookies();
+            jar.delete(ADMIN_COOKIE_NAME);
+            jar.delete("authjs.session-token");
+            jar.delete("__Secure-authjs.session-token");
             redirect("/admin/login");
           }}
         >
