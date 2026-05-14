@@ -8,7 +8,7 @@ import type { JSONContent } from "@tiptap/react";
 import { useEffect } from "react";
 
 type Props = {
-  value: JSONContent | undefined;
+  value: JSONContent | string | undefined;
   onChange: (json: JSONContent, html: string) => void;
 };
 
@@ -34,7 +34,15 @@ export function Editor({ value, onChange }: Props) {
 
   useEffect(() => {
     if (!editor) return;
-    if (value && JSON.stringify(editor.getJSON()) !== JSON.stringify(value)) {
+    if (value == null) return;
+    if (typeof value === "string") {
+      if (editor.getHTML() !== value) {
+        editor.commands.setContent(value);
+        // setContent does not trigger onUpdate; push the parsed JSON back up
+        // so the parent stores a real JSONContent doc (the DB column is JSONB).
+        onChange(editor.getJSON(), editor.getHTML());
+      }
+    } else if (JSON.stringify(editor.getJSON()) !== JSON.stringify(value)) {
       editor.commands.setContent(value);
     }
   }, [value, editor]);

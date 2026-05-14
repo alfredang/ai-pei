@@ -10,7 +10,7 @@ export type PostFormData = {
   title: string;
   slug: string;
   excerpt: string;
-  content: JSONContent;
+  content: JSONContent | string;
   contentHtml: string;
   status: "draft" | "published" | "archived";
   seoTitle: string;
@@ -30,6 +30,37 @@ type Props = {
   kind: "post" | "page";
 };
 
+function sanitizeJsonControlChars(s: string): string {
+  let out = "";
+  let inStr = false;
+  let esc = false;
+  for (let i = 0; i < s.length; i++) {
+    const ch = s[i];
+    if (esc) {
+      out += ch;
+      esc = false;
+      continue;
+    }
+    if (ch === "\\") {
+      out += ch;
+      esc = true;
+      continue;
+    }
+    if (ch === '"') {
+      inStr = !inStr;
+      out += ch;
+      continue;
+    }
+    if (inStr) {
+      if (ch === "\n") { out += "\\n"; continue; }
+      if (ch === "\r") { out += "\\r"; continue; }
+      if (ch === "\t") { out += "\\t"; continue; }
+    }
+    out += ch;
+  }
+  return out;
+}
+
 export function PostEditorForm({ initial, save, kind }: Props) {
   const [data, setData] = useState<PostFormData>(initial);
   const [pending, startTransition] = useTransition();
@@ -42,6 +73,7 @@ export function PostEditorForm({ initial, save, kind }: Props) {
 
   const [imageLoading, setImageLoading] = useState(false);
   const [imageError, setImageError] = useState<string | null>(null);
+  const [contentMode, setContentMode] = useState<"editor" | "html">("editor");
 
   async function fetchAndApplyImage(query: string, slug: string, kicker?: string) {
     setImageLoading(true);
@@ -65,11 +97,21 @@ export function PostEditorForm({ initial, save, kind }: Props) {
   }
 
   function applyAiPost(raw: string) {
-    // Claude returns JSON; tolerate leading/trailing fences if model slips.
+    // Claude returns JSON; tolerate fences and stray prose around the object.
     let json = raw.trim();
     if (json.startsWith("```")) {
-      json = json.replace(/^```(?:json)?/, "").replace(/```$/, "").trim();
+      json = json.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/, "").trim();
     }
+    // If the model added prose before/after the JSON, extract the outermost {...}.
+    if (!json.startsWith("{")) {
+      const first = json.indexOf("{");
+      const last = json.lastIndexOf("}");
+      if (first !== -1 && last > first) json = json.slice(first, last + 1);
+    }
+    // The model frequently emits raw newlines/tabs inside the contentHtml
+    // string value, which is invalid JSON (string literals must escape them).
+    // Walk the text and escape control chars that appear inside string scopes.
+    json = sanitizeJsonControlChars(json);
     let obj: Partial<{
       title: string;
       slug: string;
@@ -85,8 +127,8 @@ export function PostEditorForm({ initial, save, kind }: Props) {
     try {
       obj = JSON.parse(json);
     } catch {
-      // If parse fails, dump the whole response into the body so nothing is lost.
-      update("contentHtml", raw);
+      // Parse failed — dump the raw response into the editor so nothing is lost.
+      setData((d) => ({ ...d, contentHtml: raw, content: raw }));
       return;
     }
     setData((d) => ({
@@ -95,17 +137,10 @@ export function PostEditorForm({ initial, save, kind }: Props) {
       slug: obj.slug || d.slug,
       excerpt: obj.excerpt || d.excerpt,
       contentHtml: obj.contentHtml || d.contentHtml,
-      content: obj.contentHtml
-        ? {
-            type: "doc",
-            content: [
-              {
-                type: "paragraph",
-                content: [{ type: "text", text: obj.contentHtml }],
-              },
-            ],
-          }
-        : d.content,
+      // Tiptap's setContent accepts an HTML string directly and parses it
+      // into a proper document. Storing the HTML here means the editor
+      // renders the AI draft instead of showing raw markup as text.
+      content: obj.contentHtml || d.content,
       seoTitle: obj.seoTitle || d.seoTitle,
       seoDescription: obj.seoDescription || d.seoDescription,
       seoKeywords: obj.seoKeywords || d.seoKeywords,
@@ -178,33 +213,64 @@ export function PostEditorForm({ initial, save, kind }: Props) {
           />
         </div>
         <div>
-          <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center justify-between mb-1 gap-2">
             <label className="text-xs uppercase text-white/50">Content</label>
-            <AIAssistButton
-              mode="generate_blog_draft"
-              context={`Topic: ${data.title || "(no title)"}\nCurrent excerpt: ${data.excerpt}`}
-              onResult={(text) => {
-                update("contentHtml", text);
-                update("content", {
-                  type: "doc",
-                  content: [
-                    {
-                      type: "paragraph",
-                      content: [{ type: "text", text }],
-                    },
-                  ],
-                });
-              }}
-              label="Draft"
-            />
+            <div className="flex items-center gap-2">
+              <div className="inline-flex rounded border border-white/10 bg-white/5 p-0.5 text-xs">
+                <button
+                  type="button"
+                  onClick={() => setContentMode("editor")}
+                  className={`px-2 py-1 rounded ${
+                    contentMode === "editor"
+                      ? "bg-white/10 text-white"
+                      : "text-white/50 hover:text-white/80"
+                  }`}
+                >
+                  Editor
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setContentMode("html")}
+                  className={`px-2 py-1 rounded font-mono ${
+                    contentMode === "html"
+                      ? "bg-white/10 text-white"
+                      : "text-white/50 hover:text-white/80"
+                  }`}
+                >
+                  HTML
+                </button>
+              </div>
+              <AIAssistButton
+                mode="generate_blog_draft"
+                context={`Topic: ${data.title || "(no title)"}\nCurrent excerpt: ${data.excerpt}`}
+                onResult={(text) => {
+                  setData((d) => ({ ...d, contentHtml: text, content: text }));
+                }}
+                label="Draft"
+              />
+            </div>
           </div>
-          <Editor
-            value={data.content}
-            onChange={(json, html) => {
-              update("content", json);
-              update("contentHtml", html);
-            }}
-          />
+          {contentMode === "editor" ? (
+            <Editor
+              value={data.content}
+              onChange={(json, html) => {
+                update("content", json);
+                update("contentHtml", html);
+              }}
+            />
+          ) : (
+            <textarea
+              value={data.contentHtml}
+              onChange={(e) => {
+                // Keep `content` in sync as the HTML string so when the user
+                // toggles back to Editor, Tiptap re-parses it into a doc.
+                setData((d) => ({ ...d, contentHtml: e.target.value, content: e.target.value }));
+              }}
+              rows={20}
+              spellCheck={false}
+              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded focus:outline-none focus:border-neon-blue font-mono text-xs leading-relaxed"
+            />
+          )}
         </div>
         <div>
           <div className="flex items-center justify-between mb-1">
