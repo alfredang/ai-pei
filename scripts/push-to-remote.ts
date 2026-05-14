@@ -1,0 +1,262 @@
+/**
+ * Push local DB → remote DB via /api/admin/sync/* endpoints.
+ *
+ * Usage:
+ *   REMOTE_SYNC_URL=https://www.tertiaryinfotech.com \
+ *   SYNC_API_TOKEN=<token> \
+ *   npx tsx scripts/push-to-remote.ts <resource> [...]
+ *
+ * Resources: menus, settings, taxonomy, pages, posts, all
+ *
+ * Examples:
+ *   npx tsx scripts/push-to-remote.ts menus
+ *   npx tsx scripts/push-to-remote.ts settings pages
+ *   npx tsx scripts/push-to-remote.ts all
+ */
+
+import { eq, asc } from "drizzle-orm";
+import { db } from "../src/db";
+import {
+  menus,
+  menuItems,
+  settings,
+  pages,
+  posts,
+  categories,
+  tags,
+  postTags,
+  users,
+} from "../src/db/schema";
+
+type Resource = "menus" | "settings" | "taxonomy" | "pages" | "posts";
+const ALL: Resource[] = ["menus", "settings", "taxonomy", "pages", "posts"];
+// taxonomy must run before posts (FK by slug)
+const ORDER: Resource[] = ["taxonomy", "settings", "menus", "pages", "posts"];
+
+function getEnv() {
+  const baseUrl = process.env.REMOTE_SYNC_URL?.replace(/\/$/, "");
+  const token = process.env.SYNC_API_TOKEN;
+  if (!baseUrl)
+    throw new Error("REMOTE_SYNC_URL is not set (e.g. https://www.tertiaryinfotech.com)");
+  if (!token) throw new Error("SYNC_API_TOKEN is not set");
+  return { baseUrl, token };
+}
+
+async function postJson(path: string, body: unknown) {
+  const { baseUrl, token } = getEnv();
+  const res = await fetch(`${baseUrl}${path}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(body),
+  });
+  const text = await res.text();
+  if (!res.ok) throw new Error(`POST ${path} → ${res.status}: ${text}`);
+  return text;
+}
+
+// ---- menus ------------------------------------------------------------------
+
+async function pushMenus() {
+  const locations = ["header", "footer"] as const;
+  for (const location of locations) {
+    const [menu] = await db
+      .select()
+      .from(menus)
+      .where(eq(menus.location, location))
+      .limit(1);
+    if (!menu) {
+      console.log(`  [menus:${location}] skipped (no local menu)`);
+      continue;
+    }
+    const items = await db
+      .select()
+      .from(menuItems)
+      .where(eq(menuItems.menuId, menu.id))
+      .orderBy(asc(menuItems.sortOrder));
+    if (items.length === 0) {
+      console.log(`  [menus:${location}] skipped (no items)`);
+      continue;
+    }
+    const res = await postJson("/api/admin/sync/menus", {
+      location,
+      items: items.map((it) => ({
+        label: it.label,
+        href: it.href,
+        sortOrder: it.sortOrder,
+        openInNewTab: it.openInNewTab,
+      })),
+    });
+    console.log(`  [menus:${location}] ${res}`);
+  }
+}
+
+// ---- settings ---------------------------------------------------------------
+
+async function pushSettings() {
+  const rows = await db.select().from(settings);
+  if (rows.length === 0) {
+    console.log("  [settings] skipped (no rows)");
+    return;
+  }
+  const res = await postJson("/api/admin/sync/settings", {
+    entries: rows.map((r) => ({ key: r.key, value: r.value })),
+  });
+  console.log(`  [settings] ${res}`);
+}
+
+// ---- taxonomy (categories + tags) ------------------------------------------
+
+async function pushTaxonomy() {
+  const [cats, tagRows] = await Promise.all([
+    db.select().from(categories),
+    db.select().from(tags),
+  ]);
+  if (cats.length === 0 && tagRows.length === 0) {
+    console.log("  [taxonomy] skipped (no rows)");
+    return;
+  }
+  const res = await postJson("/api/admin/sync/taxonomy", {
+    categories: cats.map((c) => ({
+      slug: c.slug,
+      name: c.name,
+      description: c.description,
+    })),
+    tags: tagRows.map((t) => ({ slug: t.slug, name: t.name })),
+  });
+  console.log(`  [taxonomy] ${res}`);
+}
+
+// ---- pages ------------------------------------------------------------------
+
+async function authorEmailById(id: number | null): Promise<string | null> {
+  if (id == null) return null;
+  const [u] = await db.select().from(users).where(eq(users.id, id)).limit(1);
+  return u?.email ?? null;
+}
+
+async function pushPages() {
+  const rows = await db.select().from(pages);
+  if (rows.length === 0) {
+    console.log("  [pages] skipped (no rows)");
+    return;
+  }
+  const payload = [];
+  for (const p of rows) {
+    payload.push({
+      slug: p.slug,
+      title: p.title,
+      excerpt: p.excerpt,
+      content: p.content,
+      contentHtml: p.contentHtml,
+      status: p.status,
+      seoTitle: p.seoTitle,
+      seoDescription: p.seoDescription,
+      seoKeywords: p.seoKeywords,
+      ogImage: p.ogImage,
+      canonicalUrl: p.canonicalUrl,
+      noIndex: p.noIndex,
+      authorEmail: await authorEmailById(p.authorId),
+      publishedAt: p.publishedAt ? p.publishedAt.toISOString() : null,
+    });
+  }
+  const res = await postJson("/api/admin/sync/pages", { pages: payload });
+  console.log(`  [pages] ${res}`);
+}
+
+// ---- posts ------------------------------------------------------------------
+
+async function pushPosts() {
+  const rows = await db.select().from(posts);
+  if (rows.length === 0) {
+    console.log("  [posts] skipped (no rows)");
+    return;
+  }
+  // Build tag lookup
+  const tagRows = await db.select().from(tags);
+  const tagById = new Map(tagRows.map((t) => [t.id, t.slug]));
+  const allPostTags = await db.select().from(postTags);
+  const tagSlugsByPostId = new Map<number, string[]>();
+  for (const pt of allPostTags) {
+    const slug = tagById.get(pt.tagId);
+    if (!slug) continue;
+    const arr = tagSlugsByPostId.get(pt.postId) ?? [];
+    arr.push(slug);
+    tagSlugsByPostId.set(pt.postId, arr);
+  }
+  // Build category lookup
+  const cats = await db.select().from(categories);
+  const catById = new Map(cats.map((c) => [c.id, c.slug]));
+
+  const payload = [];
+  for (const p of rows) {
+    payload.push({
+      slug: p.slug,
+      title: p.title,
+      excerpt: p.excerpt,
+      content: p.content,
+      contentHtml: p.contentHtml,
+      status: p.status,
+      seoTitle: p.seoTitle,
+      seoDescription: p.seoDescription,
+      seoKeywords: p.seoKeywords,
+      ogImage: p.ogImage,
+      canonicalUrl: p.canonicalUrl,
+      noIndex: p.noIndex,
+      featuredImage: p.featuredImage,
+      readingTime: p.readingTime,
+      authorEmail: await authorEmailById(p.authorId),
+      categorySlug: p.categoryId != null ? catById.get(p.categoryId) ?? null : null,
+      tagSlugs: tagSlugsByPostId.get(p.id) ?? [],
+      publishedAt: p.publishedAt ? p.publishedAt.toISOString() : null,
+    });
+  }
+  const res = await postJson("/api/admin/sync/posts", { posts: payload });
+  console.log(`  [posts] ${res}`);
+}
+
+// ---- dispatcher -------------------------------------------------------------
+
+const HANDLERS: Record<Resource, () => Promise<void>> = {
+  menus: pushMenus,
+  settings: pushSettings,
+  taxonomy: pushTaxonomy,
+  pages: pushPages,
+  posts: pushPosts,
+};
+
+async function main() {
+  const args = process.argv.slice(2);
+  if (args.length === 0) {
+    console.error("Usage: push-to-remote.ts <resource>... | all");
+    console.error(`Resources: ${ALL.join(", ")}, all`);
+    process.exit(2);
+  }
+  const requested = new Set<Resource>();
+  for (const a of args) {
+    if (a === "all") {
+      ORDER.forEach((r) => requested.add(r));
+    } else if ((ALL as readonly string[]).includes(a)) {
+      requested.add(a as Resource);
+    } else {
+      console.error(`Unknown resource: ${a}`);
+      process.exit(2);
+    }
+  }
+  // Run in canonical order regardless of CLI arg order
+  const toRun = ORDER.filter((r) => requested.has(r));
+  const { baseUrl } = getEnv();
+  console.log(`→ Pushing to ${baseUrl} — ${toRun.join(", ")}`);
+  for (const r of toRun) {
+    await HANDLERS[r]();
+  }
+  console.log("✓ Done");
+  process.exit(0);
+}
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
