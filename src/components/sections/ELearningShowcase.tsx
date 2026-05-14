@@ -76,10 +76,9 @@ export function ELearningShowcase() {
               <span className="gradient-text">multi-tenant e-Learning</span> platform.
             </h2>
             <p className="mt-6 text-(--color-muted) text-lg max-w-xl">
-              Built on Next.js 16 and Claude — Learnify lets academies, course
-              developers and learners launch, sell and certify online courses on a
-              single secure platform. Stripe payments, SCORM/xAPI, AI authoring and
-              an immutable financial ledger are baked in.
+              Built on Claude AI — the platform lets academies, course developers
+              and learners launch, sell and certify online courses on a single
+              secure platform.
             </p>
             <ul className="mt-8 space-y-2.5">
               {FEATURES.map((f) => (
