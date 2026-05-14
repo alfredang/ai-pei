@@ -166,6 +166,93 @@ export const SOCIAL_DEFAULTS: SocialLink[] = [
   { platform: "whatsapp", href: "https://wa.me/6588666375", label: "WhatsApp" },
 ];
 
+// --- Homepage marketing copy (editable in /admin/settings/homepage) -------
+
+export type HomepageCopy = {
+  heroKicker: string;
+  heroHeadlineHtml: string; // raw HTML — admin-trusted
+  heroSubheadHtml: string;
+  heroCtaPrimaryLabel: string;
+  heroCtaPrimaryHref: string;
+  heroCtaSecondaryLabel: string;
+  heroCtaSecondaryHref: string;
+  servicesKicker: string;
+  servicesHeadlineHtml: string;
+  whyUsKicker: string;
+  whyUsHeadlineHtml: string;
+};
+
+export const HOMEPAGE_COPY_DEFAULTS: HomepageCopy = {
+  heroKicker: "EDTECH · AGENTIC AI · VIBE CODING",
+  heroHeadlineHtml:
+    'The AI-powered <span class="gradient-text">LMS &amp; TMS</span> built for <span class="text-white/85">WSQ compliance and TPQA audits</span>',
+  heroSubheadHtml:
+    "End-to-end open-source Learning &amp; Training Management Systems — augmented with Agentic AI, Claude Code, and AI Harness Systems — for Singapore training providers. SSG API integration works out of the box.<br/><br/><strong class=\"gradient-text-warm\">No per-user, per-transaction, or recurring cost.</strong>",
+  heroCtaPrimaryLabel: "Explore AI-LMS-TMS",
+  heroCtaPrimaryHref: "#ai-lms-tms",
+  heroCtaSecondaryLabel: "Book a demo",
+  heroCtaSecondaryHref: "#contact",
+  servicesKicker: "[ WHAT WE BUILD ]",
+  servicesHeadlineHtml:
+    '<span class="gradient-text-warm">Agentic AI</span>-powered bespoke web &amp; mobile solutions for organizations.',
+  whyUsKicker: "[ WHY TERTIARY ]",
+  whyUsHeadlineHtml:
+    'Built by <span class="gradient-text">Claude Code</span> and Agentic AI — for serious training providers.',
+};
+
+const HOMEPAGE_COPY_KEYS = [
+  "hero_kicker",
+  "hero_headline_html",
+  "hero_subhead_html",
+  "hero_cta_primary_label",
+  "hero_cta_primary_href",
+  "hero_cta_secondary_label",
+  "hero_cta_secondary_href",
+  "services_kicker",
+  "services_headline_html",
+  "why_us_kicker",
+  "why_us_headline_html",
+] as const;
+type HomepageCopyKey = (typeof HOMEPAGE_COPY_KEYS)[number];
+
+export async function getHomepageCopy(): Promise<HomepageCopy> {
+  try {
+    const rows = await db
+      .select()
+      .from(settings)
+      .where(inArray(settings.key, HOMEPAGE_COPY_KEYS as unknown as string[]));
+    const map = new Map<HomepageCopyKey, string>();
+    for (const r of rows) {
+      const v = typeof r.value === "string" ? r.value : "";
+      if (v) map.set(r.key as HomepageCopyKey, v);
+    }
+    return {
+      heroKicker: map.get("hero_kicker") || HOMEPAGE_COPY_DEFAULTS.heroKicker,
+      heroHeadlineHtml:
+        map.get("hero_headline_html") || HOMEPAGE_COPY_DEFAULTS.heroHeadlineHtml,
+      heroSubheadHtml:
+        map.get("hero_subhead_html") || HOMEPAGE_COPY_DEFAULTS.heroSubheadHtml,
+      heroCtaPrimaryLabel:
+        map.get("hero_cta_primary_label") || HOMEPAGE_COPY_DEFAULTS.heroCtaPrimaryLabel,
+      heroCtaPrimaryHref:
+        map.get("hero_cta_primary_href") || HOMEPAGE_COPY_DEFAULTS.heroCtaPrimaryHref,
+      heroCtaSecondaryLabel:
+        map.get("hero_cta_secondary_label") || HOMEPAGE_COPY_DEFAULTS.heroCtaSecondaryLabel,
+      heroCtaSecondaryHref:
+        map.get("hero_cta_secondary_href") || HOMEPAGE_COPY_DEFAULTS.heroCtaSecondaryHref,
+      servicesKicker:
+        map.get("services_kicker") || HOMEPAGE_COPY_DEFAULTS.servicesKicker,
+      servicesHeadlineHtml:
+        map.get("services_headline_html") || HOMEPAGE_COPY_DEFAULTS.servicesHeadlineHtml,
+      whyUsKicker: map.get("why_us_kicker") || HOMEPAGE_COPY_DEFAULTS.whyUsKicker,
+      whyUsHeadlineHtml:
+        map.get("why_us_headline_html") || HOMEPAGE_COPY_DEFAULTS.whyUsHeadlineHtml,
+    };
+  } catch {
+    return HOMEPAGE_COPY_DEFAULTS;
+  }
+}
+
 export async function getSocialLinks(): Promise<SocialLink[]> {
   try {
     const [row] = await db

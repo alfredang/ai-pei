@@ -1,6 +1,8 @@
 import { db } from "@/db";
 import { settings } from "@/db/schema";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { SavedToast } from "@/app/admin/_components/SavedToast";
 
 export default async function SettingsGeneral() {
   const all = await db.select().from(settings);
@@ -8,26 +10,28 @@ export default async function SettingsGeneral() {
 
   async function save(formData: FormData) {
     "use server";
-    const entries: Array<[string, unknown]> = [
-      ["site_title", formData.get("site_title")],
-      ["tagline", formData.get("tagline")],
-      ["contact_email", formData.get("contact_email")],
+    const entries: Array<[string, string]> = [
+      ["site_title", String(formData.get("site_title") ?? "").trim()],
+      ["tagline", String(formData.get("tagline") ?? "").trim()],
+      ["contact_email", String(formData.get("contact_email") ?? "").trim()],
     ];
     for (const [key, value] of entries) {
       await db
         .insert(settings)
-        .values({ key, value: (value as string) ?? "" })
+        .values({ key, value: value as unknown as object })
         .onConflictDoUpdate({
           target: settings.key,
-          set: { value: (value as string) ?? "", updatedAt: new Date() },
+          set: { value: value as unknown as object, updatedAt: new Date() },
         });
     }
     revalidatePath("/");
     revalidatePath("/admin/settings");
+    redirect("/admin/settings?saved=1");
   }
 
   return (
     <div>
+      <SavedToast />
       <div className="mb-6">
         <h2 className="font-display text-xl font-bold">General</h2>
         <p className="text-sm text-(--color-muted) mt-1">

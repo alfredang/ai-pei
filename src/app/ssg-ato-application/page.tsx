@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     title: "SSG ATO Application Singapore — Become a Registered Training Provider",
     description:
       "End-to-end consultancy for the SSG/TPGateway ATO application in Singapore. We prepare your QMS, policies, SOPs, course submission and audit-readiness.",
-    siteName: "Tertiary Infotech",
+    siteName: "Tertiary Infotech Academy",
   },
   twitter: {
     card: "summary_large_image",
@@ -223,7 +223,7 @@ const serviceLd = {
   name: "SSG ATO Application Consultancy — Singapore",
   provider: {
     "@type": "Organization",
-    name: "Tertiary Infotech",
+    name: "Tertiary Infotech Academy",
     url: "https://www.tertiaryinfotech.com",
   },
   areaServed: { "@type": "Country", name: "Singapore" },

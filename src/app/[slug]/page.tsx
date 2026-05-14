@@ -26,12 +26,29 @@ export async function generateMetadata({
   const { slug } = await params;
   const page = await getPage(slug);
   if (!page) return { title: "Not found" };
+  const canonical = page.canonicalUrl ?? `/${page.slug}`;
+  const ogImage = page.ogImage ?? undefined;
   return {
     title: page.seoTitle ?? page.title,
     description: page.seoDescription ?? page.excerpt ?? undefined,
     keywords: page.seoKeywords ?? undefined,
-    alternates: page.canonicalUrl ? { canonical: page.canonicalUrl } : undefined,
+    alternates: { canonical },
     robots: page.noIndex ? { index: false } : undefined,
+    openGraph: {
+      title: page.seoTitle ?? page.title,
+      description: page.seoDescription ?? page.excerpt ?? undefined,
+      images: ogImage ? [ogImage] : undefined,
+      type: "article",
+      url: `/${page.slug}`,
+      locale: "en_SG",
+      siteName: "Tertiary Infotech Academy",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: page.seoTitle ?? page.title,
+      description: page.seoDescription ?? page.excerpt ?? undefined,
+      images: ogImage ? [ogImage] : undefined,
+    },
   };
 }
 

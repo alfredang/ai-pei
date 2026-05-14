@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { SERVICES } from "@/lib/site-content";
+import { getHomepageCopy } from "@/lib/site-settings";
 import { HiArrowRight } from "react-icons/hi2";
 
 const accentMap: Record<string, { glow: string; text: string; line: string }> = {
@@ -9,15 +10,17 @@ const accentMap: Record<string, { glow: string; text: string; line: string }> = 
   purple: { glow: "rgba(92,0,229,0.45)", text: "text-(--color-purple-light)", line: "from-(--color-purple) to-transparent" },
 };
 
-export function Services() {
+export async function Services() {
+  const copy = await getHomepageCopy();
   return (
     <section id="services" className="relative py-4">
       <Container>
         <div className="max-w-5xl mb-8">
-          <div className="kicker mb-4">[ WHAT WE BUILD ]</div>
-          <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
-            <span className="gradient-text-warm">Agentic AI</span>-powered bespoke web &amp; mobile solutions for organizations.
-          </h2>
+          <div className="kicker mb-4">{copy.servicesKicker}</div>
+          <h2
+            className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]"
+            dangerouslySetInnerHTML={{ __html: copy.servicesHeadlineHtml }}
+          />
         </div>
         <div className="grid md:grid-cols-3 gap-4">
           {SERVICES.map((s) => {

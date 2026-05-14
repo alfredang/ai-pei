@@ -10,6 +10,21 @@ export const metadata: Metadata = {
   title: "Real Clients for LMS/TMS",
   description:
     "Production LMS and TMS deployments by Tertiary Infotech — IES Digital Academy, Intellisoft Systems, and Chariot Learning & Consultancy.",
+  alternates: { canonical: "/real-clients" },
+  openGraph: {
+    type: "website",
+    url: "/real-clients",
+    title: "Real Clients for LMS/TMS | Tertiary Infotech",
+    description:
+      "Production LMS and TMS deployments — IES Digital Academy, Intellisoft Systems, Chariot Learning & Consultancy.",
+    locale: "en_SG",
+    siteName: "Tertiary Infotech Academy",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Real Clients for LMS/TMS | Tertiary Infotech",
+    description: "Production LMS and TMS deployments by Tertiary Infotech.",
+  },
 };
 
 const productBadge: Record<string, string> = {

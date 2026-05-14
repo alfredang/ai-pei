@@ -55,18 +55,30 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = await getPost(slug);
   if (!post) return { title: "Not found" };
+  const canonical = post.canonicalUrl ?? `/blog/${post.slug}`;
+  const ogImage = post.ogImage ?? post.featuredImage ?? undefined;
   return {
     title: post.seoTitle ?? post.title,
     description: post.seoDescription ?? post.excerpt ?? undefined,
     keywords: post.seoKeywords ?? undefined,
-    alternates: post.canonicalUrl ? { canonical: post.canonicalUrl } : undefined,
+    alternates: { canonical },
     robots: post.noIndex ? { index: false } : undefined,
     openGraph: {
       title: post.seoTitle ?? post.title,
       description: post.seoDescription ?? post.excerpt ?? undefined,
-      images: post.ogImage ? [post.ogImage] : post.featuredImage ? [post.featuredImage] : undefined,
+      images: ogImage ? [ogImage] : undefined,
       type: "article",
+      url: `/blog/${post.slug}`,
       publishedTime: post.publishedAt?.toISOString(),
+      modifiedTime: post.updatedAt?.toISOString(),
+      locale: "en_SG",
+      siteName: "Tertiary Infotech Academy",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.seoTitle ?? post.title,
+      description: post.seoDescription ?? post.excerpt ?? undefined,
+      images: ogImage ? [ogImage] : undefined,
     },
   };
 }
@@ -83,13 +95,37 @@ export default async function PostPage({
   const bodyHtml = stripLeadingImage(post.contentHtml ?? "", post.featuredImage);
   const { intro: introHtml, rest: restHtml } = splitIntroSection(bodyHtml);
 
-  const jsonLd = {
+  const SITE_URL = "https://www.tertiaryinfotech.com";
+  const postUrl = `${SITE_URL}/blog/${post.slug}`;
+  const articleLd = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
-    description: post.seoDescription ?? post.excerpt,
+    description: post.seoDescription ?? post.excerpt ?? undefined,
     datePublished: post.publishedAt?.toISOString(),
-    image: post.featuredImage,
+    dateModified: (post.updatedAt ?? post.publishedAt)?.toISOString(),
+    image: post.featuredImage ? new URL(post.featuredImage, SITE_URL).toString() : undefined,
+    mainEntityOfPage: { "@type": "WebPage", "@id": postUrl },
+    author: {
+      "@type": "Organization",
+      name: "Tertiary Infotech Academy",
+      url: SITE_URL,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Tertiary Infotech Academy",
+      url: SITE_URL,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/favicon.ico` },
+    },
+  };
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Journal", item: `${SITE_URL}/blog` },
+      { "@type": "ListItem", position: 3, name: post.title, item: postUrl },
+    ],
   };
 
   return (
@@ -139,7 +175,11 @@ export default async function PostPage({
       <Footer />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
     </>
   );

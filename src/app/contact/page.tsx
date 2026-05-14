@@ -11,6 +11,22 @@ export const metadata: Metadata = {
   title: "Contact Us — Tertiary Infotech",
   description:
     "Get in touch with Tertiary Infotech — Singapore-based AI-LMS-TMS and SSG ATO consultancy. Phone, email, WhatsApp, and Google Map.",
+  alternates: { canonical: "/contact" },
+  openGraph: {
+    type: "website",
+    url: "/contact",
+    title: "Contact Us — Tertiary Infotech",
+    description:
+      "Reach Tertiary Infotech by phone, email, WhatsApp. Located in Singapore — Woods Square, Woodlands.",
+    locale: "en_SG",
+    siteName: "Tertiary Infotech Academy",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact Us — Tertiary Infotech",
+    description:
+      "Reach Tertiary Infotech by phone, email, WhatsApp. Singapore-based.",
+  },
 };
 
 function formatPhone(raw: string): string {
@@ -27,9 +43,37 @@ function formatWhatsapp(d: string): string {
 export default async function ContactPage() {
   const [brand, contact] = await Promise.all([getSiteBrand(), getCompanyContact()]);
   const addressQuery = encodeURIComponent(`${brand.fullName}, ${contact.address}`);
+  const SITE_URL = "https://www.tertiaryinfotech.com";
+  const localBusinessLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": `${SITE_URL}/contact`,
+    name: brand.fullName,
+    image: brand.logoUrl ? new URL(brand.logoUrl, SITE_URL).toString() : `${SITE_URL}/favicon.ico`,
+    url: SITE_URL,
+    telephone: contact.tel,
+    email: contact.email,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: contact.address,
+      addressCountry: "SG",
+    },
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        opens: "09:00",
+        closes: "18:00",
+      },
+    ],
+  };
   return (
     <>
       <Navbar />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessLd) }}
+      />
       <main className="pt-16">
         <section className="py-10">
           <Container>

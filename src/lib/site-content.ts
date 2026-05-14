@@ -27,6 +27,7 @@ export const SERVICES = [
       "PWM course development",
     ],
     accent: "blue" as const,
+    href: "/wsq-course-development",
   },
   {
     id: "ato",
@@ -56,6 +57,7 @@ export const SERVICES = [
       "On-site audit support",
     ],
     accent: "cyan" as const,
+    href: "/tpqa-consultancy",
   },
   {
     id: "tms",
@@ -70,6 +72,7 @@ export const SERVICES = [
       "Scalable for institutions of any size",
     ],
     accent: "blue" as const,
+    href: "/training-management-system",
   },
   {
     id: "lms",
@@ -84,6 +87,7 @@ export const SERVICES = [
       "Cloud-based multi-tenant platform",
     ],
     accent: "cyan" as const,
+    href: "/learning-management-system",
   },
   {
     id: "ai",
@@ -98,6 +102,7 @@ export const SERVICES = [
       "Native and cross-platform mobile apps",
     ],
     accent: "purple" as const,
+    href: "/ai-solutions",
   },
 ];
 

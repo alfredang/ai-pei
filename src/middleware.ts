@@ -11,18 +11,22 @@ const SESSION_COOKIE_NAMES = [
 
 export default function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+
+  // Always forward the resolved pathname so AdminLayout (RSC) can detect the
+  // login route and skip its own cookie-bounce — otherwise /admin/login loops.
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set("x-pathname", pathname);
+  const passthrough = () =>
+    NextResponse.next({ request: { headers: requestHeaders } });
+
   if (!pathname.startsWith("/admin") || pathname === "/admin/login") {
-    return NextResponse.next();
+    return passthrough();
   }
   const hasSession = SESSION_COOKIE_NAMES.some(
     (name) => req.cookies.get(name)?.value,
   );
   if (hasSession) {
-    // Forward the path on the REQUEST headers so AdminLayout (RSC) can read
-    // it via next/headers and redirect if the JWT turns out to be invalid.
-    const requestHeaders = new Headers(req.headers);
-    requestHeaders.set("x-pathname", pathname);
-    return NextResponse.next({ request: { headers: requestHeaders } });
+    return passthrough();
   }
   const url = req.nextUrl.clone();
   url.pathname = "/admin/login";

@@ -13,6 +13,22 @@ export const metadata: Metadata = {
   title: "Journal",
   description:
     "Insights on AI, LMS, TMS, WSQ training compliance and software development from Tertiary Infotech.",
+  alternates: { canonical: "/blog" },
+  openGraph: {
+    type: "website",
+    url: "/blog",
+    title: "Journal | Tertiary Infotech",
+    description:
+      "Engineering deep-dives, WSQ compliance walkthroughs, and case studies from the Tertiary Infotech team.",
+    locale: "en_SG",
+    siteName: "Tertiary Infotech Academy",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Journal | Tertiary Infotech",
+    description:
+      "Insights on AI, LMS, TMS, WSQ training compliance and software development.",
+  },
 };
 
 export default async function BlogIndex() {

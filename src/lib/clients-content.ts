@@ -53,6 +53,6 @@ export const TESTIMONIALS = [
     quote:
       "The Claude Code agent drafts our courseware. What used to take a week of curriculum work is a day.",
     author: "Senior Trainer",
-    company: "Tertiary Infotech",
+    company: "Tertiary Infotech Academy",
   },
 ];

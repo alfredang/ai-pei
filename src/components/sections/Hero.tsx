@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { HiArrowUpRight } from "react-icons/hi2";
+import { getHomepageCopy } from "@/lib/site-settings";
 
-export function Hero() {
+export async function Hero() {
+  const copy = await getHomepageCopy();
   return (
     <section
       id="home"
@@ -74,7 +76,7 @@ export function Hero() {
       <Container width="full" className="relative z-10 flex-1 flex flex-col">
         <div className="reveal kicker mb-5 inline-flex items-center gap-2 px-3.5 py-1.5 border border-white/15 rounded-full bg-white/3 backdrop-blur">
           <span className="w-1.5 h-1.5 rounded-full bg-(--color-cyan) animate-pulse" />
-          EDTECH · AGENTIC AI · VIBE CODING
+          {copy.heroKicker}
         </div>
 
         <h1
@@ -84,31 +86,23 @@ export function Hero() {
             letterSpacing: "-0.025em",
           }}
         >
-          AI-powered <span className="gradient-text">LMS &amp; TMS</span>{" "}
-          for WSQ &amp; TPQA{" "}
-          <span className="text-white/85">compliant training providers</span>
+          <span dangerouslySetInnerHTML={{ __html: copy.heroHeadlineHtml }} />
           <span className="cursor-blink" aria-hidden />
         </h1>
 
         <p
           className="reveal reveal-d2 mt-8 text-(--color-muted) max-w-3xl leading-relaxed"
           style={{ fontSize: "clamp(1.125rem, 1.35vw, 1.5rem)" }}
-        >
-          End-to-end open-source Learning &amp; Training Management Systems — augmented with
-          Agentic AI, Claude Code, and AI Harness Systems — for Singapore training providers. SSG API
-          integration works out of the box.
-          <span className="block mt-3 font-display font-bold gradient-text-warm">
-            No per-user, per-transaction, or recurring cost.
-          </span>
-        </p>
+          dangerouslySetInnerHTML={{ __html: copy.heroSubheadHtml }}
+        />
 
         <div className="reveal reveal-d3 mt-10 flex flex-wrap gap-3">
-          <Link href="#ai-lms-tms" className="btn-primary">
-            Explore AI-LMS-TMS
+          <Link href={copy.heroCtaPrimaryHref} className="btn-primary">
+            {copy.heroCtaPrimaryLabel}
             <span aria-hidden>→</span>
           </Link>
-          <Link href="#contact" className="btn-secondary">
-            Book a demo
+          <Link href={copy.heroCtaSecondaryHref} className="btn-secondary">
+            {copy.heroCtaSecondaryLabel}
           </Link>
         </div>
 

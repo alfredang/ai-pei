@@ -67,8 +67,8 @@ async function main() {
 
   // Seed core settings
   const defaults: Record<string, unknown> = {
-    site_title: "Tertiary Infotech",
-    tagline: "AI-LMS-TMS for WSQ & TPQA Compliance",
+    site_title: "Tertiary Infotech Academy",
+    tagline: "Agentic AI · SSG Services · Bespoke Software Development",
     contact_email: "sales@tertiarycourses.com.sg",
     // Company-info defaults (matching admin Company Settings form)
     company_name: "Tertiary Infotech Academy Pte Ltd",

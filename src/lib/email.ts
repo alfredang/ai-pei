@@ -94,7 +94,7 @@ export async function sendLeadEmail(lead: {
     .filter(Boolean);
 
   await transporter.sendMail({
-    from: `"Tertiary Infotech" <${fromUser}>`,
+    from: `"Tertiary Infotech Academy" <${fromUser}>`,
     to: cfg.to,
     cc: cc.length ? cc : undefined,
     replyTo: lead.email,

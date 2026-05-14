@@ -2,6 +2,12 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Company
+
+- **Legal name**: Tertiary Infotech Academy Pte Ltd
+- **Short name / brand**: **Tertiary Infotech Academy** (not "Tertiary Infotech")
+- Use the short name in UI copy, page titles, OG/Twitter metadata, footer, and lead-notification emails. The legal name is for schema.org `Organization`, T&Cs, and invoices only.
+
 ## Commands
 
 ```bash
