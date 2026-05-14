@@ -28,6 +28,13 @@ export default function middleware(req: NextRequest) {
   if (hasSession) {
     return passthrough();
   }
+  // Diagnostic: list every cookie name the request DID send so we can spot
+  // whether the session cookie was renamed, dropped, or simply never issued.
+  // Logs to the Next dev server console — does not leak to the browser.
+  const cookieNames = req.cookies.getAll().map((c) => c.name);
+  console.warn(
+    `[middleware] bouncing → /admin/login (path=${pathname}) — cookies present: [${cookieNames.join(", ") || "(none)"}]`,
+  );
   const url = req.nextUrl.clone();
   url.pathname = "/admin/login";
   url.searchParams.set("from", pathname);
