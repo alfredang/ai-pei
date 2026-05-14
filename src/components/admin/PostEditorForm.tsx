@@ -67,6 +67,7 @@ export function PostEditorForm({ initial, save, kind }: Props) {
   const [savedAt, setSavedAt] = useState<Date | null>(null);
   const [topic, setTopic] = useState("");
   const [enhanceInstructions, setEnhanceInstructions] = useState("");
+  const [aiTab, setAiTab] = useState<"generate" | "enhance">("generate");
 
   function update<K extends keyof PostFormData>(key: K, value: PostFormData[K]) {
     setData((d) => ({ ...d, [key]: value }));
@@ -196,53 +197,75 @@ export function PostEditorForm({ initial, save, kind }: Props) {
     <div className="grid lg:grid-cols-3 gap-6">
       <div className="lg:col-span-2 space-y-4">
         {kind === "post" && (
-          <div className="glass rounded-xl p-4 space-y-2 border border-(--color-purple)/30">
-            <div className="flex items-center justify-between">
-              <label className="text-xs uppercase text-(--color-purple) tracking-wider">
-                AI prompt — generate full post
-              </label>
-              <AIAssistButton
-                mode="generate_full_post"
-                context={`TOPIC: ${topic || data.title || "(no topic)"}`}
-                onResult={applyAiPost}
-                label="Generate full post"
-              />
+          <div className="glass rounded-xl p-4 space-y-3 border border-(--color-purple)/30">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="inline-flex rounded-md border border-white/10 bg-white/5 p-0.5 text-xs">
+                <button
+                  type="button"
+                  onClick={() => setAiTab("generate")}
+                  className={`px-3 py-1.5 rounded uppercase tracking-wider ${
+                    aiTab === "generate"
+                      ? "bg-(--color-purple)/30 text-(--color-purple)"
+                      : "text-white/60 hover:text-white"
+                  }`}
+                >
+                  Generate full post
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setAiTab("enhance")}
+                  className={`px-3 py-1.5 rounded uppercase tracking-wider ${
+                    aiTab === "enhance"
+                      ? "bg-(--color-cyan)/30 text-(--color-cyan)"
+                      : "text-white/60 hover:text-white"
+                  }`}
+                >
+                  Enhance existing
+                </button>
+              </div>
+              {aiTab === "generate" ? (
+                <AIAssistButton
+                  mode="generate_full_post"
+                  context={`TOPIC: ${topic || data.title || "(no topic)"}`}
+                  onResult={applyAiPost}
+                  label="Generate full post"
+                />
+              ) : (
+                <AIAssistButton
+                  mode="enhance_post"
+                  context={`TITLE: ${data.title}\n\nCURRENT_CONTENT_HTML:\n${data.contentHtml}\n\nINSTRUCTIONS:\n${enhanceInstructions || "(no instructions)"}`}
+                  onResult={applyEnhancedPost}
+                  label="Enhance post"
+                />
+              )}
             </div>
-            <textarea
-              value={topic}
-              onChange={(e) => setTopic(e.target.value)}
-              rows={2}
-              placeholder="Enter a topic. e.g. 'WSQ funding changes 2026 for SME training providers' — Claude will draft the title, slug, content, excerpt, and all SEO fields."
-              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm"
-            />
-            <p className="text-[11px] text-white/40">
-              Powered by the Claude Agent SDK with your subscription OAuth token. Populates title, slug, content, excerpt, and SEO fields below — review then click Save.
-            </p>
-          </div>
-        )}
-        {kind === "post" && (
-          <div className="glass rounded-xl p-4 space-y-2 border border-(--color-cyan)/30">
-            <div className="flex items-center justify-between">
-              <label className="text-xs uppercase text-(--color-cyan) tracking-wider">
-                AI enhance — edit existing post
-              </label>
-              <AIAssistButton
-                mode="enhance_post"
-                context={`TITLE: ${data.title}\n\nCURRENT_CONTENT_HTML:\n${data.contentHtml}\n\nINSTRUCTIONS:\n${enhanceInstructions || "(no instructions)"}`}
-                onResult={applyEnhancedPost}
-                label="Enhance post"
-              />
-            </div>
-            <textarea
-              value={enhanceInstructions}
-              onChange={(e) => setEnhanceInstructions(e.target.value)}
-              rows={3}
-              placeholder="What should change? e.g. 'Add a section about Skillable Builder. Link AWS Training to https://www.tertiarycourses.com.sg/aws-cloud-computing-courses.html and Skillable Builder to https://skillbuilder.aws/.'"
-              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm"
-            />
-            <p className="text-[11px] text-white/40">
-              Edits the existing content body only — preserves title, slug, SEO, category, and tags. Use this to add facts, insert links, or tweak sections without rewriting from scratch.
-            </p>
+            {aiTab === "generate" ? (
+              <>
+                <textarea
+                  value={topic}
+                  onChange={(e) => setTopic(e.target.value)}
+                  rows={3}
+                  placeholder="Enter a topic. e.g. 'WSQ funding changes 2026 for SME training providers' — Claude will draft the title, slug, content, excerpt, and all SEO fields."
+                  className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm"
+                />
+                <p className="text-[11px] text-white/40">
+                  Replaces every field (title, slug, content, excerpt, SEO, category, tags). Review then click Save.
+                </p>
+              </>
+            ) : (
+              <>
+                <textarea
+                  value={enhanceInstructions}
+                  onChange={(e) => setEnhanceInstructions(e.target.value)}
+                  rows={3}
+                  placeholder="What should change? e.g. 'Add a section about Skillable Builder. Link AWS Training to https://www.tertiarycourses.com.sg/aws-cloud-computing-courses.html and Skillable Builder to https://skillbuilder.aws/.'"
+                  className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm"
+                />
+                <p className="text-[11px] text-white/40">
+                  Edits the existing body only — preserves title, slug, SEO, category, and tags. Use this to add facts, insert links, or tweak sections without rewriting from scratch.
+                </p>
+              </>
+            )}
           </div>
         )}
         <div>

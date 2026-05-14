@@ -9,6 +9,7 @@ import { asc } from "drizzle-orm";
 const schema = z.object({
   mode: z.enum([
     "generate_full_post",
+    "enhance_post",
     "generate_blog_draft",
     "improve_seo",
     "summarize",
