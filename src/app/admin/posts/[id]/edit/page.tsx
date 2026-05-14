@@ -70,12 +70,22 @@ export default async function EditPost({
   const [p] = await db.select().from(posts).where(eq(posts.id, postId)).limit(1);
   if (!p) notFound();
 
+  // WordPress-imported posts have a placeholder TipTap doc and the real body
+  // in contentHtml. Detect that case and feed the HTML string to the editor
+  // (Editor.tsx will parse it back into JSON on first render).
+  const isWpPlaceholder =
+    JSON.stringify(p.content).includes("(Imported from WordPress)");
+  const editorContent: JSONContent | string =
+    isWpPlaceholder && p.contentHtml
+      ? p.contentHtml
+      : (p.content as JSONContent);
+
   const initial: PostFormData = {
     id: p.id,
     title: p.title,
     slug: p.slug,
     excerpt: p.excerpt ?? "",
-    content: p.content as JSONContent,
+    content: editorContent,
     contentHtml: p.contentHtml ?? "",
     status: p.status,
     seoTitle: p.seoTitle ?? "",
