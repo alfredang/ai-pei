@@ -175,8 +175,13 @@ async function pushPages() {
       publishedAt: p.publishedAt ? p.publishedAt.toISOString() : null,
     });
   }
-  const res = await postJson("/api/admin/sync/pages", { pages: payload });
-  console.log(`  [pages] ${res}`);
+  // The server caps each request at 200 rows. Chunk to stay under that.
+  const CHUNK = 150;
+  for (let i = 0; i < payload.length; i += CHUNK) {
+    const slice = payload.slice(i, i + CHUNK);
+    const res = await postJson("/api/admin/sync/pages", { pages: slice });
+    console.log(`  [pages] ${i + slice.length}/${payload.length} — ${res}`);
+  }
 }
 
 // ---- posts ------------------------------------------------------------------
@@ -226,8 +231,12 @@ async function pushPosts() {
       publishedAt: p.publishedAt ? p.publishedAt.toISOString() : null,
     });
   }
-  const res = await postJson("/api/admin/sync/posts", { posts: payload });
-  console.log(`  [posts] ${res}`);
+  const CHUNK = 150;
+  for (let i = 0; i < payload.length; i += CHUNK) {
+    const slice = payload.slice(i, i + CHUNK);
+    const res = await postJson("/api/admin/sync/posts", { posts: slice });
+    console.log(`  [posts] ${i + slice.length}/${payload.length} — ${res}`);
+  }
 }
 
 // ---- users ------------------------------------------------------------------

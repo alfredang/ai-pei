@@ -40,7 +40,11 @@ export async function Navbar() {
         <Link href="/" className="flex items-center gap-2 group">
           {brand.logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={brand.logoUrl} alt={brand.shortName} className="h-8 w-auto" />
+            <img
+              src={brand.logoUrl}
+              alt={brand.shortName}
+              className="w-9 h-9 rounded-md object-contain"
+            />
           ) : (
             <span className="w-7 h-7 rounded-md bg-gradient-to-br from-(--color-purple) to-(--color-cyan) shadow-[var(--shadow-glow-cyan)] grid place-items-center text-xs font-mono font-bold">TI</span>
           )}

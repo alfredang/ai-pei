@@ -69,7 +69,11 @@ export async function Footer() {
             <div className="flex items-center gap-2 mb-4">
               {brand.logoUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={brand.logoUrl} alt={brand.shortName} className="h-8 w-auto" />
+                <img
+                  src={brand.logoUrl}
+                  alt={brand.shortName}
+                  className="w-8 h-8 rounded-md object-contain"
+                />
               ) : (
                 <span className="w-7 h-7 rounded-md bg-gradient-to-br from-(--color-purple) to-(--color-cyan)" />
               )}
