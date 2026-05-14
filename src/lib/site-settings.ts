@@ -338,7 +338,7 @@ export type HeroKpi = {
 
 export const HERO_KPI_DEFAULTS: HeroKpi[] = [
   {
-    value: "1,000+",
+    value: "600+",
     label: "SSG Services",
     sublabel: "WSQ · IBF · CASL · ATO · TPQA",
     href: "/#services",
