@@ -191,7 +191,7 @@ export default async function PostPage({
                     {category && (
                       <Link
                         href={`/blog?category=${category.slug}`}
-                        className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] uppercase tracking-wider bg-(--color-purple)/15 text-(--color-purple) border border-(--color-purple)/30 hover:bg-(--color-purple)/25 transition"
+                        className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] uppercase tracking-wider bg-yellow-400/10 text-yellow-300 border border-yellow-400/30 hover:bg-yellow-400/20 transition"
                       >
                         <HiFolder className="w-3 h-3" />
                         {category.name}
