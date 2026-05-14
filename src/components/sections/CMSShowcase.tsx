@@ -5,10 +5,14 @@ import { HiCheckCircle, HiCpuChip } from "react-icons/hi2";
 const FEATURES: string[] = [
   "TipTap rich editor — image upload, slash commands, alt text, draft / published / archived",
   "Pages + Posts CRUD with Categories, Tags, and per-route SEO meta",
+  "Filterable + paginated admin tables — search, status filter, color-coded status pills",
+  "Visual drag-and-drop menu builder — header + footer menus, DB-driven, no code",
   "AI-assisted Blog and Pages drafting — Claude generates full posts and pages on demand",
   "Lead inbox — every contact-form submission emails sales via Gmail OAuth2",
   "AI chatbot — Claude Agent SDK on your subscription OAuth token",
   "Admin AI Assist — Draft, Rewrite, Summarize, Suggest SEO meta (one click)",
+  "SEO + JSON-LD built into every route — Organization, Article, Service, FAQPage, LocalBusiness",
+  "Local → Remote DB sync — push menus, settings, pages, posts to production with one command",
 ];
 
 const READY_ITEMS: Array<{ label: string; desc: string }> = [
