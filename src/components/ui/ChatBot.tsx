@@ -47,19 +47,21 @@ export function ChatBot() {
 
   // Chatbot is a customer-facing widget — never render on /admin pages.
   if (pathname?.startsWith("/admin")) return null;
+  // Hide on mobile — the floating widget covers content and isn't useful on
+  // small viewports. md (≥ 768px) and up only.
 
   return (
     <>
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close chat" : "Open chat"}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple shadow-[var(--shadow-glow-blue-lg)] flex items-center justify-center hover:scale-105 transition"
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-r from-neon-blue to-neon-purple shadow-[var(--shadow-glow-blue-lg)] hidden md:flex items-center justify-center hover:scale-105 transition"
       >
         {open ? <HiXMark className="w-6 h-6" /> : <HiChatBubbleLeftRight className="w-6 h-6" />}
       </button>
 
       {open && (
-        <div className="fixed bottom-24 right-6 z-50 w-[min(92vw,380px)] h-[min(70vh,520px)] glass rounded-2xl flex flex-col overflow-hidden border border-white/15">
+        <div className="fixed bottom-24 right-6 z-50 w-[min(92vw,380px)] h-[min(70vh,520px)] glass rounded-2xl hidden md:flex flex-col overflow-hidden border border-white/15">
           <header className="px-4 py-3 border-b border-white/10">
             <h3 className="font-bold">Nemo</h3>
             <p className="text-xs text-white/60">Powered by Claude Agent SDK</p>
