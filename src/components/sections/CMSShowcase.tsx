@@ -11,7 +11,6 @@ const FEATURES: string[] = [
   "Lead inbox — every contact-form submission emails sales via Gmail OAuth2",
   "AI chatbot — Claude Agent SDK on your subscription OAuth token",
   "Admin AI Assist — Draft, Rewrite, Summarize, Suggest SEO meta (one click)",
-  "SEO + JSON-LD built into every route — Organization, Article, Service, FAQPage, LocalBusiness",
 ];
 
 const READY_ITEMS: Array<{ label: string; desc: string }> = [
