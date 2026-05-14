@@ -17,8 +17,11 @@ const schema = z.object({
   kicker: z.string().max(60).optional(),
 });
 
+// 16:10 to match the blog card aspect-ratio so object-cover doesn't crop the
+// side padding. Still a generous canvas — enough for OG/Twitter previews,
+// which only require ≥600×314 and aren't fussy about the exact ratio.
 const WIDTH = 1200;
-const HEIGHT = 630;
+const HEIGHT = 750;
 
 function escapeXml(s: string): string {
   return s
