@@ -23,6 +23,8 @@ const ALLOWED: CredentialKey[] = [
   "r2_bucket",
   "r2_public_url",
   "r2_endpoint",
+  "turnstile_site_key",
+  "turnstile_secret",
 ];
 
 const payloadSchema = z.record(z.string(), z.string().min(1).max(2000));
