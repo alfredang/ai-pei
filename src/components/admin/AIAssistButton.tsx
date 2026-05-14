@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 export type AIAssistMode =
   | "generate_full_post"
+  | "enhance_post"
   | "generate_blog_draft"
   | "improve_seo"
   | "summarize"
@@ -21,6 +22,7 @@ type Props = {
 // can show useful progress hints.
 const ETA_SECS: Record<AIAssistMode, number> = {
   generate_full_post: 20,
+  enhance_post: 15,
   generate_blog_draft: 12,
   improve_seo: 6,
   summarize: 5,
@@ -34,6 +36,12 @@ const STEPS: Record<AIAssistMode, string[]> = {
     "Drafting title and outline…",
     "Writing body in HTML…",
     "Suggesting category and tags…",
+    "Finalising — almost done…",
+  ],
+  enhance_post: [
+    "Reading current content…",
+    "Applying your instructions…",
+    "Inserting links on keywords…",
     "Finalising — almost done…",
   ],
   generate_blog_draft: [

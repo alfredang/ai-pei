@@ -66,6 +66,7 @@ export function PostEditorForm({ initial, save, kind }: Props) {
   const [pending, startTransition] = useTransition();
   const [savedAt, setSavedAt] = useState<Date | null>(null);
   const [topic, setTopic] = useState("");
+  const [enhanceInstructions, setEnhanceInstructions] = useState("");
 
   function update<K extends keyof PostFormData>(key: K, value: PostFormData[K]) {
     setData((d) => ({ ...d, [key]: value }));
@@ -159,6 +160,31 @@ export function PostEditorForm({ initial, save, kind }: Props) {
     }
   }
 
+  function applyEnhancedPost(raw: string) {
+    // enhance_post returns { contentHtml }. Be tolerant of fences/prose.
+    let json = raw.trim();
+    if (json.startsWith("```")) {
+      json = json.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/, "").trim();
+    }
+    if (!json.startsWith("{")) {
+      const first = json.indexOf("{");
+      const last = json.lastIndexOf("}");
+      if (first !== -1 && last > first) json = json.slice(first, last + 1);
+    }
+    json = sanitizeJsonControlChars(json);
+    let obj: Partial<{ contentHtml: string }> = {};
+    try {
+      obj = JSON.parse(json);
+    } catch {
+      // No structured response — treat the raw text as the new body.
+      setData((d) => ({ ...d, contentHtml: raw, content: raw }));
+      return;
+    }
+    if (obj.contentHtml) {
+      setData((d) => ({ ...d, contentHtml: obj.contentHtml!, content: obj.contentHtml! }));
+    }
+  }
+
   function submit() {
     startTransition(async () => {
       await save(data);
@@ -191,6 +217,31 @@ export function PostEditorForm({ initial, save, kind }: Props) {
             />
             <p className="text-[11px] text-white/40">
               Powered by the Claude Agent SDK with your subscription OAuth token. Populates title, slug, content, excerpt, and SEO fields below — review then click Save.
+            </p>
+          </div>
+        )}
+        {kind === "post" && (
+          <div className="glass rounded-xl p-4 space-y-2 border border-(--color-cyan)/30">
+            <div className="flex items-center justify-between">
+              <label className="text-xs uppercase text-(--color-cyan) tracking-wider">
+                AI enhance — edit existing post
+              </label>
+              <AIAssistButton
+                mode="enhance_post"
+                context={`TITLE: ${data.title}\n\nCURRENT_CONTENT_HTML:\n${data.contentHtml}\n\nINSTRUCTIONS:\n${enhanceInstructions || "(no instructions)"}`}
+                onResult={applyEnhancedPost}
+                label="Enhance post"
+              />
+            </div>
+            <textarea
+              value={enhanceInstructions}
+              onChange={(e) => setEnhanceInstructions(e.target.value)}
+              rows={3}
+              placeholder="What should change? e.g. 'Add a section about Skillable Builder. Link AWS Training to https://www.tertiarycourses.com.sg/aws-cloud-computing-courses.html and Skillable Builder to https://skillbuilder.aws/.'"
+              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm"
+            />
+            <p className="text-[11px] text-white/40">
+              Edits the existing content body only — preserves title, slug, SEO, category, and tags. Use this to add facts, insert links, or tweak sections without rewriting from scratch.
             </p>
           </div>
         )}
