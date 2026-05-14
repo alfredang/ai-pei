@@ -18,7 +18,7 @@ async function loadMenu() {
 
 const FALLBACK = [
   { label: "Home", href: "/" },
-  { label: "Services", href: "/#services" },
+  { label: "SSG Services", href: "/#services" },
   { label: "LMS/TMS", href: "/#ai-lms-tms" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/#contact" },

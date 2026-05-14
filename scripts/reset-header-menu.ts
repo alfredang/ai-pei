@@ -6,7 +6,7 @@ const ITEMS = [
   { label: "LMS/TMS", href: "/#ai-lms-tms" },
   { label: "e-Learning", href: "/#e-learning" },
   { label: "CMS", href: "/#cms" },
-  { label: "Services", href: "/#services" },
+  { label: "SSG Services", href: "/#services" },
   { label: "Portfolio", href: "https://github.com/alfredang?tab=repositories" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/#contact" },

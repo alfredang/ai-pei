@@ -15,48 +15,6 @@ import {
 
 export const SERVICES = [
   {
-    id: "tms",
-    icon: HiAcademicCap,
-    title: "Training Management System",
-    description:
-      "Streamline your entire training lifecycle with our comprehensive TMS platform. From scheduling to certification, manage it all in one place.",
-    features: [
-      "Course scheduling & management",
-      "Enrollment & registration workflows",
-      "Reporting & analytics dashboards",
-      "Scalable for institutions of any size",
-    ],
-    accent: "blue" as const,
-  },
-  {
-    id: "lms",
-    icon: HiBookOpen,
-    title: "Learning Management System",
-    description:
-      "Deliver engaging, interactive learning experiences with our AI-enhanced LMS. Built for modern learners and educators alike.",
-    features: [
-      "Interactive eLearning delivery",
-      "Assessment & progress tracking",
-      "Instructor dashboards & analytics",
-      "Cloud-based multi-tenant platform",
-    ],
-    accent: "cyan" as const,
-  },
-  {
-    id: "ai",
-    icon: HiSparkles,
-    title: "AI-Powered Solutions",
-    description:
-      "Production AI systems, automations and bespoke software — from agentic workflows to full-stack web tools and mobile apps.",
-    features: [
-      "Agentic AI · n8n · Claude Code · OpenCLAW",
-      "Harness Systems integration",
-      "Bespoke full-stack web tools across frameworks",
-      "Native and cross-platform mobile apps",
-    ],
-    accent: "purple" as const,
-  },
-  {
     id: "course-dev",
     icon: HiClipboardDocumentList,
     title: "Course Development",
@@ -97,6 +55,48 @@ export const SERVICES = [
       "On-site audit support",
     ],
     accent: "cyan" as const,
+  },
+  {
+    id: "tms",
+    icon: HiAcademicCap,
+    title: "Training Management System",
+    description:
+      "Streamline your entire training lifecycle with our comprehensive TMS platform. From scheduling to certification, manage it all in one place.",
+    features: [
+      "Course scheduling & management",
+      "Enrollment & registration workflows",
+      "Reporting & analytics dashboards",
+      "Scalable for institutions of any size",
+    ],
+    accent: "blue" as const,
+  },
+  {
+    id: "lms",
+    icon: HiBookOpen,
+    title: "Learning Management System",
+    description:
+      "Deliver engaging, interactive learning experiences with our AI-enhanced LMS. Built for modern learners and educators alike.",
+    features: [
+      "Interactive eLearning delivery",
+      "Assessment & progress tracking",
+      "Instructor dashboards & analytics",
+      "Cloud-based multi-tenant platform",
+    ],
+    accent: "cyan" as const,
+  },
+  {
+    id: "ai",
+    icon: HiSparkles,
+    title: "AI-Powered Solutions",
+    description:
+      "Production AI systems, automations and bespoke software — from agentic workflows to full-stack web tools and mobile apps.",
+    features: [
+      "Agentic AI · n8n · Claude Code · OpenCLAW",
+      "Harness Systems integration",
+      "Bespoke full-stack web tools across frameworks",
+      "Native and cross-platform mobile apps",
+    ],
+    accent: "purple" as const,
   },
 ];
 
