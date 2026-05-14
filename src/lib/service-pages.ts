@@ -458,11 +458,10 @@ export const SERVICE_PAGES: Record<string, ServicePageContent> = {
     whatsIncluded: [
       "Agent selection workshop + architecture proposal",
       "Production deployment of chosen agent stack",
+      "Supported AI agents — OpenClaw · Hermes Agent · Nebula · Copilot Studio Agent and others",
       "Model-agnostic selection — Claude Code · Codex · MiniMax · Kimi · DeepSeek · OpenRouter",
       "Connect to multiple channels — WhatsApp · Telegram · Slack · Discord and more",
       "Tool / API integrations (Slack, Teams, Gmail, n8n, your APIs)",
-      "Observability dashboards (token usage, latency, errors)",
-      "Cost guardrails (per-tenant / daily / monthly caps)",
       "30-day post-launch support",
     ],
     faq: [
