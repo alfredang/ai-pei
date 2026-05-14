@@ -102,7 +102,7 @@ export const SERVICES = [
   {
     id: "ai",
     icon: HiSparkles,
-    title: "AI-Powered Solutions",
+    title: "Full Stack AI-Enabled Solutions",
     description:
       "Production AI systems, automations and bespoke software — from agentic workflows to full-stack web tools and mobile apps.",
     features: [
