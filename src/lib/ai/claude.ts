@@ -95,11 +95,6 @@ export async function runClaudeAssist(
     options: {
       systemPrompt,
       env: buildClaudeEnv(token),
-      // Sonnet 4.6 — faster than Opus, better-quality prose than Haiku, and
-      // does NOT use extended thinking by default, so wall-time stays low.
-      model: "claude-sonnet-4-6",
-      // Belt-and-braces: disable extended thinking explicitly in case any
-      // SDK default ever flips it on.
       maxThinkingTokens: 0,
       // Was 1 — but the SDK counts any tool-call attempt as a turn even with
       // tools disabled, so 1 caused "Reached maximum number of turns" errors
