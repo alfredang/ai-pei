@@ -156,7 +156,7 @@ export default async function PostPage({
                 <h1 className="text-3xl md:text-4xl font-bold mb-3 leading-tight">
                   {post.title}
                 </h1>
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-white/55 text-xs font-mono mb-4">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-white/55 text-xs font-mono mb-3">
                   <span className="inline-flex items-center gap-1.5">
                     <HiUser className="w-3.5 h-3.5 text-(--color-cyan)/80" />
                     Author: Tertiary Infotech Academy
@@ -167,6 +167,9 @@ export default async function PostPage({
                       Created On: {formatDateDMY(post.publishedAt)}
                     </span>
                   )}
+                </div>
+                <div className="mb-4">
+                  <ShareButtons url={postUrl} title={post.title} />
                 </div>
                 {post.excerpt && (
                   <p className="text-white/75 text-base leading-relaxed mb-4">
@@ -185,9 +188,6 @@ export default async function PostPage({
               className="prose-dark"
               dangerouslySetInnerHTML={{ __html: restHtml }}
             />
-            <div className="mt-12 pt-6 border-t border-white/8">
-              <ShareButtons url={postUrl} title={post.title} />
-            </div>
           </Container>
         </article>
       </main>
