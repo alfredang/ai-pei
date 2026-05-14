@@ -12,6 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ]);
   return [
     { url: `${BASE}/`, changeFrequency: "weekly", priority: 1 },
+    { url: `${BASE}/ssg-ato-application`, changeFrequency: "monthly", priority: 0.9 },
     { url: `${BASE}/blog`, changeFrequency: "daily", priority: 0.8 },
     ...allPages.map((p) => ({
       url: `${BASE}/${p.slug}`,

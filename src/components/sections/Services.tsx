@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { SERVICES } from "@/lib/site-content";
 import { HiArrowRight } from "react-icons/hi2";
@@ -22,6 +23,12 @@ export function Services() {
           {SERVICES.map((s) => {
             const Icon = s.icon;
             const a = accentMap[s.accent];
+            const href = "href" in s ? (s.href as string | undefined) : undefined;
+            const learnMore = (
+              <span className={`inline-flex items-center gap-2 text-sm font-mono ${a.text} ${href ? "group-hover:gap-3 transition-all" : ""}`}>
+                Learn more <HiArrowRight className="w-3.5 h-3.5" />
+              </span>
+            );
             return (
               <article key={s.id} className="card-hover glass p-7 relative overflow-hidden group">
                 <div className={`absolute top-0 inset-x-0 h-px bg-gradient-to-r ${a.line}`} />
@@ -37,9 +44,12 @@ export function Services() {
                     </li>
                   ))}
                 </ul>
-                <div className={`inline-flex items-center gap-2 text-sm font-mono ${a.text}`}>
-                  Learn more <HiArrowRight className="w-3.5 h-3.5" />
-                </div>
+                {href ? (
+                  <Link href={href} aria-label={`Learn more about ${s.title}`} className="absolute inset-0">
+                    <span className="sr-only">Learn more about {s.title}</span>
+                  </Link>
+                ) : null}
+                {learnMore}
               </article>
             );
           })}
