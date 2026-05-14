@@ -5,6 +5,7 @@ import { and, asc, desc, eq, gte, ilike, inArray, lte, or, sql } from "drizzle-o
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { PostsBulkTable } from "@/components/admin/PostsBulkTable";
+import { PostsFilterBar } from "@/components/admin/PostsFilterBar";
 
 type Search = {
   q?: string;
@@ -161,85 +162,18 @@ export default async function PostsList({
         </form>
       </div>
 
-      <form
-        method="get"
-        className="flex flex-wrap items-center gap-2 mb-3 glass rounded-lg p-3"
-      >
-        <input
-          name="q"
-          defaultValue={q}
-          placeholder="Search title or slug…"
-          className="flex-1 min-w-[200px] px-3 py-1.5 text-sm rounded-md bg-white/5 border border-white/10 focus:outline-none focus:border-(--color-cyan) focus:ring-1 focus:ring-(--color-cyan)/30"
-        />
-        <select
-          name="status"
-          defaultValue={status}
-          className="px-3 py-1.5 text-sm rounded-md bg-white/5 border border-white/10 focus:outline-none focus:border-(--color-cyan)"
-        >
-          <option value="">All statuses</option>
-          <option value="draft">Draft</option>
-          <option value="published">Published</option>
-          <option value="archived">Archived</option>
-        </select>
-        <select
-          name="category"
-          defaultValue={categorySlug}
-          className="px-3 py-1.5 text-sm rounded-md bg-white/5 border border-white/10 focus:outline-none focus:border-(--color-cyan)"
-        >
-          <option value="">All categories</option>
-          {allCats.map((c) => (
-            <option key={c.id} value={c.slug}>
-              {c.name}
-            </option>
-          ))}
-        </select>
-        <select
-          name="sort"
-          defaultValue={sortKey}
-          className="px-3 py-1.5 text-sm rounded-md bg-white/5 border border-white/10 focus:outline-none focus:border-(--color-cyan)"
-        >
-          {Object.entries(SORTS).map(([k, v]) => (
-            <option key={k} value={k}>
-              {v.label}
-            </option>
-          ))}
-        </select>
-        <label className="text-xs text-white/50 flex items-center gap-1">
-          From
-          <input
-            type="date"
-            name="from"
-            defaultValue={from}
-            className="px-2 py-1.5 text-sm rounded-md bg-white/5 border border-white/10 focus:outline-none focus:border-(--color-cyan)"
-          />
-        </label>
-        <label className="text-xs text-white/50 flex items-center gap-1">
-          To
-          <input
-            type="date"
-            name="to"
-            defaultValue={to}
-            className="px-2 py-1.5 text-sm rounded-md bg-white/5 border border-white/10 focus:outline-none focus:border-(--color-cyan)"
-          />
-        </label>
-        <button
-          type="submit"
-          className="px-3 py-1.5 text-sm rounded-md bg-white/10 hover:bg-white/15 border border-white/10"
-        >
-          Filter
-        </button>
-        {hasAnyFilter && (
-          <Link
-            href="/admin/posts"
-            className="px-3 py-1.5 text-sm rounded-md text-white/60 hover:text-white"
-          >
-            Reset
-          </Link>
-        )}
-        <div className="ml-auto text-xs text-white/50">
-          {count} {count === 1 ? "post" : "posts"}
-        </div>
-      </form>
+      <PostsFilterBar
+        q={q}
+        status={status}
+        categorySlug={categorySlug}
+        sortKey={sortKey}
+        from={from}
+        to={to}
+        count={count}
+        categories={allCats.map((c) => ({ id: c.id, slug: c.slug, name: c.name }))}
+        sorts={Object.entries(SORTS).map(([k, v]) => ({ key: k, label: v.label }))}
+        hasAnyFilter={hasAnyFilter}
+      />
 
       <PostsBulkTable
         rows={list.map((p) => ({
