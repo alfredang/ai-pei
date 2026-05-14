@@ -17,7 +17,7 @@ type Field = {
   hint?: string;
   multiline?: boolean;
   defaultValue: string;
-  group: "hero" | "services" | "why-us";
+  group: "hero" | "ssg" | "ai" | "why-us";
 };
 
 const FIELDS: Field[] = [
@@ -41,13 +41,21 @@ const FIELDS: Field[] = [
   { group: "hero", key: "hero_cta_primary_href", label: "Primary CTA href", defaultValue: HOMEPAGE_COPY_DEFAULTS.heroCtaPrimaryHref },
   { group: "hero", key: "hero_cta_secondary_label", label: "Secondary CTA label", defaultValue: HOMEPAGE_COPY_DEFAULTS.heroCtaSecondaryLabel },
   { group: "hero", key: "hero_cta_secondary_href", label: "Secondary CTA href", defaultValue: HOMEPAGE_COPY_DEFAULTS.heroCtaSecondaryHref },
-  { group: "services", key: "services_kicker", label: "Services kicker", defaultValue: HOMEPAGE_COPY_DEFAULTS.servicesKicker },
+  { group: "ssg", key: "ssg_kicker", label: "SSG-services kicker", defaultValue: HOMEPAGE_COPY_DEFAULTS.ssgKicker },
   {
-    group: "services",
-    key: "services_headline_html",
-    label: "Services headline (HTML)",
+    group: "ssg",
+    key: "ssg_headline_html",
+    label: "SSG-services headline (HTML)",
     multiline: true,
-    defaultValue: HOMEPAGE_COPY_DEFAULTS.servicesHeadlineHtml,
+    defaultValue: HOMEPAGE_COPY_DEFAULTS.ssgHeadlineHtml,
+  },
+  { group: "ai", key: "ai_kicker", label: "AI-services kicker", defaultValue: HOMEPAGE_COPY_DEFAULTS.aiKicker },
+  {
+    group: "ai",
+    key: "ai_headline_html",
+    label: "AI-services headline (HTML)",
+    multiline: true,
+    defaultValue: HOMEPAGE_COPY_DEFAULTS.aiHeadlineHtml,
   },
   { group: "why-us", key: "why_us_kicker", label: "Why-us kicker", defaultValue: HOMEPAGE_COPY_DEFAULTS.whyUsKicker },
   {
@@ -61,7 +69,8 @@ const FIELDS: Field[] = [
 
 const GROUPS: Array<{ id: Field["group"]; title: string; description: string }> = [
   { id: "hero", title: "Hero section", description: "Top-of-page headline, subhead, and CTAs." },
-  { id: "services", title: "Services section", description: "Kicker + heading for the Services grid." },
+  { id: "ssg", title: "SSG Services section", description: "Kicker + heading for the SSG-services grid (Course Dev · ATO · TPQA)." },
+  { id: "ai", title: "AI Services section", description: "Kicker + heading for the AI-services grid (TMS · LMS · AI Solutions)." },
   { id: "why-us", title: "Why-us section", description: "Kicker + heading for the differentiators band." },
 ];
 

@@ -176,8 +176,15 @@ export type HomepageCopy = {
   heroCtaPrimaryHref: string;
   heroCtaSecondaryLabel: string;
   heroCtaSecondaryHref: string;
+  /** Legacy combined-services heading (kept for backward compat). */
   servicesKicker: string;
   servicesHeadlineHtml: string;
+  /** New SSG-services section (rendered first). */
+  ssgKicker: string;
+  ssgHeadlineHtml: string;
+  /** New AI-services section (rendered second). */
+  aiKicker: string;
+  aiHeadlineHtml: string;
   whyUsKicker: string;
   whyUsHeadlineHtml: string;
 };
@@ -195,6 +202,12 @@ export const HOMEPAGE_COPY_DEFAULTS: HomepageCopy = {
   servicesKicker: "[ WHAT WE BUILD ]",
   servicesHeadlineHtml:
     '<span class="gradient-text-warm">Agentic AI</span>-powered bespoke web &amp; mobile solutions for organizations.',
+  ssgKicker: "[ SSG SERVICES ]",
+  ssgHeadlineHtml:
+    '<span class="gradient-text">SSG Services</span> for Registered Training Providers.',
+  aiKicker: "[ AI SERVICES ]",
+  aiHeadlineHtml:
+    '<span class="gradient-text-warm">Agentic AI</span>-powered bespoke web &amp; mobile solutions for organizations.',
   whyUsKicker: "[ WHY TERTIARY ]",
   whyUsHeadlineHtml:
     'Built by <span class="gradient-text">Claude Code</span> and Agentic AI — for serious training providers.',
@@ -210,6 +223,10 @@ const HOMEPAGE_COPY_KEYS = [
   "hero_cta_secondary_href",
   "services_kicker",
   "services_headline_html",
+  "ssg_kicker",
+  "ssg_headline_html",
+  "ai_kicker",
+  "ai_headline_html",
   "why_us_kicker",
   "why_us_headline_html",
 ] as const;
@@ -244,6 +261,12 @@ export async function getHomepageCopy(): Promise<HomepageCopy> {
         map.get("services_kicker") || HOMEPAGE_COPY_DEFAULTS.servicesKicker,
       servicesHeadlineHtml:
         map.get("services_headline_html") || HOMEPAGE_COPY_DEFAULTS.servicesHeadlineHtml,
+      ssgKicker: map.get("ssg_kicker") || HOMEPAGE_COPY_DEFAULTS.ssgKicker,
+      ssgHeadlineHtml:
+        map.get("ssg_headline_html") || HOMEPAGE_COPY_DEFAULTS.ssgHeadlineHtml,
+      aiKicker: map.get("ai_kicker") || HOMEPAGE_COPY_DEFAULTS.aiKicker,
+      aiHeadlineHtml:
+        map.get("ai_headline_html") || HOMEPAGE_COPY_DEFAULTS.aiHeadlineHtml,
       whyUsKicker: map.get("why_us_kicker") || HOMEPAGE_COPY_DEFAULTS.whyUsKicker,
       whyUsHeadlineHtml:
         map.get("why_us_headline_html") || HOMEPAGE_COPY_DEFAULTS.whyUsHeadlineHtml,

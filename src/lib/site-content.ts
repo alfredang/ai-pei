@@ -28,6 +28,7 @@ export const SERVICES = [
     ],
     accent: "blue" as const,
     href: "/wsq-course-development",
+    category: "ssg" as const,
   },
   {
     id: "ato",
@@ -43,6 +44,7 @@ export const SERVICES = [
     ],
     accent: "blue" as const,
     href: "/ssg-ato-application",
+    category: "ssg" as const,
   },
   {
     id: "tpqa",
@@ -58,6 +60,7 @@ export const SERVICES = [
     ],
     accent: "cyan" as const,
     href: "/tpqa-consultancy",
+    category: "ssg" as const,
   },
   {
     id: "tms",
@@ -73,6 +76,7 @@ export const SERVICES = [
     ],
     accent: "blue" as const,
     href: "/training-management-system",
+    category: "ai" as const,
   },
   {
     id: "lms",
@@ -88,6 +92,7 @@ export const SERVICES = [
     ],
     accent: "cyan" as const,
     href: "/learning-management-system",
+    category: "ai" as const,
   },
   {
     id: "ai",
@@ -103,6 +108,7 @@ export const SERVICES = [
     ],
     accent: "purple" as const,
     href: "/ai-solutions",
+    category: "ai" as const,
   },
 ];
 

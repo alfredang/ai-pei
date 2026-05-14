@@ -20,10 +20,10 @@ async function loadMenu() {
 
 const FALLBACK = [
   { label: "Home", href: "/" },
-  { label: "SSG Services", href: "/#services" },
-  { label: "LMS/TMS", href: "/#ai-lms-tms" },
+  { label: "SSG Services", href: "/#ssg-services" },
+  { label: "AI Services", href: "/#ai-services" },
   { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/#contact" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export async function Navbar() {

@@ -3,13 +3,13 @@ import { db } from "../src/db";
 import { menus, menuItems } from "../src/db/schema";
 
 const ITEMS = [
+  { label: "Home", href: "/" },
+  { label: "SSG Services", href: "/#ssg-services" },
+  { label: "AI Services", href: "/#ai-services" },
   { label: "LMS/TMS", href: "/#ai-lms-tms" },
   { label: "e-Learning", href: "/#e-learning" },
-  { label: "CMS", href: "/#cms" },
-  { label: "SSG Services", href: "/#services" },
-  { label: "Portfolio", href: "https://github.com/alfredang?tab=repositories" },
   { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/#contact" },
+  { label: "Contact", href: "/contact" },
 ];
 
 async function main() {
