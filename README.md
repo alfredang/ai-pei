@@ -3,11 +3,14 @@
 # AI-Powered CMS
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)](https://typescriptlang.org/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)](https://postgresql.org/)
 [![Drizzle](https://img.shields.io/badge/Drizzle-ORM-C5F74F?logo=drizzle)](https://orm.drizzle.team/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Auth.js](https://img.shields.io/badge/Auth.js-v5-EB5424)](https://authjs.dev/)
 [![Anthropic](https://img.shields.io/badge/Claude_Agent_SDK-D4A574?logo=anthropic&logoColor=white)](https://www.anthropic.com/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![License](https://img.shields.io/badge/License-Proprietary-red)](#license)
 
 **A self-hosted, full-stack content management system with a built-in Claude AI agent — for marketing sites, blogs, and lead generation. No per-call API billing.**
@@ -44,16 +47,18 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 | Layer | Technology |
 |----------|-----------|
 | **Framework** | Next.js 16 (App Router, Server Components, Server Actions, Turbopack) |
-| **Language** | TypeScript (strict) |
-| **Database** | PostgreSQL 16 via Drizzle ORM + drizzle-kit |
+| **Runtime** | Node.js 22 (Alpine) · React 19 |
+| **Language** | TypeScript 5 (strict) |
+| **Database** | PostgreSQL 16 via Drizzle ORM 0.36 + drizzle-kit 0.30 |
 | **Auth** | Auth.js v5 (credentials provider + bcrypt, JWT sessions) |
 | **AI (public chatbot)** | Anthropic **Claude Agent SDK** — `CLAUDE_CODE_OAUTH_TOKEN` |
 | **AI (admin assist)** | Anthropic **Claude Agent SDK** — same OAuth token, no per-call billing |
 | **Editor** | TipTap 2 with image upload + slash commands |
-| **Email** | Nodemailer + Gmail OAuth2 |
+| **Email** | Nodemailer + Gmail OAuth2 (via `googleapis`) |
 | **Encryption** | AES-256-GCM (Node `crypto`) for credentials at rest |
-| **UI** | Tailwind CSS 4 (dark + neon theme) · react-icons · custom design tokens |
-| **Deploy** | Coolify (Dockerfile + nixpacks) · standalone Next.js build |
+| **UI** | Tailwind CSS 4 (dark + neon theme) · Framer Motion 12 · react-icons · custom design tokens |
+| **Validation** | Zod 3 |
+| **Deploy** | Coolify · multi-stage `Dockerfile` (Node 22 Alpine) · Next.js `standalone` output |
 
 ## Architecture
 
@@ -81,7 +86,7 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 
 ### Prerequisites
 
-- **Node.js** 20+
+- **Node.js** 22+ (matches the production `Dockerfile`)
 - **PostgreSQL** 15+
 - **Claude subscription** — generate an OAuth token locally with `claude setup-token`
 
@@ -188,15 +193,17 @@ scripts/
 
 ### Coolify (default)
 
+The repo ships with a production-ready multi-stage `Dockerfile` (Node 22 Alpine, Next.js `standalone` output). Coolify builds straight from it — no nixpacks, no Buildpacks.
+
 1. Provision a Postgres service in Coolify and note the `DATABASE_URL`.
-2. Create an application from this repo. Coolify auto-detects nixpacks (or use the `Dockerfile`).
+2. Create an application from this repo — Coolify picks up the `Dockerfile` automatically.
 3. Set the environment variables (see `.env.example`).
 4. First deploy: SSH in and run `npm run db:push && npm run seed:admin`.
 5. Add the custom domain once a staging URL is verified.
 
 ### Other platforms
 
-Standard Next.js standalone build — works on any Node host (Vercel, Railway, Fly.io, Docker).
+Standard Next.js `standalone` build — the same `Dockerfile` runs on any container host (Fly.io, Railway, Render, ECS, Kubernetes). For Vercel, deploy directly without the Dockerfile.
 
 ## Security Notes
 

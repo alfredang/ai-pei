@@ -1,8 +1,0 @@
-[phases.install]
-cmd = "npm install --legacy-peer-deps"
-
-[phases.build]
-cmd = "echo 'Skipping build phase for backend API'"
-
-[start]
-cmd = "node server.js"
