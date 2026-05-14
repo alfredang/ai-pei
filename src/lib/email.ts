@@ -1,6 +1,5 @@
-import nodemailer from "nodemailer";
 import { google } from "googleapis";
-import { getLeadEmailConfig } from "./site-settings";
+import { getLeadEmailConfig, getLeadSourceLabels, resolveSourceLabel } from "./site-settings";
 import { getCredential } from "./secrets";
 
 const OAuth2 = google.auth.OAuth2;
@@ -20,7 +19,7 @@ async function loadGmailCreds() {
   return { user, clientId, clientSecret, refreshToken };
 }
 
-async function createTransporter() {
+async function getGmailClient() {
   const creds = await loadGmailCreds();
   const oauth2Client = new OAuth2(
     creds.clientId,
@@ -28,21 +27,33 @@ async function createTransporter() {
     "https://developers.google.com/oauthplayground",
   );
   oauth2Client.setCredentials({ refresh_token: creds.refreshToken });
-  const tokenResponse = await oauth2Client.getAccessToken();
-  const accessToken = typeof tokenResponse === "string" ? tokenResponse : tokenResponse.token;
-  if (!accessToken) throw new Error("Failed to retrieve Gmail OAuth access token");
+  const gmail = google.gmail({ version: "v1", auth: oauth2Client });
+  return { gmail, user: creds.user };
+}
 
-  return nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      type: "OAuth2",
-      user: creds.user,
-      accessToken,
-      clientId: creds.clientId,
-      clientSecret: creds.clientSecret,
-      refreshToken: creds.refreshToken,
-    },
-  });
+function buildRawMessage(opts: {
+  from: string;
+  to: string;
+  cc?: string[];
+  replyTo: string;
+  subject: string;
+  html: string;
+}): string {
+  const headers = [
+    `From: ${opts.from}`,
+    `To: ${opts.to}`,
+    opts.cc && opts.cc.length ? `Cc: ${opts.cc.join(", ")}` : null,
+    `Reply-To: ${opts.replyTo}`,
+    `Subject: =?UTF-8?B?${Buffer.from(opts.subject, "utf8").toString("base64")}?=`,
+    "MIME-Version: 1.0",
+    'Content-Type: text/html; charset="UTF-8"',
+    "Content-Transfer-Encoding: base64",
+  ]
+    .filter(Boolean)
+    .join("\r\n");
+  const body = Buffer.from(opts.html, "utf8").toString("base64");
+  const raw = `${headers}\r\n\r\n${body}`;
+  return Buffer.from(raw, "utf8").toString("base64url");
 }
 
 export const LEAD_EMAIL_VARIABLES = [
@@ -51,7 +62,8 @@ export const LEAD_EMAIL_VARIABLES = [
   { token: "{PHONE}", description: "Sender's phone (blank if not provided)" },
   { token: "{COMPANY}", description: "Sender's company (blank if not provided)" },
   { token: "{MESSAGE}", description: "The message body" },
-  { token: "{SOURCE}", description: "Where the inquiry came from (blank if not provided)" },
+  { token: "{SOURCE}", description: "Raw source code (e.g. ssg-ato-page)" },
+  { token: "{SOURCE_LABEL}", description: "Friendly source label (e.g. Courseware) — configured below" },
 ] as const;
 
 function renderTemplate(
@@ -59,7 +71,7 @@ function renderTemplate(
   vars: Record<string, string>,
   { escapeHtml }: { escapeHtml: boolean },
 ): string {
-  return tpl.replace(/\{(NAME|EMAIL|PHONE|COMPANY|MESSAGE|SOURCE)\}/g, (_, k) => {
+  return tpl.replace(/\{(NAME|EMAIL|PHONE|COMPANY|MESSAGE|SOURCE_LABEL|SOURCE)\}/g, (_, k) => {
     const v = vars[k] ?? "";
     return escapeHtml ? escape(v) : v;
   });
@@ -73,9 +85,12 @@ export async function sendLeadEmail(lead: {
   message: string;
   source?: string;
 }) {
-  const cfg = await getLeadEmailConfig();
-  const transporter = await createTransporter();
-  const fromUser = await getCredential("gmail_user");
+  const [cfg, labels, gmailClient] = await Promise.all([
+    getLeadEmailConfig(),
+    getLeadSourceLabels(),
+    getGmailClient(),
+  ]);
+  const { gmail, user: fromUser } = gmailClient;
 
   const vars: Record<string, string> = {
     NAME: lead.name,
@@ -84,6 +99,7 @@ export async function sendLeadEmail(lead: {
     COMPANY: lead.company ?? "",
     MESSAGE: lead.message,
     SOURCE: lead.source ?? "",
+    SOURCE_LABEL: resolveSourceLabel(lead.source, labels),
   };
 
   const subject = renderTemplate(cfg.subject, vars, { escapeHtml: false });
@@ -93,13 +109,18 @@ export async function sendLeadEmail(lead: {
     .map((s) => s.trim())
     .filter(Boolean);
 
-  await transporter.sendMail({
+  const raw = buildRawMessage({
     from: `"Tertiary Infotech Academy" <${fromUser}>`,
     to: cfg.to,
-    cc: cc.length ? cc : undefined,
+    cc,
     replyTo: lead.email,
     subject,
     html,
+  });
+
+  await gmail.users.messages.send({
+    userId: "me",
+    requestBody: { raw },
   });
 }
 

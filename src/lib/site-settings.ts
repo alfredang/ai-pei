@@ -42,15 +42,52 @@ export type LeadEmailConfig = {
 export const LEAD_EMAIL_DEFAULTS: LeadEmailConfig = {
   to: "angch@tertiaryinfotech.com",
   cc: "",
-  subject: "New inquiry from {NAME}",
-  body: `<h2>New inquiry from {NAME}</h2>
+  subject: "Lead from {SOURCE_LABEL}: {NAME}",
+  body: `<h2>Lead from {SOURCE_LABEL}</h2>
+<p><strong>Name:</strong> {NAME}</p>
 <p><strong>Email:</strong> <a href="mailto:{EMAIL}">{EMAIL}</a></p>
 <p><strong>Company:</strong> {COMPANY}</p>
 <p><strong>Phone:</strong> {PHONE}</p>
-<p><strong>Source:</strong> {SOURCE}</p>
+<p><strong>Source code:</strong> {SOURCE}</p>
 <hr/>
 <p style="white-space:pre-wrap">{MESSAGE}</p>`,
 };
+
+export const LEAD_SOURCE_LABELS_KEY = "lead_source_labels";
+
+export const DEFAULT_LEAD_SOURCE_LABELS: Record<string, string> = {
+  home: "General",
+  "ssg-ato-page": "Courseware (SSG ATO)",
+  "admin-test-email": "Admin Test",
+};
+
+export async function getLeadSourceLabels(): Promise<Record<string, string>> {
+  try {
+    const rows = await db
+      .select()
+      .from(settings)
+      .where(inArray(settings.key, [LEAD_SOURCE_LABELS_KEY]));
+    const row = rows[0];
+    if (row && row.value && typeof row.value === "object" && !Array.isArray(row.value)) {
+      const out: Record<string, string> = {};
+      for (const [k, v] of Object.entries(row.value as Record<string, unknown>)) {
+        if (typeof v === "string" && v.trim()) out[k] = v.trim();
+      }
+      return Object.keys(out).length ? out : DEFAULT_LEAD_SOURCE_LABELS;
+    }
+  } catch {
+    // fall through
+  }
+  return DEFAULT_LEAD_SOURCE_LABELS;
+}
+
+export function resolveSourceLabel(
+  source: string | undefined | null,
+  labels: Record<string, string>,
+): string {
+  if (!source) return "Unknown";
+  return labels[source] ?? source;
+}
 
 export async function getLeadEmailConfig(): Promise<LeadEmailConfig> {
   try {
