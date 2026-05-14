@@ -12,7 +12,6 @@ const FEATURES: string[] = [
   "AI chatbot — Claude Agent SDK on your subscription OAuth token",
   "Admin AI Assist — Draft, Rewrite, Summarize, Suggest SEO meta (one click)",
   "SEO + JSON-LD built into every route — Organization, Article, Service, FAQPage, LocalBusiness",
-  "Local → Remote DB sync — push menus, settings, pages, posts to production with one command",
 ];
 
 const READY_ITEMS: Array<{ label: string; desc: string }> = [
