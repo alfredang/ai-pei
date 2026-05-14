@@ -71,6 +71,12 @@ export async function runClaudeAssist(
     options: {
       systemPrompt,
       env: buildClaudeEnv(token),
+      // Sonnet 4.6 — faster than Opus, better-quality prose than Haiku, and
+      // does NOT use extended thinking by default, so wall-time stays low.
+      model: "claude-sonnet-4-6",
+      // Belt-and-braces: disable extended thinking explicitly in case any
+      // SDK default ever flips it on.
+      maxThinkingTokens: 0,
       maxTurns: 1,
       allowedTools: [],
       disallowedTools: ["Bash", "Read", "Write", "Edit", "Glob", "Grep", "WebSearch", "WebFetch"],
