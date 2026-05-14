@@ -253,6 +253,62 @@ export async function getHomepageCopy(): Promise<HomepageCopy> {
   }
 }
 
+// --- Hero KPI cards (editable in /admin/settings/homepage) ----------------
+
+export type HeroKpi = {
+  value: string;
+  label: string;
+  sublabel?: string;
+  /** Optional href — internal route or external URL. */
+  href?: string;
+};
+
+export const HERO_KPI_DEFAULTS: HeroKpi[] = [
+  {
+    value: "1,000+",
+    label: "SSG Services",
+    sublabel: "WSQ · IBF · CASL · ATO · TPQA",
+    href: "/#services",
+  },
+  {
+    value: "10+",
+    label: "LMS & TMS Setup",
+    sublabel: "SSG RTP · E-Learning",
+    href: "/real-clients",
+  },
+  {
+    value: "50+",
+    label: "Open-Source EdTools",
+    sublabel: "Live Poll · Whiteboard · Flashcard",
+    href: "https://github.com/alfredang?tab=repositories",
+  },
+  {
+    value: "10+",
+    label: "AI Agents Deployed",
+    sublabel: "OpenClaw · Hermes Agent · Nebula",
+    href: "/ai-solutions",
+  },
+];
+
+export async function getHeroKpis(): Promise<HeroKpi[]> {
+  try {
+    const [row] = await db
+      .select()
+      .from(settings)
+      .where(inArray(settings.key, ["hero_kpis"] as unknown as string[]));
+    if (!row) return HERO_KPI_DEFAULTS;
+    const v = row.value;
+    if (Array.isArray(v) && v.length > 0) {
+      return (v as HeroKpi[]).filter(
+        (k) => k && typeof k.value === "string" && typeof k.label === "string",
+      );
+    }
+    return HERO_KPI_DEFAULTS;
+  } catch {
+    return HERO_KPI_DEFAULTS;
+  }
+}
+
 export async function getSocialLinks(): Promise<SocialLink[]> {
   try {
     const [row] = await db

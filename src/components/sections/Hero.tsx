@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { HiArrowUpRight } from "react-icons/hi2";
-import { getHomepageCopy } from "@/lib/site-settings";
+import { getHomepageCopy, getHeroKpis } from "@/lib/site-settings";
 
 export async function Hero() {
-  const copy = await getHomepageCopy();
+  const [copy, kpis] = await Promise.all([getHomepageCopy(), getHeroKpis()]);
   return (
     <section
       id="home"
@@ -109,14 +109,9 @@ export async function Hero() {
         <div className="flex-1" />
 
         <div className="reveal reveal-d4 grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5 border border-white/10 rounded-xl overflow-hidden max-w-[1400px]">
-          <Stat
-            label="Open-source EdTools"
-            value="50+"
-            href="https://github.com/alfredang?tab=repositories"
-          />
-          <Stat label="Courses delivered" value="1,200+" />
-          <Stat label="Years building TMS" value="12" />
-          <Stat label="AI agents deployed" value="60+" />
+          {kpis.map((k, i) => (
+            <Stat key={`${k.label}-${i}`} {...k} />
+          ))}
         </div>
       </Container>
     </section>
@@ -126,29 +121,44 @@ export async function Hero() {
 function Stat({
   label,
   value,
+  sublabel,
   href,
 }: {
   label: string;
   value: string;
+  sublabel?: string;
   href?: string;
 }) {
+  const isExternal = href?.startsWith("http");
   const body = (
     <>
-      <div className="flex items-start justify-between gap-2">
-        <div className="font-display text-3xl md:text-4xl font-extrabold text-white">{value}</div>
+      <div className="relative flex items-baseline justify-center gap-2">
+        <div className="font-display text-4xl md:text-5xl font-extrabold text-white leading-none">
+          {value}
+        </div>
         {href && (
-          <HiArrowUpRight className="w-4 h-4 text-(--color-cyan) opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" />
+          <HiArrowUpRight className="absolute right-0 top-0 w-4 h-4 text-(--color-cyan) opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" />
         )}
       </div>
-      <div className="kicker mt-1 text-white/60 group-hover:text-(--color-cyan) transition">{label}</div>
+      <div className="kicker mt-3 text-white/65 group-hover:text-(--color-cyan) transition">
+        {label}
+      </div>
+      {sublabel && (
+        <div className="mt-1.5 text-[11px] text-white/45 leading-snug">{sublabel}</div>
+      )}
     </>
   );
 
   const cls =
-    "group block bg-(--color-bg-elevated) px-5 py-6 hover:bg-(--color-bg-elevated)/70 transition";
+    "group block bg-(--color-bg-elevated) px-5 py-8 md:py-10 text-center hover:bg-(--color-bg-elevated)/70 transition";
 
   return href ? (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>
+    <a
+      href={href}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noopener noreferrer" : undefined}
+      className={cls}
+    >
       {body}
     </a>
   ) : (

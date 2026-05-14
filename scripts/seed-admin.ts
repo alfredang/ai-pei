@@ -89,6 +89,22 @@ async function main() {
       },
       { platform: "whatsapp", href: "https://wa.me/6588666375", label: "WhatsApp" },
     ],
+    hero_kpis: [
+      { value: "1,000+", label: "SSG Services", sublabel: "WSQ · IBF · CASL · ATO · TPQA", href: "/#services" },
+      { value: "10+", label: "LMS & TMS Setup", sublabel: "SSG RTP · E-Learning", href: "/real-clients" },
+      {
+        value: "50+",
+        label: "Open-Source EdTools",
+        sublabel: "Live Poll · Whiteboard · Flashcard",
+        href: "https://github.com/alfredang?tab=repositories",
+      },
+      {
+        value: "10+",
+        label: "AI Agents Deployed",
+        sublabel: "OpenClaw · Hermes Agent · Nebula",
+        href: "/ai-solutions",
+      },
+    ],
   };
   for (const [key, value] of Object.entries(defaults)) {
     await db

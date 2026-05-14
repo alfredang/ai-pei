@@ -3,7 +3,13 @@ import { settings } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { SavedToast } from "@/app/admin/_components/SavedToast";
-import { HOMEPAGE_COPY_DEFAULTS } from "@/lib/site-settings";
+import {
+  HOMEPAGE_COPY_DEFAULTS,
+  HERO_KPI_DEFAULTS,
+  type HeroKpi,
+} from "@/lib/site-settings";
+
+const MAX_KPIS = 4;
 
 type Field = {
   key: string;
@@ -63,6 +69,12 @@ export default async function HomepageCopyPage() {
   const rows = await db.select().from(settings);
   const map = new Map(rows.map((s) => [s.key, s.value]));
 
+  const storedKpis = map.get("hero_kpis");
+  const kpis: HeroKpi[] = Array.isArray(storedKpis)
+    ? (storedKpis as HeroKpi[])
+    : HERO_KPI_DEFAULTS;
+  const kpiSlots: (HeroKpi | null)[] = Array.from({ length: MAX_KPIS }, (_, i) => kpis[i] ?? null);
+
   async function save(formData: FormData) {
     "use server";
     for (const f of FIELDS) {
@@ -75,6 +87,29 @@ export default async function HomepageCopyPage() {
           set: { value: v as unknown as object, updatedAt: new Date() },
         });
     }
+    // hero KPI cards
+    const heroKpis: HeroKpi[] = [];
+    for (let i = 0; i < MAX_KPIS; i++) {
+      const value = String(formData.get(`kpi_${i}_value`) ?? "").trim();
+      const label = String(formData.get(`kpi_${i}_label`) ?? "").trim();
+      const sublabel = String(formData.get(`kpi_${i}_sublabel`) ?? "").trim();
+      const href = String(formData.get(`kpi_${i}_href`) ?? "").trim();
+      if (value && label) {
+        heroKpis.push({
+          value,
+          label,
+          sublabel: sublabel || undefined,
+          href: href || undefined,
+        });
+      }
+    }
+    await db
+      .insert(settings)
+      .values({ key: "hero_kpis", value: heroKpis as unknown as object })
+      .onConflictDoUpdate({
+        target: settings.key,
+        set: { value: heroKpis as unknown as object, updatedAt: new Date() },
+      });
     revalidatePath("/admin/settings/homepage");
     revalidatePath("/");
     redirect("/admin/settings/homepage?saved=1");
@@ -124,6 +159,54 @@ export default async function HomepageCopyPage() {
             </div>
           </div>
         ))}
+        {/* Hero KPI cards */}
+        <div className="glass p-6 space-y-5">
+          <div>
+            <h3 className="font-display font-bold text-base">Hero KPI cards</h3>
+            <p className="text-xs text-(--color-muted) mt-1">
+              Four stat cards under the hero CTAs. Leave a row blank to hide it.
+              Optional href can be an internal path (e.g. <code>/#services</code>) or external URL.
+            </p>
+          </div>
+          <div className="space-y-3">
+            {kpiSlots.map((slot, i) => (
+              <div
+                key={i}
+                className="grid grid-cols-1 md:grid-cols-[110px_1fr_1.5fr_180px] gap-3"
+              >
+                <input
+                  name={`kpi_${i}_value`}
+                  type="text"
+                  defaultValue={slot?.value ?? ""}
+                  placeholder="1,000+"
+                  className="px-3 py-2.5 bg-white/3 border border-white/10 rounded-lg focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition text-sm font-display font-semibold"
+                />
+                <input
+                  name={`kpi_${i}_label`}
+                  type="text"
+                  defaultValue={slot?.label ?? ""}
+                  placeholder="SSG Services"
+                  className="px-3 py-2.5 bg-white/3 border border-white/10 rounded-lg focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition text-sm"
+                />
+                <input
+                  name={`kpi_${i}_sublabel`}
+                  type="text"
+                  defaultValue={slot?.sublabel ?? ""}
+                  placeholder="WSQ · IBF · CASL · ATO · TPQA"
+                  className="px-3 py-2.5 bg-white/3 border border-white/10 rounded-lg focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition text-sm"
+                />
+                <input
+                  name={`kpi_${i}_href`}
+                  type="text"
+                  defaultValue={slot?.href ?? ""}
+                  placeholder="/#services"
+                  className="px-3 py-2.5 bg-white/3 border border-white/10 rounded-lg focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition text-sm font-mono"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
         <div className="flex items-center justify-end pt-4">
           <button className="btn-primary">Save</button>
         </div>
