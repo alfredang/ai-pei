@@ -278,13 +278,23 @@ export function PostEditorForm({ initial, save, kind }: Props) {
         )}
         {kind === "post" && (
           <div className="glass rounded-xl p-4 space-y-2">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-2">
               <h3 className="font-bold">Featured image</h3>
-              {imageLoading && (
-                <span className="text-xs text-(--color-purple) animate-pulse">
-                  ✨ Fetching image…
-                </span>
-              )}
+              <button
+                type="button"
+                disabled={imageLoading || !data.title}
+                onClick={() =>
+                  fetchAndApplyImage(
+                    data.title,
+                    data.slug,
+                    data.suggestedCategorySlug?.replace(/-/g, " "),
+                  )
+                }
+                className="px-3 py-1.5 text-xs rounded bg-gradient-to-r from-(--color-purple) to-(--color-cyan) hover:opacity-90 disabled:opacity-40 font-medium"
+                title={data.title ? "Generate a branded SVG cover image from the current title" : "Add a title first"}
+              >
+                {imageLoading ? "✨ Generating…" : "✨ AI Regenerate Image"}
+              </button>
             </div>
             <input
               value={data.featuredImage}
