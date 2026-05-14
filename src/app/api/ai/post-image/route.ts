@@ -29,8 +29,11 @@ function escapeXml(s: string): string {
     .replace(/'/g, "&apos;");
 }
 
-/** Break a title into up to 3 lines, ~26 chars per line. */
-function wrapTitle(title: string, maxCharsPerLine = 26, maxLines = 3): string[] {
+const PADDING_X = 100;
+const SAFE_TEXT_WIDTH = WIDTH - PADDING_X * 2; // 1000px usable
+
+/** Break a title into 1-3 lines, balancing line length. */
+function wrapTitle(title: string, maxCharsPerLine: number, maxLines = 3): string[] {
   const words = title.trim().split(/\s+/);
   const lines: string[] = [];
   let current = "";
@@ -54,18 +57,44 @@ function wrapTitle(title: string, maxCharsPerLine = 26, maxLines = 3): string[] 
   return lines;
 }
 
+/**
+ * Pick the largest font size where every line of the title still fits within
+ * SAFE_TEXT_WIDTH. Uses a rough char-width estimate (0.55 × font-size for a
+ * bold sans-serif). libvips's SVG renderer doesn't have Inter installed —
+ * it falls back to its default sans, which is wider than Inter — so we have
+ * to be conservative.
+ */
+function fitFontSize(title: string): { fontSize: number; lineHeight: number; lines: string[] } {
+  // Try font sizes from largest to smallest. For each, compute how many
+  // chars fit and re-wrap accordingly.
+  const candidates = [80, 72, 64, 56, 48, 42, 36];
+  const charWidthRatio = 0.58; // bold sans glyph width / font-size
+  for (const fs of candidates) {
+    const maxChars = Math.floor(SAFE_TEXT_WIDTH / (fs * charWidthRatio));
+    const lines = wrapTitle(title, maxChars, 3);
+    const longest = Math.max(...lines.map((l) => l.length));
+    if (longest * fs * charWidthRatio <= SAFE_TEXT_WIDTH) {
+      return { fontSize: fs, lineHeight: Math.round(fs * 1.15), lines };
+    }
+  }
+  // Fallback — smallest size, hard-wrap.
+  const fs = 32;
+  const maxChars = Math.floor(SAFE_TEXT_WIDTH / (fs * charWidthRatio));
+  const lines = wrapTitle(title, maxChars, 3);
+  return { fontSize: fs, lineHeight: Math.round(fs * 1.15), lines };
+}
+
 function buildSvg(title: string, kicker?: string): string {
-  const lines = wrapTitle(title);
-  const lineHeight = 84;
+  const { fontSize, lineHeight, lines } = fitFontSize(title);
   const totalTextHeight = lines.length * lineHeight;
-  const startY = (HEIGHT - totalTextHeight) / 2 + 60;
+  const startY = (HEIGHT - totalTextHeight) / 2 + fontSize * 0.8;
 
   const titleTspans = lines
-    .map((line, i) => `<tspan x="80" dy="${i === 0 ? 0 : lineHeight}">${escapeXml(line)}</tspan>`)
+    .map((line, i) => `<tspan x="${PADDING_X}" dy="${i === 0 ? 0 : lineHeight}">${escapeXml(line)}</tspan>`)
     .join("");
 
   const kickerEl = kicker
-    ? `<text x="80" y="${startY - 60}" fill="#59EBFD" font-family="JetBrains Mono, Menlo, monospace" font-size="20" letter-spacing="4">[ ${escapeXml(kicker.toUpperCase())} ]</text>`
+    ? `<text x="${PADDING_X}" y="${startY - fontSize - 20}" fill="#59EBFD" font-family="monospace" font-size="20" letter-spacing="4">[ ${escapeXml(kicker.toUpperCase())} ]</text>`
     : "";
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}">
@@ -97,14 +126,14 @@ function buildSvg(title: string, kicker?: string): string {
   <rect width="${WIDTH}" height="${HEIGHT}" fill="url(#glow2)"/>
   <line x1="0" y1="0" x2="${WIDTH}" y2="0" stroke="#59EBFD" stroke-width="2" stroke-opacity="0.4"/>
   ${kickerEl}
-  <text x="80" y="${startY}" fill="url(#text)" font-family="Inter, -apple-system, system-ui, sans-serif" font-size="68" font-weight="800" letter-spacing="-1.5">
+  <text x="${PADDING_X}" y="${startY}" fill="url(#text)" font-family="sans-serif" font-size="${fontSize}" font-weight="800" letter-spacing="-1">
     ${titleTspans}
   </text>
-  <g transform="translate(80, ${HEIGHT - 70})">
+  <g transform="translate(${PADDING_X}, ${HEIGHT - 75})">
     <rect width="48" height="48" rx="8" fill="url(#glow1)" stroke="#5C00E5" stroke-opacity="0.6"/>
-    <text x="24" y="32" fill="#ffffff" font-family="JetBrains Mono, monospace" font-size="20" font-weight="700" text-anchor="middle">TI</text>
-    <text x="68" y="22" fill="#ffffff" font-family="Inter, sans-serif" font-size="18" font-weight="600">Tertiary Infotech Academy</text>
-    <text x="68" y="42" fill="#59EBFD" font-family="JetBrains Mono, monospace" font-size="13" letter-spacing="1.5">tertiaryinfotech.com</text>
+    <text x="24" y="32" fill="#ffffff" font-family="monospace" font-size="20" font-weight="700" text-anchor="middle">TI</text>
+    <text x="64" y="22" fill="#ffffff" font-family="sans-serif" font-size="18" font-weight="600">Tertiary Infotech Academy</text>
+    <text x="64" y="42" fill="#59EBFD" font-family="monospace" font-size="13" letter-spacing="1.5">tertiaryinfotech.com</text>
   </g>
 </svg>`;
 }
