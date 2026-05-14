@@ -23,19 +23,18 @@
 
 ## About
 
-AI-Powered CMS is a production-grade headless-ish CMS built on Next.js 16. It ships with a TipTap rich editor, a multi-tenant-ready taxonomy (pages, posts, categories, tags, menus, media, leads, redirects), an encrypted credentials vault, a configurable public AI chatbot (**NEMO**), and admin **AI Assist** buttons — all driven by your **Claude subscription OAuth token** through the official Claude Agent SDK. No metered API key required.
+AI-Powered CMS is a production-grade headless-ish CMS built on Next.js 16. It ships with a TipTap rich editor, a multi-tenant-ready taxonomy (pages, posts, categories, tags, menus, media, leads, redirects), an encrypted credentials vault, a configurable public AI chatbot (**AI Chatbot**), and admin **AI Assist** buttons — all driven by your **Claude subscription OAuth token** through the official Claude Agent SDK. No metered API key required.
 
 Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Ltd, the codebase is structured to be re-used as a starting point for any marketing site that needs a real CMS plus AI authoring.
 
 ## Key Features
 
 - **Public site builder** — Hero, flagship-product showcases, services, FAQ, blog, lead-capture, all driven by Postgres
-- **NEMO chatbot** — public Claude Agent SDK chatbot, system prompt + FAQ editable from the admin
+- **AI chatbot** — public Claude Agent SDK chatbot, system prompt + FAQ editable from the admin
 - **Admin AI Assist** — `Draft post`, `Rewrite`, `Summarize`, `Suggest SEO meta` powered by Claude Agent SDK
 - **TipTap rich editor** with image upload, slash commands, image alt-text, draft / published / archived states
 - **Pages + Posts + Categories + Tags + Menus + Media + Leads + Redirects + Settings** — all CRUD in `/admin`
 - **Encrypted credentials vault** — AES-256-GCM at rest for Anthropic OAuth, Firecrawl, Tavily
-- **Filterable, paginated post & page list** — search, status filter, color-coded status pills, 20/page
 - **Auth.js v5** — credentials provider with bcrypt, JWT sessions, middleware-protected `/admin/*`
 - **SEO out of the box** — per-route `generateMetadata`, JSON-LD Article schema, dynamic sitemap & robots, canonical & OG tags
 - **WordPress migration** — `scripts/migrate-wp.ts` parses a `wp_*` SQL dump, downloads images, rewrites `<img src>`, preserves Yoast/RankMath SEO, writes 301 redirects from old slugs
@@ -66,7 +65,7 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 ┌────────────────────────────────────────────────────────────────────┐
 │                       Public site (Next.js)                        │
 │   Hero · LMS/TMS showcase · e-Learning · Services · Blog · Leads   │
-│   NEMO chatbot widget (Claude Agent SDK · OAuth subscription)      │
+│   AI chatbot widget (Claude Agent SDK · OAuth subscription)      │
 └────────────────────────────┬───────────────────────────────────────┘
                              │
 ┌────────────────────────────▼───────────────────────────────────────┐
@@ -117,14 +116,14 @@ npm run migrate:wp    # parses a wp_*.sql dump, imports posts/pages,
                       # downloads images, writes 301 redirects
 ```
 
-## Configuring NEMO (public chatbot)
+## Configuring AI Chatbot (public chatbot)
 
 1. Generate a Claude OAuth subscription token: `claude setup-token`
 2. In the admin, go to **Settings → Credentials** and paste the `sk-ant-oat-…` token
 3. Open **Settings → Chatbot** and edit the **system prompt** and **FAQ** entries
 4. The widget on the public site uses `query()` from `@anthropic-ai/claude-agent-sdk`, authenticated via `CLAUDE_CODE_OAUTH_TOKEN`
 
-> NEMO uses the bundled native Claude binary shipped with the Agent SDK, so no separate `claude` CLI install is required.
+> The AI chatbot uses the bundled native Claude binary shipped with the Agent SDK, so no separate `claude` CLI install is required.
 
 ## Folder Layout
 
@@ -145,12 +144,12 @@ src/
       settings/
         page.tsx              General (site title, tagline, contact email)
         company/              Brand identity (short name, full name, logo)
-        chatbot/              NEMO system prompt + FAQ editor
+        chatbot/              AI Chatbot system prompt + FAQ editor
         credentials/          Encrypted credentials vault
     api/
       auth/[...nextauth]/     NextAuth handlers
       contact/                Lead form + Gmail OAuth2 email
-      chat/                   NEMO — Claude Agent SDK
+      chat/                   AI Chatbot — Claude Agent SDK
       ai/assist/              Admin AI Assist — Claude Agent SDK
       credentials/            Encrypted credentials CRUD
       upload/                 Media upload
@@ -160,12 +159,12 @@ src/
     layout/                   Navbar, Footer (DB-driven menus), Container
     sections/                 Hero · AILmsTmsShowcase · ELearningShowcase · EdToolsShowcase · Services · WhyChooseUs · FeaturedPosts · ContactForm
     admin/                    Editor, PostEditorForm, AIAssistButton, MediaUploader, CredentialsForm
-    ui/                       ChatBot (NEMO)
+    ui/                       ChatBot (AI Chatbot)
   db/                         Drizzle schema + connection
   lib/
     auth.ts                   Auth.js v5 setup
     anthropic-auth.ts         buildClaudeEnv() for the Agent SDK subprocess
-    chatbot-settings.ts       NEMO system prompt + FAQ read/write
+    chatbot-settings.ts       AI Chatbot system prompt + FAQ read/write
     secrets.ts                AES-256-GCM credentials vault
     site-content.ts           Static feature copy
     site-settings.ts          Brand identity loader
@@ -209,7 +208,7 @@ Standard Next.js `standalone` build — the same `Dockerfile` runs on any contai
 
 - **Credentials at rest**: every value stored in the credentials vault is encrypted with AES-256-GCM, keyed off `AUTH_SECRET` (SHA-256). Plaintext is never returned to the browser once saved.
 - **Admin auth**: `/admin/*` is protected by Auth.js middleware; non-`/admin/login` requests without a session redirect to login.
-- **NEMO**: the chatbot never sees the OAuth token client-side — the token is read server-side and injected into the Agent SDK subprocess env.
+- **AI Chatbot**: the chatbot never sees the OAuth token client-side — the token is read server-side and injected into the Agent SDK subprocess env.
 
 ## License
 

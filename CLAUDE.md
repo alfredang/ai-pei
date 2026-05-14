@@ -76,7 +76,7 @@ To extend the sync surface to a new table, follow the pattern in [.claude/skills
 
 ### AI features run through the Claude Agent SDK with OAuth subscription auth
 
-Both the public NEMO chatbot ([src/app/api/chat](src/app/api/chat)) and the admin AI Assist buttons ([src/app/api/ai/assist](src/app/api/ai/assist)) use `@anthropic-ai/claude-agent-sdk` rather than the metered Anthropic API. The `anthropic_auth_token` (an `sk-ant-oat-...` OAuth subscription token from `claude setup-token`) is read via `getCredential()` and injected into the SDK subprocess env by [src/lib/anthropic-auth.ts](src/lib/anthropic-auth.ts) — it's never exposed to the browser. No per-call API billing.
+Both the public AI chatbot ([src/app/api/chat](src/app/api/chat)) and the admin AI Assist buttons ([src/app/api/ai/assist](src/app/api/ai/assist)) use `@anthropic-ai/claude-agent-sdk` rather than the metered Anthropic API. The `anthropic_auth_token` (an `sk-ant-oat-...` OAuth subscription token from `claude setup-token`) is read via `getCredential()` and injected into the SDK subprocess env by [src/lib/anthropic-auth.ts](src/lib/anthropic-auth.ts) — it's never exposed to the browser. No per-call API billing.
 
 ### Public route layout & SEO
 

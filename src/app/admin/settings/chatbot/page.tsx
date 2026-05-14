@@ -45,15 +45,15 @@ export default async function ChatbotSettingsPage() {
     <div className="space-y-8">
       <SavedToast />
       <div>
-        <h2 className="font-display text-xl font-bold">NEMO chatbot</h2>
+        <h2 className="font-display text-xl font-bold">AI chatbot</h2>
         <p className="text-sm text-(--color-muted) mt-1">
-          Configure NEMO, the public site assistant powered by the Claude Agent SDK and your
+          Configure AI Chatbot, the public site assistant powered by the Claude Agent SDK and your
           subscription OAuth token. Edit the system prompt that defines its persona and add
           FAQ entries that the agent will reference when replying.
         </p>
         {!claudeReady && (
           <div className="mt-3 rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
-            ⚠ No Claude OAuth subscription token configured. NEMO will return a 503
+            ⚠ No Claude OAuth subscription token configured. AI Chatbot will return a 503
             until you add one in{" "}
             <a className="underline" href="/admin/settings/credentials">
               Settings → Credentials

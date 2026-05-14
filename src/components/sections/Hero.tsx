@@ -123,13 +123,16 @@ function Stat({
   value,
   sublabel,
   href,
+  openInNewTab,
 }: {
   label: string;
   value: string;
   sublabel?: string;
   href?: string;
+  openInNewTab?: boolean;
 }) {
   const isExternal = href?.startsWith("http");
+  const newTab = openInNewTab || isExternal;
   const body = (
     <>
       <div className="relative flex items-baseline justify-center gap-2">
@@ -140,7 +143,7 @@ function Stat({
           <HiArrowUpRight className="absolute right-0 top-0 w-4 h-4 text-(--color-cyan) opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" />
         )}
       </div>
-      <div className="kicker mt-3 text-white/65 group-hover:text-(--color-cyan) transition">
+      <div className="kicker mt-2.5 text-white/65 group-hover:text-(--color-cyan) transition">
         {label}
       </div>
       {sublabel && (
@@ -150,13 +153,13 @@ function Stat({
   );
 
   const cls =
-    "group block bg-(--color-bg-elevated) px-5 py-8 md:py-10 text-center hover:bg-(--color-bg-elevated)/70 transition";
+    "group block bg-(--color-bg-elevated) px-5 py-6 md:py-7 text-center hover:bg-(--color-bg-elevated)/70 transition";
 
   return href ? (
     <a
       href={href}
-      target={isExternal ? "_blank" : undefined}
-      rel={isExternal ? "noopener noreferrer" : undefined}
+      target={newTab ? "_blank" : undefined}
+      rel={newTab ? "noopener noreferrer" : undefined}
       className={cls}
     >
       {body}

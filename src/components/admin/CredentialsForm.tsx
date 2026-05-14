@@ -19,7 +19,7 @@ const FIELDS: Record<
 > = {
   anthropic_auth_token: {
     label: "Claude (Anthropic) — OAuth subscription token",
-    hint: "Generate locally with `claude setup-token`. Powers admin AI Assist and the NEMO chatbot via the Claude Agent SDK.",
+    hint: "Generate locally with `claude setup-token`. Powers admin AI Assist and the AI chatbot via the Claude Agent SDK.",
     placeholder: "sk-ant-oat01-…",
   },
   firecrawl_api_key: {

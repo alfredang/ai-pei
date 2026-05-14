@@ -16,7 +16,7 @@ const FEATURES: string[] = [
   "DB-driven header + footer menus — visual menu builder",
   "AI-assisted Blog and Pages drafting — Claude generates full posts and pages on demand",
   "Lead inbox — every contact-form submission emails sales via Gmail OAuth2",
-  "NEMO chatbot — Claude Agent SDK on your subscription OAuth token",
+  "AI chatbot — Claude Agent SDK on your subscription OAuth token",
   "Admin AI Assist — Draft, Rewrite, Summarize, Suggest SEO meta (one click)",
 ];
 
@@ -37,7 +37,7 @@ const PILLARS: Array<{
   },
   {
     icon: HiCpuChip,
-    label: "NEMO Chatbot",
+    label: "AI Chatbot Chatbot",
     desc: "Configurable system prompt + FAQ · OAuth token",
   },
   {

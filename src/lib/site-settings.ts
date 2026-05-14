@@ -261,6 +261,8 @@ export type HeroKpi = {
   sublabel?: string;
   /** Optional href — internal route or external URL. */
   href?: string;
+  /** When true the link opens in a new tab (always implicit for http* URLs). */
+  openInNewTab?: boolean;
 };
 
 export const HERO_KPI_DEFAULTS: HeroKpi[] = [
@@ -275,6 +277,7 @@ export const HERO_KPI_DEFAULTS: HeroKpi[] = [
     label: "LMS & TMS Setup",
     sublabel: "SSG RTP · E-Learning",
     href: "/real-clients",
+    openInNewTab: true,
   },
   {
     value: "50+",

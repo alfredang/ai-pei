@@ -94,12 +94,14 @@ export default async function HomepageCopyPage() {
       const label = String(formData.get(`kpi_${i}_label`) ?? "").trim();
       const sublabel = String(formData.get(`kpi_${i}_sublabel`) ?? "").trim();
       const href = String(formData.get(`kpi_${i}_href`) ?? "").trim();
+      const openInNewTab = formData.get(`kpi_${i}_new_tab`) === "on";
       if (value && label) {
         heroKpis.push({
           value,
           label,
           sublabel: sublabel || undefined,
           href: href || undefined,
+          openInNewTab: openInNewTab || undefined,
         });
       }
     }
@@ -170,38 +172,46 @@ export default async function HomepageCopyPage() {
           </div>
           <div className="space-y-3">
             {kpiSlots.map((slot, i) => (
-              <div
-                key={i}
-                className="grid grid-cols-1 md:grid-cols-[110px_1fr_1.5fr_180px] gap-3"
-              >
-                <input
-                  name={`kpi_${i}_value`}
-                  type="text"
-                  defaultValue={slot?.value ?? ""}
-                  placeholder="1,000+"
-                  className="px-3 py-2.5 bg-white/3 border border-white/10 rounded-lg focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition text-sm font-display font-semibold"
-                />
-                <input
-                  name={`kpi_${i}_label`}
-                  type="text"
-                  defaultValue={slot?.label ?? ""}
-                  placeholder="SSG Services"
-                  className="px-3 py-2.5 bg-white/3 border border-white/10 rounded-lg focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition text-sm"
-                />
-                <input
-                  name={`kpi_${i}_sublabel`}
-                  type="text"
-                  defaultValue={slot?.sublabel ?? ""}
-                  placeholder="WSQ · IBF · CASL · ATO · TPQA"
-                  className="px-3 py-2.5 bg-white/3 border border-white/10 rounded-lg focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition text-sm"
-                />
-                <input
-                  name={`kpi_${i}_href`}
-                  type="text"
-                  defaultValue={slot?.href ?? ""}
-                  placeholder="/#services"
-                  className="px-3 py-2.5 bg-white/3 border border-white/10 rounded-lg focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition text-sm font-mono"
-                />
+              <div key={i} className="space-y-2">
+                <div className="grid grid-cols-1 md:grid-cols-[110px_1fr_1.5fr_180px] gap-3">
+                  <input
+                    name={`kpi_${i}_value`}
+                    type="text"
+                    defaultValue={slot?.value ?? ""}
+                    placeholder="1,000+"
+                    className="px-3 py-2.5 bg-white/3 border border-white/10 rounded-lg focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition text-sm font-display font-semibold"
+                  />
+                  <input
+                    name={`kpi_${i}_label`}
+                    type="text"
+                    defaultValue={slot?.label ?? ""}
+                    placeholder="SSG Services"
+                    className="px-3 py-2.5 bg-white/3 border border-white/10 rounded-lg focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition text-sm"
+                  />
+                  <input
+                    name={`kpi_${i}_sublabel`}
+                    type="text"
+                    defaultValue={slot?.sublabel ?? ""}
+                    placeholder="WSQ · IBF · CASL · ATO · TPQA"
+                    className="px-3 py-2.5 bg-white/3 border border-white/10 rounded-lg focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition text-sm"
+                  />
+                  <input
+                    name={`kpi_${i}_href`}
+                    type="text"
+                    defaultValue={slot?.href ?? ""}
+                    placeholder="/#services"
+                    className="px-3 py-2.5 bg-white/3 border border-white/10 rounded-lg focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition text-sm font-mono"
+                  />
+                </div>
+                <label className="inline-flex items-center gap-2 text-xs text-(--color-muted) ml-1">
+                  <input
+                    type="checkbox"
+                    name={`kpi_${i}_new_tab`}
+                    defaultChecked={slot?.openInNewTab ?? false}
+                    className="accent-(--color-cyan)"
+                  />
+                  Open in new tab
+                </label>
               </div>
             ))}
           </div>
