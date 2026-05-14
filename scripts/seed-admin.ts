@@ -69,7 +69,7 @@ async function main() {
   const defaults: Record<string, unknown> = {
     site_title: "Tertiary Infotech",
     tagline: "AI-LMS-TMS for WSQ & TPQA Compliance",
-    contact_email: process.env.LEAD_NOTIFICATION_EMAIL ?? "sales@tertiarycourses.com.sg",
+    contact_email: "sales@tertiarycourses.com.sg",
     social: {
       linkedin: "https://www.linkedin.com/company/tertiary-courses",
       facebook: "",

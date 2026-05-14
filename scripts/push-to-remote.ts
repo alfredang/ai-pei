@@ -35,20 +35,32 @@ const ORDER: Resource[] = ["taxonomy", "settings", "menus", "pages", "posts"];
 
 function getEnv() {
   const baseUrl = process.env.REMOTE_SYNC_URL?.replace(/\/$/, "");
-  const token = process.env.SYNC_API_TOKEN;
   if (!baseUrl)
     throw new Error("REMOTE_SYNC_URL is not set (e.g. https://www.tertiaryinfotech.com)");
-  if (!token) throw new Error("SYNC_API_TOKEN is not set");
-  return { baseUrl, token };
+  const token = process.env.SYNC_API_TOKEN;
+  const email = process.env.ADMIN_EMAIL;
+  const password = process.env.ADMIN_PASSWORD;
+  // Prefer bearer token when configured; otherwise use admin Basic auth.
+  let auth: string;
+  if (token) {
+    auth = `Bearer ${token}`;
+  } else if (email && password) {
+    auth = `Basic ${Buffer.from(`${email}:${password}`).toString("base64")}`;
+  } else {
+    throw new Error(
+      "Auth missing: set SYNC_API_TOKEN, or ADMIN_EMAIL + ADMIN_PASSWORD, in .env",
+    );
+  }
+  return { baseUrl, auth };
 }
 
 async function postJson(path: string, body: unknown) {
-  const { baseUrl, token } = getEnv();
+  const { baseUrl, auth } = getEnv();
   const res = await fetch(`${baseUrl}${path}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: auth,
     },
     body: JSON.stringify(body),
   });

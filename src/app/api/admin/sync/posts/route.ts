@@ -50,7 +50,7 @@ async function resolveTagIds(slugs: string[]) {
 }
 
 export async function POST(req: Request) {
-  if (!syncAuthorized(req)) {
+  if (!(await syncAuthorized(req))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   const parsed = payloadSchema.safeParse(await req.json().catch(() => null));

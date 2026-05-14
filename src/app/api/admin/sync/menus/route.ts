@@ -18,7 +18,7 @@ const payloadSchema = z.object({
 });
 
 export async function POST(req: Request) {
-  if (!syncAuthorized(req)) {
+  if (!(await syncAuthorized(req))) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
