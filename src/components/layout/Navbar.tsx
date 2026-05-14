@@ -4,7 +4,9 @@ import { menus, menuItems } from "@/db/schema";
 import { eq, asc } from "drizzle-orm";
 import { Container } from "./Container";
 import { MobileMenu } from "./MobileMenu";
-import { getSiteBrand } from "@/lib/site-settings";
+import { getSiteBrand, getCompanyContact } from "@/lib/site-settings";
+import { FaWhatsapp } from "react-icons/fa6";
+import { HiPhone } from "react-icons/hi2";
 
 async function loadMenu() {
   try {
@@ -25,7 +27,11 @@ const FALLBACK = [
 ];
 
 export async function Navbar() {
-  const [items, brand] = await Promise.all([loadMenu(), getSiteBrand()]);
+  const [items, brand, contact] = await Promise.all([
+    loadMenu(),
+    getSiteBrand(),
+    getCompanyContact(),
+  ]);
   const links = items.length > 0 ? items : FALLBACK;
 
   return (
@@ -52,10 +58,38 @@ export async function Navbar() {
             </Link>
           ))}
         </nav>
-        <Link href="/#contact" className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-(--color-cyan)/40 text-sm text-(--color-cyan) hover:bg-(--color-cyan)/10 transition">
+        <Link
+          href="/#contact"
+          className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-(--color-cyan)/40 text-sm text-(--color-cyan) hover:bg-(--color-cyan)/10 transition"
+        >
           Get a quote
           <span aria-hidden>→</span>
         </Link>
+
+        {/* Mobile quick-actions: phone + WhatsApp icons next to the burger */}
+        <div className="md:hidden flex items-center gap-1">
+          {contact.tel && (
+            <a
+              href={`tel:${contact.tel.replace(/\s+/g, "")}`}
+              aria-label="Call us"
+              className="w-9 h-9 inline-flex items-center justify-center rounded-md text-(--color-cyan) hover:bg-white/5 transition"
+            >
+              <HiPhone className="w-5 h-5" />
+            </a>
+          )}
+          {contact.whatsapp && (
+            <a
+              href={`https://wa.me/${contact.whatsapp}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp"
+              className="w-9 h-9 inline-flex items-center justify-center rounded-md text-(--color-green) hover:bg-white/5 transition"
+            >
+              <FaWhatsapp className="w-5 h-5" />
+            </a>
+          )}
+        </div>
+
         <MobileMenu
           links={links.map((l) => ({
             label: l.label,
