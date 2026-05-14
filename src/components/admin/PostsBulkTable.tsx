@@ -16,9 +16,13 @@ export type PostRow = {
 
 type Props = {
   rows: PostRow[];
-  /** Server action: receives the selected post IDs and deletes them + their tag links. */
   deleteMany: (ids: number[]) => Promise<void>;
 };
+
+function formatShort(iso: string) {
+  const d = new Date(iso);
+  return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
+}
 
 export function PostsBulkTable({ rows, deleteMany }: Props) {
   const [selected, setSelected] = useState<Set<number>>(new Set());
@@ -92,9 +96,9 @@ export function PostsBulkTable({ rows, deleteMany }: Props) {
       )}
       <div className="glass rounded-xl overflow-x-auto">
         <table className="min-w-full text-sm whitespace-nowrap">
-          <thead className="bg-white/5 text-left text-xs uppercase tracking-wider text-white/60">
+          <thead className="bg-white/5 text-left text-[11px] uppercase tracking-wider text-white/60">
             <tr>
-              <th className="px-4 py-3 w-10">
+              <th className="px-3 py-2 w-8">
                 <input
                   type="checkbox"
                   checked={allChecked}
@@ -103,39 +107,41 @@ export function PostsBulkTable({ rows, deleteMany }: Props) {
                   }}
                   onChange={toggleAll}
                   aria-label="Select all"
-                  className="accent-(--color-cyan) cursor-pointer w-4 h-4"
+                  className="accent-(--color-cyan) cursor-pointer w-4 h-4 align-middle"
                 />
               </th>
-              <th className="px-4 py-3 font-medium">Title</th>
-              <th className="px-4 py-3 font-medium">Slug</th>
-              <th className="px-4 py-3 font-medium">Status</th>
-              <th className="px-4 py-3 font-medium">Category</th>
-              <th className="px-4 py-3 font-medium">Tags</th>
-              <th className="px-4 py-3 font-medium">Created</th>
-              <th className="px-4 py-3 font-medium">Updated</th>
+              <th className="px-3 py-2 font-medium">Title</th>
+              <th className="px-3 py-2 font-medium">Slug</th>
+              <th className="px-3 py-2 font-medium">Status</th>
+              <th className="px-3 py-2 font-medium">Category</th>
+              <th className="px-3 py-2 font-medium">Tags</th>
+              <th className="px-3 py-2 font-medium">Created</th>
+              <th className="px-3 py-2 font-medium">Updated</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((p) => (
-              <tr key={p.id} className="border-t border-white/5 hover:bg-white/5">
-                <td className="px-4 py-3">
+              <tr key={p.id} className="border-t border-white/5 hover:bg-white/5 leading-tight">
+                <td className="px-3 py-1.5">
                   <input
                     type="checkbox"
                     checked={selected.has(p.id)}
                     onChange={() => toggleOne(p.id)}
                     aria-label={`Select ${p.title}`}
-                    className="accent-(--color-cyan) cursor-pointer w-4 h-4"
+                    className="accent-(--color-cyan) cursor-pointer w-4 h-4 align-middle"
                   />
                 </td>
-                <td className="px-4 py-3">
-                  <Link className="hover:text-(--color-cyan)" href={`/admin/posts/${p.id}/edit`}>
+                <td className="px-3 py-1.5 max-w-[420px] truncate">
+                  <Link className="hover:text-(--color-cyan)" href={`/admin/posts/${p.id}/edit`} title={p.title}>
                     {p.title}
                   </Link>
                 </td>
-                <td className="px-4 py-3 text-white/60 font-mono text-xs">{p.slug}</td>
-                <td className="px-4 py-3">
+                <td className="px-3 py-1.5 text-white/60 font-mono text-xs max-w-[260px] truncate" title={p.slug}>
+                  {p.slug}
+                </td>
+                <td className="px-3 py-1.5">
                   <span
-                    className={`px-2 py-0.5 rounded text-xs uppercase tracking-wider ${
+                    className={`px-1.5 py-0.5 rounded text-[10px] uppercase tracking-wider ${
                       p.status === "published"
                         ? "bg-emerald-500/15 text-emerald-300"
                         : p.status === "draft"
@@ -146,36 +152,32 @@ export function PostsBulkTable({ rows, deleteMany }: Props) {
                     {p.status}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-white/70">
+                <td className="px-3 py-1.5 text-white/70">
                   {p.category ? (
-                    <span className="px-2 py-0.5 rounded text-xs bg-(--color-purple)/15 text-(--color-purple) border border-(--color-purple)/30">
+                    <span className="px-1.5 py-0.5 rounded text-[10px] bg-(--color-purple)/15 text-(--color-purple) border border-(--color-purple)/30">
                       {p.category}
                     </span>
                   ) : (
                     <span className="text-white/30 text-xs">—</span>
                   )}
                 </td>
-                <td className="px-4 py-3">
+                <td
+                  className="px-3 py-1.5 max-w-[260px] truncate"
+                  title={p.tags.map((t) => t.name).join(", ")}
+                >
                   {p.tags.length === 0 ? (
                     <span className="text-white/30 text-xs">—</span>
                   ) : (
-                    <div className="flex flex-wrap gap-1 max-w-[260px]">
-                      {p.tags.map((t) => (
-                        <span
-                          key={t.slug}
-                          className="px-1.5 py-0.5 rounded text-[10px] bg-white/5 border border-white/10 text-white/70"
-                        >
-                          {t.name}
-                        </span>
-                      ))}
-                    </div>
+                    <span className="text-white/70 text-xs">
+                      {p.tags.map((t) => t.name).join(", ")}
+                    </span>
                   )}
                 </td>
-                <td className="px-4 py-3 text-white/60">
-                  {new Date(p.createdAt).toLocaleString()}
+                <td className="px-3 py-1.5 text-white/60 text-xs">
+                  {formatShort(p.createdAt)}
                 </td>
-                <td className="px-4 py-3 text-white/60">
-                  {new Date(p.updatedAt).toLocaleString()}
+                <td className="px-3 py-1.5 text-white/60 text-xs">
+                  {formatShort(p.updatedAt)}
                 </td>
               </tr>
             ))}
