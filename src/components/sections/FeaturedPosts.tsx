@@ -5,6 +5,22 @@ import { desc, eq } from "drizzle-orm";
 import { Container } from "@/components/layout/Container";
 import { HiArrowUpRight } from "react-icons/hi2";
 
+function snippetFromHtml(html: string | null | undefined, max = 200): string {
+  if (!html) return "";
+  const text = html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (text.length <= max) return text;
+  return text.slice(0, max).replace(/\s+\S*$/, "") + "…";
+}
+
 async function loadPosts() {
   try {
     return await db
@@ -57,7 +73,12 @@ export async function FeaturedPosts() {
                   </div>
                 )}
                 <h3 className="font-display font-bold text-xl text-white group-hover:text-(--color-cyan) transition mb-3">{p.title}</h3>
-                {p.excerpt && <p className="text-sm text-(--color-muted) line-clamp-3 leading-relaxed">{p.excerpt}</p>}
+                {(() => {
+                  const teaser = p.excerpt || snippetFromHtml(p.contentHtml);
+                  return teaser ? (
+                    <p className="text-sm text-(--color-muted) line-clamp-3 leading-relaxed">{teaser}</p>
+                  ) : null;
+                })()}
               </div>
             </Link>
           ))}

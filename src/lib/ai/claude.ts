@@ -51,7 +51,8 @@ Rules:
 - Brand name "Tertiary Infotech Academy".
 - When INSTRUCTIONS list URLs, embed them as <a href="URL" target="_blank" rel="noopener noreferrer">descriptive anchor text</a> on the most relevant existing keyword in the body. Never as bare URLs, never "click here".
 - Do not duplicate existing links — if a URL is already linked from a sensible anchor, leave it.
-- Do not invent facts. If instructions reference something not in the existing content, weave it in naturally as new sentences in the most relevant existing section (or add one short new <h2> section if no section fits).`,
+- Do not invent facts. If instructions reference something not in the existing content, weave it in naturally as new sentences in the most relevant existing section (or add one short new <h2> section if no section fits).
+- ALWAYS return the "excerpt" field. It must reflect the *revised* content, not the original. Keep it 1-2 sentences, under 200 chars, suitable for a blog-card teaser. This is required even when the admin's instructions only ask for a small tweak.`,
   generate_blog_draft:
     "You are a senior content writer for Tertiary Infotech, a Singapore B2B training-tech company. Write a structured, SEO-friendly blog draft in clean Markdown with H2/H3 headings and short paragraphs. Audience: training providers and L&D managers in Singapore.",
   improve_seo:
