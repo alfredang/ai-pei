@@ -86,3 +86,34 @@ export async function clearCredential(key: CredentialKey): Promise<void> {
 export async function isCredentialSet(key: CredentialKey): Promise<boolean> {
   return (await getCredential(key)) !== null;
 }
+
+/**
+ * Per-credential source — what's actually serving this value right now?
+ *  - "db": admin-saved encrypted value in the `settings` table (preferred).
+ *  - "env": code-level env-var fallback is active (DB is empty, env is set).
+ *  - "none": neither is set; the feature using this credential is dark.
+ */
+export type CredentialSource = "db" | "env" | "none";
+
+export async function getCredentialSource(key: CredentialKey): Promise<CredentialSource> {
+  try {
+    const [row] = await db
+      .select()
+      .from(settings)
+      .where(eq(settings.key, `cred:${key}`))
+      .limit(1);
+    if (row && typeof row.value === "string" && row.value.length > 0) return "db";
+  } catch {
+    // fall through
+  }
+  const envMap: Record<CredentialKey, string | undefined> = {
+    anthropic_auth_token: process.env.ANTHROPIC_AUTH_TOKEN,
+    firecrawl_api_key: process.env.FIRECRAWL_API_KEY,
+    tavily_api_key: process.env.TAVILY_API_KEY,
+    gmail_user: process.env.GMAIL_USER,
+    gmail_client_id: process.env.GMAIL_CLIENT_ID,
+    gmail_client_secret: process.env.GMAIL_CLIENT_SECRET,
+    gmail_refresh_token: process.env.GMAIL_REFRESH_TOKEN,
+  };
+  return envMap[key] ? "env" : "none";
+}

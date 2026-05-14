@@ -53,6 +53,8 @@ export default async function EditPage({
       })
       .where(eq(pages.id, data.id));
     revalidatePath(`/${data.slug}`);
+    revalidatePath("/"); // homepage may link to top-level pages
+    revalidatePath("/sitemap.xml");
   }
 
   return (

@@ -69,11 +69,31 @@ const GROUPS: Group[] = [
   },
 ];
 
+type Source = "db" | "env" | "none";
 type Props = {
   status: Record<Key, boolean>;
+  sources?: Record<Key, Source>;
 };
 
-export function CredentialsForm({ status }: Props) {
+const SOURCE_PILL: Record<Source, { label: string; className: string; title: string }> = {
+  db: {
+    label: "ADMIN",
+    className: "bg-(--color-green)/15 text-(--color-green) border-(--color-green)/30",
+    title: "Encrypted value saved via this admin UI (preferred).",
+  },
+  env: {
+    label: "ENV FALLBACK",
+    className: "bg-(--color-amber)/15 text-(--color-amber) border-(--color-amber)/40",
+    title: "DB has no value — code is using the server env-var fallback. Save here to migrate.",
+  },
+  none: {
+    label: "NOT SET",
+    className: "bg-white/5 text-white/50 border-white/15",
+    title: "No value in DB or env. The feature using this credential is disabled.",
+  },
+};
+
+export function CredentialsForm({ status, sources }: Props) {
   const [values, setValues] = useState<Record<Key, string>>(
     Object.fromEntries(Object.keys(FIELDS).map((k) => [k, ""])) as Record<Key, string>,
   );
@@ -132,17 +152,20 @@ export function CredentialsForm({ status }: Props) {
             {group.keys.map((k) => {
               const f = FIELDS[k];
               const isSet = status[k];
+              const source: Source = sources?.[k] ?? (isSet ? "db" : "none");
+              const pill = SOURCE_PILL[source];
               const isRevealed = revealed[k];
               const inputType = f.type === "email" ? (isRevealed ? "email" : "email") : isRevealed ? "text" : "password";
               return (
                 <div key={k} className="space-y-2">
                   <div className="flex items-center justify-between gap-3">
                     <label className="text-sm font-medium">{f.label}</label>
-                    {isSet && (
-                      <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-(--color-green)/15 text-(--color-green) border border-(--color-green)/30">
-                        SET
-                      </span>
-                    )}
+                    <span
+                      title={pill.title}
+                      className={`font-mono text-[10px] px-1.5 py-0.5 rounded border ${pill.className}`}
+                    >
+                      {pill.label}
+                    </span>
                   </div>
                   <div className="relative">
                     <input

@@ -28,10 +28,11 @@ import {
   users,
 } from "../src/db/schema";
 
-type Resource = "menus" | "settings" | "taxonomy" | "pages" | "posts";
+type Resource = "menus" | "settings" | "taxonomy" | "pages" | "posts" | "users";
+// `users` is intentionally NOT in ALL — must be explicitly requested.
 const ALL: Resource[] = ["menus", "settings", "taxonomy", "pages", "posts"];
-// taxonomy must run before posts (FK by slug)
-const ORDER: Resource[] = ["taxonomy", "settings", "menus", "pages", "posts"];
+// taxonomy must run before posts (FK by slug); users runs first so pages/posts can resolve authors
+const ORDER: Resource[] = ["users", "taxonomy", "settings", "menus", "pages", "posts"];
 
 function getEnv() {
   const baseUrl = process.env.REMOTE_SYNC_URL?.replace(/\/$/, "");
@@ -229,9 +230,30 @@ async function pushPosts() {
   console.log(`  [posts] ${res}`);
 }
 
+// ---- users ------------------------------------------------------------------
+
+async function pushUsers() {
+  const rows = await db.select().from(users);
+  if (rows.length === 0) {
+    console.log("  [users] skipped (no rows)");
+    return;
+  }
+  // Sync ALL local users — there should only be one or two admin accounts.
+  const res = await postJson("/api/admin/sync/users", {
+    users: rows.map((u) => ({
+      email: u.email,
+      name: u.name,
+      role: u.role,
+      passwordHash: u.passwordHash,
+    })),
+  });
+  console.log(`  [users] ${res}`);
+}
+
 // ---- dispatcher -------------------------------------------------------------
 
 const HANDLERS: Record<Resource, () => Promise<void>> = {
+  users: pushUsers,
   menus: pushMenus,
   settings: pushSettings,
   taxonomy: pushTaxonomy,
@@ -243,14 +265,17 @@ async function main() {
   const args = process.argv.slice(2);
   if (args.length === 0) {
     console.error("Usage: push-to-remote.ts <resource>... | all");
-    console.error(`Resources: ${ALL.join(", ")}, all`);
+    console.error(`Resources: ${ALL.join(", ")}, all, users (opt-in)`);
     process.exit(2);
   }
   const requested = new Set<Resource>();
   for (const a of args) {
     if (a === "all") {
-      ORDER.forEach((r) => requested.add(r));
-    } else if ((ALL as readonly string[]).includes(a)) {
+      ORDER.forEach((r) => {
+        // `all` excludes users by design — pass `users` explicitly to sync them.
+        if (r !== "users") requested.add(r);
+      });
+    } else if (a === "users" || (ALL as readonly string[]).includes(a)) {
       requested.add(a as Resource);
     } else {
       console.error(`Unknown resource: ${a}`);

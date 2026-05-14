@@ -55,6 +55,8 @@ export default async function EditPost({
       .where(eq(posts.id, data.id));
     revalidatePath(`/blog/${data.slug}`);
     revalidatePath("/blog");
+    revalidatePath("/"); // homepage <FeaturedPosts/> reads from posts
+    revalidatePath("/sitemap.xml");
   }
 
   return (
