@@ -154,7 +154,7 @@ export function PostsBulkTable({ rows, deleteMany }: Props) {
                 </td>
                 <td className="px-3 py-1.5 text-white/70">
                   {p.category ? (
-                    <span className="px-1.5 py-0.5 rounded text-[10px] bg-(--color-purple)/15 text-(--color-purple) border border-(--color-purple)/30">
+                    <span className="px-1.5 py-0.5 rounded text-[10px] bg-yellow-400/10 text-yellow-300 border border-yellow-400/30">
                       {p.category}
                     </span>
                   ) : (
