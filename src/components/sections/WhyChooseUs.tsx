@@ -14,7 +14,7 @@ export async function WhyChooseUs() {
     <section id="why-us" className="relative py-4 overflow-hidden">
       <div className="grid-bg opacity-50" />
       <Container className="relative">
-        <div className="max-w-3xl mb-6 ml-auto text-right">
+        <div className="max-w-5xl mb-6 ml-auto text-right">
           <div className="kicker mb-4">{copy.whyUsKicker}</div>
           <h2
             className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]"

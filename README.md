@@ -12,8 +12,11 @@
 [![Anthropic](https://img.shields.io/badge/Claude_Agent_SDK-D4A574?logo=anthropic&logoColor=white)](https://www.anthropic.com/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![License](https://img.shields.io/badge/License-Proprietary-red)](#license)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-tertiaryinfotech.com-22D3EE?logo=vercel&logoColor=white)](https://www.tertiaryinfotech.com/)
 
-**Customizable frontend and backend, AI-driven content generation, built-in AI chatbot, and SEO + lead-generation built into every page — powered by Claude Code. No vendor lock-in.**
+**Customizable frontend and backend, AI-driven content generation, built-in Nemo AI chatbot, and SEO + lead-generation built into every page — powered by Claude Code. No vendor lock-in.**
+
+🌐 **Live demo:** [https://www.tertiaryinfotech.com/](https://www.tertiaryinfotech.com/)
 
 </div>
 
@@ -55,12 +58,22 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 - **WordPress migration** — `scripts/migrate-wp.ts` imports a `wp_*` SQL dump, downloads images, preserves Yoast/RankMath SEO, writes 301 redirects
 - **Local → Remote DB sync** — push menus, settings, pages, posts, taxonomy from local to production via a bearer-token API; no SSH, no manual copy
 
-### AI built in
-- **AI chatbot** on every page — Claude Agent SDK, system prompt + FAQ editable in admin, `{COMPANY_*}` placeholders auto-resolve at chat time
-- **Admin AI Assist** — `Draft post`, `Rewrite`, `Summarize`, `Suggest SEO meta` powered by Claude Agent SDK
-- **No per-call billing** — driven by your Claude subscription OAuth token, not the metered API
+### AI built in — Nemo chatbot + Admin AI Assist
+- **Nemo AI chatbot** on every public page — branded floating widget that answers visitor questions about your services and routes warm leads to your contact form
+- **Lightweight harness system** ([src/lib/chatbot-harness.ts](src/lib/chatbot-harness.ts)) — sub-millisecond fast paths before the LLM ever spawns:
+  - **Greeting matcher** — `hi`, `hello`, `good morning` etc. → instant canned reply, zero LLM cost
+  - **FAQ matcher** — substring + 60% token-overlap match against admin-configured FAQ → instant DB lookup
+  - **Agent SDK fallback** — anything not matched falls through to Claude with `maxTurns: 1` and tools disabled
+- **System prompt + FAQ editable in `/admin/settings/chatbot`** with `{COMPANY_NAME}`, `{COMPANY_EMAIL}`, `{COMPANY_UEN}` placeholders auto-resolved at chat time
+- **Hidden on `/admin/*` routes** — Nemo is a customer-facing widget; it never appears in the back office
+- **Admin AI Assist** — `Draft post`, `Rewrite`, `Summarize`, `Suggest SEO meta` powered by the same Claude Agent SDK
+- **Subscription-only — no metered API**: the only LLM path in the codebase is `@anthropic-ai/claude-agent-sdk` authenticated with a `sk-ant-oat-*` OAuth subscription token. No `sk-ant-api-*` keys, no `https://api.anthropic.com` calls — see [CLAUDE.md](CLAUDE.md) for the policy
+- **Production-safe SDK bundling** — `next.config.ts` force-includes `node_modules/@anthropic-ai/**` via `outputFileTracingIncludes` so the native CLI binary (linux-x64 / arm64) ships in the standalone Docker image
+
+### Platform — auth, security, design
 - **Auth.js v5** — credentials provider with bcrypt, JWT sessions, persistent 10-year sliding cookie, middleware-protected `/admin/*`
-- **Sci-fi / robotics design system** — dark theme, Exo 2 + Inter, cyan/purple/amber accents, animated glow gradients
+- **Never-logout admin** — cookie-presence guard everywhere; no code path in the admin chrome calls `auth()` and risks emitting a clearing `Set-Cookie`
+- **Sci-fi / robotics design system** — dark theme, Exo 2 + Inter, cyan/purple/amber accents, animated glow gradients, custom Tailwind 4 design tokens
 
 ## Tech Stack
 
