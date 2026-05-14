@@ -173,7 +173,7 @@ export function PostEditorForm({ initial, save, kind }: Props) {
       if (first !== -1 && last > first) json = json.slice(first, last + 1);
     }
     json = sanitizeJsonControlChars(json);
-    let obj: Partial<{ contentHtml: string }> = {};
+    let obj: Partial<{ contentHtml: string; excerpt: string }> = {};
     try {
       obj = JSON.parse(json);
     } catch {
@@ -182,7 +182,12 @@ export function PostEditorForm({ initial, save, kind }: Props) {
       return;
     }
     if (obj.contentHtml) {
-      setData((d) => ({ ...d, contentHtml: obj.contentHtml!, content: obj.contentHtml! }));
+      setData((d) => ({
+        ...d,
+        contentHtml: obj.contentHtml!,
+        content: obj.contentHtml!,
+        excerpt: obj.excerpt || d.excerpt,
+      }));
     }
   }
 

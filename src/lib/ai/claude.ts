@@ -41,7 +41,8 @@ Your job: return a revised CONTENT_HTML that applies the instructions while pres
 
 Return ONLY valid JSON (no markdown fences, no prose):
 {
-  "contentHtml": "Revised HTML body — same shape as input: <h2>, <h3>, <p>, <ul>, <ol>, <strong>, <a>. No <h1>."
+  "contentHtml": "Revised HTML body — same shape as input: <h2>, <h3>, <p>, <ul>, <ol>, <strong>, <a>. No <h1>.",
+  "excerpt": "1-2 sentence summary of the revised post for blog cards, under 200 chars."
 }
 
 Rules:
