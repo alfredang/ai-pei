@@ -1,10 +1,11 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { db } from "@/db";
 import { posts, categories, tags, postTags } from "@/db/schema";
 import { eq, inArray } from "drizzle-orm";
 import { PostEditorForm, type PostFormData } from "@/components/admin/PostEditorForm";
 import type { JSONContent } from "@tiptap/react";
+import { getAdminSession } from "@/lib/admin-role";
 
 function slugify(input: string): string {
   return input
@@ -69,6 +70,15 @@ export default async function EditPost({
   if (!Number.isFinite(postId)) notFound();
   const [p] = await db.select().from(posts).where(eq(posts.id, postId)).limit(1);
   if (!p) notFound();
+
+  // Authors can only edit their own posts.
+  const session = await getAdminSession();
+  if (session?.role === "author") {
+    const authorId = Number(session.id);
+    if (Number.isFinite(authorId) && p.authorId !== authorId) {
+      redirect("/admin/posts");
+    }
+  }
 
   // WordPress-imported posts have a placeholder TipTap doc and the real body
   // in contentHtml. Detect that case and feed the HTML string to the editor

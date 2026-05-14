@@ -1,38 +1,23 @@
-import Link from "next/link";
 import { headers, cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ADMIN_COOKIE_NAME } from "@/lib/admin-session";
-import {
-  HiSquares2X2,
-  HiDocumentText,
-  HiNewspaper,
-  HiTag,
-  HiHashtag,
-  HiBars3,
-  HiPhoto,
-  HiInbox,
-  HiCog6Tooth,
-  HiArrowRightOnRectangle,
-} from "react-icons/hi2";
+import { getSiteBrand } from "@/lib/site-settings";
+import { getAdminSession, canAccessRoute, type AdminRole } from "@/lib/admin-role";
+import { SidebarShell, type NavItem } from "./_components/SidebarShell";
 
-const navItems = [
-  { href: "/admin", label: "Dashboard", Icon: HiSquares2X2 },
-  { href: "/admin/pages", label: "Pages", Icon: HiDocumentText },
-  { href: "/admin/posts", label: "Posts", Icon: HiNewspaper },
-  { href: "/admin/categories", label: "Categories", Icon: HiTag },
-  { href: "/admin/tags", label: "Tags", Icon: HiHashtag },
-  { href: "/admin/menus", label: "Menus", Icon: HiBars3 },
-  { href: "/admin/media", label: "Media", Icon: HiPhoto },
-  { href: "/admin/leads", label: "Leads", Icon: HiInbox },
-  { href: "/admin/settings", label: "Settings", Icon: HiCog6Tooth },
+const ALL_NAV: (NavItem & { roles: AdminRole[] })[] = [
+  { href: "/admin", label: "Dashboard", icon: "dashboard", roles: ["admin", "editor", "author"] },
+  { href: "/admin/pages", label: "Pages", icon: "pages", roles: ["admin", "editor"] },
+  { href: "/admin/posts", label: "Posts", icon: "posts", roles: ["admin", "editor", "author"] },
+  { href: "/admin/categories", label: "Categories", icon: "categories", roles: ["admin", "editor"] },
+  { href: "/admin/tags", label: "Tags", icon: "tags", roles: ["admin", "editor"] },
+  { href: "/admin/menus", label: "Menus", icon: "menus", roles: ["admin", "editor"] },
+  { href: "/admin/media", label: "Media", icon: "media", roles: ["admin", "editor", "author"] },
+  { href: "/admin/leads", label: "Leads", icon: "leads", roles: ["admin", "editor"] },
+  { href: "/admin/users", label: "Users", icon: "users", roles: ["admin"] },
+  { href: "/admin/settings", label: "Settings", icon: "settings", roles: ["admin", "editor"] },
 ];
 
-// Auth strategy for the admin chrome:
-//   - Middleware enforces "cookie present" for every /admin/* request.
-//   - This layout TRUSTS that check and renders the sidebar whenever the
-//     request reaches it on a non-login admin route.
-//   - We additionally call auth() to populate the user email in the sidebar,
-//     but a transient JWT-decode failure does NOT log the user out.
 export default async function AdminLayout({
   children,
 }: {
@@ -43,7 +28,6 @@ export default async function AdminLayout({
     h.get("x-pathname") ?? h.get("next-url") ?? h.get("x-invoke-path") ?? "";
   const isLoginPage = pathname === "/admin/login" || pathname.endsWith("/admin/login");
 
-  // /admin/login renders without the sidebar chrome.
   if (isLoginPage) return <>{children}</>;
 
   const cookieStore = await cookies();
@@ -52,61 +36,45 @@ export default async function AdminLayout({
     Boolean(cookieStore.get("__Secure-authjs.session-token")?.value) ||
     Boolean(cookieStore.get("authjs.session-token")?.value);
 
-  // Defense in depth: if somehow the request reached us without a session
-  // cookie AND we're on a protected path (middleware should've caught this),
-  // bounce to login. Otherwise we trust the cookie and render chrome.
   if (!hasSessionCookie) {
     redirect(`/admin/login?from=${encodeURIComponent(pathname || "/admin")}`);
   }
 
-  // We deliberately DO NOT call auth() here. NextAuth's JWT decoder can emit a
-  // cookie-clearing Set-Cookie when it hiccups on a valid token, which logs the
-  // user out mid-session. Middleware + cookie-presence above is the only gate.
-  const userEmail = "Admin";
+  const [brand, session] = await Promise.all([getSiteBrand(), getAdminSession()]);
+  // If JWT decode failed but a cookie is present, default to admin (legacy
+  // behaviour) so we don't lock the user out due to a transient hiccup.
+  const role: AdminRole = session?.role ?? "admin";
+  const email = session?.email ?? "";
+
+  // Per-role route enforcement (defense in depth — middleware should already
+  // handle this for non-admin routes, but the layout is the cleanest place
+  // to redirect on a page-level basis).
+  if (pathname && !canAccessRoute(role, pathname)) {
+    redirect("/admin");
+  }
+
+  const items: NavItem[] = ALL_NAV.filter((n) => n.roles.includes(role)).map(
+    ({ href, label, icon }) => ({ href, label, icon }),
+  );
+
+  async function signOutAction() {
+    "use server";
+    const jar = await cookies();
+    jar.delete(ADMIN_COOKIE_NAME);
+    jar.delete("authjs.session-token");
+    jar.delete("__Secure-authjs.session-token");
+    redirect("/admin/login");
+  }
 
   return (
     <div className="min-h-screen flex">
-      <aside className="w-64 shrink-0 bg-(--color-bg-elevated) border-r border-(--color-border) min-h-screen p-5 flex flex-col">
-        <Link href="/admin" className="flex items-center gap-2 mb-8">
-          <span className="w-8 h-8 rounded-md bg-gradient-to-br from-(--color-purple) to-(--color-cyan) shadow-[var(--shadow-glow-cyan)] grid place-items-center text-xs font-mono font-bold">
-            TI
-          </span>
-          <div>
-            <div className="font-display font-bold leading-tight">TI CMS</div>
-            <div className="text-[10px] text-white/45 font-mono uppercase">{userEmail}</div>
-          </div>
-        </Link>
-        <nav className="flex-1 space-y-0.5">
-          {navItems.map(({ href, label, Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-white/5 text-sm text-white/85 hover:text-white transition"
-            >
-              <Icon className="w-4 h-4 text-white/60" />
-              {label}
-            </Link>
-          ))}
-        </nav>
-        <form
-          action={async () => {
-            "use server";
-            const jar = await cookies();
-            jar.delete(ADMIN_COOKIE_NAME);
-            jar.delete("authjs.session-token");
-            jar.delete("__Secure-authjs.session-token");
-            redirect("/admin/login");
-          }}
-        >
-          <button
-            type="submit"
-            className="w-full text-left flex items-center gap-3 px-3 py-2 rounded-md hover:bg-white/5 text-sm text-white/65 transition"
-          >
-            <HiArrowRightOnRectangle className="w-4 h-4" />
-            Sign out
-          </button>
-        </form>
-      </aside>
+      <SidebarShell
+        brand={{ shortName: brand.shortName, logoUrl: brand.logoUrl }}
+        email={email}
+        role={role}
+        items={items}
+        signOutAction={signOutAction}
+      />
       <main className="flex-1 min-w-0 px-8 py-10">{children}</main>
     </div>
   );

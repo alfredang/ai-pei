@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { PostsBulkTable } from "@/components/admin/PostsBulkTable";
 import { PostsFilterBar } from "@/components/admin/PostsFilterBar";
+import { getAdminSession } from "@/lib/admin-role";
 
 type Search = {
   q?: string;
@@ -44,7 +45,15 @@ export default async function PostsList({
   const allCats = await db.select().from(categories).orderBy(asc(categories.name));
   const cat = categorySlug ? allCats.find((c) => c.slug === categorySlug) : null;
 
+  // Authors only see their own posts.
+  const session = await getAdminSession();
+  const isAuthor = session?.role === "author";
+  const authorId = isAuthor ? Number(session?.id) : null;
+
   const filters = [] as any[];
+  if (isAuthor && authorId) {
+    filters.push(eq(posts.authorId, authorId));
+  }
   if (q) {
     filters.push(or(ilike(posts.title, `%${q}%`), ilike(posts.slug, `%${q}%`)));
   }
@@ -111,6 +120,8 @@ export default async function PostsList({
 
   async function createPost() {
     "use server";
+    const s = await getAdminSession();
+    const aId = s?.id ? Number(s.id) : null;
     const [p] = await db
       .insert(posts)
       .values({
@@ -118,6 +129,7 @@ export default async function PostsList({
         title: "Untitled post",
         content: { type: "doc", content: [{ type: "paragraph" }] },
         status: "draft",
+        authorId: aId && !Number.isNaN(aId) ? aId : null,
       })
       .returning();
     revalidatePath("/admin/posts");
