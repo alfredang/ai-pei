@@ -69,6 +69,7 @@ export const SERVICES = [
     description:
       "Streamline your entire training lifecycle with our comprehensive TMS platform. From scheduling to certification, manage it all in one place.",
     features: [
+      "Self-hosted on your domain — you own the data",
       "Course scheduling & management",
       "Enrollment & registration workflows",
       "Reporting & analytics dashboards",
@@ -85,6 +86,7 @@ export const SERVICES = [
     description:
       "Deliver engaging, interactive learning experiences with our AI-enhanced LMS. Built for modern learners and educators alike.",
     features: [
+      "Self-hosted on your domain — you own the data",
       "Interactive eLearning delivery",
       "Assessment & progress tracking",
       "Instructor dashboards & analytics",

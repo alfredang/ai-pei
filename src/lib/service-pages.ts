@@ -71,6 +71,10 @@ export const SERVICE_PAGES: Record<string, ServicePageContent> = {
     },
     benefits: [
       {
+        title: "Self-hosted on your domain",
+        body: "Your TMS, your data, your branding. Deployed to your own infrastructure (Coolify, AWS, Vercel, on-prem) — no SaaS lock-in, no per-seat fees, no vendor exit risk.",
+      },
+      {
         title: "SSG / TPGateway integration",
         body: "Submit course runs, claim funding and report attendance directly via the TPGateway API — no manual CSV uploads.",
       },
@@ -82,13 +86,10 @@ export const SERVICE_PAGES: Record<string, ServicePageContent> = {
         title: "Trainer & resource scheduling",
         body: "Capacity-aware scheduling: trainer availability, room bookings, equipment, conflict detection.",
       },
-      {
-        title: "Reporting & analytics",
-        body: "Per-cohort, per-trainer and per-course P&L. Pre-built reports for TPQA audits and SSG submissions.",
-      },
     ],
     whatsIncluded: [
-      "Custom-branded TMS deployed on your domain",
+      "Self-hosted deployment on your domain — you own the data and code",
+      "Custom-branded TMS with your logo, colors and copy",
       "SSG / TPGateway API integration and course-run submission",
       "Online registration + SkillsFuture Credit + invoice + e-receipt flow",
       "E-attendance via mobile (SSG-compliant) and physical card reader",
@@ -141,6 +142,10 @@ export const SERVICE_PAGES: Record<string, ServicePageContent> = {
     },
     benefits: [
       {
+        title: "Self-hosted on your domain",
+        body: "Your LMS, your data, your branding. Deployed to your own infrastructure (Coolify, AWS, Vercel, on-prem) — no SaaS lock-in, no per-seat fees, no vendor exit risk.",
+      },
+      {
         title: "Interactive eLearning delivery",
         body: "SCORM, xAPI, HTML5, video, quizzes and discussions — all rendered on a fast, mobile-first learner UI.",
       },
@@ -149,16 +154,13 @@ export const SERVICE_PAGES: Record<string, ServicePageContent> = {
         body: "Formative + summative assessments mapped to WSQ Competency Units. Auto-grading + manual moderation workflows.",
       },
       {
-        title: "Instructor dashboards",
-        body: "Per-cohort progress, per-learner risk signals, auto-generated certificates on completion.",
-      },
-      {
         title: "AI content authoring",
         body: "Built-in Claude Agent SDK assist for outlining modules, drafting quiz items, generating summaries and translations.",
       },
     ],
     whatsIncluded: [
-      "Custom-branded LMS on your domain",
+      "Self-hosted deployment on your domain — you own the data and code",
+      "Custom-branded LMS with your logo, colors and copy",
       "Course authoring (rich text, video, quizzes, SCORM import)",
       "WSQ Competency mapping + assessment plan",
       "E-certificate issuance (with optional blockchain anchoring)",
