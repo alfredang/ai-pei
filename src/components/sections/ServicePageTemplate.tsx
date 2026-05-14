@@ -1,9 +1,57 @@
 import Link from "next/link";
+import {
+  HiMagnifyingGlass,
+  HiChatBubbleLeftRight,
+  HiDocumentText,
+  HiRocketLaunch,
+  HiCheckBadge,
+} from "react-icons/hi2";
 import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ServiceLeadForm } from "@/components/sections/ServiceLeadForm";
-import type { ServicePageContent } from "@/lib/service-pages";
+import type { ServicePageContent, TimelineStep } from "@/lib/service-pages";
+
+const STEP_ICONS = [
+  HiMagnifyingGlass, // Discovery
+  HiChatBubbleLeftRight, // Workshop / Consultation
+  HiDocumentText, // Quotation
+  HiRocketLaunch, // Build / Migrate
+  HiCheckBadge, // Go Live / Outcome
+];
+
+const STEP_ACCENT: Record<NonNullable<TimelineStep["accent"]>, { ring: string; iconText: string; chip: string; line: string }> = {
+  cyan: {
+    ring: "border-(--color-cyan)/40",
+    iconText: "text-(--color-cyan)",
+    chip: "bg-(--color-cyan)/10 text-(--color-cyan)",
+    line: "from-(--color-cyan)",
+  },
+  blue: {
+    ring: "border-(--color-cyan)/40",
+    iconText: "text-(--color-cyan)",
+    chip: "bg-(--color-cyan)/10 text-(--color-cyan)",
+    line: "from-(--color-cyan)",
+  },
+  purple: {
+    ring: "border-(--color-purple)/50",
+    iconText: "text-(--color-purple-light)",
+    chip: "bg-(--color-purple)/15 text-(--color-purple-light)",
+    line: "from-(--color-purple)",
+  },
+  amber: {
+    ring: "border-(--color-amber)/50",
+    iconText: "text-(--color-amber)",
+    chip: "bg-(--color-amber)/10 text-(--color-amber)",
+    line: "from-(--color-amber)",
+  },
+  green: {
+    ring: "border-(--color-green)/50",
+    iconText: "text-(--color-green)",
+    chip: "bg-(--color-green)/10 text-(--color-green)",
+    line: "from-(--color-green)",
+  },
+};
 
 /** Render a full service landing page from a ServicePageContent config. */
 export function ServicePageTemplate({ content }: { content: ServicePageContent }) {
@@ -126,6 +174,92 @@ export function ServicePageTemplate({ content }: { content: ServicePageContent }
             </div>
           </Container>
         </section>
+
+        {/* Timeline / process */}
+        {content.timeline && content.timeline.length > 0 && (
+          <section id="process" className="relative py-10 scroll-mt-20">
+            <Container>
+              <div className="max-w-3xl mb-10">
+                <div className="kicker mb-3">[ OUR PROCESS ]</div>
+                <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold leading-tight">
+                  {content.timeline.length}-step path to{" "}
+                  <span className="gradient-text">{content.title}</span>.
+                </h2>
+                {content.processIntro && (
+                  <p className="text-(--color-muted) mt-3">{content.processIntro}</p>
+                )}
+              </div>
+
+              {/* Desktop horizontal timeline */}
+              <div className="hidden lg:block relative">
+                <div className="absolute top-12 left-0 right-0 h-px bg-gradient-to-r from-(--color-cyan)/60 via-(--color-purple)/60 to-(--color-green)/60" />
+                <ol
+                  className="grid relative gap-4"
+                  style={{ gridTemplateColumns: `repeat(${content.timeline.length}, minmax(0,1fr))` }}
+                >
+                  {content.timeline.map((s, i) => {
+                    const Icon = STEP_ICONS[i] ?? HiRocketLaunch;
+                    const a = STEP_ACCENT[s.accent ?? "cyan"];
+                    return (
+                      <li key={`${s.title}-${i}`} className="relative">
+                        <div
+                          className={`relative z-10 mx-auto w-24 h-24 rounded-2xl glass border ${a.ring} flex items-center justify-center mb-5`}
+                        >
+                          <Icon className={`w-10 h-10 ${a.iconText}`} />
+                          <span className="absolute -bottom-2 -right-2 w-7 h-7 rounded-full bg-(--color-bg) border border-white/15 text-xs font-mono flex items-center justify-center text-white/80">
+                            {i + 1}
+                          </span>
+                        </div>
+                        <div className="text-center">
+                          {s.duration && (
+                            <span
+                              className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-mono ${a.chip} mb-2`}
+                            >
+                              {s.duration}
+                            </span>
+                          )}
+                          <h3 className="font-display font-bold text-lg mb-2">{s.title}</h3>
+                          <p className="text-sm text-(--color-muted) leading-relaxed">{s.body}</p>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ol>
+              </div>
+
+              {/* Mobile vertical timeline */}
+              <ol className="lg:hidden relative pl-8 space-y-6 before:absolute before:left-3 before:top-2 before:bottom-2 before:w-px before:bg-gradient-to-b before:from-(--color-cyan)/60 before:via-(--color-purple)/60 before:to-(--color-green)/60">
+                {content.timeline.map((s, i) => {
+                  const Icon = STEP_ICONS[i] ?? HiRocketLaunch;
+                  const a = STEP_ACCENT[s.accent ?? "cyan"];
+                  return (
+                    <li key={`${s.title}-${i}`} className="relative">
+                      <div
+                        className={`absolute -left-8 top-1 w-7 h-7 rounded-full glass border ${a.ring} flex items-center justify-center`}
+                      >
+                        <Icon className={`w-3.5 h-3.5 ${a.iconText}`} />
+                      </div>
+                      <div className="glass p-5">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-mono ${a.chip}`}>
+                            Step {i + 1}
+                          </span>
+                          {s.duration && (
+                            <span className="text-[11px] font-mono text-(--color-muted)">
+                              {s.duration}
+                            </span>
+                          )}
+                        </div>
+                        <h3 className="font-display font-bold text-base mb-1.5">{s.title}</h3>
+                        <p className="text-sm text-(--color-muted) leading-relaxed">{s.body}</p>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ol>
+            </Container>
+          </section>
+        )}
 
         {/* What's included */}
         <section id="whats-included" className="relative py-10 scroll-mt-20">

@@ -1,5 +1,20 @@
 // Content + metadata for the 5 dedicated service pages.
 // Pages compose this with components/sections/ServicePageTemplate.
+//
+// Admin can override any of these fields per slug via the `settings` table
+// using the key `service_page:<slug>` (JSONB). See getServicePageOverride() in
+// site-settings.ts; defaults in this file are the fallback.
+
+export type TimelineStep = {
+  /** Short title, e.g. "Discovery", "Quotation". */
+  title: string;
+  /** Optional duration / status chip (e.g. "Week 0 · free"). */
+  duration?: string;
+  /** Body copy describing the step. */
+  body: string;
+  /** Tailwind accent color used for icon/ring/chip. */
+  accent?: "cyan" | "blue" | "purple" | "amber" | "green";
+};
 
 export type ServicePageContent = {
   slug: string;
@@ -16,6 +31,10 @@ export type ServicePageContent = {
   };
   /** "Service type" used in Schema.org Service @type. */
   serviceType: string;
+  /** Short intro above the timeline section. */
+  processIntro?: string;
+  /** Process / journey steps with optional visual timeline rendering. */
+  timeline?: TimelineStep[];
   benefits: { title: string; body: string }[];
   whatsIncluded: string[];
   faq: { q: string; a: string }[];
@@ -29,6 +48,15 @@ export const SERVICE_PAGES: Record<string, ServicePageContent> = {
     title: "Training Management System (TMS)",
     leadSource: "tms-page",
     serviceType: "Training Management System",
+    processIntro:
+      "From discovery through go-live and SSG integration — predictable, fixed-fee delivery.",
+    timeline: [
+      { title: "Discovery", duration: "Week 0 · free", accent: "cyan", body: "30-min call. We map your training programs, SSG / TPGateway state, billing flows, and integration points." },
+      { title: "Demo & Scoping", duration: "Week 1", accent: "blue", body: "Live TMS walkthrough on your domain with sample data. We agree the integration scope (TPGateway, SSO, accounting)." },
+      { title: "Quotation", duration: "Week 2", accent: "purple", body: "Fixed-fee proposal with timeline guarantees. No surprises." },
+      { title: "Build & Migrate", duration: "Weeks 3–8", accent: "amber", body: "Deployment on your domain, brand assets applied, SSG / TPGateway integration, data migration from your existing tools." },
+      { title: "Go Live", duration: "Week 8+", accent: "green", body: "Hand-off, admin training, runbook, 30-day post-launch support. You own your data and deployment." },
+    ],
     hero: {
       kicker: "[ TMS · WSQ · SSG-READY ]",
       headlineHtml:
@@ -91,6 +119,14 @@ export const SERVICE_PAGES: Record<string, ServicePageContent> = {
     title: "Learning Management System (LMS)",
     leadSource: "lms-page",
     serviceType: "Learning Management System",
+    processIntro: "From scoping through course migration to learner go-live.",
+    timeline: [
+      { title: "Discovery", duration: "Week 0 · free", accent: "cyan", body: "Map your existing courses, learner journeys, certification flow, SSO and integration points." },
+      { title: "Demo & Scoping", duration: "Week 1", accent: "blue", body: "Live LMS walkthrough. Confirm SCORM / xAPI requirements, branding, and any custom assessments." },
+      { title: "Quotation", duration: "Week 2", accent: "purple", body: "Fixed-fee proposal with migration scope and timeline." },
+      { title: "Build & Migrate", duration: "Weeks 3–6", accent: "amber", body: "LMS deployment, course content migration, SCORM import, assessment configuration, instructor training." },
+      { title: "Go Live", duration: "Week 6+", accent: "green", body: "Learners onboarded, certificates issued, 30-day support." },
+    ],
     hero: {
       kicker: "[ LMS · WSQ · TPQA ]",
       headlineHtml:
@@ -153,6 +189,14 @@ export const SERVICE_PAGES: Record<string, ServicePageContent> = {
     title: "AI Solutions",
     leadSource: "ai-solutions-page",
     serviceType: "AI Software Consultancy",
+    processIntro: "From discovery to production deployment in agile 2-week sprints.",
+    timeline: [
+      { title: "Discovery", duration: "Week 0 · free", accent: "cyan", body: "30-min call. We map the use case, success metrics, existing systems and integration constraints." },
+      { title: "Workshop", duration: "Week 1", accent: "blue", body: "Half-day technical discovery: architecture, data flow, model selection, security, deployment target." },
+      { title: "Quotation", duration: "Week 2", accent: "purple", body: "Fixed-fee proposal with timeline + acceptance criteria per sprint." },
+      { title: "Build & Iterate", duration: "Weeks 3+", accent: "amber", body: "2-week sprints with weekly demos. Production-grade Next.js / React Native / Claude agents." },
+      { title: "Go Live", duration: "End of project", accent: "green", body: "Production deployment, observability dashboards, runbooks, 30-day post-launch support." },
+    ],
     hero: {
       kicker: "[ AGENTIC AI · CLAUDE CODE · BESPOKE ]",
       headlineHtml:
@@ -214,6 +258,14 @@ export const SERVICE_PAGES: Record<string, ServicePageContent> = {
     title: "WSQ Course Development",
     leadSource: "course-dev-page",
     serviceType: "Course Development",
+    processIntro: "From competency mapping to SSG submission package — typically 6–10 weeks per course.",
+    timeline: [
+      { title: "Discovery", duration: "Week 0 · free", accent: "cyan", body: "30-min call. We confirm sector, framework (WSQ / CASL / IBF-STS / PWM), target competencies and audience." },
+      { title: "Scoping", duration: "Week 1", accent: "blue", body: "Competency mapping draft, learning outcomes, course structure, assessment strategy." },
+      { title: "Quotation", duration: "Week 2", accent: "purple", body: "Fixed-fee proposal scoped to course duration and assessment complexity." },
+      { title: "Build", duration: "Weeks 3–8", accent: "amber", body: "Lesson plans, slide decks, assessor guides, trainer guide, industry-engagement evidence pack." },
+      { title: "SSG Submission", duration: "Weeks 8–10", accent: "green", body: "Complete Course Application package on TPGateway. We walk you through the submission flow." },
+    ],
     hero: {
       kicker: "[ COURSE DEV · WSQ · IBF-STS · PWM ]",
       headlineHtml:
@@ -277,6 +329,14 @@ export const SERVICE_PAGES: Record<string, ServicePageContent> = {
     title: "TPQA Consultancy",
     leadSource: "tpqa-page",
     serviceType: "TPQA Consultancy",
+    processIntro: "Pre-audit to post-audit — we're with you across all 4 TPQA Criteria.",
+    timeline: [
+      { title: "Discovery", duration: "Week 0 · free", accent: "cyan", body: "30-min call. Where are you in the TPQA cycle? Any prior audit findings or corrective actions?" },
+      { title: "Gap Assessment", duration: "Week 1", accent: "blue", body: "Half-day pre-audit workshop or remote review of your QMS, SOPs, course evidence and outcomes data." },
+      { title: "Quotation", duration: "Week 2", accent: "purple", body: "Fixed-fee remediation roadmap with priority-ranked actions per Indicator." },
+      { title: "Mock Audit & Fix", duration: "Weeks 3–6", accent: "amber", body: "On-site mock TPQA audit, evidence-pack builds, trainer interview prep, gap closure." },
+      { title: "Live SSG Audit", duration: "On-site day", accent: "green", body: "We're on-site during the actual SSG TPQA audit — interview coaching and real-time clarifications." },
+    ],
     hero: {
       kicker: "[ TPQA · MOCK AUDIT · COMPLIANCE ]",
       headlineHtml:

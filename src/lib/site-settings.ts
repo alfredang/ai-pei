@@ -147,6 +147,48 @@ export async function getCompanyContact(): Promise<CompanyContact> {
   }
 }
 
+// --- Service-page overrides (CMS editable per slug) ------------------------
+
+import type { ServicePageContent } from "@/lib/service-pages";
+
+/**
+ * Read an admin override for a service page from `settings.value` keyed by
+ * `service_page:<slug>`. Returns null if no override is saved — caller should
+ * fall back to the file-based defaults in SERVICE_PAGES.
+ */
+export async function getServicePageOverride(
+  slug: string,
+): Promise<Partial<ServicePageContent> | null> {
+  try {
+    const [row] = await db
+      .select()
+      .from(settings)
+      .where(inArray(settings.key, [`service_page:${slug}`] as unknown as string[]));
+    if (!row) return null;
+    const v = row.value;
+    if (v && typeof v === "object" && !Array.isArray(v)) {
+      return v as Partial<ServicePageContent>;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+/** Merge the admin override (shallow) onto the file-based default. */
+export function mergeServicePage(
+  base: ServicePageContent,
+  override: Partial<ServicePageContent> | null,
+): ServicePageContent {
+  if (!override) return base;
+  return {
+    ...base,
+    ...override,
+    hero: { ...base.hero, ...(override.hero ?? {}) },
+    meta: { ...base.meta, ...(override.meta ?? {}) },
+  };
+}
+
 // --- Social links (Footer) --------------------------------------------------
 
 export type SocialLink = {
