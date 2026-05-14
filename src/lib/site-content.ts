@@ -11,6 +11,9 @@ import {
   HiClipboardDocumentList,
   HiBuildingLibrary,
   HiCheckBadge,
+  HiNewspaper,
+  HiUserGroup,
+  HiBolt,
 } from "react-icons/hi2";
 
 export const SERVICES = [
@@ -110,6 +113,54 @@ export const SERVICES = [
     ],
     accent: "purple" as const,
     href: "/ai-solutions",
+    category: "ai" as const,
+  },
+  {
+    id: "cms",
+    icon: HiNewspaper,
+    title: "Content Management System",
+    description:
+      "Self-hosted, AI-powered CMS built for lead generation and SEO — every page is a funnel, every route is search-indexed.",
+    features: [
+      "Self-hosted on your domain — own the data",
+      "AI authoring with Claude Agent SDK",
+      "SEO + JSON-LD baked into every route",
+      "Source-tagged lead capture forms",
+    ],
+    accent: "blue" as const,
+    href: "/content-management-system",
+    category: "ai" as const,
+  },
+  {
+    id: "hr",
+    icon: HiUserGroup,
+    title: "HR Management System",
+    description:
+      "Modern HRMS — payroll, leave, expense, appraisal, training and onboarding — built on Next.js with Singapore CPF + IRAS-ready payroll.",
+    features: [
+      "Payroll · CPF · IRAS-ready",
+      "Leave + expense workflows",
+      "Performance appraisal & 360°",
+      "Self-hosted, white-labeled",
+    ],
+    accent: "cyan" as const,
+    href: "/hr-management-system",
+    category: "ai" as const,
+  },
+  {
+    id: "ai-agent",
+    icon: HiBolt,
+    title: "AI Agent Deployment",
+    description:
+      "Production deployment of agentic AI — OpenClaw, Hermes Agent, Nebula and bespoke Claude agents wired into your existing systems.",
+    features: [
+      "OpenClaw · Hermes Agent · Nebula",
+      "Custom Claude Agent SDK builds",
+      "Webhook + n8n + API integration",
+      "Observability + cost guardrails",
+    ],
+    accent: "purple" as const,
+    href: "/ai-agent-deployment",
     category: "ai" as const,
   },
 ];

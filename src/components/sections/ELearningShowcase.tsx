@@ -73,8 +73,7 @@ export function ELearningShowcase() {
             <div className="kicker mb-5">[ NEW · MULTI-TENANT PRODUCT ]</div>
             <h2 className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-extrabold leading-[1.05]">
               AI-powered{" "}
-              <span className="gradient-text">multi-tenant e-Learning</span> platform
-              for organizations.
+              <span className="gradient-text">multi-tenant e-Learning</span> platform.
             </h2>
             <p className="mt-6 text-(--color-muted) text-lg max-w-xl">
               Built on Next.js 16 and Claude — Learnify lets academies, course

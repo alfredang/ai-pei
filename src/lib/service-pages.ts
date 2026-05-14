@@ -326,6 +326,152 @@ export const SERVICE_PAGES: Record<string, ServicePageContent> = {
       },
     ],
   },
+  "content-management-system": {
+    slug: "content-management-system",
+    title: "Content Management System",
+    leadSource: "cms-page",
+    serviceType: "Content Management System",
+    hero: {
+      kicker: "[ CMS · LEAD-GEN · SEO ]",
+      headlineHtml:
+        '<span class="gradient-text">AI-powered CMS</span> built for lead generation and SEO.',
+      subhead:
+        "Self-hosted Next.js CMS where every public route ships with JSON-LD, sitemap, canonical, OG, and a source-tagged lead form — wired to a Gmail-OAuth notification pipeline so leads land in sales within seconds.",
+    },
+    meta: {
+      title: "Self-Hosted AI CMS for Singapore — Lead Generation + SEO Built-In",
+      description:
+        "Customizable Next.js CMS with AI authoring, source-tagged lead forms, sitewide JSON-LD, and a built-in AI chatbot. No vendor lock-in. Book a free demo.",
+    },
+    processIntro: "From discovery to your custom-branded CMS live on your domain — predictable, fixed-fee.",
+    timeline: [
+      { title: "Discovery", duration: "Week 0 · free", accent: "cyan", body: "30-min call. We map your content model, traffic goals, lead funnel and existing CMS (WordPress / Webflow / static)." },
+      { title: "Demo & Scoping", duration: "Week 1", accent: "blue", body: "Live walkthrough on a staging URL. Confirm migration scope, design direction, integrations." },
+      { title: "Quotation", duration: "Week 2", accent: "purple", body: "Fixed-fee proposal with timeline guarantees." },
+      { title: "Build & Migrate", duration: "Weeks 3–6", accent: "amber", body: "Custom branding, content migration (incl. WordPress 301 redirects), AI chatbot config, lead-form wiring." },
+      { title: "Go Live", duration: "Week 6+", accent: "green", body: "Production deployment, admin training, 30-day support. You own the data, code, and domain." },
+    ],
+    benefits: [
+      { title: "Self-hosted, no lock-in", body: "Your domain, your data, your code. Deploy on Coolify, AWS, Vercel or on-prem. No per-seat SaaS fees." },
+      { title: "SEO + JSON-LD on every route", body: "Organization, Article, Service, FAQPage, LocalBusiness schemas auto-injected. Per-route canonical, OG, Twitter, sitemap." },
+      { title: "AI authoring built in", body: "Claude Agent SDK drafts, rewrites and summarizes posts in one click — using your subscription OAuth token, no metered API." },
+      { title: "Lead funnel by default", body: "Every page has a source-tagged form. Submissions land in /admin/leads + email sales via Gmail OAuth2 — within seconds." },
+    ],
+    whatsIncluded: [
+      "Custom-branded CMS deployed on your domain",
+      "TipTap rich editor with image upload + slash commands",
+      "Pages + Posts CRUD with Categories, Tags, per-route SEO meta",
+      "Visual drag-and-drop menu builder",
+      "Sitewide JSON-LD (Organization, Article, Service, FAQPage, BreadcrumbList)",
+      "AI chatbot with editable system prompt + FAQ",
+      "Admin AI Assist — Draft / Rewrite / Summarize / Suggest SEO meta",
+      "Gmail OAuth2 lead-notification pipeline",
+      "WordPress migration (SQL dump → posts + 301 redirects)",
+    ],
+    faq: [
+      { q: "How is this different from WordPress?", a: "Next.js performance + native AI authoring + first-class SEO/JSON-LD + no plugin sprawl. The codebase is yours; we don't host you or charge per-seat." },
+      { q: "Can you migrate our existing WordPress site?", a: "Yes — scripts/migrate-wp.ts imports a SQL dump, downloads images, preserves Yoast/RankMath SEO and writes 301 redirects." },
+      { q: "Is the AI metered?", a: "No. The chatbot and admin AI Assist use your Claude OAuth subscription token via the official Agent SDK — flat subscription, no per-call billing." },
+      { q: "Can we customize the design?", a: "Yes — every component is a Next.js Server Component you can edit. We also expose homepage + service-page copy in the admin so non-devs can update without redeploys." },
+    ],
+  },
+  "hr-management-system": {
+    slug: "hr-management-system",
+    title: "HR Management System",
+    leadSource: "hrms-page",
+    serviceType: "HR Management System",
+    hero: {
+      kicker: "[ HRMS · PAYROLL · APPRAISAL ]",
+      headlineHtml:
+        'Modern <span class="gradient-text">HR Management System</span> for Singapore SMEs.',
+      subhead:
+        "Self-hosted HRMS — payroll, leave, expense, appraisal, onboarding, training — built on Next.js with Singapore CPF + IRAS-ready payroll workflows.",
+    },
+    meta: {
+      title: "HR Management System (HRMS) Singapore — Payroll, Leave, Expense, Appraisal",
+      description:
+        "Self-hosted HRMS with CPF / IRAS-ready payroll, leave + expense workflows, performance appraisal and onboarding. Built on Next.js. Book a free demo.",
+    },
+    processIntro: "From discovery to a custom-branded HRMS live on your domain.",
+    timeline: [
+      { title: "Discovery", duration: "Week 0 · free", accent: "cyan", body: "30-min call. Headcount, payroll cycle, current HR tools (Talenox / HReasily / Excel), and integration needs." },
+      { title: "Workshop", duration: "Week 1", accent: "blue", body: "Map your existing payroll rules, leave policies, claim categories, appraisal cycle and approval workflows." },
+      { title: "Quotation", duration: "Week 2", accent: "purple", body: "Fixed-fee proposal with module scope and timeline." },
+      { title: "Build & Migrate", duration: "Weeks 3–8", accent: "amber", body: "Custom HRMS deployment, employee data migration, payroll configuration, Xero / accounting integration." },
+      { title: "Go Live", duration: "Week 8+", accent: "green", body: "First payroll run with our support, HR admin training, 30-day post-launch support." },
+    ],
+    benefits: [
+      { title: "Singapore payroll, done right", body: "CPF, SDL, FWL, IRAS Form IR8A, IR21, AIS submission — all baked in. We handle the edge cases (PR rates, part-timers, pro-rated bonuses)." },
+      { title: "Self-hosted, white-labeled", body: "Your domain, your branding, your data. No per-employee SaaS fees. Deploy on your infra or our managed Coolify cluster." },
+      { title: "Leave + expense workflows", body: "Multi-level approval flows, leave balances with carry-forward rules, expense categories with receipt upload and accounting export." },
+      { title: "Performance appraisal", body: "Goal-setting, 360-degree feedback, mid-year and year-end review cycles, calibration meetings, with PDF export for HR records." },
+    ],
+    whatsIncluded: [
+      "Custom-branded HRMS on your domain",
+      "Payroll module — CPF, SDL, FWL, IRAS-ready",
+      "Leave management with policies + balances + carry-forward",
+      "Expense claims with receipt upload + accounting export",
+      "Performance appraisal — goals, 360°, calibration, PDF export",
+      "Onboarding workflow — offer letters, e-signature, doc checklist",
+      "Training records + CPD tracking",
+      "Employee self-service portal (mobile-friendly)",
+      "Accounting integration (Xero, QuickBooks, Sage)",
+    ],
+    faq: [
+      { q: "Is the payroll IRAS-compliant?", a: "Yes — IR8A, IR8S, IR21, AIS submission. We test against the IRAS sandbox during build and walk you through the first AIS submission live." },
+      { q: "How does this compare to Talenox / HReasily?", a: "Self-hosted (you own the data), customizable workflows (not just toggles), and one-time engagement fee instead of per-employee per-month forever." },
+      { q: "Can it handle our complex approval flows?", a: "Yes — approval chains are configurable per leave type, expense category, and amount threshold. We've built flows up to 5 approval levels." },
+      { q: "Does it integrate with our accounting system?", a: "Native integrations with Xero and QuickBooks. CSV export for any other accounting tool." },
+    ],
+  },
+  "ai-agent-deployment": {
+    slug: "ai-agent-deployment",
+    title: "AI Agent Deployment",
+    leadSource: "ai-agent-page",
+    serviceType: "AI Agent Deployment",
+    hero: {
+      kicker: "[ OPENCLAW · HERMES · NEBULA ]",
+      headlineHtml:
+        'Production <span class="gradient-text">AI Agent</span> deployment for your business.',
+      subhead:
+        "Deploy OpenClaw, Hermes Agent, Nebula or bespoke Claude Agent SDK builds into your existing systems — webhooks, n8n flows, REST APIs, customer-facing chat. Observability and cost guardrails included.",
+    },
+    meta: {
+      title: "AI Agent Deployment Singapore — OpenClaw, Hermes Agent, Nebula, Claude Agent SDK",
+      description:
+        "Production deployment of agentic AI — OpenClaw, Hermes, Nebula and custom Claude agents wired into your systems with observability + cost guardrails. Book a free scoping call.",
+    },
+    processIntro: "From use-case to production-ready agent in 4–6 weeks.",
+    timeline: [
+      { title: "Discovery", duration: "Week 0 · free", accent: "cyan", body: "30-min call. Define the use case, success metrics, target systems and constraints." },
+      { title: "Workshop", duration: "Week 1", accent: "blue", body: "Half-day technical workshop. Agent selection (OpenClaw / Hermes / Nebula / custom), tool integrations, security boundaries." },
+      { title: "Quotation", duration: "Week 2", accent: "purple", body: "Fixed-fee proposal with sprint plan and acceptance criteria." },
+      { title: "Build & Iterate", duration: "Weeks 3–5", accent: "amber", body: "Agent build with weekly demos. Observability dashboards, cost limits, eval harness." },
+      { title: "Go Live", duration: "Week 6", accent: "green", body: "Production deployment, runbooks, on-call handover, 30-day post-launch support." },
+    ],
+    benefits: [
+      { title: "Battle-tested agents", body: "OpenClaw (open-source autonomous agent), Hermes Agent (Singapore-built workflow agent), Nebula (research + planning agent). We pick the right one for your use case." },
+      { title: "Custom Claude Agent SDK builds", body: "Bespoke agents on the official Anthropic SDK — tool use, MCP servers, long-horizon planning, with your Claude subscription token (no metered API)." },
+      { title: "Integration-first", body: "n8n flows, Slack / Teams bots, webhook endpoints, REST APIs into your CRM / HRMS / accounting / LMS / CMS." },
+      { title: "Observability + cost guardrails", body: "Per-agent token usage, latency, error tracing. Daily / monthly cost caps with auto-cutoff. No surprise bills." },
+    ],
+    whatsIncluded: [
+      "Agent selection workshop + architecture proposal",
+      "Production deployment of chosen agent stack",
+      "Tool / API integrations (Slack, Teams, Gmail, n8n, your APIs)",
+      "Observability dashboards (token usage, latency, errors)",
+      "Cost guardrails (per-tenant / daily / monthly caps)",
+      "Eval harness — regression tests for your prompts and tools",
+      "Runbooks for ops handover",
+      "30-day post-launch support",
+    ],
+    faq: [
+      { q: "What's OpenClaw, Hermes Agent, Nebula?", a: "OpenClaw is our open-source autonomous coding agent; Hermes is a Singapore-built workflow orchestration agent; Nebula is a research + planning agent. We'll recommend the right one in the Discovery call." },
+      { q: "Can we use our existing Anthropic API key?", a: "We strongly recommend a Claude subscription OAuth token (`claude setup-token`) — it's a flat fee instead of per-call billing. The Claude Agent SDK supports both." },
+      { q: "How do you prevent runaway costs?", a: "Per-agent and per-tenant token budgets with auto-cutoff, full audit trail in observability dashboards, and an eval harness that runs on every prompt change." },
+      { q: "Can you integrate with our existing systems?", a: "Yes — Slack, Teams, Gmail, n8n, webhook endpoints, REST APIs to your CRM / HRMS / accounting / LMS. Custom MCP servers for proprietary tools." },
+    ],
+  },
   "tpqa-consultancy": {
     slug: "tpqa-consultancy",
     title: "TPQA Consultancy",
