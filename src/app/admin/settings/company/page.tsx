@@ -19,7 +19,14 @@ const FIELDS: Array<{
   { key: "company_logo_url", label: "Company Logo URL (optional)", placeholder: "/uploads/your-logo.png" },
   { key: "company_uen", label: "UEN", defaultValue: "201200696W" },
   { key: "company_website", label: "Company Website", type: "url", defaultValue: "https://www.tertiarycourses.com.sg/" },
-  { key: "company_email", label: "Company Email", type: "email", defaultValue: "sales@tertiarycourses.com.sg" },
+  { key: "company_email", label: "Sales / Lead Email", type: "email", defaultValue: "sales@tertiarycourses.com.sg" },
+  {
+    key: "company_support_email",
+    label: "Support Email",
+    type: "email",
+    defaultValue: "enquiry@tertiaryinfotech.com",
+    hint: "Shown in the footer alongside the sales email. Use a separate inbox for incoming customer support.",
+  },
   { key: "company_tel", label: "Company Tel", type: "tel", defaultValue: "+6561000613" },
   {
     key: "company_whatsapp",

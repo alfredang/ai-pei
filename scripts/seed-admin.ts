@@ -76,6 +76,7 @@ async function main() {
     company_uen: "201200696W",
     company_website: "https://www.tertiarycourses.com.sg/",
     company_email: "sales@tertiarycourses.com.sg",
+    company_support_email: "enquiry@tertiaryinfotech.com",
     company_tel: "+6561000613",
     company_whatsapp: "6588666375",
     company_address: "12 Woodlands Square #07-85/86/87 Woods Square Tower 1, Singapore 737715",

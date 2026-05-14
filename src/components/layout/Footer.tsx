@@ -121,6 +121,15 @@ export async function Footer() {
                 <HiEnvelope className="w-4 h-4 shrink-0 text-(--color-cyan)/80" />
                 {contact.email}
               </a>
+              {contact.supportEmail && contact.supportEmail !== contact.email && (
+                <a
+                  href={`mailto:${contact.supportEmail}`}
+                  className="flex items-center gap-2.5 text-(--color-cyan) hover:underline"
+                >
+                  <HiEnvelope className="w-4 h-4 shrink-0 text-(--color-cyan)/80" />
+                  {contact.supportEmail}
+                </a>
+              )}
               <a
                 href={`tel:${contact.tel.replace(/\s+/g, "")}`}
                 className="flex items-center gap-2.5 text-(--color-cyan) hover:underline"

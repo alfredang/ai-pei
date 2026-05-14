@@ -100,6 +100,7 @@ export async function getSiteBrand(): Promise<SiteBrand> {
 
 const CONTACT_KEYS = [
   "company_email",
+  "company_support_email",
   "company_tel",
   "company_whatsapp",
   "company_address",
@@ -108,7 +109,10 @@ const CONTACT_KEYS = [
 type ContactKey = (typeof CONTACT_KEYS)[number];
 
 export type CompanyContact = {
+  /** Sales / commercial inbox (used for lead notifications + footer email). */
   email: string;
+  /** Customer-support inbox (shown in footer alongside sales). */
+  supportEmail: string;
   tel: string;
   /** International format without "+" — used for `https://wa.me/<n>`. */
   whatsapp: string;
@@ -118,6 +122,7 @@ export type CompanyContact = {
 
 export const CONTACT_DEFAULTS: CompanyContact = {
   email: "sales@tertiarycourses.com.sg",
+  supportEmail: "enquiry@tertiaryinfotech.com",
   tel: "+6561000613",
   whatsapp: "6588666375",
   address: "12 Woodlands Square #07-85/86/87 Woods Square Tower 1, Singapore 737715",
@@ -137,6 +142,7 @@ export async function getCompanyContact(): Promise<CompanyContact> {
     }
     return {
       email: map.get("company_email") || CONTACT_DEFAULTS.email,
+      supportEmail: map.get("company_support_email") || CONTACT_DEFAULTS.supportEmail,
       tel: map.get("company_tel") || CONTACT_DEFAULTS.tel,
       whatsapp: (map.get("company_whatsapp") || CONTACT_DEFAULTS.whatsapp).replace(/\D/g, ""),
       address: map.get("company_address") || CONTACT_DEFAULTS.address,
