@@ -5,9 +5,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run dev            # Next.js dev server (Turbopack) on http://localhost:3000
+npm run dev            # Next.js dev server (Turbopack) on http://localhost:3070
 npm run build          # Production build
-npm run start          # Run the production build locally
+npm run start          # Run the production build locally on http://localhost:3070
 npm run lint           # Next lint (note: ESLint isn't configured at the root; Next's wrapper is what's used)
 
 npm run db:push        # Apply src/db/schema.ts to local Postgres (dev only)
@@ -20,6 +20,8 @@ npm run migrate:wp     # Import a WordPress SQL dump (parses wp_*, downloads ima
 ```
 
 There is no test suite — verification is `npm run build` + browser smoke-testing the dev server. The Next build also runs the TS type-check, so it's the canonical "is this broken" gate.
+
+**Port**: this project runs on **3070**, not Next's default 3000 — port 3000 is used by another local app. Both `dev` and `start` pass `-p 3070`; `.env` (`AUTH_URL`, `NEXT_PUBLIC_SITE_URL`) is pinned to `http://localhost:3070`. If you change the port, update all three in lockstep or Auth.js will silently issue cookies for the wrong host.
 
 ### Ad-hoc TS scripts
 

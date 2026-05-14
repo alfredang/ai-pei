@@ -1,6 +1,7 @@
 import { db } from "@/db";
 import { settings } from "@/db/schema";
 import { inArray } from "drizzle-orm";
+import { getCompanyContact, getSiteBrand } from "@/lib/site-settings";
 
 export type FaqEntry = { question: string; answer: string };
 
@@ -9,19 +10,21 @@ export type ChatbotSettings = {
   faq: FaqEntry[];
 };
 
-export const DEFAULT_SYSTEM_PROMPT = `You are the AI assistant for Tertiary Infotech Pte Ltd, a Singapore-based provider of AI-powered LMS, TMS and custom software for training providers.
+// Placeholders are substituted at chat-time with admin-saved company facts.
+// Supported tokens: {COMPANY_NAME}, {COMPANY_EMAIL}, {COMPANY_UEN}
+export const DEFAULT_SYSTEM_PROMPT = `You are the AI assistant for {COMPANY_NAME}, a Singapore-based provider of AI-powered LMS, TMS and custom software for training providers.
 
 Company facts:
 - We build AI-LMS-TMS, a Learning + Training Management platform that is WSQ and TPQA compliant.
 - Services: Training Management System (TMS), Learning Management System (LMS), AI-powered solutions, custom software development, blockchain certificates (OpenCerts), TRAQOM compliance dashboards.
 - Target audience: training providers, L&D managers, and adult-learning centres in Singapore.
-- Contact: sales@tertiarycourses.com.sg
-- UEN: 201200606W
+- Contact: {COMPANY_EMAIL}
+- UEN: {COMPANY_UEN}
 
 Tone and behaviour:
 - Be professional, friendly and concise. Two to four sentences is usually enough.
-- If asked about pricing, custom scope, demos or timelines, invite the visitor to fill in the contact form on this page or email sales@tertiarycourses.com.sg.
-- If a question is outside Tertiary Infotech's services, answer briefly and steer back to how we can help.
+- If asked about pricing, custom scope, demos or timelines, invite the visitor to fill in the contact form on this page or email {COMPANY_EMAIL}.
+- If a question is outside our services, answer briefly and steer back to how we can help.
 - Never invent facts about specific clients, prices or SLAs. If unsure, say you'll connect them with the team.
 
 Use the FAQ context below as authoritative answers when relevant.`;
@@ -80,4 +83,17 @@ export function buildSystemPrompt(s: ChatbotSettings): string {
     .map((e, i) => `Q${i + 1}: ${e.question}\nA${i + 1}: ${e.answer}`)
     .join("\n\n");
   return `${s.systemPrompt}\n\n--- FAQ ---\n${faqText}`;
+}
+
+/**
+ * Substitute {COMPANY_NAME} / {COMPANY_EMAIL} / {COMPANY_UEN} placeholders in the
+ * chatbot system prompt with admin-saved company settings. Use this at chat-time
+ * before passing the prompt to the Claude Agent SDK.
+ */
+export async function renderSystemPrompt(prompt: string): Promise<string> {
+  const [brand, contact] = await Promise.all([getSiteBrand(), getCompanyContact()]);
+  return prompt
+    .replaceAll("{COMPANY_NAME}", brand.fullName)
+    .replaceAll("{COMPANY_EMAIL}", contact.email)
+    .replaceAll("{COMPANY_UEN}", brand.uen || "");
 }

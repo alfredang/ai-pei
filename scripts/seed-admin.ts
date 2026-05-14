@@ -70,10 +70,25 @@ async function main() {
     site_title: "Tertiary Infotech",
     tagline: "AI-LMS-TMS for WSQ & TPQA Compliance",
     contact_email: "sales@tertiarycourses.com.sg",
-    social: {
-      linkedin: "https://www.linkedin.com/company/tertiary-courses",
-      facebook: "",
-    },
+    // Company-info defaults (matching admin Company Settings form)
+    company_name: "Tertiary Infotech Academy Pte Ltd",
+    company_short_name: "Tertiary Infotech Academy",
+    company_uen: "201200696W",
+    company_website: "https://www.tertiarycourses.com.sg/",
+    company_email: "sales@tertiarycourses.com.sg",
+    company_tel: "+6561000613",
+    company_whatsapp: "6588666375",
+    company_address: "12 Woodlands Square #07-85/86/87 Woods Square Tower 1, Singapore 737715",
+    social_links: [
+      { platform: "facebook", href: "https://www.facebook.com/TertiaryCourses/", label: "Facebook" },
+      { platform: "youtube", href: "https://www.youtube.com/@TertiaryCourses", label: "YouTube" },
+      {
+        platform: "linkedin",
+        href: "https://www.linkedin.com/company/tertiaryinfotech/?originalSubdomain=sg",
+        label: "LinkedIn",
+      },
+      { platform: "whatsapp", href: "https://wa.me/6588666375", label: "WhatsApp" },
+    ],
   };
   for (const [key, value] of Object.entries(defaults)) {
     await db

@@ -5,18 +5,28 @@ import { Footer } from "@/components/layout/Footer";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { HiMapPin, HiEnvelope, HiPhone, HiClock } from "react-icons/hi2";
 import { FaWhatsapp } from "react-icons/fa";
+import { getCompanyContact, getSiteBrand } from "@/lib/site-settings";
 
 export const metadata: Metadata = {
   title: "Contact Us — Tertiary Infotech",
   description:
-    "Get in touch with Tertiary Infotech Pte Ltd — 12 Woodlands Square, #07-85 Woods Square Tower 1, Singapore 737715. Phone, email, WhatsApp, and Google Map location.",
+    "Get in touch with Tertiary Infotech — Singapore-based AI-LMS-TMS and SSG ATO consultancy. Phone, email, WhatsApp, and Google Map.",
 };
 
-const ADDRESS_QUERY = encodeURIComponent(
-  "Tertiary Infotech Pte Ltd, 12 Woodlands Square, #07-85 Woods Square Tower 1, Singapore 737715",
-);
+function formatPhone(raw: string): string {
+  const d = raw.replace(/[^\d+]/g, "");
+  const m = /^(\+\d{2})(\d{4})(\d+)$/.exec(d);
+  return m ? `${m[1]} ${m[2]} ${m[3]}` : raw;
+}
 
-export default function ContactPage() {
+function formatWhatsapp(d: string): string {
+  const m = /^(\d{2})(\d{4})(\d+)$/.exec(d);
+  return m ? `+${m[1]} ${m[2]} ${m[3]}` : `+${d}`;
+}
+
+export default async function ContactPage() {
+  const [brand, contact] = await Promise.all([getSiteBrand(), getCompanyContact()]);
+  const addressQuery = encodeURIComponent(`${brand.fullName}, ${contact.address}`);
   return (
     <>
       <Navbar />
@@ -39,47 +49,44 @@ export default function ContactPage() {
                 <div className="flex items-start gap-3">
                   <HiMapPin className="w-5 h-5 mt-0.5 shrink-0 text-(--color-cyan)" />
                   <div>
-                    <div className="font-display font-bold text-white mb-1">
-                      Tertiary Infotech Pte Ltd
-                    </div>
-                    <div className="text-sm text-(--color-muted) leading-relaxed">
-                      12 Woodlands Square, #07-85
-                      <br />
-                      Woods Square Tower 1
-                      <br />
-                      Singapore 737715
-                    </div>
+                    <div className="font-display font-bold text-white mb-1">{brand.fullName}</div>
+                    <div className="text-sm text-(--color-muted) leading-relaxed">{contact.address}</div>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <HiPhone className="w-5 h-5 mt-0.5 shrink-0 text-(--color-cyan)" />
                   <div className="text-sm">
-                    <a href="tel:+6561000613" className="text-white hover:text-(--color-cyan) transition block">
-                      +65 6100 0613
+                    <a
+                      href={`tel:${contact.tel.replace(/\s+/g, "")}`}
+                      className="text-white hover:text-(--color-cyan) transition block"
+                    >
+                      {formatPhone(contact.tel)}
                     </a>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <FaWhatsapp className="w-5 h-5 mt-0.5 shrink-0 text-(--color-cyan)" />
-                  <a
-                    href="https://wa.me/6588666375"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-white hover:text-(--color-cyan) transition"
-                  >
-                    +65 8866 6375 (WhatsApp)
-                  </a>
-                </div>
+                {contact.whatsapp && (
+                  <div className="flex items-start gap-3">
+                    <FaWhatsapp className="w-5 h-5 mt-0.5 shrink-0 text-(--color-cyan)" />
+                    <a
+                      href={`https://wa.me/${contact.whatsapp}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-white hover:text-(--color-cyan) transition"
+                    >
+                      {formatWhatsapp(contact.whatsapp)} (WhatsApp)
+                    </a>
+                  </div>
+                )}
 
                 <div className="flex items-start gap-3">
                   <HiEnvelope className="w-5 h-5 mt-0.5 shrink-0 text-(--color-cyan)" />
                   <a
-                    href="mailto:enquiry@tertiaryinfotech.com"
+                    href={`mailto:${contact.email}`}
                     className="text-sm text-white hover:text-(--color-cyan) transition"
                   >
-                    enquiry@tertiaryinfotech.com
+                    {contact.email}
                   </a>
                 </div>
 
@@ -92,15 +99,15 @@ export default function ContactPage() {
                   </div>
                 </div>
 
-                <div className="pt-2 text-xs text-(--color-muted) font-mono">
-                  UEN 201200606W
-                </div>
+                {brand.uen && (
+                  <div className="pt-2 text-xs text-(--color-muted) font-mono">UEN {brand.uen}</div>
+                )}
               </div>
 
               <div className="relative rounded-2xl overflow-hidden border border-white/10 min-h-[400px]">
                 <iframe
                   title="Tertiary Infotech location"
-                  src={`https://www.google.com/maps?q=${ADDRESS_QUERY}&output=embed`}
+                  src={`https://www.google.com/maps?q=${addressQuery}&output=embed`}
                   width="100%"
                   height="100%"
                   style={{ border: 0, position: "absolute", inset: 0 }}

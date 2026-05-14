@@ -3,24 +3,34 @@ import { db } from "@/db";
 import { menus, menuItems } from "@/db/schema";
 import { eq, asc } from "drizzle-orm";
 import { Container } from "./Container";
-import { getSiteBrand } from "@/lib/site-settings";
-import { FaFacebookF, FaYoutube, FaLinkedinIn, FaWhatsapp } from "react-icons/fa";
+import {
+  getSiteBrand,
+  getCompanyContact,
+  getSocialLinks,
+  type SocialLink,
+} from "@/lib/site-settings";
+import {
+  FaFacebookF,
+  FaYoutube,
+  FaLinkedinIn,
+  FaWhatsapp,
+  FaInstagram,
+  FaXTwitter,
+  FaTiktok,
+  FaGithub,
+} from "react-icons/fa6";
 import { HiMapPin, HiEnvelope, HiPhone } from "react-icons/hi2";
 
-const SOCIALS: Array<{
-  label: string;
-  href: string;
-  icon: React.ComponentType<{ className?: string }>;
-}> = [
-  { label: "Facebook", href: "https://www.facebook.com/TertiaryCourses/", icon: FaFacebookF },
-  { label: "YouTube", href: "https://www.youtube.com/@TertiaryCourses", icon: FaYoutube },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/company/tertiaryinfotech/?originalSubdomain=sg",
-    icon: FaLinkedinIn,
-  },
-  { label: "WhatsApp", href: "https://wa.me/6588666375", icon: FaWhatsapp },
-];
+const SOCIAL_ICONS: Record<SocialLink["platform"], React.ComponentType<{ className?: string }>> = {
+  facebook: FaFacebookF,
+  youtube: FaYoutube,
+  linkedin: FaLinkedinIn,
+  whatsapp: FaWhatsapp,
+  instagram: FaInstagram,
+  x: FaXTwitter,
+  tiktok: FaTiktok,
+  github: FaGithub,
+};
 
 async function loadFooter() {
   try {
@@ -32,8 +42,25 @@ async function loadFooter() {
   }
 }
 
+function formatPhone(raw: string): string {
+  // Reformat compact "+6561000613" → "+65 6100 0613" for display.
+  const digits = raw.replace(/[^\d+]/g, "");
+  const m = /^(\+\d{2})(\d{4})(\d+)$/.exec(digits);
+  return m ? `${m[1]} ${m[2]} ${m[3]}` : raw;
+}
+
+function formatWhatsapp(digits: string): string {
+  const m = /^(\d{2})(\d{4})(\d+)$/.exec(digits);
+  return m ? `+${m[1]} ${m[2]} ${m[3]}` : `+${digits}`;
+}
+
 export async function Footer() {
-  const [items, brand] = await Promise.all([loadFooter(), getSiteBrand()]);
+  const [items, brand, contact, socials] = await Promise.all([
+    loadFooter(),
+    getSiteBrand(),
+    getCompanyContact(),
+    getSocialLinks(),
+  ]);
   return (
     <footer className="relative mt-10 border-t border-(--color-border) bg-(--color-bg-elevated)">
       <Container className="py-8">
@@ -52,11 +79,12 @@ export async function Footer() {
               We are a bespoke EdTech solution provider, specializing in full-stack IT and AI solutions to power your business to the next level.
             </p>
             <div className="mt-5 flex items-center gap-2">
-              {SOCIALS.map((s) => {
-                const Icon = s.icon;
+              {socials.map((s) => {
+                const Icon = SOCIAL_ICONS[s.platform];
+                if (!Icon) return null;
                 return (
                   <a
-                    key={s.label}
+                    key={`${s.platform}-${s.href}`}
                     href={s.href}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -83,36 +111,34 @@ export async function Footer() {
             <div className="kicker mb-3">[ CONTACT ]</div>
             <div className="flex items-start gap-2.5 text-sm text-(--color-muted)">
               <HiMapPin className="w-4 h-4 mt-0.5 shrink-0 text-(--color-cyan)/80" />
-              <span>
-                12 Woodlands Square, #07-85 Woods Square Tower 1
-                <br />
-                Singapore 737715
-              </span>
+              <span>{contact.address}</span>
             </div>
             <div className="mt-3 space-y-1.5 text-sm">
               <a
-                href="mailto:enquiry@tertiaryinfotech.com"
+                href={`mailto:${contact.email}`}
                 className="flex items-center gap-2.5 text-(--color-cyan) hover:underline"
               >
                 <HiEnvelope className="w-4 h-4 shrink-0 text-(--color-cyan)/80" />
-                enquiry@tertiaryinfotech.com
+                {contact.email}
               </a>
               <a
-                href="tel:+6561000613"
+                href={`tel:${contact.tel.replace(/\s+/g, "")}`}
                 className="flex items-center gap-2.5 text-(--color-cyan) hover:underline"
               >
                 <HiPhone className="w-4 h-4 shrink-0 text-(--color-cyan)/80" />
-                +65 6100 0613
+                {formatPhone(contact.tel)}
               </a>
-              <a
-                href="https://wa.me/6588666375"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2.5 text-(--color-cyan) hover:underline"
-              >
-                <FaWhatsapp className="w-4 h-4 shrink-0 text-(--color-cyan)/80" />
-                +65 8866 6375
-              </a>
+              {contact.whatsapp && (
+                <a
+                  href={`https://wa.me/${contact.whatsapp}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2.5 text-(--color-cyan) hover:underline"
+                >
+                  <FaWhatsapp className="w-4 h-4 shrink-0 text-(--color-cyan)/80" />
+                  {formatWhatsapp(contact.whatsapp)}
+                </a>
+              )}
             </div>
           </div>
         </div>

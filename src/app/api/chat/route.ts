@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { query } from "@anthropic-ai/claude-agent-sdk";
 import { getCredential } from "@/lib/secrets";
-import { buildSystemPrompt, getChatbotSettings } from "@/lib/chatbot-settings";
+import { buildSystemPrompt, getChatbotSettings, renderSystemPrompt } from "@/lib/chatbot-settings";
 import { buildClaudeEnv } from "@/lib/anthropic-auth";
 
 export const maxDuration = 120;
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     }
 
     const settings = await getChatbotSettings();
-    const systemPrompt = buildSystemPrompt(settings);
+    const systemPrompt = await renderSystemPrompt(buildSystemPrompt(settings));
 
     const conversation = [...history, { role: "user" as const, content: message }]
       .slice(-10)

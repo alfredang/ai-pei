@@ -95,3 +95,92 @@ export async function getSiteBrand(): Promise<SiteBrand> {
     return DEFAULTS;
   }
 }
+
+// --- Company contact (Footer + Contact page) --------------------------------
+
+const CONTACT_KEYS = [
+  "company_email",
+  "company_tel",
+  "company_whatsapp",
+  "company_address",
+  "company_website",
+] as const;
+type ContactKey = (typeof CONTACT_KEYS)[number];
+
+export type CompanyContact = {
+  email: string;
+  tel: string;
+  /** International format without "+" — used for `https://wa.me/<n>`. */
+  whatsapp: string;
+  address: string;
+  website: string;
+};
+
+export const CONTACT_DEFAULTS: CompanyContact = {
+  email: "sales@tertiarycourses.com.sg",
+  tel: "+6561000613",
+  whatsapp: "6588666375",
+  address: "12 Woodlands Square #07-85/86/87 Woods Square Tower 1, Singapore 737715",
+  website: "https://www.tertiarycourses.com.sg/",
+};
+
+export async function getCompanyContact(): Promise<CompanyContact> {
+  try {
+    const rows = await db
+      .select()
+      .from(settings)
+      .where(inArray(settings.key, CONTACT_KEYS as unknown as string[]));
+    const map = new Map<ContactKey, string>();
+    for (const r of rows) {
+      const v = typeof r.value === "string" ? r.value : "";
+      if (v) map.set(r.key as ContactKey, v);
+    }
+    return {
+      email: map.get("company_email") || CONTACT_DEFAULTS.email,
+      tel: map.get("company_tel") || CONTACT_DEFAULTS.tel,
+      whatsapp: (map.get("company_whatsapp") || CONTACT_DEFAULTS.whatsapp).replace(/\D/g, ""),
+      address: map.get("company_address") || CONTACT_DEFAULTS.address,
+      website: map.get("company_website") || CONTACT_DEFAULTS.website,
+    };
+  } catch {
+    return CONTACT_DEFAULTS;
+  }
+}
+
+// --- Social links (Footer) --------------------------------------------------
+
+export type SocialLink = {
+  platform: "facebook" | "linkedin" | "youtube" | "instagram" | "x" | "tiktok" | "whatsapp" | "github";
+  href: string;
+  label: string;
+};
+
+export const SOCIAL_DEFAULTS: SocialLink[] = [
+  { platform: "facebook", href: "https://www.facebook.com/TertiaryCourses/", label: "Facebook" },
+  { platform: "youtube", href: "https://www.youtube.com/@TertiaryCourses", label: "YouTube" },
+  {
+    platform: "linkedin",
+    href: "https://www.linkedin.com/company/tertiaryinfotech/?originalSubdomain=sg",
+    label: "LinkedIn",
+  },
+  { platform: "whatsapp", href: "https://wa.me/6588666375", label: "WhatsApp" },
+];
+
+export async function getSocialLinks(): Promise<SocialLink[]> {
+  try {
+    const [row] = await db
+      .select()
+      .from(settings)
+      .where(inArray(settings.key, ["social_links"] as unknown as string[]));
+    if (!row) return SOCIAL_DEFAULTS;
+    const v = row.value;
+    if (Array.isArray(v)) {
+      return (v as SocialLink[]).filter(
+        (l) => l && typeof l.href === "string" && typeof l.platform === "string",
+      );
+    }
+    return SOCIAL_DEFAULTS;
+  } catch {
+    return SOCIAL_DEFAULTS;
+  }
+}
