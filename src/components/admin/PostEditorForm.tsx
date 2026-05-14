@@ -43,14 +43,14 @@ export function PostEditorForm({ initial, save, kind }: Props) {
   const [imageLoading, setImageLoading] = useState(false);
   const [imageError, setImageError] = useState<string | null>(null);
 
-  async function fetchAndApplyImage(query: string, slug: string) {
+  async function fetchAndApplyImage(query: string, slug: string, kicker?: string) {
     setImageLoading(true);
     setImageError(null);
     try {
       const res = await fetch("/api/ai/post-image", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query, slug }),
+        body: JSON.stringify({ query, slug, kicker }),
       });
       const data = (await res.json()) as { ok?: boolean; url?: string; error?: string };
       if (!res.ok || !data.ok || !data.url) {
@@ -113,9 +113,14 @@ export function PostEditorForm({ initial, save, kind }: Props) {
       suggestedTagSlugs: Array.isArray(obj.tagSlugs) ? obj.tagSlugs : d.suggestedTagSlugs,
     }));
 
-    // Kick off image generation in parallel — non-blocking.
-    if (obj.imageQuery && kind === "post") {
-      void fetchAndApplyImage(obj.imageQuery, obj.slug || data.slug);
+    // Kick off image generation in parallel — non-blocking. Render the
+    // post title onto a branded SVG card; categorySlug becomes the kicker.
+    if (kind === "post" && obj.title) {
+      void fetchAndApplyImage(
+        obj.title,
+        obj.slug || data.slug,
+        obj.categorySlug?.replace(/-/g, " "),
+      );
     }
   }
 
