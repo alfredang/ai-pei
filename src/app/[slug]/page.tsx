@@ -27,7 +27,7 @@ export async function generateMetadata({
   const page = await getPage(slug);
   if (!page) return { title: "Not found" };
   const canonical = page.canonicalUrl ?? `/${page.slug}`;
-  const ogImage = page.ogImage ?? undefined;
+  const ogImage = page.ogImage ?? "/icon-192.png";
   return {
     title: page.seoTitle ?? page.title,
     description: page.seoDescription ?? page.excerpt ?? undefined,
@@ -37,7 +37,7 @@ export async function generateMetadata({
     openGraph: {
       title: page.seoTitle ?? page.title,
       description: page.seoDescription ?? page.excerpt ?? undefined,
-      images: ogImage ? [ogImage] : undefined,
+      images: [ogImage],
       type: "article",
       url: `/${page.slug}`,
       locale: "en_SG",
@@ -47,7 +47,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: page.seoTitle ?? page.title,
       description: page.seoDescription ?? page.excerpt ?? undefined,
-      images: ogImage ? [ogImage] : undefined,
+      images: [ogImage],
     },
   };
 }
@@ -69,6 +69,27 @@ export default async function CmsPage({
   const page = await getPage(slug);
   if (!page) notFound();
 
+  const SITE_URL = "https://www.tertiaryinfotech.com";
+  const pageUrl = `${SITE_URL}/${page.slug}`;
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: page.title, item: pageUrl },
+    ],
+  };
+  const webPageLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: page.seoTitle ?? page.title,
+    description: page.seoDescription ?? page.excerpt ?? undefined,
+    url: pageUrl,
+    inLanguage: "en-SG",
+    isPartOf: { "@type": "WebSite", name: "Tertiary Infotech Academy", url: SITE_URL },
+    dateModified: page.updatedAt?.toISOString(),
+  };
+
   return (
     <>
       <Navbar />
@@ -82,6 +103,14 @@ export default async function CmsPage({
         </Container>
       </main>
       <Footer />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
     </>
   );
 }

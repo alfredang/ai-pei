@@ -32,13 +32,16 @@ export const metadata: Metadata = {
   },
   description:
     "AI-powered LMS & TMS for Singapore training providers — automate WSQ compliance, pass TPQA audits, and integrate with SSG out of the box.",
+  keywords:
+    "AI LMS Singapore, AI TMS Singapore, SSG ATO application, WSQ LMS, TPQA consultancy, training provider Singapore, e-learning Singapore, Tertiary Infotech Academy",
   openGraph: {
     type: "website",
     siteName: "Tertiary Infotech Academy",
     locale: "en_SG",
     url: SITE_URL,
+    images: [{ url: "/icon-192.png", width: 192, height: 192, alt: "Tertiary Infotech Academy" }],
   },
-  twitter: { card: "summary_large_image" },
+  twitter: { card: "summary_large_image", images: ["/icon-192.png"] },
   robots: { index: true, follow: true },
 };
 
@@ -73,6 +76,20 @@ export default async function RootLayout({
     taxID: brand?.uen ?? undefined,
   };
 
+  const websiteLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: brand?.shortName ?? "Tertiary Infotech Academy",
+    url: SITE_URL,
+    inLanguage: "en-SG",
+    publisher: { "@type": "Organization", name: brand?.fullName ?? "Tertiary Infotech Academy Pte Ltd" },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${SITE_URL}/blog?tag={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
+  };
+
   return (
     <html lang="en" className={`dark ${inter.variable} ${exo2.variable} ${mono.variable}`}>
       <body className="min-h-screen antialiased">
@@ -81,6 +98,10 @@ export default async function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteLd) }}
         />
       </body>
     </html>

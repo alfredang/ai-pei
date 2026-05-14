@@ -15,6 +15,8 @@ export const metadata: Metadata = {
   title: "Journal",
   description:
     "Field notes from SSG and AI services and building Agentic AI workflows — AI Agents, LMS and TMS case studies from Tertiary Infotech Academy.",
+  keywords:
+    "AI agents Singapore, WSQ LMS blog, training provider blog, SSG ATO insights, TPQA case studies, agentic AI Singapore",
   alternates: { canonical: "/blog" },
   openGraph: {
     type: "website",
@@ -24,12 +26,14 @@ export const metadata: Metadata = {
       "AI Agents, LMS and TMS case studies from the Tertiary Infotech Academy.",
     locale: "en_SG",
     siteName: "Tertiary Infotech Academy",
+    images: [{ url: "/icon-192.png", width: 192, height: 192, alt: "Tertiary Infotech Academy" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Journal | Tertiary Infotech Academy",
     description:
       "AI Agents, LMS and TMS case studies from the Tertiary Infotech Academy.",
+    images: ["/icon-192.png"],
   },
 };
 

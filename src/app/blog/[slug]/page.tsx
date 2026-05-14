@@ -65,7 +65,7 @@ export async function generateMetadata({
   const post = await getPost(slug);
   if (!post) return { title: "Not found" };
   const canonical = post.canonicalUrl ?? `/blog/${post.slug}`;
-  const ogImage = post.ogImage ?? post.featuredImage ?? undefined;
+  const ogImage = post.ogImage ?? post.featuredImage ?? "/icon-192.png";
   return {
     title: post.seoTitle ?? post.title,
     description: post.seoDescription ?? post.excerpt ?? undefined,
@@ -75,7 +75,7 @@ export async function generateMetadata({
     openGraph: {
       title: post.seoTitle ?? post.title,
       description: post.seoDescription ?? post.excerpt ?? undefined,
-      images: ogImage ? [ogImage] : undefined,
+      images: [ogImage],
       type: "article",
       url: `/blog/${post.slug}`,
       publishedTime: post.publishedAt?.toISOString(),
@@ -87,7 +87,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: post.seoTitle ?? post.title,
       description: post.seoDescription ?? post.excerpt ?? undefined,
-      images: ogImage ? [ogImage] : undefined,
+      images: [ogImage],
     },
   };
 }

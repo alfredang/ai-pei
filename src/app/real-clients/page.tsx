@@ -7,23 +7,27 @@ import { CLIENTS, TESTIMONIALS } from "@/lib/clients-content";
 import { HiArrowUpRight, HiCheckCircle } from "react-icons/hi2";
 
 export const metadata: Metadata = {
-  title: "Real Clients for LMS/TMS",
+  title: "Real Clients for LMS/TMS Singapore",
   description:
-    "Production LMS and TMS deployments by Tertiary Infotech — IES Digital Academy, Intellisoft Systems, and Chariot Learning & Consultancy.",
+    "Production LMS and TMS deployments by Tertiary Infotech Academy — IES Digital Academy, Intellisoft Systems, and Chariot Learning & Consultancy.",
+  keywords:
+    "LMS Singapore case studies, TMS Singapore clients, WSQ LMS deployments, training provider LMS, Tertiary Infotech Academy clients",
   alternates: { canonical: "/real-clients" },
   openGraph: {
     type: "website",
     url: "/real-clients",
-    title: "Real Clients for LMS/TMS | Tertiary Infotech",
+    title: "Real Clients for LMS/TMS Singapore | Tertiary Infotech Academy",
     description:
       "Production LMS and TMS deployments — IES Digital Academy, Intellisoft Systems, Chariot Learning & Consultancy.",
     locale: "en_SG",
     siteName: "Tertiary Infotech Academy",
+    images: [{ url: "/icon-192.png", width: 192, height: 192, alt: "Tertiary Infotech Academy" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Real Clients for LMS/TMS | Tertiary Infotech",
-    description: "Production LMS and TMS deployments by Tertiary Infotech.",
+    title: "Real Clients for LMS/TMS Singapore | Tertiary Infotech Academy",
+    description: "Production LMS and TMS deployments by Tertiary Infotech Academy.",
+    images: ["/icon-192.png"],
   },
 };
 

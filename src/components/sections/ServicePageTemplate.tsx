@@ -65,7 +65,7 @@ export function ServicePageTemplate({ content }: { content: ServicePageContent }
     name: content.title,
     provider: {
       "@type": "Organization",
-      name: "Tertiary Infotech",
+      name: "Tertiary Infotech Academy",
       url: SITE_URL,
     },
     areaServed: { "@type": "Country", name: "Singapore" },

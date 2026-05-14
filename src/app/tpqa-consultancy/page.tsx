@@ -22,12 +22,14 @@ export async function generateMetadata(): Promise<Metadata> {
       url: PAGE_URL,
       title: content.meta.title,
       description: content.meta.description,
-      siteName: "Tertiary Infotech",
+      siteName: "Tertiary Infotech Academy",
+      images: [{ url: "/icon-192.png", width: 192, height: 192, alt: "Tertiary Infotech Academy" }],
     },
     twitter: {
       card: "summary_large_image",
       title: content.meta.title,
       description: content.meta.description,
+      images: ["/icon-192.png"],
     },
   };
 }

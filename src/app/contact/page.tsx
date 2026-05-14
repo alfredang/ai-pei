@@ -8,24 +8,28 @@ import { FaWhatsapp } from "react-icons/fa";
 import { getCompanyContact, getSiteBrand } from "@/lib/site-settings";
 
 export const metadata: Metadata = {
-  title: "Contact Us — Tertiary Infotech",
+  title: "Contact Us",
   description:
-    "Get in touch with Tertiary Infotech — Singapore-based AI-LMS-TMS and SSG ATO consultancy. Phone, email, WhatsApp, and Google Map.",
+    "Get in touch with Tertiary Infotech Academy — Singapore-based AI-LMS-TMS and SSG ATO consultancy. Phone, email, WhatsApp, and Google Map.",
+  keywords:
+    "contact Tertiary Infotech Academy, SSG ATO consultancy Singapore, LMS TMS Singapore, Woodlands training provider",
   alternates: { canonical: "/contact" },
   openGraph: {
     type: "website",
     url: "/contact",
-    title: "Contact Us — Tertiary Infotech",
+    title: "Contact Us — Tertiary Infotech Academy",
     description:
-      "Reach Tertiary Infotech by phone, email, WhatsApp. Located in Singapore — Woods Square, Woodlands.",
+      "Reach Tertiary Infotech Academy by phone, email, WhatsApp. Located in Singapore — Woods Square, Woodlands.",
     locale: "en_SG",
     siteName: "Tertiary Infotech Academy",
+    images: [{ url: "/icon-192.png", width: 192, height: 192, alt: "Tertiary Infotech Academy" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact Us — Tertiary Infotech",
+    title: "Contact Us — Tertiary Infotech Academy",
     description:
-      "Reach Tertiary Infotech by phone, email, WhatsApp. Singapore-based.",
+      "Reach Tertiary Infotech Academy by phone, email, WhatsApp. Singapore-based.",
+    images: ["/icon-192.png"],
   },
 };
 
@@ -67,12 +71,24 @@ export default async function ContactPage() {
       },
     ],
   };
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Contact", item: `${SITE_URL}/contact` },
+    ],
+  };
   return (
     <>
       <Navbar />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
       <main className="pt-16">
         <section className="py-10">

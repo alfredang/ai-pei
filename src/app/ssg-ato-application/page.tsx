@@ -25,6 +25,8 @@ export const metadata: Metadata = {
   title: "SSG ATO Application Singapore — Become a Registered Training Provider",
   description:
     "End-to-end consultancy for the SSG/TPGateway ATO application in Singapore. We prepare your QMS, policies, SOPs, course submission and audit-readiness. Book a free 30-min consultation.",
+  keywords:
+    "SSG ATO application Singapore, apply ATO Singapore, become accredited training organisation Singapore, TPGateway organisation registration, WSQ training provider registration, RTP registration Singapore",
   alternates: { canonical: PAGE_URL },
   openGraph: {
     type: "website",
@@ -34,12 +36,14 @@ export const metadata: Metadata = {
     description:
       "End-to-end consultancy for the SSG/TPGateway ATO application in Singapore. We prepare your QMS, policies, SOPs, course submission and audit-readiness.",
     siteName: "Tertiary Infotech Academy",
+    images: [{ url: "/icon-192.png", width: 192, height: 192, alt: "SSG ATO Application — Tertiary Infotech Academy" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "SSG ATO Application Singapore — Become a Registered Training Provider",
     description:
       "End-to-end consultancy for the SSG/TPGateway ATO application. QMS, SOPs, course submission, audit-readiness — all in one engagement.",
+    images: ["/icon-192.png"],
   },
 };
 
@@ -256,6 +260,17 @@ const faqLd = {
     name: f.q,
     acceptedAnswer: { "@type": "Answer", text: f.a },
   })),
+};
+
+const SITE_URL = "https://www.tertiaryinfotech.com";
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+    { "@type": "ListItem", position: 2, name: "Services", item: `${SITE_URL}/#services` },
+    { "@type": "ListItem", position: 3, name: "SSG ATO Application", item: PAGE_URL },
+  ],
 };
 
 export default function SsgAtoApplicationPage() {
@@ -673,6 +688,10 @@ export default function SsgAtoApplicationPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
     </>
   );
