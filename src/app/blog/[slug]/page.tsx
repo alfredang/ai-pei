@@ -1,12 +1,13 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { db } from "@/db";
-import { posts } from "@/db/schema";
+import { posts, categories, tags, postTags } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ShareButtons } from "@/components/blog/ShareButtons";
-import { HiUser, HiCalendar } from "react-icons/hi2";
+import { HiUser, HiCalendar, HiTag, HiFolder } from "react-icons/hi2";
 import type { Metadata } from "next";
 
 function formatDateDMY(d: Date | null | undefined): string {
@@ -101,6 +102,23 @@ export default async function PostPage({
   const post = await getPost(slug);
   if (!post) notFound();
 
+  // Pull the post's category + tag chips for the header meta row.
+  const [category, tagRows] = await Promise.all([
+    post.categoryId
+      ? db
+          .select({ slug: categories.slug, name: categories.name })
+          .from(categories)
+          .where(eq(categories.id, post.categoryId))
+          .limit(1)
+          .then((rows) => rows[0] ?? null)
+      : Promise.resolve(null),
+    db
+      .select({ slug: tags.slug, name: tags.name })
+      .from(postTags)
+      .innerJoin(tags, eq(tags.id, postTags.tagId))
+      .where(eq(postTags.postId, post.id)),
+  ]);
+
   const bodyHtml = stripLeadingImage(post.contentHtml ?? "", post.featuredImage);
   const { intro: introHtml, rest: restHtml } = splitIntroSection(bodyHtml);
 
@@ -168,6 +186,29 @@ export default async function PostPage({
                     </span>
                   )}
                 </div>
+                {(category || tagRows.length > 0) && (
+                  <div className="flex flex-wrap items-center gap-2 mb-4">
+                    {category && (
+                      <Link
+                        href={`/blog?category=${category.slug}`}
+                        className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] uppercase tracking-wider bg-(--color-purple)/15 text-(--color-purple) border border-(--color-purple)/30 hover:bg-(--color-purple)/25 transition"
+                      >
+                        <HiFolder className="w-3 h-3" />
+                        {category.name}
+                      </Link>
+                    )}
+                    {tagRows.map((t) => (
+                      <Link
+                        key={t.slug}
+                        href={`/blog?tag=${t.slug}`}
+                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-white/5 border border-white/10 text-white/70 hover:bg-white/10 transition"
+                      >
+                        <HiTag className="w-3 h-3" />
+                        {t.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
                 <div className="mb-4">
                   <ShareButtons url={postUrl} title={post.title} />
                 </div>
