@@ -9,7 +9,7 @@ const schema = z.object({
   name: z.string().min(1).max(255),
   email: z.string().email().max(255),
   phone: z.string().max(50).optional().nullable(),
-  company: z.string().max(255).optional().nullable(),
+  company: z.string().min(1).max(255),
   message: z.string().min(1),
   source: z.string().max(100).optional().nullable(),
   turnstileToken: z.string().max(2048).optional().nullable(),
@@ -44,7 +44,7 @@ export async function POST(req: Request) {
     name: data.name,
     email: data.email,
     phone: data.phone ?? null,
-    company: data.company ?? null,
+    company: data.company,
     message: data.message,
     source: data.source ?? null,
   });
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
       name: data.name,
       email: data.email,
       phone: data.phone ?? undefined,
-      company: data.company ?? undefined,
+      company: data.company,
       message: data.message,
       source: data.source ?? undefined,
     });

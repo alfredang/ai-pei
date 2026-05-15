@@ -1,53 +1,50 @@
 import { db } from "@/db";
 import { leads } from "@/db/schema";
-import { desc } from "drizzle-orm";
+import { desc, inArray } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
+import { LeadsBulkTable, type LeadRow } from "@/components/admin/LeadsBulkTable";
+
+export const dynamic = "force-dynamic";
 
 export default async function LeadsList() {
   const list = await db.select().from(leads).orderBy(desc(leads.createdAt));
+
+  async function deleteMany(ids: number[]) {
+    "use server";
+    if (!Array.isArray(ids) || ids.length === 0) return;
+    await db.delete(leads).where(inArray(leads.id, ids));
+    revalidatePath("/admin/leads");
+  }
+
+  async function updateStatus(ids: number[], status: LeadRow["status"]) {
+    "use server";
+    if (!Array.isArray(ids) || ids.length === 0) return;
+    const allowed = ["new", "contacted", "qualified", "converted", "lost"] as const;
+    if (!(allowed as readonly string[]).includes(status)) return;
+    await db.update(leads).set({ status }).where(inArray(leads.id, ids));
+    revalidatePath("/admin/leads");
+  }
+
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6">Leads</h1>
-      <div className="glass rounded-xl overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-white/5 text-left text-xs uppercase text-white/60">
-            <tr>
-              <th className="px-4 py-3">Name</th>
-              <th className="px-4 py-3">Email</th>
-              <th className="px-4 py-3">Company</th>
-              <th className="px-4 py-3">Source</th>
-              <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3">Created</th>
-            </tr>
-          </thead>
-          <tbody>
-            {list.map((l) => (
-              <tr key={l.id} className="border-t border-white/5 hover:bg-white/5">
-                <td className="px-4 py-3">{l.name}</td>
-                <td className="px-4 py-3">
-                  <a href={`mailto:${l.email}`} className="text-neon-cyan hover:underline">
-                    {l.email}
-                  </a>
-                </td>
-                <td className="px-4 py-3 text-white/70">{l.company ?? "—"}</td>
-                <td className="px-4 py-3 text-white/70">{l.source ?? "—"}</td>
-                <td className="px-4 py-3">
-                  <span className="px-2 py-0.5 rounded text-xs bg-white/10">{l.status}</span>
-                </td>
-                <td className="px-4 py-3 text-white/60">
-                  {new Date(l.createdAt).toLocaleString()}
-                </td>
-              </tr>
-            ))}
-            {list.length === 0 && (
-              <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-white/50">
-                  No leads yet.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-3xl font-bold">Leads</h1>
+        <span className="text-sm text-white/50 font-mono">[ {list.length} total ]</span>
       </div>
+      <LeadsBulkTable
+        rows={list.map((l) => ({
+          id: l.id,
+          name: l.name,
+          email: l.email,
+          phone: l.phone,
+          company: l.company,
+          source: l.source,
+          status: l.status,
+          createdAt: l.createdAt.toISOString(),
+        }))}
+        deleteMany={deleteMany}
+        updateStatus={updateStatus}
+      />
     </div>
   );
 }

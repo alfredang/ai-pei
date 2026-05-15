@@ -34,7 +34,7 @@ export function SsgAtoLeadForm({ compact = false }: { compact?: boolean }) {
       <div className="grid md:grid-cols-2 gap-5">
         <Input name="name" label="Your name" required />
         <Input name="email" label="Work email" type="email" required />
-        <Input name="company" label="Company / proposed TP name" />
+        <Input name="company" label="Company / proposed TP name" required />
         <Input name="phone" label="Phone (Singapore)" />
       </div>
       <div>
