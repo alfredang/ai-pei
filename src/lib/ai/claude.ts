@@ -91,15 +91,17 @@ export async function runClaudeAssist(
   let resultText = "";
   let errorResult: string | null = null;
   let turn = 0;
-  // Match /api/chat option-for-option — that path works on prod with the same
-  // OAuth subscription token. Any extra option we add risks tripping a
-  // different upstream auth path that returns 401.
+  // Pin Sonnet 4.5 explicitly — Sonnet is fast enough for long-form content
+  // and well-supported on Claude.ai OAuth subscriptions. maxTurns: 4 gives
+  // the SDK headroom to absorb a model "tool-call attempt then text" cycle
+  // (each attempt counts as a turn even with all tools disabled).
   for await (const msg of query({
     prompt: userContext,
     options: {
       systemPrompt,
       env: buildClaudeEnv(token),
-      maxTurns: 1,
+      model: "claude-sonnet-4-5",
+      maxTurns: 4,
       allowedTools: [],
       disallowedTools: ["Bash", "Read", "Write", "Edit", "Glob", "Grep", "WebSearch", "WebFetch"],
     },
