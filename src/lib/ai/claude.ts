@@ -91,16 +91,19 @@ export async function runClaudeAssist(
   let resultText = "";
   let errorResult: string | null = null;
   let turn = 0;
-  // Pin Sonnet 4.5 explicitly — Sonnet is fast enough for long-form content
-  // and well-supported on Claude.ai OAuth subscriptions. maxTurns: 4 gives
-  // the SDK headroom to absorb a model "tool-call attempt then text" cycle
-  // (each attempt counts as a turn even with all tools disabled).
+  // Do NOT pass `model` — the Claude Code OAuth subscription path returns
+  // 401 "Invalid bearer token" on prod whenever an explicit model is
+  // specified, even for models the subscription nominally supports. The
+  // SDK without `model` uses whatever the bearer is authorized for
+  // (typically Sonnet), which is what /api/chat (Nemo) does and that
+  // works on prod. maxTurns: 4 gives the SDK headroom to absorb a tool-
+  // call-attempt cycle (each attempt counts as a turn even with all tools
+  // disabled).
   for await (const msg of query({
     prompt: userContext,
     options: {
       systemPrompt,
       env: buildClaudeEnv(token),
-      model: "claude-sonnet-4-5",
       maxTurns: 4,
       allowedTools: [],
       disallowedTools: ["Bash", "Read", "Write", "Edit", "Glob", "Grep", "WebSearch", "WebFetch"],
