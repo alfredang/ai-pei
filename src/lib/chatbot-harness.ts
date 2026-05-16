@@ -42,6 +42,93 @@ export function tryFaqMatch(message: string, faq: FaqEntry[]): string | null {
   return best?.answer ?? null;
 }
 
+// ─── Product catalog quick answers ──────────────────────────────────────────
+//
+// Most visitor questions are "do you have X?" or "what is X?" for our core
+// products. Answer those instantly with a short blurb + CTA — far faster than
+// spawning the Claude Agent SDK, and the CTA nudges them into the lead flow.
+
+type CatalogEntry = {
+  keywords: string[];
+  answer: string;
+};
+
+const PRODUCT_CATALOG: CatalogEntry[] = [
+  {
+    keywords: ["tms", "training management system", "training-management"],
+    answer:
+      "Yes — our **TMS (Training Management System)** handles course catalogues, trainer rostering, learner enrolment, attendance, certificates, SSG TPGateway sync and invoicing. Self-hosted, no per-user fees. Want a quick **demo** or a **quote**?",
+  },
+  {
+    keywords: ["lms", "learning management system", "learning-management"],
+    answer:
+      "Yes — our **LMS (Learning Management System)** ships with 50+ classroom EdTools (Padlet, Whiteboard, Live Q&A, CyberLabs, NovaStats…), Moodle-compatible course delivery, assessments, and AI tutor. Self-hosted, WSQ-aligned. Want a **demo** or a **quote**?",
+  },
+  {
+    keywords: ["ssg ato", "ssg-ato", "ssg application", "ato application"],
+    answer:
+      "Yes — we run a full **SSG ATO application** service: gap-assessment, policy docs, evidence pack, TPGateway setup, and a mock TPQA audit. 6–10 weeks typical. Want to **book a consultation**?",
+  },
+  {
+    keywords: ["tpqa", "tpqa audit", "audit"],
+    answer:
+      "Yes — we offer **TPQA consultancy**: mock audits, gap closure, policy & procedure templates, and we sit in on the actual TPQA visit. Want to **book a free scoping call**?",
+  },
+  {
+    keywords: ["wsq course", "course development", "courseware"],
+    answer:
+      "Yes — end-to-end **WSQ course development**: competency mapping, lesson plans, assessment plans, trainer guides, and SSG submission. 6–10 weeks per course. Want a **quote**?",
+  },
+  {
+    keywords: ["ai agent", "agentic", "claude agent", "agent deployment"],
+    answer:
+      "Yes — we deploy production **Agentic AI**: OpenClaw, Hermes, Nebula, or bespoke Claude Agent SDK builds wired into your inbox, CRM, n8n flows or chat. Self-hosted, OAuth-subscription auth (no metered API). Want a **scoping call**?",
+  },
+  {
+    keywords: ["ai solution", "full-stack ai", "ai consultancy"],
+    answer:
+      "Yes — **AI Solutions** covers bespoke web/mobile apps, agentic workflows, n8n automation, and AI Harness Systems. Built with Claude Code, Next.js, React Native. Want a **free 30-min scoping call**?",
+  },
+  {
+    keywords: ["cms", "content management"],
+    answer:
+      "Yes — we deploy a **self-hosted CMS** (this site runs on it): Next.js + Drizzle + Postgres, AI-assisted writing, lead capture, sync API. Open-source, no SaaS fees. Want a **demo**?",
+  },
+  {
+    keywords: ["hrms", "hr management", "human resource"],
+    answer:
+      "Yes — our **HRMS** covers leave, claims, payroll prep, appraisals, training records and SSG funding tracking. Self-hosted, SG-compliant. Want a **demo** or a **quote**?",
+  },
+  {
+    keywords: ["chatbot", "ai chatbot", "nemo"],
+    answer:
+      "Yes — **Nemo** (the one you're talking to) is our open-source chatbot framework. Plugs into your CMS, FAQ, and lead pipeline. Want to **deploy one on your site**?",
+  },
+  {
+    keywords: ["price", "pricing", "how much", "cost", "fee"],
+    answer:
+      "Pricing depends on scope — most engagements are fixed-fee after a free scoping call. LMS/TMS from S$15k/yr self-hosted with no per-user fees; bespoke AI agents from S$8k. Want a **quote** for your use case?",
+  },
+];
+
+export function tryProductCatalog(message: string): string | null {
+  const lower = message.trim().toLowerCase();
+  if (lower.length < 2) return null;
+  for (const entry of PRODUCT_CATALOG) {
+    for (const kw of entry.keywords) {
+      // Match as a whole token / substring; avoid matching inside longer words
+      // by checking word boundaries for short keywords.
+      if (kw.length <= 4) {
+        const re = new RegExp(`\\b${kw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i");
+        if (re.test(lower)) return entry.answer;
+      } else if (lower.includes(kw)) {
+        return entry.answer;
+      }
+    }
+  }
+  return null;
+}
+
 /** Canned replies for one-word greetings — instant, no LLM needed. */
 const GREETING_REGEX = /^(hi|hello|hey|yo|hola|sup|good\s*(morning|afternoon|evening))[!\.\?]*$/i;
 export function tryGreeting(message: string, brand: string): string | null {

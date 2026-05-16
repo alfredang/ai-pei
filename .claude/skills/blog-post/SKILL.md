@@ -41,16 +41,28 @@ Confirm with the user (or infer from the request):
 Place **at least 6 internal links** across the post:
 
 - **3+ internal Tertiary Infotech Academy links** to service pages or related blog posts. Use real routes — check [src/app/](../../../src/app/) before writing. Examples: `/ssg-ato-application`, `/training-management-system`, `/learning-management-system`, `/ai-solutions`, `/wsq-course-development`, `/tpqa-consultancy`, `/blog/<related-slug>`, `/contact`.
-- **2+ external links to Tertiary Courses Singapore** (`https://www.tertiarycourses.com.sg/`) — pick a category or specific course page that matches the topic. **Always verify the URL returns 200 before publishing**. Common entry points:
-  - `https://www.tertiarycourses.com.sg/` — homepage / catalogue
-  - `https://www.tertiarycourses.com.sg/wsq-courses-singapore.html`
-  - `https://www.tertiarycourses.com.sg/ai-courses-singapore.html`
-  - `https://www.tertiarycourses.com.sg/python-courses-singapore.html`
-  - `https://www.tertiarycourses.com.sg/data-science-courses-singapore.html`
+- **2+ external links to Tertiary Courses Singapore** (`https://www.tertiarycourses.com.sg`). **Each must deep-link to the single most relevant page for the anchor topic — never the homepage and never a generic category index when a specific course page exists.** Example: a mention of Python basics links to `https://www.tertiarycourses.com.sg/wsq-python-beginner-course.html`, *not* `https://www.tertiarycourses.com.sg/` or `https://www.tertiarycourses.com.sg/python-courses-singapore.html`. Find the exact course page by searching the catalogue (`https://www.tertiarycourses.com.sg/` → site search, or `site:tertiarycourses.com.sg <topic>` via the WebSearch tool) and **verify the specific URL returns 200 before publishing**. Resolution order, most specific first:
+  - **Specific course page** (preferred) — e.g. `https://www.tertiarycourses.com.sg/wsq-python-beginner-course.html`, `.../wsq-machine-learning-data-science-python-training-course.html`
+  - Topic category index (only if no single course fits the anchor) — e.g. `https://www.tertiarycourses.com.sg/python-courses-singapore.html`, `.../ai-courses-singapore.html`, `.../data-science-courses-singapore.html`
+  - The homepage `https://www.tertiarycourses.com.sg/` is **not** an acceptable destination for a content link — only ever a last-resort and a signal the link plan is too shallow; pick a real page instead.
 - **1+ authoritative external citation** — SSG developer portal, MOM, IMDA, SkillsFuture, NIST, OWASP, official vendor docs. Never link to a competitor's marketing page.
 - **CTA links** (in addition to the 6 above): every CTA must include `?source=blog-<topic-token>` so the lead lands in `leads.source` correctly. Use distinct tokens per CTA position (`-top`, `-demo`, `-quote`).
 
 **Anchor text**: link the **money keyword phrase**, not "click here" or "read more". The keyword and the destination should match (e.g. anchor "SSG ATO application" → `/ssg-ato-application`).
+
+#### Canonical link map (use these exact destinations — do not re-resolve)
+
+These anchor → destination pairs are fixed. When the body mentions one of these topics, link to the URL below verbatim. **Never** point any of these anchors at `https://www.tertiarycourses.com.sg/` (the bare homepage) — a homepage link here is always a bug.
+
+| Anchor topic in body | Destination URL |
+| --- | --- |
+| "Python courses" / Python training / learning Python | `https://www.tertiaryinfotech.com/blog/openclaw-vs-hermes-vs-paperclip-ai-agent-comparison` |
+| "AI courses at Tertiary Courses Singapore" / AI training at Tertiary Courses | `https://www.tertiarycourses.com.sg/artificial-intelligence-courses.html` |
+| "Paperclip" (the AI agent) | `https://paperclip.ing/` |
+| "Hermes" (the AI agent) | `https://hermes-agent.nousresearch.com/` |
+| "OpenClaw" (the AI agent) | `https://openclaw.ai/` |
+
+For any topic **not** in this table, fall through to the resolution order above (specific course page → category index → never the homepage).
 
 ### 4. SEO checklist (delegate detail to the `seo-audit` skill)
 
@@ -192,11 +204,42 @@ Canonical pattern:
 
 If the table renders raw (unaligned, no borders, no header band), `.prose-dark` table rules have been lost — fix the CSS, not the post.
 
+## Link conventions — every anchor in the body
+
+Blog body HTML is rendered verbatim via `dangerouslySetInnerHTML` on [src/app/blog/[slug]/page.tsx](../../../src/app/blog/[slug]/page.tsx) — there is **no** post-processor that adds attributes. Whatever you author is exactly what ships, so the attributes below must be hand-written into every `<a>` you emit.
+
+**Every link to an external domain** (Tertiary Courses Singapore, regulators, vendor docs — anything not `tertiaryinfotech.com`) must:
+
+- Open in a new tab — `target="_blank"`.
+- Be safe and clean — `rel="noopener noreferrer"`. Add `nofollow` for any third-party page you don't editorially endorse (it stays `rel="noopener noreferrer nofollow"`).
+- Carry a `title` attribute — a short, human-readable description of the destination (8–12 words, includes the topic keyword). This is an SEO + accessibility signal and the hover tooltip; it must describe the page, not repeat the anchor text verbatim.
+
+**Internal links** (`/ssg-ato-application`, `/blog/...`, `/contact?source=...`) stay in the **same tab** — no `target="_blank"` — but still take a descriptive `title`.
+
+Canonical external link:
+
+```html
+<a href="https://www.tertiarycourses.com.sg/wsq-python-beginner-course.html"
+   target="_blank" rel="noopener noreferrer"
+   title="WSQ Python Beginner course in Singapore — Tertiary Courses">Python fundamentals course</a>
+```
+
+Canonical internal link:
+
+```html
+<a href="/ssg-ato-application"
+   title="SSG ATO application support for training organisations">SSG ATO application</a>
+```
+
+Anchor text is still the money keyword phrase (never "click here"); the `title` is the *description*, the anchor is the *keyword* — they are not the same string.
+
 ## Anti-patterns — flag and refuse
 
 - **Generic AI-marketing fluff**. If a paragraph could be on any vendor's blog, rewrite it with a Singapore-specific or regulator-specific detail.
 - **Stuffed keywords**. Each money keyword appears 3–6 times in the body, naturally. No "AI TMS AI TMS AI TMS" headings.
 - **Dead links**. Every external link must be `curl`-verified to return 200 before publishing. Tertiary Courses Singapore changes its catalogue routes — re-check, don't assume.
+- **Lazy Tertiary Courses links**. A `tertiarycourses.com.sg` link pointing at the homepage (or a broad category when a specific course page exists) is a defect — deep-link to the exact relevant course page.
+- **Bare external anchors**. Any external `<a>` without `target="_blank"`, `rel="noopener noreferrer"`, and a descriptive `title` is non-conforming — fix it before publishing.
 - **Image on VPS**. If you ever see code writing to `public/blog/`, the local filesystem, or the Docker container's disk for cover images, stop and route through R2.
 - **Missing CTA source**. A `/contact` link without `?source=blog-...` is a leak — it loses the attribution that makes the funnel measurable.
 - **Skipped SEO audit**. Don't claim done without running the `seo-audit` skill against the new slug.

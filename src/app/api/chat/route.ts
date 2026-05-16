@@ -10,6 +10,7 @@ import {
   nextCapturePrompt,
   tryFaqMatch,
   tryGreeting,
+  tryProductCatalog,
 } from "@/lib/chatbot-harness";
 import { getSiteBrand } from "@/lib/site-settings";
 import { db } from "@/db";
@@ -92,6 +93,13 @@ export async function POST(req: Request) {
     const faqHit = tryFaqMatch(message, settings.faq);
     if (faqHit) return NextResponse.json({ response: faqHit });
 
+    // ── Fast path 4: built-in product catalog (TMS, LMS, SSG ATO, TPQA,
+    //    AI Agent, AI Solutions, CMS, HRMS, pricing). Instant + each answer
+    //    ends with an intent keyword (demo/quote) so a follow-up triggers
+    //    the lead-capture flow.
+    const catalogHit = tryProductCatalog(message);
+    if (catalogHit) return NextResponse.json({ response: catalogHit });
+
     // ── Fallback: Claude Agent SDK with subscription OAuth token.
     const token = await getCredential("anthropic_auth_token");
     if (!token) {
@@ -110,26 +118,53 @@ export async function POST(req: Request) {
       .join("\n\n");
 
     let resultText = "";
+    let sdkErrored = false;
 
-    for await (const msg of query({
-      prompt: conversation,
-      options: {
-        env: buildClaudeEnv(token),
-        systemPrompt,
-        maxTurns: 1,
-        allowedTools: [],
-        disallowedTools: ["Bash", "Read", "Write", "Edit", "Glob", "Grep", "WebSearch", "WebFetch"],
-      },
-    })) {
-      if (msg.type === "result" && (msg as { subtype?: string }).subtype === "success") {
-        const r = (msg as { result?: string }).result;
-        if (r) resultText = r;
-      }
-      if (msg.type === "assistant") {
-        for (const block of msg.message.content) {
-          if (block.type === "text" && !resultText) resultText += block.text;
+    try {
+      for await (const msg of query({
+        prompt: conversation,
+        options: {
+          env: buildClaudeEnv(token),
+          systemPrompt,
+          maxTurns: 1,
+          allowedTools: [],
+          disallowedTools: ["Bash", "Read", "Write", "Edit", "Glob", "Grep", "WebSearch", "WebFetch"],
+        },
+      })) {
+        if (msg.type === "result") {
+          const subtype = (msg as { subtype?: string }).subtype;
+          const r = (msg as { result?: string }).result;
+          if (subtype === "success" && r) {
+            resultText = r;
+          } else if (subtype && subtype !== "success") {
+            // error_during_execution, error_max_turns, etc.
+            sdkErrored = true;
+            console.error("[chat] SDK error subtype:", subtype, r);
+          }
+        }
+        if (msg.type === "assistant") {
+          for (const block of msg.message.content) {
+            if (block.type === "text" && !resultText) resultText += block.text;
+          }
         }
       }
+    } catch (sdkErr) {
+      sdkErrored = true;
+      console.error("[chat] SDK threw", sdkErr);
+    }
+
+    // Filter known auth / runtime error strings before they reach the visitor.
+    const looksLikeError =
+      sdkErrored ||
+      /Claude Code returned an error result|Invalid bearer token|API Error: 4\d\d|Failed to authenticate/i.test(
+        resultText,
+      );
+    if (looksLikeError) {
+      console.error("[chat] Suppressed error response to visitor:", resultText.slice(0, 200));
+      return NextResponse.json({
+        response:
+          "I'm having trouble reaching my brain right now — but our team can help directly. Email **sales@tertiarycourses.com.sg** or say *quote* / *demo* and I'll take your details to pass on.",
+      });
     }
 
     return NextResponse.json({
