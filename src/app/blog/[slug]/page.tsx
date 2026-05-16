@@ -1,7 +1,7 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { db } from "@/db";
-import { posts, categories, tags, postTags } from "@/db/schema";
+import { posts, categories, tags, postTags, redirects } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
@@ -100,7 +100,16 @@ export default async function PostPage({
 }) {
   const { slug } = await params;
   const post = await getPost(slug);
-  if (!post) notFound();
+  if (!post) {
+    // Honour the redirects table (e.g. a renamed post slug) before 404'ing.
+    const [redir] = await db
+      .select()
+      .from(redirects)
+      .where(eq(redirects.fromPath, `/blog/${slug}`))
+      .limit(1);
+    if (redir) redirect(redir.toPath);
+    notFound();
+  }
 
   // Pull the post's category + tag chips for the header meta row.
   const [category, tagRows] = await Promise.all([

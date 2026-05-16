@@ -65,6 +65,26 @@ Rules:
     "Rewrite the supplied text in a clearer, more engaging tone while keeping the meaning. Return only the rewritten text.",
 };
 
+/**
+ * Run an arbitrary system prompt against the Claude Agent SDK (OAuth
+ * subscription path). Used by the weekly-blog scheduler which loads its
+ * system prompts from `.claude/agents/*.md` instead of the SYSTEM_PROMPTS
+ * map. Same auth and tool-disable rules as `runClaudeAssist`.
+ */
+export async function runClaudeWithSystemPrompt(
+  systemPrompt: string,
+  userContext: string,
+  label = "custom",
+): Promise<string> {
+  const token = await getCredential("anthropic_auth_token");
+  if (!token) {
+    throw new Error(
+      "Claude OAuth token not configured. Set it in Admin → Settings → Credentials.",
+    );
+  }
+  return runWithPrompt(token, systemPrompt, userContext, label);
+}
+
 export async function runClaudeAssist(
   mode: keyof typeof SYSTEM_PROMPTS,
   userContext: string,
@@ -77,6 +97,15 @@ export async function runClaudeAssist(
   }
   const systemPrompt = SYSTEM_PROMPTS[mode];
   if (!systemPrompt) throw new Error(`Unknown AI assist mode: ${mode}`);
+  return runWithPrompt(token, systemPrompt, userContext, mode);
+}
+
+async function runWithPrompt(
+  token: string,
+  systemPrompt: string,
+  userContext: string,
+  label: string,
+): Promise<string> {
 
   // Mirror /api/chat (Nemo)'s SDK options exactly — that path works on live,
   // this one was failing with 401 because `permissionMode: "bypassPermissions"`
@@ -86,7 +115,7 @@ export async function runClaudeAssist(
   // Log the fingerprint of the token actually being used so we can confirm
   // it matches the one Nemo uses on live (which works). Never the full token.
   const tokenFp = `${token.slice(0, 12)}…${token.slice(-4)}(len=${token.length})`;
-  console.log(`[ai/assist] mode=${mode} token=${tokenFp} promptLen=${userContext.length}`);
+  console.log(`[ai/assist] mode=${label} token=${tokenFp} promptLen=${userContext.length}`);
 
   let resultText = "";
   let errorResult: string | null = null;

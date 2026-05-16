@@ -178,6 +178,20 @@ export const settings = pgTable("settings", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+export const blogScheduleRuns = pgTable("blog_schedule_runs", {
+  id: serial("id").primaryKey(),
+  runAt: timestamp("run_at").defaultNow().notNull(),
+  trigger: varchar("trigger", { length: 16 }).notNull(), // cron | http | manual
+  status: varchar("status", { length: 16 }).notNull(),   // ok | skipped | error
+  videoId: varchar("video_id", { length: 32 }),
+  videoTitle: text("video_title"),
+  videoUrl: text("video_url"),
+  postId: integer("post_id").references(() => posts.id, { onDelete: "set null" }),
+  postSlug: varchar("post_slug", { length: 255 }),
+  durationMs: integer("duration_ms"),
+  errorMessage: text("error_message"),
+});
+
 export const redirects = pgTable("redirects", {
   id: serial("id").primaryKey(),
   fromPath: varchar("from_path", { length: 1000 }).notNull().unique(),

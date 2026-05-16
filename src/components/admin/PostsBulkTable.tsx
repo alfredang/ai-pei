@@ -129,6 +129,7 @@ export function PostsBulkTable({ rows, deleteMany, setFeatured }: Props) {
               <th className="px-3 py-2 font-medium">Tags</th>
               <th className="px-3 py-2 font-medium">Created</th>
               <th className="px-3 py-2 font-medium">Updated</th>
+              <th className="px-3 py-2 font-medium text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -212,11 +213,40 @@ export function PostsBulkTable({ rows, deleteMany, setFeatured }: Props) {
                 <td className="px-3 py-1.5 text-white/60 text-xs">
                   {formatShort(p.updatedAt)}
                 </td>
+                <td className="px-3 py-1.5 text-right">
+                  <div className="inline-flex items-center gap-1">
+                    {p.status === "published" ? (
+                      <a
+                        href={`/blog/${p.slug}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-2 py-1 text-xs rounded border border-white/10 hover:border-(--color-cyan)/60 hover:text-(--color-cyan) hover:bg-(--color-cyan)/5 transition"
+                        title="Open public post in a new tab"
+                      >
+                        View
+                      </a>
+                    ) : (
+                      <span
+                        className="px-2 py-1 text-xs rounded border border-white/5 text-white/30 cursor-not-allowed"
+                        title="Only published posts have a public URL"
+                      >
+                        View
+                      </span>
+                    )}
+                    <Link
+                      href={`/admin/posts/${p.id}/edit`}
+                      className="px-2 py-1 text-xs rounded border border-(--color-cyan)/40 text-(--color-cyan) hover:bg-(--color-cyan)/10 transition"
+                      title="Edit this post"
+                    >
+                      Edit
+                    </Link>
+                  </div>
+                </td>
               </tr>
             ))}
             {rows.length === 0 && (
               <tr>
-                <td colSpan={9} className="px-4 py-10 text-center text-white/50">
+                <td colSpan={10} className="px-4 py-10 text-center text-white/50">
                   No posts found.
                 </td>
               </tr>

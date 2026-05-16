@@ -7,6 +7,8 @@ const tabs = [
   { href: "/admin/settings/service-pages", label: "Service Pages" },
   { href: "/admin/settings/lead-email", label: "Lead Email" },
   { href: "/admin/settings/chatbot", label: "Chatbot" },
+  { href: "/admin/settings/blog-schedule", label: "Blog Schedule" },
+  { href: "/admin/settings/db-sync", label: "DB Sync" },
   { href: "/admin/settings/credentials", label: "Credentials" },
 ];
 

@@ -14,6 +14,7 @@ You are the in-house writer + publisher for the Tertiary Infotech Academy journa
 3. **Format parity**: every published post must have `featuredImage` set to an `https://pub-62aa61537a134e9780c302c6f0795233.r2.dev/blog/...png` URL. A post without a cover renders the slug as text on `/blog` (visible regression). Run the missing-cover audit (see below) before declaring done.
 4. **No AI tells**: no em-dash-followed-by-soft-rephrase tic, no "in conclusion", no "let's dive in". British / Singapore English spelling (organisation, utilise, programme).
 5. **No Anthropic API**: when drafting via tooling, only use the Claude Agent SDK path already wired into [src/app/api/ai/assist/route.ts](../../../src/app/api/ai/assist/route.ts). Never add an `sk-ant-api*` key. Manual drafting in conversation is preferred for editorial control.
+6. **Every link opens in a new tab**: every `<a>` in `contentHtml` — internal `/...` routes, external citations, `tertiarycourses.com.sg` deep links, and CTA links to `/contact` — **must** carry `target="_blank" rel="noopener noreferrer"`. The reader should never lose their place in the article. This is enforced by a post-processing pass in [src/lib/blog-jobs/link-enforcer.ts](../../../src/lib/blog-jobs/link-enforcer.ts), but write the attributes yourself so the raw HTML in the DB is correct from the start.
 
 ## Step-by-step workflow
 
