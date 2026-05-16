@@ -84,9 +84,12 @@ export default async function BlogIndex({
   const countByTagId = new Map<number, number>(tagCounts.map((r) => [r.tagId, r.count]));
   const TOP_TAG_LIMIT = 10;
   const topTags = [...allTags]
-    .sort((a, b) => (countByTagId.get(b.id) ?? 0) - (countByTagId.get(a.id) ?? 0))
+    .sort(
+      (a, b) =>
+        (countByTagId.get(b.id) ?? 0) - (countByTagId.get(a.id) ?? 0) ||
+        a.name.localeCompare(b.name),
+    )
     .slice(0, TOP_TAG_LIMIT);
-  // Ensure the currently-selected tag is visible even if outside the top 10
   const displayedTags = (() => {
     if (!selectedTag) return topTags;
     if (topTags.some((t) => t.slug === selectedTag)) return topTags;
