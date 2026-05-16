@@ -12,7 +12,9 @@ import {
   buildCaptureState,
   buildLeadMessageFromHistory,
   captureDoneMessage,
+  isRefusal,
   nextCapturePrompt,
+  shouldYieldCapture,
   tryFaqMatch,
   tryGreeting,
   tryProductCatalog,
@@ -48,7 +50,20 @@ export async function POST(req: Request) {
     //    etc.), we collect Name → Email → Phone and write to the leads table
     //    + email angch@. Stateless: we replay the conversation each turn.
     const captureState = buildCaptureState(history, message);
-    if (captureState.active) {
+    // Funnel discipline:
+    //  - If the visitor pivoted to a question mid-capture, ANSWER the
+    //    question first (FAQ → catalog → SDK). Don't re-prompt the same
+    //    field — that's how Nemo ended up parroting "What's your email?".
+    //  - If they refused outright, acknowledge and exit capture cleanly.
+    const yieldingToQuestion = captureState.active && shouldYieldCapture(message);
+    const refusing = captureState.active && isRefusal(message);
+    if (refusing) {
+      return NextResponse.json({
+        response:
+          "No problem — happy to keep chatting without taking your details. What else would you like to know about our LMS, TMS, SSG ATO, or AI services?",
+      });
+    }
+    if (captureState.active && !yieldingToQuestion) {
       const prompt = nextCapturePrompt(captureState);
       if (prompt) {
         return NextResponse.json({ response: prompt });

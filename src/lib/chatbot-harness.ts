@@ -148,56 +148,77 @@ If you'd like a quote, demo, or to speak to our team, just say so and I'll take 
 
 export type Msg = { role: "user" | "model"; content: string };
 
+// Strong contact intent only — these signal "the visitor wants to be reached".
+// Pricing / cost / interested / budget questions are answered first via the
+// catalog or SDK, NOT auto-captured, so the funnel goes: answer → qualify →
+// then ask for name + email when the visitor wants follow-up.
 const INTENT_KEYWORDS = [
-  "quote",
+  "send me a quote",
+  "send me quote",
+  "send a quote",
+  "request a quote",
+  "get a quote",
+  "quote please",
   "quotation",
-  "pricing",
-  "price",
-  "how much",
-  "cost",
-  "fee",
-  "demo",
-  "demonstration",
-  "consult",
-  "consultation",
-  "speak to",
-  "talk to",
-  "call me",
-  "contact me",
-  "human",
-  "agent",
-  "sales",
-  "rep",
-  "interested",
-  "engage",
-  "book",
-  "appointment",
-  "meeting",
   "proposal",
   "rfp",
   "tender",
-  "budget",
-  "scope",
-  "buy",
-  "purchase",
-  "trial",
-  "lead",
+  "book a demo",
+  "schedule a demo",
+  "schedule a call",
+  "book a call",
+  "book a meeting",
+  "schedule a meeting",
+  "speak to someone",
+  "speak to your team",
+  "talk to someone",
+  "talk to sales",
+  "contact me",
+  "call me back",
+  "follow up with me",
+  "follow-up with me",
+  "engage your team",
+  "engage you",
+  "ready to buy",
+  "ready to engage",
+  "sign me up",
 ];
 
-const QUALIFY_PROMPT =
-  "Happy to help — to brief our team properly, could you share a bit more:\n\n" +
-  "• **Which service** are you most interested in? (LMS / TMS / SSG ATO / TPQA / AI Agent / Bespoke app)\n" +
-  "• **Use case or problem** you're solving\n" +
-  "• Rough **team size** and **timeline** (e.g. 20 trainers, go-live in Q3)\n\n" +
-  "A one-paragraph reply is fine — the more context, the sharper our proposal.";
-const NAME_PROMPT = "Thanks for that. Could I get your **name**?";
-const EMAIL_PROMPT = "Thanks {name}. What's the best **email** to send the proposal / follow-up to?";
+// Soft refusal — visitor doesn't want to share the current field.
+const REFUSAL_REGEX =
+  /^\s*(no|nope|nah|don'?t ask|stop asking|skip|not now|not yet|later|maybe later|no thanks|won'?t share|can'?t share)\b/i;
+
+// Question pivot — visitor asked something instead of answering the prompt.
+// We must NOT re-ask the same prompt; we must answer the question first.
+function looksLikeQuestion(msg: string): boolean {
+  const t = msg.trim();
+  if (!t) return false;
+  if (/\?$/.test(t)) return true;
+  if (
+    /^(what|how|can you|could you|tell me|do you|does|why|when|where|which|who|is there|are there|is it|are you)\b/i.test(
+      t,
+    )
+  )
+    return true;
+  // Product mentions count as a topic pivot during capture.
+  if (
+    /\b(tms|lms|cms|hrms|ato|tpqa|wsq|ssg|chatbot|ai agent|agentic|n8n|claude|pricing|price|cost|feature|integration|self[- ]?host)\b/i.test(
+      t,
+    )
+  )
+    return true;
+  return false;
+}
+
+const NAME_PROMPT =
+  "Happy to help — could I get your **name** so I can pass this to the right person on our team?";
+const EMAIL_PROMPT = "Thanks {name}. What's the best **email** to follow up on?";
 const PHONE_PROMPT =
   "Got it. And a **mobile / contact number** (with country code if possible)? — type _skip_ if you'd rather not share.";
 const DONE_TEMPLATE =
   "Thanks {name} — I've sent your details to our team at angch@tertiaryinfotech.com. Expect a reply within 1 business day. Anything else you'd like to ask in the meantime?";
 
-export type LeadField = "details" | "name" | "email" | "phone" | null;
+export type LeadField = "name" | "email" | "phone" | null;
 
 export type LeadCaptureState = {
   active: boolean;
@@ -208,6 +229,16 @@ export type LeadCaptureState = {
   awaiting: LeadField;
   startedTurn: number; // index in history where the flow began
 };
+
+/** True if the visitor's latest message should preempt a capture re-prompt. */
+export function shouldYieldCapture(message: string): boolean {
+  return looksLikeQuestion(message);
+}
+
+/** True if the visitor refused to share the current capture field. */
+export function isRefusal(message: string): boolean {
+  return REFUSAL_REGEX.test(message.trim());
+}
 
 const EMAIL_REGEX = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i;
 // Allow +, spaces, dashes, parens, dots; require at least 7 digits.
@@ -231,20 +262,37 @@ function extractPhone(text: string): string | null {
   return m[0].trim();
 }
 
+// Words that disqualify a string from being a name — pronouns, verbs, question
+// words, refusals, common chatter. Anything containing these is treated as a
+// sentence / question rather than a name.
+const NON_NAME_WORD =
+  /\b(you|u|me|my|we|our|us|they|them|i|am|is|are|was|were|be|been|have|has|had|do|does|did|don'?t|won'?t|can'?t|cannot|not|never|please|sorry|thanks|thank|hi|hello|hey|yes|no|ok|okay|sure|skip|stop|wait|why|how|what|when|where|which|who|whom|whose|tell|ask|asked|asking|answer|answered|give|gave|send|sent|need|needs|want|wants|like|liked|know|knew|would|should|could|might|may|will|shall|just|really|very|too|also|already|still|now|here|there|that|this|those|these|but|and|or|so|because|though|than|then)\b/i;
+
 function extractName(text: string): string | null {
   // Treat the whole user line as the name when we're explicitly waiting for
   // it. Strip common framings like "i'm …", "my name is …", "this is …".
-  const stripped = text
+  let stripped = text
     .trim()
     .replace(/^(hi|hello|hey)[,!\.\s]*/i, "")
-    .replace(/^(my name is|i am|i'm|im|this is|name[:\s]*)\s*/i, "")
+    .replace(/^(my name is|i am|i'm|im|this is|it'?s|name[:\s]*)\s*/i, "")
     .replace(/[.!?]+$/, "")
     .trim();
   if (!stripped) return null;
   // Reject if it looks like an email or phone — those are different fields.
   if (EMAIL_REGEX.test(stripped) || PHONE_REGEX.test(stripped)) return null;
-  if (stripped.length > 60) return null;
-  if (stripped.length < 2) return null;
+  if (stripped.length > 40 || stripped.length < 2) return null;
+  // Reject if contains digits — names don't.
+  if (/\d/.test(stripped)) return null;
+  // Reject if it's a sentence/question — pronoun/verb/question word present.
+  if (NON_NAME_WORD.test(stripped)) return null;
+  // Names are usually 1–4 short tokens.
+  const tokens = stripped.split(/\s+/);
+  if (tokens.length > 4) return null;
+  if (tokens.some((t) => t.length > 20)) return null;
+  // Optional: title-case it so the email prompt reads naturally.
+  stripped = tokens
+    .map((t) => (t.length > 1 ? t[0].toUpperCase() + t.slice(1) : t.toUpperCase()))
+    .join(" ");
   return stripped;
 }
 
@@ -269,29 +317,30 @@ export function buildCaptureState(history: Msg[], latestUserMsg: string): LeadCa
   for (let i = 0; i < all.length; i++) {
     const m = all[i];
     if (m.role === "user" && !state.active && detectIntent(m.content)) {
+      // Activate capture and ask for the name immediately. Qualification
+      // happens in surrounding conversation, not via a forced checklist.
       state.active = true;
-      state.awaiting = "details";
+      state.awaiting = "name";
       state.startedTurn = i;
+      // Stash the intent message as "details" so the lead summary has context.
+      state.details = m.content.trim();
       continue;
     }
     if (!state.active) continue;
 
     if (m.role === "model") {
       // Detect which slot the model just asked about by the prompt marker.
-      if (m.content.includes("brief our team properly")) state.awaiting = "details";
-      else if (m.content.includes("Could I get your **name**")) state.awaiting = "name";
+      if (m.content.includes("could I get your **name**")) state.awaiting = "name";
       else if (m.content.includes("best **email**")) state.awaiting = "email";
       else if (m.content.includes("**mobile / contact number**")) state.awaiting = "phone";
     } else if (state.awaiting) {
-      // User just answered the pending slot.
-      if (state.awaiting === "details") {
-        const v = m.content.trim();
-        // Accept any non-trivial answer (>= 3 chars) as qualifying details.
-        if (v.length >= 3) {
-          state.details = v;
-          state.awaiting = "name";
-        }
-      } else if (state.awaiting === "name") {
+      // If the visitor pivoted to a question or refusal, don't advance state —
+      // the caller will answer the question / handle the refusal instead of
+      // re-asking the same field.
+      if (looksLikeQuestion(m.content) || REFUSAL_REGEX.test(m.content.trim())) {
+        continue;
+      }
+      if (state.awaiting === "name") {
         const v = extractName(m.content);
         if (v) {
           state.name = v;
@@ -323,7 +372,6 @@ export function buildCaptureState(history: Msg[], latestUserMsg: string): LeadCa
 
 export function nextCapturePrompt(state: LeadCaptureState): string | null {
   if (!state.active) return null;
-  if (state.awaiting === "details") return QUALIFY_PROMPT;
   if (state.awaiting === "name") return NAME_PROMPT;
   if (state.awaiting === "email") return EMAIL_PROMPT.replace("{name}", state.name ?? "there");
   if (state.awaiting === "phone") return PHONE_PROMPT;
