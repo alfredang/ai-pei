@@ -14,7 +14,7 @@
 [![License](https://img.shields.io/badge/License-Proprietary-red)](#license)
 [![Live Demo](https://img.shields.io/badge/Live_Demo-tertiaryinfotech.com-22D3EE?logo=vercel&logoColor=white)](https://www.tertiaryinfotech.com/)
 
-**Customizable frontend and backend, AI-driven content generation, a self-running weekly auto-blog scheduler, built-in Nemo AI chatbot, and SEO + lead-generation built into every page — powered by Claude Code. No vendor lock-in.**
+**Customizable frontend and backend, AI-driven content generation, a self-running weekly auto-blog scheduler, a self-improving Nemo lead-gen chatbot, and SEO + lead-generation built into every page — powered by Claude Code. No vendor lock-in.**
 
 🌐 **Live demo:** [https://www.tertiaryinfotech.com/](https://www.tertiaryinfotech.com/)
 
@@ -65,9 +65,13 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 - **Portfolio / Bespoke-Apps pages** — split page-vs-blog categories, a dedicated Portfolio category, lead-gen project pages auto-populated from `alfredang/<repo>` GitHub repos, each carrying a live GitHub repo badge and a lead form
 - **Local ⇄ Remote DB sync** — push menus, settings, pages, posts, taxonomy from local to production via a bearer-token API (preserving `createdAt`); pull leads from production back to local (`scripts/pull-leads.ts`); idempotent prod-side schema migration runner at `POST /api/admin/sync/migrate`
 
-### AI built in — Nemo chatbot + Admin AI Assist
+### AI built in — Nemo self-improving lead-gen chatbot + Admin AI Assist
 - **Nemo AI chatbot** on every public page — branded floating widget that answers visitor questions about your services and routes warm leads to your contact form
+- **Self-improving loop** ([src/lib/nemo-reflect.ts](src/lib/nemo-reflect.ts)) — after every captured lead, Nemo replays the transcript through the Claude Agent SDK, extracts ONE concrete tactical lesson (or skips if already optimal), and appends it to the `chat:nemo_lessons` DB row. The next visitor's system prompt includes the growing lessons list, so each new conversation is coached toward a higher lead score. Capped at 25 lessons, deduped, fire-and-forget so the chat response stays snappy.
+- **Mission file at the repo root** ([NEMO.md](NEMO.md)) — mission, five qualification signals (interest / use-case / budget / timeline / implementation), and curated seed lessons. Loaded into the system prompt verbatim every turn.
+- **Knowledge base + live CMS awareness** — a curated [src/lib/chatbot-knowledge.md](src/lib/chatbot-knowledge.md) covers the AI + SSG service lines with indicative pricing, and `getCmsKnowledgeSnippet()` injects up to 40 published pages + 20 most recent blog posts (5-min TTL) so Nemo can cite and link to live on-site content
 - **Nemo doubles as a lead magnet** — an in-chat qualifying-details step (need / timeline / budget) runs *before* asking for Name → Email → Phone, producing a richer, higher-scoring lead; `source=nemo` submissions are labelled **"Nemo Chatbot"** in lead emails and the admin inbox
+- **Lead score 1-10 with qualification factors** ([src/lib/lead-score.ts](src/lib/lead-score.ts)) — base + length + keenness keywords + contact-detail bonuses, plus five regex-based qualification factors (specific service named, use-case clarity, budget intent, timeline urgency, implementation interest) capped at +3. Every signal Nemo elicits compounds the score the reflection loop is optimising for.
 - **Instant product-catalog answers** — common service/pricing questions are answered from a deterministic catalog before the LLM spawns, and SDK auth errors are suppressed so the widget never shows a stack trace
 - **Lightweight harness system** ([src/lib/chatbot-harness.ts](src/lib/chatbot-harness.ts)) — sub-millisecond fast paths before the LLM ever spawns:
   - **Greeting matcher** — `hi`, `hello`, `good morning` etc. → instant canned reply, zero LLM cost
@@ -80,7 +84,12 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 - **Production-safe SDK bundling** — `next.config.ts` force-includes `node_modules/@anthropic-ai/**` via `outputFileTracingIncludes` so the native CLI binary (linux-x64 / arm64) ships in the standalone Docker image
 
 ### Automation — self-running scheduled agents
-- **Weekly auto-blog from YouTube** — a boot-time scheduler watches a configured YouTube channel/playlist, picks the latest video, and drafts a fully SEO-wired, internally-linked blog post on a weekly cadence — no human in the loop
+- **Weekly SEO + lead-gen auto-blog** — a boot-time scheduler watches a configured YouTube channel/playlist, picks the latest video, and drafts a fully SEO-wired, internally-linked blog post on a weekly cadence — no human in the loop. Every generated post is engineered for **organic search and lead capture**:
+  - SEO title + meta description + keyword set picked by the agent
+  - Per-post `Article` + `BreadcrumbList` JSON-LD, OG image, canonical URL, British/Singapore spelling
+  - Deep internal links to service pages (LMS / TMS / ATO / TPQA / AI Solutions) so the post funnels traffic into lead-capture surfaces
+  - In-body and bottom-of-post **lead-magnet CTAs** routing to `/contact` with `source` tagged for attribution
+  - Branded R2-hosted cover image auto-generated from the post title
 - **Hourly local → prod DB sync** — content edited locally is pushed to production every hour over the bearer-token sync API, so the live site self-heals from the source-of-truth DB
 - **Resilient by design** — `blog_schedule_runs` is created on boot and every run is recorded; the schedule page loads tolerantly even before the first run exists, and a failed run never blocks the next one
 - **`POST /api/admin/sync/posts` debug probe** — a GET variant inspects what would sync without mutating prod
