@@ -43,7 +43,9 @@ export function PagesBulkTable({
   const [q, setQ] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | PageRow["status"]>("all");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
-  const [sort, setSort] = useState<"updated_desc" | "updated_asc" | "title_asc">("updated_desc");
+  const [sort, setSort] = useState<
+    "updated_desc" | "updated_asc" | "title_asc" | "category_asc"
+  >("updated_desc");
   const [page, setPage] = useState(1);
   const [bulkStatus, setBulkStatus] = useState<PageRow["status"]>("archived");
   const [pending, startTransition] = useTransition();
@@ -65,6 +67,19 @@ export function PagesBulkTable({
     }
     r.sort((a, b) => {
       if (sort === "title_asc") return a.title.localeCompare(b.title);
+      if (sort === "category_asc") {
+        // General first, then other categories A→Z, then uncategorised last.
+        const rank = (row: PageRow) => {
+          if (row.categorySlug === "general") return [0, ""] as const;
+          if (!row.category) return [2, ""] as const;
+          return [1, row.category.toLowerCase()] as const;
+        };
+        const [ra, sa] = rank(a);
+        const [rb, sb] = rank(b);
+        if (ra !== rb) return ra - rb;
+        if (sa !== sb) return sa < sb ? -1 : 1;
+        return a.title.localeCompare(b.title);
+      }
       const ta = new Date(a.updatedAt).getTime();
       const tb = new Date(b.updatedAt).getTime();
       return sort === "updated_desc" ? tb - ta : ta - tb;
@@ -162,6 +177,7 @@ export function PagesBulkTable({
           <option value="updated_desc">Newest first</option>
           <option value="updated_asc">Oldest first</option>
           <option value="title_asc">Title A→Z</option>
+          <option value="category_asc">Category (General first)</option>
         </select>
         <span className="text-xs text-white/50 font-mono">
           {filtered.length}/{rows.length}
