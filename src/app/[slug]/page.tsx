@@ -6,7 +6,11 @@ import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ServiceLeadForm } from "@/components/sections/ServiceLeadForm";
+import { FaGithub } from "react-icons/fa";
+import { HiArrowUpRight } from "react-icons/hi2";
 import type { Metadata } from "next";
+
+const PORTFOLIO_CATEGORY_SLUGS = new Set(["portfolio", "bespoke-apps"]);
 
 export const dynamic = "force-dynamic";
 
@@ -94,12 +98,33 @@ export default async function CmsPage({
   // Source-tag the embedded lead form so submissions are attributable to this page
   const leadSource = `page-${page.slug}`;
 
+  // Portfolio pages link out to their GitHub repo (alfredang/<slug>).
+  const [pageCategory] = page.categoryId
+    ? await db.select().from(categories).where(eq(categories.id, page.categoryId)).limit(1)
+    : [null];
+  const isPortfolio = pageCategory ? PORTFOLIO_CATEGORY_SLUGS.has(pageCategory.slug) : false;
+  const githubUrl = isPortfolio ? `https://github.com/alfredang/${page.slug}` : null;
+
   return (
     <>
       <Navbar />
       <main className="pt-16">
         <Container className="max-w-3xl py-16">
-          <h1 className="text-3xl md:text-5xl font-bold mb-8">{page.title}</h1>
+          <h1 className="text-3xl md:text-5xl font-bold mb-6">{page.title}</h1>
+          {githubUrl && (
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 hover:border-(--color-cyan)/40 transition"
+            >
+              <FaGithub className="w-5 h-5 text-white/80 group-hover:text-(--color-cyan) transition" />
+              <span className="text-sm font-mono text-white/80 group-hover:text-(--color-cyan) transition">
+                alfredang/{page.slug}
+              </span>
+              <HiArrowUpRight className="w-4 h-4 text-white/40 group-hover:text-(--color-cyan) transition" />
+            </a>
+          )}
           <div
             className="prose-dark"
             dangerouslySetInnerHTML={{ __html: page.contentHtml ?? "" }}
