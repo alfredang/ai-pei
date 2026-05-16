@@ -3,8 +3,19 @@ import { query } from "@anthropic-ai/claude-agent-sdk";
 import { getCredential } from "@/lib/secrets";
 import { buildSystemPrompt, getChatbotSettings, renderSystemPrompt } from "@/lib/chatbot-settings";
 import { buildClaudeEnv } from "@/lib/anthropic-auth";
-import { tryFaqMatch, tryGreeting } from "@/lib/chatbot-harness";
+import {
+  buildCaptureState,
+  buildLeadMessageFromHistory,
+  captureDoneMessage,
+  nextCapturePrompt,
+  tryFaqMatch,
+  tryGreeting,
+} from "@/lib/chatbot-harness";
 import { getSiteBrand } from "@/lib/site-settings";
+import { db } from "@/db";
+import { leads } from "@/db/schema";
+import { computeLeadScore } from "@/lib/lead-score";
+import { sendLeadEmail } from "@/lib/email";
 
 export const maxDuration = 120;
 
@@ -25,9 +36,59 @@ export async function POST(req: Request) {
     const greet = tryGreeting(message, brand.shortName);
     if (greet) return NextResponse.json({ response: greet });
 
+    // ── Fast path 2: lead-capture flow (Nemo as lead magnet).
+    //    Once a visitor expresses intent ("quote", "demo", "speak to someone"
+    //    etc.), we collect Name → Email → Phone and write to the leads table
+    //    + email angch@. Stateless: we replay the conversation each turn.
+    const captureState = buildCaptureState(history, message);
+    if (captureState.active) {
+      const prompt = nextCapturePrompt(captureState);
+      if (prompt) {
+        return NextResponse.json({ response: prompt });
+      }
+      // All required fields collected — persist + notify and confirm.
+      if (captureState.name && captureState.email) {
+        const fullHistory = [...history, { role: "user" as const, content: message }];
+        const summary = buildLeadMessageFromHistory(fullHistory);
+        const score = computeLeadScore({
+          name: captureState.name,
+          email: captureState.email,
+          phone: captureState.phone,
+          company: null,
+          message: summary,
+        });
+        try {
+          await db.insert(leads).values({
+            name: captureState.name,
+            email: captureState.email,
+            phone: captureState.phone ?? null,
+            company: "(via Nemo chatbot)",
+            message: summary,
+            source: "nemo",
+            score,
+          });
+        } catch (err) {
+          console.error("[chat/lead] insert failed", err);
+        }
+        try {
+          await sendLeadEmail({
+            name: captureState.name,
+            email: captureState.email,
+            phone: captureState.phone ?? undefined,
+            company: "(via Nemo chatbot)",
+            message: summary,
+            source: "nemo",
+          });
+        } catch (err) {
+          console.error("[chat/lead] email send failed", err);
+        }
+        return NextResponse.json({ response: captureDoneMessage(captureState) });
+      }
+    }
+
     const settings = await getChatbotSettings();
 
-    // ── Fast path 2: admin-configured FAQ match → instant.
+    // ── Fast path 3: admin-configured FAQ match → instant.
     const faqHit = tryFaqMatch(message, settings.faq);
     if (faqHit) return NextResponse.json({ response: faqHit });
 
