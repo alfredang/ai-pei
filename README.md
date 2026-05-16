@@ -14,7 +14,7 @@
 [![License](https://img.shields.io/badge/License-Proprietary-red)](#license)
 [![Live Demo](https://img.shields.io/badge/Live_Demo-tertiaryinfotech.com-22D3EE?logo=vercel&logoColor=white)](https://www.tertiaryinfotech.com/)
 
-**Customizable frontend and backend, AI-driven content generation, built-in Nemo AI chatbot, and SEO + lead-generation built into every page — powered by Claude Code. No vendor lock-in.**
+**Customizable frontend and backend, AI-driven content generation, a self-running weekly auto-blog scheduler, built-in Nemo AI chatbot, and SEO + lead-generation built into every page — powered by Claude Code. No vendor lock-in.**
 
 🌐 **Live demo:** [https://www.tertiaryinfotech.com/](https://www.tertiaryinfotech.com/)
 
@@ -62,10 +62,13 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 - **Dashboard cards** — clickable KPI tiles plus dedicated panels for 10 Most Popular Tags, 5 Latest Posts, and 5 Latest Leads
 - **Encrypted credentials vault** — AES-256-GCM at rest, eye-reveal for admins, one-click env → DB migration
 - **WordPress migration** — `scripts/migrate-wp.ts` imports a `wp_*` SQL dump, downloads images, preserves Yoast/RankMath SEO, writes 301 redirects
-- **Local ⇄ Remote DB sync** — push menus, settings, pages, posts, taxonomy from local to production via a bearer-token API; pull leads from production back to local (`scripts/pull-leads.ts`); idempotent prod-side schema migration runner at `POST /api/admin/sync/migrate`
+- **Portfolio / Bespoke-Apps pages** — split page-vs-blog categories, a dedicated Portfolio category, lead-gen project pages auto-populated from `alfredang/<repo>` GitHub repos, each carrying a live GitHub repo badge and a lead form
+- **Local ⇄ Remote DB sync** — push menus, settings, pages, posts, taxonomy from local to production via a bearer-token API (preserving `createdAt`); pull leads from production back to local (`scripts/pull-leads.ts`); idempotent prod-side schema migration runner at `POST /api/admin/sync/migrate`
 
 ### AI built in — Nemo chatbot + Admin AI Assist
 - **Nemo AI chatbot** on every public page — branded floating widget that answers visitor questions about your services and routes warm leads to your contact form
+- **Nemo doubles as a lead magnet** — an in-chat qualifying-details step (need / timeline / budget) runs *before* asking for Name → Email → Phone, producing a richer, higher-scoring lead; `source=nemo` submissions are labelled **"Nemo Chatbot"** in lead emails and the admin inbox
+- **Instant product-catalog answers** — common service/pricing questions are answered from a deterministic catalog before the LLM spawns, and SDK auth errors are suppressed so the widget never shows a stack trace
 - **Lightweight harness system** ([src/lib/chatbot-harness.ts](src/lib/chatbot-harness.ts)) — sub-millisecond fast paths before the LLM ever spawns:
   - **Greeting matcher** — `hi`, `hello`, `good morning` etc. → instant canned reply, zero LLM cost
   - **FAQ matcher** — substring + 60% token-overlap match against admin-configured FAQ → instant DB lookup
@@ -75,6 +78,12 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 - **Admin AI Assist** — `Draft post`, `Rewrite`, `Summarize`, `Suggest SEO meta` powered by the same Claude Agent SDK
 - **Subscription-only — no metered API**: the only LLM path in the codebase is `@anthropic-ai/claude-agent-sdk` authenticated with a `sk-ant-oat-*` OAuth subscription token. No `sk-ant-api-*` keys, no `https://api.anthropic.com` calls — see [CLAUDE.md](CLAUDE.md) for the policy
 - **Production-safe SDK bundling** — `next.config.ts` force-includes `node_modules/@anthropic-ai/**` via `outputFileTracingIncludes` so the native CLI binary (linux-x64 / arm64) ships in the standalone Docker image
+
+### Automation — self-running scheduled agents
+- **Weekly auto-blog from YouTube** — a boot-time scheduler watches a configured YouTube channel/playlist, picks the latest video, and drafts a fully SEO-wired, internally-linked blog post on a weekly cadence — no human in the loop
+- **Hourly local → prod DB sync** — content edited locally is pushed to production every hour over the bearer-token sync API, so the live site self-heals from the source-of-truth DB
+- **Resilient by design** — `blog_schedule_runs` is created on boot and every run is recorded; the schedule page loads tolerantly even before the first run exists, and a failed run never blocks the next one
+- **`POST /api/admin/sync/posts` debug probe** — a GET variant inspects what would sync without mutating prod
 
 ### Platform — auth, security, design
 - **Auth.js v5** — credentials provider with bcrypt, JWT sessions, persistent 10-year sliding cookie, middleware-protected `/admin/*`
