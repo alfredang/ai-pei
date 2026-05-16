@@ -143,24 +143,40 @@ Delete the one-off `scripts/insert-<slug>.ts` script after a successful producti
 
 ## Lists — formatting note
 
-`.prose-dark` styles `<ul>` and `<ol>` automatically:
+Blog body HTML renders inside `.prose-dark` ([src/app/globals.css](../../../src/app/globals.css)), which gives `<ul>` and `<ol>` a custom marker design. Tailwind's preflight strips `list-style`, so do **not** try to put markers back with classes — the skill CSS handles it.
 
-- `<ul>` items get a glowing cyan dot bullet (with soft cyan halo). Nested `<ul>` gets an outlined purple ring.
-- `<ol>` items get a monospaced cyan number chip in a rounded cyan-tinted circle, auto-incremented.
-- Tailwind's preflight resets `list-style`, so write **plain `<ul>` / `<ol>`** — do not add `list-disc`, `list-decimal`, custom markers, or inline `style`. The skill CSS handles spacing and indent.
+What the reader sees:
 
-If bullets ever stop appearing (regression), fix `.prose-dark ul > li::before` in [src/app/globals.css](../../../src/app/globals.css), not the post.
+- **`<ul>` items** — a rounded square chip (1.25em) with a cyan→purple gradient fill, 1px cyan border, soft inner glow, and a **cyan check-tick SVG** centred inside. Marker is absolutely positioned at the top-left of each `<li>`; the text indents 1.85em.
+- **Nested `<ul>` items** — same chip shape, but the SVG switches to a **purple chevron tick** (`›`) and the border softens to purple. Differentiates depth at a glance.
+- **`<ol>` items** — a **monospaced cyan number chip** in a rounded cyan-tinted circle, auto-incremented via a CSS counter. Use `<ol>` whenever sequence matters (steps, ranked checklists).
+
+Authoring rules:
+
+- Emit **plain semantic `<ul>` / `<ol>`** with `<li>` children. No `class`, no inline `style`, no manual bullet characters (`•`, `–`, `*`) at the start of items.
+- Don't wrap items in `<div>` or `<p>` — `<li>` is a block container already; extra wrappers misalign the marker.
+- Don't use `<ul>` as a layout primitive (e.g. for cards or feature grids). Reserve it for actual short-line lists where the tick reads as a checked item.
+- Sub-bullets are fine, but go no deeper than 2 levels — the chevron variant is the deepest marker defined.
+
+If markers ever stop appearing or look wrong (regression), fix `.prose-dark ul > li::before` / `.prose-dark ol > li::before` in [src/app/globals.css](../../../src/app/globals.css). Do **not** rewrite the post to compensate.
 
 ## Tables — formatting note
 
-Blog body HTML is rendered inside `.prose-dark` ([src/app/globals.css](../../../src/app/globals.css)), which styles `<table>` / `<thead>` / `<th>` / `<td>` automatically:
+`.prose-dark` styles `<table>` / `<thead>` / `<th>` / `<td>` automatically:
 
-- Rounded outer container with a 1px hairline border
-- Cyan-tinted header band, bold white labels
-- Hairline column dividers (subtle, not blocky), zebra rows, purple hover
-- Horizontal scroll on narrow viewports — the table never breaks layout
+- **Outer container** — 1px hairline border, 0.65rem rounded corners, faint white-tinted background. The whole table is `display: block` with `overflow-x: auto` so it never bursts the column on mobile.
+- **Header row (`<thead>`)** — cyan-tinted band, bold white labels, 1px bottom divider.
+- **Body cells** — hairline column dividers (subtle, not blocky), zebra rows (every even row a touch lighter), purple-tinted hover state.
+- **Anchors inside cells** — inherit cyan colour automatically.
 
-**Therefore**: emit plain semantic HTML — no inline `style`, no Tailwind classes, no `<div>` wrappers around the table. Use `<thead>` for the header row (not a `<tr>` in `<tbody>`) so the cyan band renders. Example:
+Authoring rules:
+
+- Use **plain semantic HTML** — no inline `style`, no Tailwind classes, no `<div>` wrappers around the table.
+- Always wrap the header row in `<thead>` (not a `<tr>` inside `<tbody>`) so the cyan band renders.
+- Keep cell content short. Long URLs or paragraphs belong in body prose, not in cells — wide cells force horizontal scroll on desktop too.
+- Three to five columns is the readable maximum. If you need more, split into two tables or rethink the structure.
+
+Canonical pattern:
 
 ```html
 <table>
@@ -169,11 +185,12 @@ Blog body HTML is rendered inside `.prose-dark` ([src/app/globals.css](../../../
   </thead>
   <tbody>
     <tr><td>Pricing</td><td>…</td><td>…</td></tr>
+    <tr><td>Lock-in</td><td>…</td><td>…</td></tr>
   </tbody>
 </table>
 ```
 
-If the styling ever looks wrong (raw, unaligned, no borders), it means `.prose-dark` lost the table rules — fix the CSS, not the post.
+If the table renders raw (unaligned, no borders, no header band), `.prose-dark` table rules have been lost — fix the CSS, not the post.
 
 ## Anti-patterns — flag and refuse
 
