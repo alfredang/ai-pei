@@ -51,12 +51,21 @@ export async function POST(req: Request) {
       if (captureState.name && captureState.email) {
         const fullHistory = [...history, { role: "user" as const, content: message }];
         const summary = buildLeadMessageFromHistory(fullHistory);
+        // The qualifying-details turn is the most informative single answer;
+        // pass it (concatenated with the full transcript) to the lead scorer
+        // so keyword + length signals boost the score appropriately.
+        const scoringMessage = [
+          captureState.details ? `QUALIFYING DETAILS: ${captureState.details}` : "",
+          summary,
+        ]
+          .filter(Boolean)
+          .join("\n\n");
         const score = computeLeadScore({
           name: captureState.name,
           email: captureState.email,
           phone: captureState.phone,
           company: null,
-          message: summary,
+          message: scoringMessage,
         });
         try {
           await db.insert(leads).values({

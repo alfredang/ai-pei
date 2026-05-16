@@ -184,17 +184,24 @@ const INTENT_KEYWORDS = [
   "lead",
 ];
 
-const NAME_PROMPT = "Happy to set that up — could I get your **name** first?";
+const QUALIFY_PROMPT =
+  "Happy to help — to brief our team properly, could you share a bit more:\n\n" +
+  "• **Which service** are you most interested in? (LMS / TMS / SSG ATO / TPQA / AI Agent / Bespoke app)\n" +
+  "• **Use case or problem** you're solving\n" +
+  "• Rough **team size** and **timeline** (e.g. 20 trainers, go-live in Q3)\n\n" +
+  "A one-paragraph reply is fine — the more context, the sharper our proposal.";
+const NAME_PROMPT = "Thanks for that. Could I get your **name**?";
 const EMAIL_PROMPT = "Thanks {name}. What's the best **email** to send the proposal / follow-up to?";
 const PHONE_PROMPT =
   "Got it. And a **mobile / contact number** (with country code if possible)? — type _skip_ if you'd rather not share.";
 const DONE_TEMPLATE =
   "Thanks {name} — I've sent your details to our team at angch@tertiaryinfotech.com. Expect a reply within 1 business day. Anything else you'd like to ask in the meantime?";
 
-export type LeadField = "name" | "email" | "phone" | null;
+export type LeadField = "details" | "name" | "email" | "phone" | null;
 
 export type LeadCaptureState = {
   active: boolean;
+  details: string | null;
   name: string | null;
   email: string | null;
   phone: string | null;
@@ -251,6 +258,7 @@ export function buildCaptureState(history: Msg[], latestUserMsg: string): LeadCa
   const all: Msg[] = [...history, { role: "user", content: latestUserMsg }];
   const state: LeadCaptureState = {
     active: false,
+    details: null,
     name: null,
     email: null,
     phone: null,
@@ -262,7 +270,7 @@ export function buildCaptureState(history: Msg[], latestUserMsg: string): LeadCa
     const m = all[i];
     if (m.role === "user" && !state.active && detectIntent(m.content)) {
       state.active = true;
-      state.awaiting = "name";
+      state.awaiting = "details";
       state.startedTurn = i;
       continue;
     }
@@ -270,12 +278,20 @@ export function buildCaptureState(history: Msg[], latestUserMsg: string): LeadCa
 
     if (m.role === "model") {
       // Detect which slot the model just asked about by the prompt marker.
-      if (m.content.includes("could I get your **name**")) state.awaiting = "name";
+      if (m.content.includes("brief our team properly")) state.awaiting = "details";
+      else if (m.content.includes("Could I get your **name**")) state.awaiting = "name";
       else if (m.content.includes("best **email**")) state.awaiting = "email";
       else if (m.content.includes("**mobile / contact number**")) state.awaiting = "phone";
     } else if (state.awaiting) {
       // User just answered the pending slot.
-      if (state.awaiting === "name") {
+      if (state.awaiting === "details") {
+        const v = m.content.trim();
+        // Accept any non-trivial answer (>= 3 chars) as qualifying details.
+        if (v.length >= 3) {
+          state.details = v;
+          state.awaiting = "name";
+        }
+      } else if (state.awaiting === "name") {
         const v = extractName(m.content);
         if (v) {
           state.name = v;
@@ -307,6 +323,7 @@ export function buildCaptureState(history: Msg[], latestUserMsg: string): LeadCa
 
 export function nextCapturePrompt(state: LeadCaptureState): string | null {
   if (!state.active) return null;
+  if (state.awaiting === "details") return QUALIFY_PROMPT;
   if (state.awaiting === "name") return NAME_PROMPT;
   if (state.awaiting === "email") return EMAIL_PROMPT.replace("{name}", state.name ?? "there");
   if (state.awaiting === "phone") return PHONE_PROMPT;
