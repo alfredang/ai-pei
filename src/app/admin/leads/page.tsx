@@ -29,7 +29,15 @@ export default async function LeadsList() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold">Leads</h1>
-        <span className="text-sm text-white/50 font-mono">[ {list.length} total ]</span>
+        <div className="flex items-center gap-4">
+          <a
+            href="/admin/leads/blocklist"
+            className="text-sm text-(--color-cyan) hover:underline"
+          >
+            Blocklist / Allowlist →
+          </a>
+          <span className="text-sm text-white/50 font-mono">[ {list.length} total ]</span>
+        </div>
       </div>
       <LeadsBulkTable
         rows={list.map((l) => ({

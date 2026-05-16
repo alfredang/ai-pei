@@ -4,6 +4,7 @@ import { db } from "@/db";
 import { leads } from "@/db/schema";
 import { sendLeadEmail } from "@/lib/email";
 import { verifyTurnstileToken } from "@/lib/turnstile";
+import { checkBlocklist } from "@/lib/lead-blocklist";
 
 const schema = z.object({
   name: z.string().min(1).max(255),
@@ -38,6 +39,13 @@ export async function POST(req: Request) {
       { error: "Captcha verification failed", reason: captcha.reason },
       { status: 400 },
     );
+  }
+
+  // Spam blocklist — allow rules win over block rules.
+  const verdict = await checkBlocklist(data.email).catch(() => "neutral" as const);
+  if (verdict === "block") {
+    // Return success so we don't tip off the sender; just don't store or email.
+    return NextResponse.json({ ok: true });
   }
 
   await db.insert(leads).values({

@@ -150,6 +150,21 @@ export const leads = pgTable(
   (t) => [index("leads_status_created_idx").on(t.status, t.createdAt)],
 );
 
+export const leadBlocklist = pgTable(
+  "lead_blocklist",
+  {
+    id: serial("id").primaryKey(),
+    pattern: varchar("pattern", { length: 255 }).notNull(), // email or *@domain glob
+    kind: varchar("kind", { length: 16 }).notNull(), // 'block' | 'allow'
+    reason: text("reason"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (t) => [
+    uniqueIndex("lead_blocklist_pattern_uq").on(t.pattern, t.kind),
+    index("lead_blocklist_kind_idx").on(t.kind),
+  ],
+);
+
 export const settings = pgTable("settings", {
   key: varchar("key", { length: 100 }).primaryKey(),
   value: jsonb("value").notNull(),
