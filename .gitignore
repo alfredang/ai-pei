@@ -33,3 +33,4 @@ tsconfig.tsbuildinfo
 *.sql
 *.sql.gz
 wp-*.sql*
+.claude/scheduled_tasks.lock
