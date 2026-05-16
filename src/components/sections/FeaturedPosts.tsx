@@ -23,12 +23,16 @@ function snippetFromHtml(html: string | null | undefined, max = 200): string {
 
 async function loadFeatured(limit: number) {
   try {
-    return await db
+    const all = await db
       .select()
       .from(posts)
-      .where(and(eq(posts.status, "published"), eq(posts.featured, true)))
-      .orderBy(desc(posts.publishedAt))
-      .limit(limit);
+      .where(and(eq(posts.status, "published"), eq(posts.featured, true)));
+    // Random pick `limit` from the featured set on every request.
+    for (let i = all.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [all[i], all[j]] = [all[j], all[i]];
+    }
+    return all.slice(0, limit);
   } catch {
     return [];
   }
