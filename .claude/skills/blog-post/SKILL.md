@@ -141,6 +141,16 @@ curl -s https://www.tertiaryinfotech.com/blog/<slug> | grep -oE 'pub-62aa[^"]*<s
 
 Delete the one-off `scripts/insert-<slug>.ts` script after a successful production push — these are not meant to be checked in. The post lives in the DB; the script's job is done.
 
+## Lists — formatting note
+
+`.prose-dark` styles `<ul>` and `<ol>` automatically:
+
+- `<ul>` items get a glowing cyan dot bullet (with soft cyan halo). Nested `<ul>` gets an outlined purple ring.
+- `<ol>` items get a monospaced cyan number chip in a rounded cyan-tinted circle, auto-incremented.
+- Tailwind's preflight resets `list-style`, so write **plain `<ul>` / `<ol>`** — do not add `list-disc`, `list-decimal`, custom markers, or inline `style`. The skill CSS handles spacing and indent.
+
+If bullets ever stop appearing (regression), fix `.prose-dark ul > li::before` in [src/app/globals.css](../../../src/app/globals.css), not the post.
+
 ## Tables — formatting note
 
 Blog body HTML is rendered inside `.prose-dark` ([src/app/globals.css](../../../src/app/globals.css)), which styles `<table>` / `<thead>` / `<th>` / `<td>` automatically:
