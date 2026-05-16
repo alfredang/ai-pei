@@ -26,6 +26,14 @@ function escapeXml(s: string): string {
     .replace(/'/g, "&apos;");
 }
 
+function toTitleCase(s: string): string {
+  return s.replace(/[\p{L}\d][\p{L}\d'’.]*/gu, (w) => {
+    if (/\d/.test(w)) return w;
+    if (/[A-Z]/.test(w)) return w;
+    return w[0].toUpperCase() + w.slice(1);
+  });
+}
+
 function wrapTitle(title: string, maxCharsPerLine: number, maxLines = 3): string[] {
   const words = title.trim().split(/\s+/);
   const lines: string[] = [];
@@ -67,7 +75,7 @@ function fitFontSize(title: string): { fontSize: number; lineHeight: number; lin
 }
 
 export function buildPostCoverSvg(title: string, kicker?: string): string {
-  const { fontSize, lineHeight, lines } = fitFontSize(title);
+  const { fontSize, lineHeight, lines } = fitFontSize(toTitleCase(title));
   const totalTextHeight = lines.length * lineHeight;
   const startY = (COVER_HEIGHT - totalTextHeight) / 2 + fontSize * 0.8;
 

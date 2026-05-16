@@ -29,6 +29,25 @@ const HREF_RE = /<a\s+[^>]*?href="([^"]+)"/gi;
  *   - Anchor-only links (`href="#section"`) are skipped (in-page jumps).
  *   - `mailto:` and `tel:` are skipped (don't open a tab anyway).
  */
+/**
+ * Canonical-URL rewrites for known recurring link bugs. Apply BEFORE
+ * counting links so we don't credit a quota slot to a broken URL.
+ *   - `ai-courses-singapore.html` (does not exist) → the real AI category
+ *     index `artificial-intelligence-courses.html`. See the blog-post skill.
+ */
+const TC_URL_REWRITES: Array<[RegExp, string]> = [
+  [
+    /https?:\/\/(?:www\.)?tertiarycourses\.com\.sg\/ai-courses-singapore\.html/gi,
+    "https://www.tertiarycourses.com.sg/artificial-intelligence-courses.html",
+  ],
+];
+
+export function rewriteKnownBadLinks(html: string): string {
+  let out = html;
+  for (const [re, replacement] of TC_URL_REWRITES) out = out.replace(re, replacement);
+  return out;
+}
+
 export function ensureLinksOpenInNewTab(html: string): string {
   return html.replace(
     /<a\b([^>]*?)href="([^"]+)"([^>]*?)>/gi,

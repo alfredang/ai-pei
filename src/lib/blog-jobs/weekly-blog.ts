@@ -16,12 +16,12 @@ import { getR2Config } from "@/lib/r2";
 import { SERVICES } from "@/lib/site-content";
 import { slugify } from "@/lib/slugify";
 import {
-  getLatestVideo,
+  getRecentVideos,
   getTranscript,
   resolveChannelId,
   type YtVideo,
 } from "@/lib/blog-jobs/youtube";
-import { enforceLinks, ensureLinksOpenInNewTab } from "@/lib/blog-jobs/link-enforcer";
+import { enforceLinks, ensureLinksOpenInNewTab, rewriteKnownBadLinks } from "@/lib/blog-jobs/link-enforcer";
 import { htmlToTipTap } from "@/lib/tiptap-from-html";
 import { pushPostToRemote } from "@/lib/blog-jobs/remote-sync";
 
@@ -188,22 +188,32 @@ export async function runWeeklyBlogJob(opts: { trigger: Trigger }): Promise<JobR
         });
     }
 
-    video = await getLatestVideo(channelId);
-    videoIdLogged = video.videoId;
-
-    if (await alreadyHandled(video.videoId)) {
-      const msg = `Already covered video ${video.videoId}`;
+    // Walk the RSS feed newest → oldest, pick the first video we haven't
+    // already turned into a post. Prevents repeating the same topic when no
+    // new video has dropped since the last run.
+    const recent = await getRecentVideos(channelId, 15);
+    if (recent.length === 0) throw new Error("RSS feed has no entries");
+    for (const candidate of recent) {
+      if (!(await alreadyHandled(candidate.videoId))) {
+        video = candidate;
+        break;
+      }
+    }
+    if (!video) {
+      const newest = recent[0];
+      const msg = `All ${recent.length} recent videos already covered (newest: ${newest.videoId})`;
       await logRun({
         trigger,
         status: "skipped",
-        videoId: video.videoId,
-        videoTitle: video.title,
-        videoUrl: video.url,
+        videoId: newest.videoId,
+        videoTitle: newest.title,
+        videoUrl: newest.url,
         durationMs: Date.now() - start,
         errorMessage: msg,
       });
-      return { status: "skipped", message: msg, videoId: video.videoId };
+      return { status: "skipped", message: msg, videoId: newest.videoId };
     }
+    videoIdLogged = video.videoId;
 
     const transcript = await getTranscript(video.videoId);
 
@@ -259,7 +269,8 @@ export async function runWeeklyBlogJob(opts: { trigger: Trigger }): Promise<JobR
 
     // Enforce link quotas
     const slugToken = slugify(draft.slug).slice(0, 32) || "post";
-    const enforced = enforceLinks(draft.contentHtml, slugToken);
+    const rewritten = rewriteKnownBadLinks(draft.contentHtml);
+    const enforced = enforceLinks(rewritten, slugToken);
     const contentHtml = ensureLinksOpenInNewTab(enforced.html);
 
     // Cover image

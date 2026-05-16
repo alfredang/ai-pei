@@ -222,9 +222,12 @@ export default async function PostPage({
                   <ShareButtons url={postUrl} title={post.title} />
                 </div>
                 {post.excerpt && (
-                  <p className="text-white/75 text-base leading-relaxed mb-4">
-                    {post.excerpt}
-                  </p>
+                  <div className="mb-4 rounded-xl border border-white/10 bg-white/[0.04] p-4">
+                    <p className="kicker mb-1.5 text-cyan">Summary</p>
+                    <p className="text-white/70 text-sm italic leading-relaxed">
+                      {post.excerpt}
+                    </p>
+                  </div>
                 )}
                 {introHtml && (
                   <div

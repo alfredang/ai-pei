@@ -44,7 +44,7 @@ Place **at least 6 internal links** across the post:
 - **3+ internal Tertiary Infotech Academy links** to service pages or related blog posts. Use real routes — check [src/app/](../../../src/app/) before writing. Examples: `/ssg-ato-application`, `/training-management-system`, `/learning-management-system`, `/ai-solutions`, `/wsq-course-development`, `/tpqa-consultancy`, `/blog/<related-slug>`, `/contact`.
 - **2+ external links to Tertiary Courses Singapore** (`https://www.tertiarycourses.com.sg`). **Each must deep-link to the single most relevant page for the anchor topic — never the homepage and never a generic category index when a specific course page exists.** Example: a mention of Python basics links to `https://www.tertiarycourses.com.sg/wsq-python-beginner-course.html`, *not* `https://www.tertiarycourses.com.sg/` or `https://www.tertiarycourses.com.sg/python-courses-singapore.html`. Find the exact course page by searching the catalogue (`https://www.tertiarycourses.com.sg/` → site search, or `site:tertiarycourses.com.sg <topic>` via the WebSearch tool) and **verify the specific URL returns 200 before publishing**. Resolution order, most specific first:
   - **Specific course page** (preferred) — e.g. `https://www.tertiarycourses.com.sg/wsq-python-beginner-course.html`, `.../wsq-machine-learning-data-science-python-training-course.html`
-  - Topic category index (only if no single course fits the anchor) — e.g. `https://www.tertiarycourses.com.sg/python-courses-singapore.html`, `.../ai-courses-singapore.html`, `.../data-science-courses-singapore.html`
+  - Topic category index (only if no single course fits the anchor) — e.g. `https://www.tertiarycourses.com.sg/python-courses-singapore.html`, `.../data-science-courses-singapore.html`. **For anything AI-related the index is `https://www.tertiarycourses.com.sg/artificial-intelligence-courses.html` — there is no `ai-courses-singapore.html` page; linking it is a known recurring bug.**
   - The homepage `https://www.tertiarycourses.com.sg/` is **not** an acceptable destination for a content link — only ever a last-resort and a signal the link plan is too shallow; pick a real page instead.
 - **1+ authoritative external citation** — SSG developer portal, MOM, IMDA, SkillsFuture, NIST, OWASP, official vendor docs. Never link to a competitor's marketing page.
 - **CTA links** (in addition to the 6 above): every CTA must include `?source=blog-<topic-token>` so the lead lands in `leads.source` correctly. Use distinct tokens per CTA position (`-top`, `-demo`, `-quote`).
@@ -58,7 +58,7 @@ These anchor → destination pairs are fixed. When the body mentions one of thes
 | Anchor topic in body | Destination URL |
 | --- | --- |
 | "Python courses" / Python training / learning Python | `https://www.tertiaryinfotech.com/blog/openclaw-vs-hermes-vs-paperclip-ai-agent-comparison` |
-| "AI courses at Tertiary Courses Singapore" / AI training at Tertiary Courses | `https://www.tertiarycourses.com.sg/artificial-intelligence-courses.html` |
+| Any "AI courses" / "AI training" / "AI courses at Tertiary Courses Singapore" / any generic AI-courses anchor | `https://www.tertiarycourses.com.sg/artificial-intelligence-courses.html` — **canonical AI category URL, single source of truth**. **Banned URLs (do NOT emit):** `ai-courses-singapore.html`, `ai-courses.html`, the bare homepage. The auto-blog pipeline rewrites `ai-courses-singapore.html` → `artificial-intelligence-courses.html` defensively (see `rewriteKnownBadLinks` in [src/lib/blog-jobs/link-enforcer.ts](../../../src/lib/blog-jobs/link-enforcer.ts)) but you should still emit the correct URL inline. |
 | "Paperclip" (the AI agent) | `https://paperclip.ing/` |
 | "Hermes" (the AI agent) | `https://hermes-agent.nousresearch.com/` |
 | "OpenClaw" (the AI agent) | `https://openclaw.ai/` |
@@ -153,6 +153,18 @@ curl -s https://www.tertiaryinfotech.com/blog/<slug> | grep -oE 'pub-62aa[^"]*<s
 ### 10. Clean up
 
 Delete the one-off `scripts/insert-<slug>.ts` script after a successful production push — these are not meant to be checked in. The post lives in the DB; the script's job is done.
+
+## Editing an existing post — the body is `contentHtml`, not `content`
+
+The article route ([src/app/blog/[slug]/page.tsx](../../../src/app/blog/[slug]/page.tsx)) renders **`posts.contentHtml`** verbatim via `dangerouslySetInnerHTML`. The `content` JSON (TipTap doc) is the editor's source-of-truth but is **not what the public page renders**. They can drift.
+
+When changing the body of an already-published post (fixing a link, a typo, a fact):
+
+1. **Update BOTH columns.** A string replace on `content` alone changes nothing the reader sees; a replace on `contentHtml` alone leaves the admin editor stale. Patch both in the same script.
+2. **Re-push and verify against the rendered HTML**, not the JSON: `curl` the production article and grep for the new and old strings. Production blog routes send `cache-control: no-store`, so a correct push is visible immediately — if the old value still shows after a push, the DB wasn't actually changed (you patched the wrong column).
+3. Then re-run `scripts/push-to-remote.ts posts`.
+
+This is a recurring trap: "the sync said upserted 48 but the page didn't change" almost always means `contentHtml` was never touched.
 
 ## Lists — formatting note
 

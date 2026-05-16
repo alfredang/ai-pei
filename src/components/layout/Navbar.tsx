@@ -22,6 +22,7 @@ const FALLBACK = [
   { label: "Home", href: "/" },
   { label: "SSG Services", href: "/#ssg-services" },
   { label: "AI Services", href: "/#ai-services" },
+  { label: "AI Chatbots", href: "/ai-chatbot-portfolio" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];

@@ -13,10 +13,10 @@ const FEATURES: string[] = [
   "Admin AI Assist — Draft, Rewrite, Summarize, Suggest SEO meta (one click)",
 ];
 
-const READY_ITEMS: Array<{ label: string; desc: string }> = [
+const READY_ITEMS: Array<{ label: string; desc: string; href?: string }> = [
   { label: "TipTap Editor", desc: "Rich text · images · slash commands · drafts" },
   { label: "Claude AI Assist", desc: "Draft posts · summarize · SEO meta — one click" },
-  { label: "AI Chatbot", desc: "Configurable system prompt + FAQ · OAuth token" },
+  { label: "AI Chatbot", desc: "Configurable system prompt + FAQ · OAuth token", href: "/ai-chatbot-portfolio" },
   { label: "Lead Capture", desc: "Contact form → admin inbox + Gmail OAuth2 email" },
   { label: "Encrypted Vault", desc: "AES-256-GCM secrets · never returned to browser" },
   { label: "SEO Built-In", desc: "Per-route metadata · JSON-LD · sitemap · canonical · OG" },
@@ -94,20 +94,30 @@ export function CMSShowcase() {
                 </div>
               </div>
               <div className="space-y-3">
-                {READY_ITEMS.map((item) => (
-                  <div
-                    key={item.label}
-                    className="flex items-center justify-between gap-3 px-4 py-3 rounded-lg bg-white/3 border border-white/8 hover:border-(--color-cyan)/40 transition"
-                  >
-                    <div>
-                      <div className="font-display font-bold text-white">{item.label}</div>
-                      <div className="text-xs text-(--color-muted) mt-0.5">{item.desc}</div>
+                {READY_ITEMS.map((item) => {
+                  const inner = (
+                    <>
+                      <div>
+                        <div className="font-display font-bold text-white">{item.label}</div>
+                        <div className="text-xs text-(--color-muted) mt-0.5">{item.desc}</div>
+                      </div>
+                      <span className="text-(--color-green) font-mono text-xs whitespace-nowrap">
+                        ✓ READY
+                      </span>
+                    </>
+                  );
+                  const cls =
+                    "flex items-center justify-between gap-3 px-4 py-3 rounded-lg bg-white/3 border border-white/8 hover:border-(--color-cyan)/40 transition";
+                  return item.href ? (
+                    <Link key={item.label} href={item.href} className={cls}>
+                      {inner}
+                    </Link>
+                  ) : (
+                    <div key={item.label} className={cls}>
+                      {inner}
                     </div>
-                    <span className="text-(--color-green) font-mono text-xs whitespace-nowrap">
-                      ✓ READY
-                    </span>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>

@@ -29,8 +29,8 @@ export async function resolveChannelId(handle: string): Promise<string> {
   return m[1];
 }
 
-/** Fetch the latest video from a channel via the public RSS feed. */
-export async function getLatestVideo(channelId: string): Promise<YtVideo> {
+/** Fetch up to `limit` most recent videos from a channel via public RSS. */
+export async function getRecentVideos(channelId: string, limit = 15): Promise<YtVideo[]> {
   const url = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
   const res = await fetch(url, {
     headers: { "user-agent": "Mozilla/5.0 (compatible; TertiaryBlogBot/1.0)" },
@@ -38,21 +38,29 @@ export async function getLatestVideo(channelId: string): Promise<YtVideo> {
   if (!res.ok) throw new Error(`YouTube RSS returned ${res.status} for ${channelId}`);
   const body = await res.text();
   const parsed = xml.parse(body);
-  const entries = parsed?.feed?.entry;
-  const first = Array.isArray(entries) ? entries[0] : entries;
+  const raw = parsed?.feed?.entry;
+  const entries = Array.isArray(raw) ? raw : raw ? [raw] : [];
+  const out: YtVideo[] = [];
+  for (const e of entries.slice(0, limit)) {
+    const videoId: string | undefined = e?.["yt:videoId"];
+    const title: string | undefined = e?.title;
+    if (!videoId || !title) continue;
+    out.push({
+      videoId,
+      title,
+      url: `https://www.youtube.com/watch?v=${videoId}`,
+      description: e?.["media:group"]?.["media:description"],
+      publishedAt: e?.published,
+    });
+  }
+  return out;
+}
+
+/** Fetch the single newest video from a channel via the public RSS feed. */
+export async function getLatestVideo(channelId: string): Promise<YtVideo> {
+  const [first] = await getRecentVideos(channelId, 1);
   if (!first) throw new Error("RSS feed has no entries");
-  const videoId: string = first["yt:videoId"];
-  const title: string = first.title;
-  const description: string | undefined = first?.["media:group"]?.["media:description"];
-  const publishedAt: string | undefined = first.published;
-  if (!videoId || !title) throw new Error("RSS entry missing videoId or title");
-  return {
-    videoId,
-    title,
-    url: `https://www.youtube.com/watch?v=${videoId}`,
-    description,
-    publishedAt,
-  };
+  return first;
 }
 
 /**
