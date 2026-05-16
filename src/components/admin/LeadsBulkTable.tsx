@@ -9,14 +9,15 @@ export type LeadRow = {
   phone: string | null;
   company: string | null;
   source: string | null;
-  status: "new" | "contacted" | "qualified" | "converted" | "lost";
+  status: "new" | "follow_up" | "contacted" | "qualified" | "converted" | "lost";
   createdAt: string;
 };
 
-const STATUSES: LeadRow["status"][] = ["new", "contacted", "qualified", "converted", "lost"];
+const STATUSES: LeadRow["status"][] = ["new", "follow_up", "contacted", "qualified", "converted", "lost"];
 
 const STATUS_CLASS: Record<LeadRow["status"], string> = {
   new: "bg-(--color-cyan)/15 text-(--color-cyan) border-(--color-cyan)/30",
+  follow_up: "bg-blue-500/15 text-blue-300 border-blue-500/30",
   contacted: "bg-(--color-amber)/15 text-(--color-amber) border-(--color-amber)/30",
   qualified: "bg-(--color-purple)/15 text-(--color-purple-light) border-(--color-purple)/30",
   converted: "bg-(--color-green)/15 text-(--color-green) border-(--color-green)/30",

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { sql, eq } from "drizzle-orm";
 import { db } from "@/db";
-import { pages, users } from "@/db/schema";
+import { pages, users, categories } from "@/db/schema";
 import { syncAuthorized } from "@/lib/sync-auth";
 
 const pageSchema = z.object({
@@ -19,6 +19,7 @@ const pageSchema = z.object({
   canonicalUrl: z.string().max(2000).optional().nullable(),
   noIndex: z.boolean().optional().default(false),
   authorEmail: z.string().email().optional().nullable(),
+  categorySlug: z.string().max(255).optional().nullable(),
   publishedAt: z.string().datetime().optional().nullable(),
 });
 
@@ -30,6 +31,18 @@ async function resolveAuthorId(email: string | null | undefined): Promise<number
   if (!email) return null;
   const [u] = await db.select().from(users).where(eq(users.email, email)).limit(1);
   return u?.id ?? null;
+}
+
+async function resolveCategoryId(slug: string | null | undefined): Promise<number | null> {
+  if (!slug) return null;
+  const [c] = await db.select().from(categories).where(eq(categories.slug, slug)).limit(1);
+  if (c) return c.id;
+  // Auto-create the category (esp. "portfolio") so prod doesn't need a separate seed.
+  const [ins] = await db
+    .insert(categories)
+    .values({ slug, name: slug.charAt(0).toUpperCase() + slug.slice(1) })
+    .returning();
+  return ins.id;
 }
 
 export async function POST(req: Request) {
@@ -44,6 +57,7 @@ export async function POST(req: Request) {
   let upserted = 0;
   for (const p of parsed.data.pages) {
     const authorId = await resolveAuthorId(p.authorEmail);
+    const categoryId = await resolveCategoryId(p.categorySlug);
     const row = {
       slug: p.slug,
       title: p.title,
@@ -58,6 +72,7 @@ export async function POST(req: Request) {
       canonicalUrl: p.canonicalUrl ?? null,
       noIndex: p.noIndex ?? false,
       authorId,
+      categoryId,
       publishedAt: p.publishedAt ? new Date(p.publishedAt) : null,
     };
     await db

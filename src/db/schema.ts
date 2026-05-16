@@ -71,6 +71,7 @@ export const pages = pgTable(
   {
     id: serial("id").primaryKey(),
     ...contentColumns,
+    categoryId: integer("category_id").references(() => categories.id),
   },
   (t) => [uniqueIndex("pages_slug_uq").on(t.slug)],
 );

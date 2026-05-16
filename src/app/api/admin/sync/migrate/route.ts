@@ -50,7 +50,11 @@ export async function POST(req: Request) {
   await db.execute(sql`ALTER TABLE posts ADD COLUMN IF NOT EXISTS featured boolean NOT NULL DEFAULT false`);
   ran.push("posts.featured column");
 
-  // 5) lead_status enum: add 'follow_up'
+  // 5) pages.category_id
+  await db.execute(sql`ALTER TABLE pages ADD COLUMN IF NOT EXISTS category_id integer`);
+  ran.push("pages.category_id column");
+
+  // 6) lead_status enum: add 'follow_up'
   await db.execute(sql`
     DO $$ BEGIN
       IF NOT EXISTS (

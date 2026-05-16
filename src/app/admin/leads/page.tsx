@@ -19,7 +19,7 @@ export default async function LeadsList() {
   async function updateStatus(ids: number[], status: LeadRow["status"]) {
     "use server";
     if (!Array.isArray(ids) || ids.length === 0) return;
-    const allowed = ["new", "contacted", "qualified", "converted", "lost"] as const;
+    const allowed = ["new", "follow_up", "contacted", "qualified", "converted", "lost"] as const;
     if (!(allowed as readonly string[]).includes(status)) return;
     await db.update(leads).set({ status }).where(inArray(leads.id, ids));
     revalidatePath("/admin/leads");

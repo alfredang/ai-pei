@@ -156,6 +156,8 @@ async function pushPages() {
     console.log("  [pages] skipped (no rows)");
     return;
   }
+  const allCats = await db.select().from(categories);
+  const catById = new Map(allCats.map((c) => [c.id, c.slug]));
   const payload = [];
   for (const p of rows) {
     payload.push({
@@ -172,6 +174,7 @@ async function pushPages() {
       canonicalUrl: p.canonicalUrl,
       noIndex: p.noIndex,
       authorEmail: await authorEmailById(p.authorId),
+      categorySlug: p.categoryId != null ? catById.get(p.categoryId) ?? null : null,
       publishedAt: p.publishedAt ? p.publishedAt.toISOString() : null,
     });
   }
