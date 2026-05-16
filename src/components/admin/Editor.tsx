@@ -4,6 +4,10 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
+import Table from "@tiptap/extension-table";
+import TableRow from "@tiptap/extension-table-row";
+import TableHeader from "@tiptap/extension-table-header";
+import TableCell from "@tiptap/extension-table-cell";
 import type { JSONContent } from "@tiptap/react";
 import { useEffect } from "react";
 
@@ -18,6 +22,10 @@ export function Editor({ value, onChange }: Props) {
       StarterKit,
       Link.configure({ openOnClick: false }),
       Image.configure({ inline: false }),
+      Table.configure({ resizable: false, HTMLAttributes: { class: "prose-table" } }),
+      TableRow,
+      TableHeader,
+      TableCell,
     ],
     content: value ?? { type: "doc", content: [{ type: "paragraph" }] },
     immediatelyRender: false,
