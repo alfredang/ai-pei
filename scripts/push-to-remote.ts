@@ -225,6 +225,7 @@ async function pushPosts() {
       noIndex: p.noIndex,
       featuredImage: p.featuredImage,
       readingTime: p.readingTime,
+      featured: p.featured ?? false,
       authorEmail: await authorEmailById(p.authorId),
       categorySlug: p.categoryId != null ? catById.get(p.categoryId) ?? null : null,
       tagSlugs: tagSlugsByPostId.get(p.id) ?? [],

@@ -5,6 +5,7 @@ import { leads } from "@/db/schema";
 import { sendLeadEmail } from "@/lib/email";
 import { verifyTurnstileToken } from "@/lib/turnstile";
 import { checkBlocklist } from "@/lib/lead-blocklist";
+import { computeLeadScore } from "@/lib/lead-score";
 
 const schema = z.object({
   name: z.string().min(1).max(255),
@@ -48,6 +49,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true });
   }
 
+  const score = computeLeadScore({
+    name: data.name,
+    email: data.email,
+    phone: data.phone ?? null,
+    company: data.company,
+    message: data.message,
+  });
+
   await db.insert(leads).values({
     name: data.name,
     email: data.email,
@@ -55,6 +64,7 @@ export async function POST(req: Request) {
     company: data.company,
     message: data.message,
     source: data.source ?? null,
+    score,
   });
 
   try {

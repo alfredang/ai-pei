@@ -12,11 +12,13 @@ export type PostRow = {
   updatedAt: string; // ISO
   category: string | null;
   tags: { name: string; slug: string }[];
+  featured?: boolean;
 };
 
 type Props = {
   rows: PostRow[];
   deleteMany: (ids: number[]) => Promise<void>;
+  setFeatured?: (id: number, featured: boolean) => Promise<void>;
 };
 
 function formatShort(iso: string) {
@@ -24,10 +26,19 @@ function formatShort(iso: string) {
   return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "2-digit" });
 }
 
-export function PostsBulkTable({ rows, deleteMany }: Props) {
+export function PostsBulkTable({ rows, deleteMany, setFeatured }: Props) {
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [optimisticFeatured, setOptimisticFeatured] = useState<Record<number, boolean>>({});
+
+  function toggleFeatured(id: number, current: boolean) {
+    if (!setFeatured) return;
+    setOptimisticFeatured((prev) => ({ ...prev, [id]: !current }));
+    startTransition(async () => {
+      await setFeatured(id, !current);
+    });
+  }
 
   const allChecked = rows.length > 0 && rows.every((r) => selected.has(r.id));
   const someChecked = rows.some((r) => selected.has(r.id)) && !allChecked;
@@ -110,6 +121,7 @@ export function PostsBulkTable({ rows, deleteMany }: Props) {
                   className="accent-(--color-cyan) cursor-pointer w-4 h-4 align-middle"
                 />
               </th>
+              <th className="px-3 py-2 w-8" title="Featured">★</th>
               <th className="px-3 py-2 font-medium">Title</th>
               <th className="px-3 py-2 font-medium">Slug</th>
               <th className="px-3 py-2 font-medium">Status</th>
@@ -130,6 +142,27 @@ export function PostsBulkTable({ rows, deleteMany }: Props) {
                     aria-label={`Select ${p.title}`}
                     className="accent-(--color-cyan) cursor-pointer w-4 h-4 align-middle"
                   />
+                </td>
+                <td className="px-3 py-1.5">
+                  {(() => {
+                    const current =
+                      optimisticFeatured[p.id] !== undefined
+                        ? optimisticFeatured[p.id]
+                        : p.featured ?? false;
+                    return (
+                      <button
+                        type="button"
+                        onClick={() => toggleFeatured(p.id, current)}
+                        disabled={!setFeatured || pending}
+                        title={current ? "Unfeature this post" : "Feature this post on homepage"}
+                        className={`text-base leading-none transition ${
+                          current ? "text-(--color-amber)" : "text-white/20 hover:text-white/60"
+                        } disabled:opacity-50`}
+                      >
+                        {current ? "★" : "☆"}
+                      </button>
+                    );
+                  })()}
                 </td>
                 <td className="px-3 py-1.5 max-w-[420px] truncate">
                   <Link className="hover:text-(--color-cyan)" href={`/admin/posts/${p.id}/edit`} title={p.title}>
@@ -183,7 +216,7 @@ export function PostsBulkTable({ rows, deleteMany }: Props) {
             ))}
             {rows.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-4 py-10 text-center text-white/50">
+                <td colSpan={9} className="px-4 py-10 text-center text-white/50">
                   No posts found.
                 </td>
               </tr>

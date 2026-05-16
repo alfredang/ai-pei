@@ -49,14 +49,20 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 - **Source-tagged forms** — every form POSTs to `/api/contact` with a `source` label so leads are attributable per page
 - **Gmail OAuth2 notification pipeline** — every submission lands in `/admin/leads` *and* emails sales in under 1 second
 - **Lead-magnet skill** — built-in conventions for ICP targeting, form-field rules, page anatomy
+- **Lead score 1-10** — every inbound submission is scored by message length, keenness keywords (urgent / quote / demo / RFP / budget / …), phone + company completeness, and red-flag penalties (all-caps, repeated chars, `test test`, etc.). Score is computed at intake and backfilled for legacy leads — see [src/lib/lead-score.ts](src/lib/lead-score.ts)
+- **Blocklist / Allowlist** — admin-managed glob patterns (`*@163.com`, `spam*@*`, exact emails) decide whether a submission persists. Allow rules always override block rules so known real clients (e.g. `*@haileck.com`) cannot be auto-spammed. Blocked submissions return `200 ok` silently — see [/admin/leads/blocklist](src/app/admin/leads/blocklist/page.tsx)
 
 ### CMS — customizable frontend and backend
 - **Visual editor everywhere** — hero copy, KPI cards, section headings, service-page content, menus, brand identity, social links, FAQ, contact info — all DB-driven, all editable from `/admin/settings`
 - **TipTap rich editor** with image upload, slash commands, draft / published / archived states
-- **Pages + Posts + Categories + Tags + Menus + Media + Leads + Redirects + Settings** — full CRUD in `/admin`
+- **Pages + Posts + Categories + Tags + Menus + Media + Leads + Blocklist + Redirects + Settings** — full CRUD in `/admin`
+- **Featured posts** — admin toggles a star on the posts table to surface a post in the homepage Featured strip; the homepage shows three Featured + three Latest articles, automatically de-duplicated
+- **Pages admin** — search (title/slug), status filter, sort (newest / oldest / A→Z), multi-select with bulk delete + bulk status change, pagination at 25/page; each row has per-row View + Edit
+- **Tags admin** — compact table view with post-count column, search box, sort (popular / name / slug), pagination at 50/page
+- **Dashboard cards** — clickable KPI tiles plus dedicated panels for 10 Most Popular Tags, 5 Latest Posts, and 5 Latest Leads
 - **Encrypted credentials vault** — AES-256-GCM at rest, eye-reveal for admins, one-click env → DB migration
 - **WordPress migration** — `scripts/migrate-wp.ts` imports a `wp_*` SQL dump, downloads images, preserves Yoast/RankMath SEO, writes 301 redirects
-- **Local → Remote DB sync** — push menus, settings, pages, posts, taxonomy from local to production via a bearer-token API; no SSH, no manual copy
+- **Local ⇄ Remote DB sync** — push menus, settings, pages, posts, taxonomy from local to production via a bearer-token API; pull leads from production back to local (`scripts/pull-leads.ts`); idempotent prod-side schema migration runner at `POST /api/admin/sync/migrate`
 
 ### AI built in — Nemo chatbot + Admin AI Assist
 - **Nemo AI chatbot** on every public page — branded floating widget that answers visitor questions about your services and routes warm leads to your contact form

@@ -147,6 +147,15 @@ export default async function PostsList({
     revalidatePath("/sitemap.xml");
   }
 
+  async function setFeatured(id: number, featured: boolean) {
+    "use server";
+    if (!id) return;
+    await db.update(posts).set({ featured }).where(eq(posts.id, id));
+    revalidatePath("/admin/posts");
+    revalidatePath("/");
+    revalidatePath("/blog");
+  }
+
   const buildHref = (overrides: Partial<Search>) => {
     const params = new URLSearchParams();
     const merged: Search = { q, status, category: categorySlug, sort: sortKey, from, to, ...overrides };
@@ -197,8 +206,10 @@ export default async function PostsList({
           updatedAt: p.updatedAt.toISOString(),
           category: p.categoryId ? catById.get(p.categoryId)?.name ?? null : null,
           tags: tagsByPostId.get(p.id) ?? [],
+          featured: p.featured,
         }))}
         deleteMany={deleteMany}
+        setFeatured={setFeatured}
       />
 
       {totalPages > 1 && (

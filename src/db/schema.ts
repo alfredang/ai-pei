@@ -17,6 +17,7 @@ export const statusEnum = pgEnum("status", ["draft", "published", "archived"]);
 export const roleEnum = pgEnum("role", ["admin", "editor", "author"]);
 export const leadStatusEnum = pgEnum("lead_status", [
   "new",
+  "follow_up",
   "contacted",
   "qualified",
   "converted",
@@ -82,6 +83,8 @@ export const posts = pgTable(
     featuredImage: text("featured_image"),
     categoryId: integer("category_id").references(() => categories.id),
     readingTime: integer("reading_time"),
+    viewCount: integer("view_count").notNull().default(0),
+    featured: boolean("featured").notNull().default(false),
   },
   (t) => [
     uniqueIndex("posts_slug_uq").on(t.slug),
@@ -145,6 +148,7 @@ export const leads = pgTable(
     source: varchar("source", { length: 100 }), // page slug
     status: leadStatusEnum("status").notNull().default("new"),
     notes: text("notes"),
+    score: integer("score"), // 1-10, computed at intake / backfill
     createdAt: timestamp("created_at").defaultNow().notNull(),
   },
   (t) => [index("leads_status_created_idx").on(t.status, t.createdAt)],
