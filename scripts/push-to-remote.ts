@@ -177,6 +177,7 @@ async function pushPages() {
       authorEmail: await authorEmailById(p.authorId),
       categorySlug: p.categoryId != null ? catById.get(p.categoryId) ?? null : null,
       publishedAt: p.publishedAt ? p.publishedAt.toISOString() : null,
+      createdAt: p.createdAt ? p.createdAt.toISOString() : null,
     });
   }
   // The server caps each request at 200 rows. Chunk to stay under that.
@@ -234,6 +235,7 @@ async function pushPosts() {
       categorySlug: p.categoryId != null ? catById.get(p.categoryId) ?? null : null,
       tagSlugs: tagSlugsByPostId.get(p.id) ?? [],
       publishedAt: p.publishedAt ? p.publishedAt.toISOString() : null,
+      createdAt: p.createdAt ? p.createdAt.toISOString() : null,
     });
   }
   const CHUNK = 150;

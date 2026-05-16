@@ -70,6 +70,7 @@ export async function pushPostToRemote(postId: number): Promise<PushResult> {
         categorySlug,
         tagSlugs,
         publishedAt: p.publishedAt ? p.publishedAt.toISOString() : null,
+        createdAt: p.createdAt ? p.createdAt.toISOString() : null,
       },
     ],
   };

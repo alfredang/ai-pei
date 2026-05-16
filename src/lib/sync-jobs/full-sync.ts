@@ -99,6 +99,7 @@ async function buildPostsPayload() {
       categorySlug: p.categoryId != null ? catById.get(p.categoryId) ?? null : null,
       tagSlugs: tagSlugsByPostId.get(p.id) ?? [],
       publishedAt: p.publishedAt ? p.publishedAt.toISOString() : null,
+      createdAt: p.createdAt ? p.createdAt.toISOString() : null,
     });
   }
   return out;
@@ -128,6 +129,7 @@ async function buildPagesPayload() {
       authorEmail: await authorEmailById(p.authorId),
       categorySlug: p.categoryId != null ? catById.get(p.categoryId) ?? null : null,
       publishedAt: p.publishedAt ? p.publishedAt.toISOString() : null,
+      createdAt: p.createdAt ? p.createdAt.toISOString() : null,
     });
   }
   return out;

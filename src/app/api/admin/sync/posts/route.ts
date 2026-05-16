@@ -25,6 +25,10 @@ const postSchema = z.object({
   categorySlug: z.string().max(255).optional().nullable(),
   tagSlugs: z.array(z.string().max(255)).optional().default([]),
   publishedAt: z.string().datetime().optional().nullable(),
+  // Preserve original authoring timestamp across sync so the admin list
+  // sort ("Newest first") matches local. Without this, remote createdAt
+  // tracks the first-sync time, not the post's real creation time.
+  createdAt: z.string().datetime().optional().nullable(),
 });
 
 const payloadSchema = z.object({
@@ -86,12 +90,13 @@ export async function POST(req: Request) {
       categoryId,
       publishedAt: p.publishedAt ? new Date(p.publishedAt) : null,
     };
+    const createdAt = p.createdAt ? new Date(p.createdAt) : null;
     await db
       .insert(posts)
-      .values(row)
+      .values(createdAt ? { ...row, createdAt } : row)
       .onConflictDoUpdate({
         target: posts.slug,
-        set: { ...row, updatedAt: sql`now()` },
+        set: createdAt ? { ...row, createdAt, updatedAt: sql`now()` } : { ...row, updatedAt: sql`now()` },
       });
 
     const [postRow] = await db.select().from(posts).where(eq(posts.slug, p.slug)).limit(1);

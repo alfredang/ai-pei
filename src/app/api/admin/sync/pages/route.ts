@@ -21,6 +21,7 @@ const pageSchema = z.object({
   authorEmail: z.string().email().optional().nullable(),
   categorySlug: z.string().max(255).optional().nullable(),
   publishedAt: z.string().datetime().optional().nullable(),
+  createdAt: z.string().datetime().optional().nullable(),
 });
 
 const payloadSchema = z.object({
@@ -75,12 +76,13 @@ export async function POST(req: Request) {
       categoryId,
       publishedAt: p.publishedAt ? new Date(p.publishedAt) : null,
     };
+    const createdAt = p.createdAt ? new Date(p.createdAt) : null;
     await db
       .insert(pages)
-      .values(row)
+      .values(createdAt ? { ...row, createdAt } : row)
       .onConflictDoUpdate({
         target: pages.slug,
-        set: { ...row, updatedAt: sql`now()` },
+        set: createdAt ? { ...row, createdAt, updatedAt: sql`now()` } : { ...row, updatedAt: sql`now()` },
       });
     upserted += 1;
   }
