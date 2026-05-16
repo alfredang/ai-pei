@@ -115,6 +115,24 @@ export async function POST(req: Request) {
 }
 
 /**
+ * DELETE — admin housekeeping: remove a post by slug. Used to clean up
+ * sync probe rows. Same bearer/basic auth as POST/GET. JSON body { slug }.
+ */
+export async function DELETE(req: Request) {
+  if (!(await syncAuthorized(req))) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  const body = (await req.json().catch(() => null)) as { slug?: string } | null;
+  const slug = body?.slug?.trim();
+  if (!slug) return NextResponse.json({ error: "slug required" }, { status: 400 });
+  const [row] = await db.select({ id: posts.id }).from(posts).where(eq(posts.slug, slug)).limit(1);
+  if (!row) return NextResponse.json({ ok: true, deleted: 0 });
+  await db.delete(postTags).where(eq(postTags.postId, row.id));
+  await db.delete(posts).where(eq(posts.id, row.id));
+  return NextResponse.json({ ok: true, deleted: 1, slug });
+}
+
+/**
  * GET — debug introspection for sync verification. Returns the top 10 posts
  * by createdAt desc with slug + createdAt + updatedAt. Same bearer/basic auth
  * as POST. Used by the local "Run sync now" UI and CI to confirm a sync took.

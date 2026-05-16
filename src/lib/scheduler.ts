@@ -5,11 +5,39 @@
  * a redeploy.
  */
 import cron, { type ScheduledTask } from "node-cron";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { settings } from "@/db/schema";
 import { runWeeklyBlogJob } from "@/lib/blog-jobs/weekly-blog";
 import { runFullSync } from "@/lib/sync-jobs/full-sync";
+
+/**
+ * Idempotent CREATE TABLE IF NOT EXISTS for tables this feature owns. The
+ * Dockerfile builds run `db:migrate` but there are no committed migrations,
+ * so production never picks up `blog_schedule_runs` from drizzle alone.
+ * Running these on boot keeps the admin page from crashing on first deploy.
+ */
+async function ensureTables(): Promise<void> {
+  try {
+    await db.execute(sql`
+      CREATE TABLE IF NOT EXISTS "blog_schedule_runs" (
+        "id" serial PRIMARY KEY NOT NULL,
+        "run_at" timestamp DEFAULT now() NOT NULL,
+        "trigger" varchar(16) NOT NULL,
+        "status" varchar(16) NOT NULL,
+        "video_id" varchar(32),
+        "video_title" text,
+        "video_url" text,
+        "post_id" integer REFERENCES posts(id) ON DELETE SET NULL,
+        "post_slug" varchar(255),
+        "duration_ms" integer,
+        "error_message" text
+      )
+    `);
+  } catch (err) {
+    console.error("[scheduler] ensureTables failed:", err);
+  }
+}
 
 type GlobalSched = typeof globalThis & {
   __weeklyBlogTask?: ScheduledTask | null;
@@ -142,6 +170,7 @@ export async function startScheduler(): Promise<void> {
   } else {
     g.__schedulerStarted = true;
     console.log("[scheduler] starting");
+    await ensureTables();
   }
   await reloadScheduler();
 }

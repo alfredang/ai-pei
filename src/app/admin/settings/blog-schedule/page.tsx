@@ -55,7 +55,14 @@ export default async function BlogScheduleSettings({
     authorId: asString(map.blog_schedule_author_id, DEFAULTS.authorId),
     categorySlug: asString(map.blog_schedule_category_slug, DEFAULTS.categorySlug),
   };
-  const runs = await listRecentRuns(20);
+  // Self-heal if the table is missing (first deploy before instrumentation
+  // has a chance to run, or a fresh prod DB without migrations).
+  let runs: Awaited<ReturnType<typeof listRecentRuns>> = [];
+  try {
+    runs = await listRecentRuns(20);
+  } catch (err) {
+    console.warn("[blog-schedule/page] listRecentRuns failed:", err);
+  }
 
   return (
     <div>
