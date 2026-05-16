@@ -59,19 +59,34 @@ export function AILmsTmsShowcase() {
                 {[
                   { label: "WSQ + TPQA", desc: "Compliant submission & audit trails" },
                   { label: "SSG API", desc: "TPGateway, MySkillsFuture, attendance" },
-                  { label: "50+ EdTools", desc: "Flashcard, Padlet, Whiteboard, Live Q&A…" },
+                  { label: "50+ EdTools", desc: "Flashcard, Padlet, Whiteboard, Live Q&A…", href: "/edtools" },
                   { label: "Google Meet · Zoom · Teams", desc: "Native live-class integration" },
                   { label: "Auto Enrolment + Invoicing", desc: "SkillsFuture claim workflows" },
                   { label: "Claude Code Agent", desc: "Authoring, marking, learner support" },
-                ].map((item) => (
-                  <div key={item.label} className="flex items-center justify-between gap-3 px-4 py-3 rounded-lg bg-white/3 border border-white/8 hover:border-(--color-cyan)/40 transition">
-                    <div>
-                      <div className="font-display font-bold text-white">{item.label}</div>
-                      <div className="text-xs text-(--color-muted) mt-0.5">{item.desc}</div>
+                ].map((item) => {
+                  const inner = (
+                    <>
+                      <div>
+                        <div className="font-display font-bold text-white">{item.label}</div>
+                        <div className="text-xs text-(--color-muted) mt-0.5">{item.desc}</div>
+                      </div>
+                      <span className="text-(--color-green) font-mono text-xs whitespace-nowrap">
+                        {item.href ? "Browse →" : "✓ READY"}
+                      </span>
+                    </>
+                  );
+                  const classes =
+                    "flex items-center justify-between gap-3 px-4 py-3 rounded-lg bg-white/3 border border-white/8 hover:border-(--color-cyan)/40 transition";
+                  return item.href ? (
+                    <Link key={item.label} href={item.href} className={`${classes} cursor-pointer`}>
+                      {inner}
+                    </Link>
+                  ) : (
+                    <div key={item.label} className={classes}>
+                      {inner}
                     </div>
-                    <span className="text-(--color-green) font-mono text-xs">✓ READY</span>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>

@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { db } from "@/db";
 import { pages, posts } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { EDTOOLS } from "@/lib/edtools-data";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.tertiaryinfotech.com";
 
@@ -25,6 +26,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/real-clients`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE}/blog`, changeFrequency: "daily", priority: 0.8 },
     { url: `${BASE}/blog/tags`, changeFrequency: "weekly", priority: 0.5 },
+    { url: `${BASE}/edtools`, changeFrequency: "monthly", priority: 0.8 },
+    ...EDTOOLS.map((t) => ({
+      url: `${BASE}/edtools/${t.slug}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
     { url: `${BASE}/terms`, changeFrequency: "yearly", priority: 0.3 },
     { url: `${BASE}/privacy`, changeFrequency: "yearly", priority: 0.3 },
     ...allPages.map((p) => ({
