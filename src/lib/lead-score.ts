@@ -81,6 +81,22 @@ export function computeLeadScore(input: LeadScoreInput): number {
   }
   score += keenHits;
 
+  // Qualification-signal bonuses — each distinct factor surfaced in the
+  // transcript adds +1 (cap +3). Mirrors the five factors Nemo probes for:
+  // interest, use-case, budget, timeline, implementation.
+  const QUALIFICATION_FACTORS: Array<RegExp> = [
+    /\b(lms|tms|cms|hrms|ato|tpqa|wsq|agent|chatbot|n8n|claude|openclaw|hermes|nebula)\b/, // interest in solution
+    /\b(because|currently|today we|replace|migrate|audit|gap|trigger|need to|trying to|problem|use case)\b/, // use case clarity
+    /\b(budget|spend|s\$|sgd|\$\s?\d|funding|skillsfuture|grant)\b/, // budget intent
+    /\b(q[1-4]|this (month|quarter|year)|next (month|quarter|year)|by\s+\w+|deadline|go[- ]live|asap|urgent|timeline|when can)\b/, // timeline urgency
+    /\b(deploy|implement|roll[- ]?out|onboard|integrate|self[- ]?host|end[- ]to[- ]end|co[- ]deliver)\b/, // implementation interest
+  ];
+  let factorHits = 0;
+  for (const re of QUALIFICATION_FACTORS) {
+    if (re.test(lower)) factorHits++;
+  }
+  score += Math.min(3, factorHits);
+
   // Contact-detail bonuses
   if ((input.phone ?? "").replace(/[^\d]/g, "").length >= 7) score += 1;
   if ((input.company ?? "").trim().length >= 2) score += 1;

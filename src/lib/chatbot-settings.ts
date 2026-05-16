@@ -1,7 +1,30 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { db } from "@/db";
-import { settings } from "@/db/schema";
-import { inArray } from "drizzle-orm";
+import { settings, pages, posts } from "@/db/schema";
+import { and, desc, eq, inArray } from "drizzle-orm";
 import { getCompanyContact, getSiteBrand } from "@/lib/site-settings";
+
+// Knowledge base — AI + SSG service facts Nemo cites verbatim. Loaded once at
+// module init; restart the server to pick up edits.
+let KNOWLEDGE_BASE = "";
+try {
+  KNOWLEDGE_BASE = readFileSync(
+    join(process.cwd(), "src/lib/chatbot-knowledge.md"),
+    "utf8",
+  );
+} catch {
+  KNOWLEDGE_BASE = "";
+}
+
+// Mission + seed lessons file — committed, edited by humans. Dynamic lessons
+// learned via reflection live in the DB (see src/lib/nemo-reflect.ts).
+let NEMO_MD = "";
+try {
+  NEMO_MD = readFileSync(join(process.cwd(), "NEMO.md"), "utf8");
+} catch {
+  NEMO_MD = "";
+}
 
 export type FaqEntry = { question: string; answer: string };
 
@@ -12,25 +35,104 @@ export type ChatbotSettings = {
 
 // Placeholders are substituted at chat-time with admin-saved company facts.
 // Supported tokens: {COMPANY_NAME}, {COMPANY_EMAIL}, {COMPANY_UEN}
-export const DEFAULT_SYSTEM_PROMPT = `You are the AI assistant for {COMPANY_NAME}, a Singapore-based provider of AI-powered LMS, TMS and custom software for training providers.
+export const DEFAULT_SYSTEM_PROMPT = `You are **Nemo**, the AI assistant for {COMPANY_NAME}, a Singapore-based provider of AI-powered LMS, TMS, agentic AI, and SSG-compliance services for training providers.
 
 Company facts:
 - We build AI-LMS-TMS, a Learning + Training Management platform that is WSQ and TPQA compliant.
-- Services: Training Management System (TMS), Learning Management System (LMS), AI-powered solutions, custom software development, blockchain certificates (OpenCerts), TRAQOM compliance dashboards.
-- Target audience: training providers, L&D managers, and adult-learning centres in Singapore.
+- Services split into two tracks: **AI Services** (LMS, TMS, CMS, HRMS, AI Agent Deployment, Full-Stack AI Solutions) and **SSG Services** (ATO Application, TPQA Consultancy, WSQ Course Development).
+- Target audience: training providers, L&D managers, adult-learning centres, and any Singapore organisation deploying production AI.
 - Contact: {COMPANY_EMAIL}
 - UEN: {COMPANY_UEN}
 
 Tone and behaviour:
-- Be professional, friendly and concise. Two to four sentences is usually enough.
-- If asked about pricing, custom scope, demos or timelines, invite the visitor to fill in the contact form on this page or email {COMPANY_EMAIL}.
-- If a question is outside our services, answer briefly and steer back to how we can help.
-- Never invent facts about specific clients, prices or SLAs. If unsure, say you'll connect them with the team.
+- Conversational, warm, and concise — sound like a knowledgeable colleague, not a brochure. Two to four sentences per reply is usually enough.
+- Answer the visitor's question first. Only then ask **one** natural follow-up that surfaces a qualification signal.
+- Qualification signals to listen for and gently probe (one at a time, never as a checklist):
+  1. **Interest in solution** — which specific service catches their attention.
+  2. **Business use-case clarity** — what problem or trigger is driving the conversation.
+  3. **Budget intent** — whether they have a budget envelope or want indicative ranges.
+  4. **Timeline urgency** — when they need to go live, submit, or audit.
+  5. **Implementation interest** — end-to-end delivery vs. co-delivery with their team.
+- If the visitor surfaces a signal unprompted, acknowledge and move on — don't restart the qualification list.
+- When the visitor signals intent (quote, demo, pricing, consultation, speak to someone, proposal), STOP qualifying and say you'll take a few details — the lead-capture flow will then handle Name / Email / Phone.
+- Never invent facts about specific clients, prices, or SLAs. If unsure, offer to connect them with the team at {COMPANY_EMAIL}.
 
-Use the FAQ context below as authoritative answers when relevant.`;
+Use the Knowledge Base and FAQ below as authoritative answers when relevant.`;
 
 const KEY_PROMPT = "chat:system_prompt";
 const KEY_FAQ = "chat:faq";
+
+// ─── CMS knowledge snippet ──────────────────────────────────────────────────
+// Pulls the latest published pages + posts and renders them as a compact KB
+// section so Nemo can reference real on-site content (blogs, service pages)
+// without us hand-editing chatbot-knowledge.md every time we publish.
+
+type CmsSnippetCache = { text: string; expires: number };
+let cmsSnippet: CmsSnippetCache | null = null;
+const CMS_TTL_MS = 5 * 60 * 1000; // 5 min — refresh after publishes
+
+function truncate(s: string | null | undefined, n: number): string {
+  const v = (s ?? "").trim().replace(/\s+/g, " ");
+  return v.length > n ? `${v.slice(0, n - 1)}…` : v;
+}
+
+export async function getCmsKnowledgeSnippet(): Promise<string> {
+  if (cmsSnippet && cmsSnippet.expires > Date.now()) return cmsSnippet.text;
+  try {
+    const [pageRows, postRows] = await Promise.all([
+      db
+        .select({
+          slug: pages.slug,
+          title: pages.title,
+          excerpt: pages.excerpt,
+          seoDescription: pages.seoDescription,
+        })
+        .from(pages)
+        .where(eq(pages.status, "published"))
+        .orderBy(desc(pages.updatedAt))
+        .limit(40),
+      db
+        .select({
+          slug: posts.slug,
+          title: posts.title,
+          excerpt: posts.excerpt,
+          seoDescription: posts.seoDescription,
+          publishedAt: posts.publishedAt,
+        })
+        .from(posts)
+        .where(and(eq(posts.status, "published")))
+        .orderBy(desc(posts.publishedAt))
+        .limit(20),
+    ]);
+
+    const pageLines = pageRows
+      .map((p) => {
+        const desc = truncate(p.excerpt || p.seoDescription, 180);
+        return desc
+          ? `- **${p.title}** (/${p.slug}) — ${desc}`
+          : `- **${p.title}** (/${p.slug})`;
+      })
+      .join("\n");
+    const postLines = postRows
+      .map((p) => {
+        const desc = truncate(p.excerpt || p.seoDescription, 180);
+        return desc
+          ? `- **${p.title}** (/blog/${p.slug}) — ${desc}`
+          : `- **${p.title}** (/blog/${p.slug})`;
+      })
+      .join("\n");
+
+    const sections: string[] = [];
+    if (pageLines) sections.push(`### On-site pages\n${pageLines}`);
+    if (postLines) sections.push(`### Recent blog posts\n${postLines}`);
+    const text = sections.join("\n\n");
+    cmsSnippet = { text, expires: Date.now() + CMS_TTL_MS };
+    return text;
+  } catch {
+    cmsSnippet = { text: "", expires: Date.now() + CMS_TTL_MS };
+    return "";
+  }
+}
 
 export async function getChatbotSettings(): Promise<ChatbotSettings> {
   try {
@@ -77,12 +179,34 @@ export async function saveChatbotSettings(input: ChatbotSettings): Promise<void>
     });
 }
 
-export function buildSystemPrompt(s: ChatbotSettings): string {
-  if (!s.faq.length) return s.systemPrompt;
-  const faqText = s.faq
-    .map((e, i) => `Q${i + 1}: ${e.question}\nA${i + 1}: ${e.answer}`)
-    .join("\n\n");
-  return `${s.systemPrompt}\n\n--- FAQ ---\n${faqText}`;
+export function buildSystemPrompt(
+  s: ChatbotSettings,
+  learnedLessons: string[] = [],
+  cmsSnippetText = "",
+): string {
+  const parts = [s.systemPrompt];
+  if (NEMO_MD.trim()) {
+    parts.push(`--- NEMO.MD (mission + seed lessons) ---\n${NEMO_MD.trim()}`);
+  }
+  if (KNOWLEDGE_BASE.trim()) {
+    parts.push(`--- KNOWLEDGE BASE ---\n${KNOWLEDGE_BASE.trim()}`);
+  }
+  if (cmsSnippetText.trim()) {
+    parts.push(
+      `--- LIVE CMS CONTENT (pages + recent posts — link to these when relevant) ---\n${cmsSnippetText.trim()}`,
+    );
+  }
+  if (learnedLessons.length) {
+    const text = learnedLessons.map((l, i) => `${i + 1}. ${l}`).join("\n");
+    parts.push(`--- LEARNED LESSONS (apply these to lift the lead score) ---\n${text}`);
+  }
+  if (s.faq.length) {
+    const faqText = s.faq
+      .map((e, i) => `Q${i + 1}: ${e.question}\nA${i + 1}: ${e.answer}`)
+      .join("\n\n");
+    parts.push(`--- FAQ ---\n${faqText}`);
+  }
+  return parts.join("\n\n");
 }
 
 /**

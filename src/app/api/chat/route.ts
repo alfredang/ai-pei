@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 import { query } from "@anthropic-ai/claude-agent-sdk";
 import { getCredential } from "@/lib/secrets";
-import { buildSystemPrompt, getChatbotSettings, renderSystemPrompt } from "@/lib/chatbot-settings";
+import {
+  buildSystemPrompt,
+  getChatbotSettings,
+  getCmsKnowledgeSnippet,
+  renderSystemPrompt,
+} from "@/lib/chatbot-settings";
 import { buildClaudeEnv } from "@/lib/anthropic-auth";
 import {
   buildCaptureState,
@@ -17,6 +22,7 @@ import { db } from "@/db";
 import { leads } from "@/db/schema";
 import { computeLeadScore } from "@/lib/lead-score";
 import { sendLeadEmail } from "@/lib/email";
+import { getNemoLessons, reflectOnLead } from "@/lib/nemo-reflect";
 
 export const maxDuration = 120;
 
@@ -92,6 +98,12 @@ export async function POST(req: Request) {
         } catch (err) {
           console.error("[chat/lead] email send failed", err);
         }
+        // Fire-and-forget self-improvement: reflect on this transcript and
+        // append any new tactical lesson to the DB-backed lessons store so
+        // future conversations are coached toward a higher score.
+        void reflectOnLead({ transcript: summary, score }).catch((err) =>
+          console.error("[chat/lead] reflection failed", err),
+        );
         return NextResponse.json({ response: captureDoneMessage(captureState) });
       }
     }
@@ -118,7 +130,13 @@ export async function POST(req: Request) {
       );
     }
 
-    const systemPrompt = await renderSystemPrompt(buildSystemPrompt(settings));
+    const [lessons, cmsSnippet] = await Promise.all([
+      getNemoLessons().then((rows) => rows.map((l) => l.lesson)),
+      getCmsKnowledgeSnippet(),
+    ]);
+    const systemPrompt = await renderSystemPrompt(
+      buildSystemPrompt(settings, lessons, cmsSnippet),
+    );
 
     const conversation = [...history, { role: "user" as const, content: message }]
       .slice(-10)
