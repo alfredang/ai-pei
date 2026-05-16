@@ -141,6 +141,30 @@ curl -s https://www.tertiaryinfotech.com/blog/<slug> | grep -oE 'pub-62aa[^"]*<s
 
 Delete the one-off `scripts/insert-<slug>.ts` script after a successful production push — these are not meant to be checked in. The post lives in the DB; the script's job is done.
 
+## Tables — formatting note
+
+Blog body HTML is rendered inside `.prose-dark` ([src/app/globals.css](../../../src/app/globals.css)), which styles `<table>` / `<thead>` / `<th>` / `<td>` automatically:
+
+- Rounded outer container with a 1px hairline border
+- Cyan-tinted header band, bold white labels
+- Hairline column dividers (subtle, not blocky), zebra rows, purple hover
+- Horizontal scroll on narrow viewports — the table never breaks layout
+
+**Therefore**: emit plain semantic HTML — no inline `style`, no Tailwind classes, no `<div>` wrappers around the table. Use `<thead>` for the header row (not a `<tr>` in `<tbody>`) so the cyan band renders. Example:
+
+```html
+<table>
+  <thead>
+    <tr><th>Dimension</th><th>Option A</th><th>Option B</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Pricing</td><td>…</td><td>…</td></tr>
+  </tbody>
+</table>
+```
+
+If the styling ever looks wrong (raw, unaligned, no borders), it means `.prose-dark` lost the table rules — fix the CSS, not the post.
+
 ## Anti-patterns — flag and refuse
 
 - **Generic AI-marketing fluff**. If a paragraph could be on any vendor's blog, rewrite it with a Singapore-specific or regulator-specific detail.
