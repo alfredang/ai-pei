@@ -199,11 +199,11 @@ export function PagesBulkTable({
         </div>
       )}
 
-      <div className="glass rounded-xl overflow-x-auto">
-        <table className="text-sm min-w-[1100px] w-full">
+      <div className="glass rounded-xl overflow-x-auto -mr-8">
+        <table className="text-sm w-max">
           <thead className="bg-white/5 text-left text-[11px] uppercase text-white/60">
             <tr>
-              <th className="px-2 py-2 w-8 sticky left-0 bg-(--color-bg)/95 backdrop-blur z-10">
+              <th className="px-2 py-2 w-8">
                 <input
                   type="checkbox"
                   checked={allChecked}
@@ -212,12 +212,12 @@ export function PagesBulkTable({
                   className="accent-(--color-cyan)"
                 />
               </th>
-              <th className="px-3 py-2 min-w-[260px]">Title</th>
-              <th className="px-3 py-2 min-w-[260px]">Slug</th>
-              <th className="px-3 py-2 min-w-[160px]">Category</th>
-              <th className="px-3 py-2 min-w-[110px]">Status</th>
-              <th className="px-3 py-2 min-w-[120px] whitespace-nowrap">Updated</th>
-              <th className="px-3 py-2 min-w-[140px] text-right">Actions</th>
+              <th className="px-3 py-2 whitespace-nowrap">Title</th>
+              <th className="px-3 py-2 whitespace-nowrap">Slug</th>
+              <th className="px-3 py-2 whitespace-nowrap">Category</th>
+              <th className="px-3 py-2 whitespace-nowrap">Status</th>
+              <th className="px-3 py-2 whitespace-nowrap">Updated</th>
+              <th className="px-3 py-2 text-right whitespace-nowrap">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -240,7 +240,8 @@ export function PagesBulkTable({
                   <td className="px-3 py-1.5">
                     <Link
                       href={`/admin/pages/${p.id}/edit`}
-                      className="hover:text-(--color-cyan) line-clamp-2 leading-snug"
+                      className="hover:text-(--color-cyan) whitespace-nowrap leading-snug block"
+                      title={p.title}
                     >
                       {p.title}
                     </Link>
