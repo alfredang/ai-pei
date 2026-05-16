@@ -66,6 +66,7 @@ export const DEFAULT_LEAD_SOURCE_LABELS: Record<string, string> = {
   "hrms-page": "Agentic (HRMS)",
   "ai-agent-page": "Agentic (AI Agent Deployment)",
   "ai-solutions-page": "Agentic (Full-Stack AI Solutions)",
+  nemo: "Nemo Chatbot",
   "admin-test-email": "Admin Test",
 };
 
