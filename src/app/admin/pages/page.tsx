@@ -1,6 +1,6 @@
 import { db } from "@/db";
-import { pages } from "@/db/schema";
-import { desc, inArray } from "drizzle-orm";
+import { pages, categories } from "@/db/schema";
+import { asc, desc, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { PagesBulkTable, type PageRow } from "@/components/admin/PagesBulkTable";
@@ -8,7 +8,11 @@ import { PagesBulkTable, type PageRow } from "@/components/admin/PagesBulkTable"
 export const dynamic = "force-dynamic";
 
 export default async function PagesList() {
-  const list = await db.select().from(pages).orderBy(desc(pages.updatedAt));
+  const [list, allCats] = await Promise.all([
+    db.select().from(pages).orderBy(desc(pages.updatedAt)),
+    db.select().from(categories).orderBy(asc(categories.name)),
+  ]);
+  const catById = new Map(allCats.map((c) => [c.id, c]));
 
   async function createPage() {
     "use server";
@@ -58,7 +62,10 @@ export default async function PagesList() {
           title: p.title,
           status: p.status,
           updatedAt: p.updatedAt.toISOString(),
+          category: p.categoryId ? catById.get(p.categoryId)?.name ?? null : null,
+          categorySlug: p.categoryId ? catById.get(p.categoryId)?.slug ?? null : null,
         }))}
+        categories={allCats.map((c) => ({ slug: c.slug, name: c.name }))}
         deleteMany={deleteMany}
         updateStatus={updateStatus}
       />

@@ -23,6 +23,7 @@ export const leadStatusEnum = pgEnum("lead_status", [
   "converted",
   "lost",
 ]);
+export const categoryTypeEnum = pgEnum("category_type", ["page", "post"]);
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -38,6 +39,7 @@ export const categories = pgTable("categories", {
   slug: varchar("slug", { length: 255 }).notNull().unique(),
   name: varchar("name", { length: 255 }).notNull(),
   description: text("description"),
+  type: categoryTypeEnum("type").notNull().default("post"),
 });
 
 export const tags = pgTable("tags", {

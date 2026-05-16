@@ -54,7 +54,51 @@ export async function POST(req: Request) {
   await db.execute(sql`ALTER TABLE pages ADD COLUMN IF NOT EXISTS category_id integer`);
   ran.push("pages.category_id column");
 
-  // 6) lead_status enum: add 'follow_up'
+  // 6a) category_type enum + categories.type column
+  await db.execute(sql`
+    DO $$ BEGIN
+      CREATE TYPE category_type AS ENUM ('page', 'post');
+    EXCEPTION
+      WHEN duplicate_object THEN NULL;
+    END $$
+  `);
+  await db.execute(sql`
+    ALTER TABLE categories
+    ADD COLUMN IF NOT EXISTS "type" category_type NOT NULL DEFAULT 'post'
+  `);
+  // Backfill: any category used only by pages → 'page'.
+  await db.execute(sql`
+    WITH usage AS (
+      SELECT c.id,
+             SUM(CASE WHEN p.id  IS NOT NULL THEN 1 ELSE 0 END) AS page_count,
+             SUM(CASE WHEN po.id IS NOT NULL THEN 1 ELSE 0 END) AS post_count
+      FROM categories c
+      LEFT JOIN pages p  ON p.category_id  = c.id
+      LEFT JOIN posts po ON po.category_id = c.id
+      GROUP BY c.id
+    )
+    UPDATE categories c
+       SET "type" = 'page'
+      FROM usage u
+     WHERE u.id = c.id
+       AND u.page_count > 0
+       AND u.post_count = 0
+  `);
+  // Seed curated page-type categories.
+  for (const [slug, name] of [
+    ["portfolio", "Portfolio"],
+    ["bespoke-apps", "Bespoke Apps"],
+    ["general", "General"],
+  ] as const) {
+    await db.execute(sql`
+      INSERT INTO categories (slug, name, "type")
+      VALUES (${slug}, ${name}, 'page')
+      ON CONFLICT (slug) DO UPDATE SET "type" = 'page'
+    `);
+  }
+  ran.push("categories.type column + backfill + page-type seeds");
+
+  // 7) lead_status enum: add 'follow_up'
   await db.execute(sql`
     DO $$ BEGIN
       IF NOT EXISTS (

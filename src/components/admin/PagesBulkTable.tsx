@@ -9,7 +9,11 @@ export type PageRow = {
   title: string;
   status: "draft" | "published" | "archived";
   updatedAt: string;
+  category: string | null;
+  categorySlug: string | null;
 };
+
+type CategoryOption = { slug: string; name: string };
 
 const STATUSES: PageRow["status"][] = ["draft", "published", "archived"];
 
@@ -26,16 +30,19 @@ function formatShort(s: string) {
 
 export function PagesBulkTable({
   rows,
+  categories = [],
   deleteMany,
   updateStatus,
 }: {
   rows: PageRow[];
+  categories?: CategoryOption[];
   deleteMany: (ids: number[]) => Promise<void>;
   updateStatus: (ids: number[], status: PageRow["status"]) => Promise<void>;
 }) {
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [q, setQ] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | PageRow["status"]>("all");
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [sort, setSort] = useState<"updated_desc" | "updated_asc" | "title_asc">("updated_desc");
   const [page, setPage] = useState(1);
   const [bulkStatus, setBulkStatus] = useState<PageRow["status"]>("archived");
@@ -51,6 +58,11 @@ export function PagesBulkTable({
         )
       : [...rows];
     if (statusFilter !== "all") r = r.filter((p) => p.status === statusFilter);
+    if (categoryFilter !== "all") {
+      r = categoryFilter === "__none__"
+        ? r.filter((p) => !p.categorySlug)
+        : r.filter((p) => p.categorySlug === categoryFilter);
+    }
     r.sort((a, b) => {
       if (sort === "title_asc") return a.title.localeCompare(b.title);
       const ta = new Date(a.updatedAt).getTime();
@@ -58,12 +70,12 @@ export function PagesBulkTable({
       return sort === "updated_desc" ? tb - ta : ta - tb;
     });
     return r;
-  }, [rows, q, statusFilter, sort]);
+  }, [rows, q, statusFilter, categoryFilter, sort]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const safePage = Math.min(page, totalPages);
   const paged = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
-  useMemo(() => setPage(1), [q, statusFilter, sort]);
+  useMemo(() => setPage(1), [q, statusFilter, categoryFilter, sort]);
 
   const pagedIds = paged.map((p) => p.id);
   const allChecked = pagedIds.length > 0 && pagedIds.every((id) => selected.has(id));
@@ -130,6 +142,19 @@ export function PagesBulkTable({
           ))}
         </select>
         <select
+          value={categoryFilter}
+          onChange={(e) => setCategoryFilter(e.target.value)}
+          className="px-3 py-2 bg-white/5 border border-white/10 rounded text-sm"
+        >
+          <option value="all">All categories</option>
+          <option value="__none__">— Uncategorised —</option>
+          {categories.map((c) => (
+            <option key={c.slug} value={c.slug}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+        <select
           value={sort}
           onChange={(e) => setSort(e.target.value as typeof sort)}
           className="px-3 py-2 bg-white/5 border border-white/10 rounded text-sm"
@@ -174,11 +199,11 @@ export function PagesBulkTable({
         </div>
       )}
 
-      <div className="glass rounded-xl overflow-hidden">
-        <table className="w-full text-sm">
+      <div className="glass rounded-xl overflow-x-auto">
+        <table className="text-sm min-w-[1100px] w-full">
           <thead className="bg-white/5 text-left text-[11px] uppercase text-white/60">
             <tr>
-              <th className="px-2 py-2 w-8">
+              <th className="px-2 py-2 w-8 sticky left-0 bg-(--color-bg)/95 backdrop-blur z-10">
                 <input
                   type="checkbox"
                   checked={allChecked}
@@ -187,11 +212,12 @@ export function PagesBulkTable({
                   className="accent-(--color-cyan)"
                 />
               </th>
-              <th className="px-3 py-2">Title</th>
-              <th className="px-3 py-2 w-[28%]">Slug</th>
-              <th className="px-3 py-2 w-[10%]">Status</th>
-              <th className="px-3 py-2 w-[12%]">Updated</th>
-              <th className="px-3 py-2 w-[14%] text-right">Actions</th>
+              <th className="px-3 py-2 min-w-[260px]">Title</th>
+              <th className="px-3 py-2 min-w-[260px]">Slug</th>
+              <th className="px-3 py-2 min-w-[160px]">Category</th>
+              <th className="px-3 py-2 min-w-[110px]">Status</th>
+              <th className="px-3 py-2 min-w-[120px] whitespace-nowrap">Updated</th>
+              <th className="px-3 py-2 min-w-[140px] text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -219,7 +245,16 @@ export function PagesBulkTable({
                       {p.title}
                     </Link>
                   </td>
-                  <td className="px-3 py-1.5 text-white/60 font-mono text-xs truncate">/{p.slug}</td>
+                  <td className="px-3 py-1.5 text-white/60 font-mono text-xs whitespace-nowrap">/{p.slug}</td>
+                  <td className="px-3 py-1.5">
+                    {p.category ? (
+                      <span className="px-1.5 py-0.5 rounded text-[10px] font-mono uppercase border bg-(--color-amber)/15 text-(--color-amber) border-(--color-amber)/40 whitespace-nowrap">
+                        {p.category}
+                      </span>
+                    ) : (
+                      <span className="text-[10px] text-white/30 font-mono">—</span>
+                    )}
+                  </td>
                   <td className="px-3 py-1.5">
                     <span
                       className={`px-1.5 py-0.5 rounded text-[10px] font-mono uppercase border ${STATUS_CLASS[p.status]}`}
@@ -253,7 +288,7 @@ export function PagesBulkTable({
             })}
             {paged.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-white/50">
+                <td colSpan={7} className="px-4 py-8 text-center text-white/50">
                   {q || statusFilter !== "all"
                     ? "No pages match the current filters."
                     : "No pages yet."}
