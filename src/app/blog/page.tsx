@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { db } from "@/db";
 import { posts, categories, tags, postTags } from "@/db/schema";
-import { and, asc, desc, eq, ilike, inArray, or } from "drizzle-orm";
+import { and, asc, desc, eq, ilike, inArray, or, sql } from "drizzle-orm";
 import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -72,10 +72,27 @@ export default async function BlogIndex({
   const q = sp.q?.trim() || "";
   const page = Math.max(1, Number(sp.page ?? "1") || 1);
 
-  const [allCategories, allTags] = await Promise.all([
+  const [allCategories, allTags, tagCounts] = await Promise.all([
     db.select().from(categories).orderBy(asc(categories.name)),
     db.select().from(tags).orderBy(asc(tags.name)),
+    db
+      .select({ tagId: postTags.tagId, count: sql<number>`count(*)::int` })
+      .from(postTags)
+      .groupBy(postTags.tagId),
   ]);
+
+  const countByTagId = new Map<number, number>(tagCounts.map((r) => [r.tagId, r.count]));
+  const TOP_TAG_LIMIT = 10;
+  const topTags = [...allTags]
+    .sort((a, b) => (countByTagId.get(b.id) ?? 0) - (countByTagId.get(a.id) ?? 0))
+    .slice(0, TOP_TAG_LIMIT);
+  // Ensure the currently-selected tag is visible even if outside the top 10
+  const displayedTags = (() => {
+    if (!selectedTag) return topTags;
+    if (topTags.some((t) => t.slug === selectedTag)) return topTags;
+    const sel = allTags.find((t) => t.slug === selectedTag);
+    return sel ? [...topTags, sel] : topTags;
+  })();
 
   // Build set of post IDs that match the selected tag, if any.
   let allowedPostIds: number[] | null = null;
@@ -242,7 +259,7 @@ export default async function BlogIndex({
                     >
                       All
                     </Link>
-                    {allTags.map((t) => (
+                    {displayedTags.map((t) => (
                       <Link
                         key={t.id}
                         href={filterHref({ tag: t.slug, page: 1 })}
@@ -255,6 +272,14 @@ export default async function BlogIndex({
                         #{t.name}
                       </Link>
                     ))}
+                    {allTags.length > TOP_TAG_LIMIT && (
+                      <Link
+                        href="/blog/tags"
+                        className="px-3 py-1 rounded-full border text-xs transition border-(--color-cyan)/40 text-(--color-cyan) hover:bg-(--color-cyan)/10"
+                      >
+                        See all {allTags.length} tags →
+                      </Link>
+                    )}
                   </div>
                 </div>
               )}
