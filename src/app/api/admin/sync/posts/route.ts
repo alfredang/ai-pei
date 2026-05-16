@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { sql, eq } from "drizzle-orm";
+import { sql, eq, desc } from "drizzle-orm";
 import { db } from "@/db";
 import { posts, users, categories, tags, postTags } from "@/db/schema";
 import { syncAuthorized } from "@/lib/sync-auth";
@@ -112,4 +112,34 @@ export async function POST(req: Request) {
   }
 
   return NextResponse.json({ ok: true, upserted });
+}
+
+/**
+ * GET — debug introspection for sync verification. Returns the top 10 posts
+ * by createdAt desc with slug + createdAt + updatedAt. Same bearer/basic auth
+ * as POST. Used by the local "Run sync now" UI and CI to confirm a sync took.
+ *
+ * Version marker `apiVersion` bumps when the createdAt round-trip lands.
+ */
+export async function GET(req: Request) {
+  if (!(await syncAuthorized(req))) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  const rows = await db
+    .select({
+      slug: posts.slug,
+      title: posts.title,
+      status: posts.status,
+      createdAt: posts.createdAt,
+      updatedAt: posts.updatedAt,
+      publishedAt: posts.publishedAt,
+    })
+    .from(posts)
+    .orderBy(desc(posts.createdAt))
+    .limit(10);
+  return NextResponse.json({
+    ok: true,
+    apiVersion: "createdat-roundtrip-1",
+    top10: rows,
+  });
 }
