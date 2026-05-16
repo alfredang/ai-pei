@@ -136,6 +136,7 @@ async function pushTaxonomy() {
       slug: c.slug,
       name: c.name,
       description: c.description,
+      type: c.type,
     })),
     tags: tagRows.map((t) => ({ slug: t.slug, name: t.name })),
   });

@@ -8,6 +8,7 @@ const taxon = z.object({
   slug: z.string().min(1).max(255),
   name: z.string().min(1).max(255),
   description: z.string().max(2000).optional().nullable(),
+  type: z.enum(["page", "post"]).optional(),
 });
 
 const payloadSchema = z.object({
@@ -25,12 +26,13 @@ export async function POST(req: Request) {
   }
 
   for (const c of parsed.data.categories) {
+    const type = c.type ?? "post";
     await db
       .insert(categories)
-      .values({ slug: c.slug, name: c.name, description: c.description ?? null })
+      .values({ slug: c.slug, name: c.name, description: c.description ?? null, type })
       .onConflictDoUpdate({
         target: categories.slug,
-        set: { name: c.name, description: c.description ?? null },
+        set: { name: c.name, description: c.description ?? null, type },
       });
   }
   for (const t of parsed.data.tags) {
