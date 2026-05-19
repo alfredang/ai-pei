@@ -11,8 +11,13 @@ const schema = z.object({
   name: z.string().min(1).max(255),
   email: z.string().email().max(255),
   phone: z.string().max(50).optional().nullable(),
-  company: z.string().min(1).max(255),
-  message: z.string().min(1),
+  nationality: z.string().optional().nullable(),
+  nric: z.string().optional().nullable(),
+  gender: z.string().optional().nullable(),
+  dob: z.string().optional().nullable(),
+  course: z.string().optional().nullable(),
+  company: z.string().max(255).optional().nullable(),
+  message: z.string().optional().nullable(),
   source: z.string().max(100).optional().nullable(),
   turnstileToken: z.string().max(2048).optional().nullable(),
 });
@@ -49,20 +54,31 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true });
   }
 
+  // Format the extended registration data into the message field
+  const registrationDetails = [
+    `Course Interested: ${data.course || "N/A"}`,
+    `Nationality: ${data.nationality || "N/A"}`,
+    `NRIC: ${data.nric || "N/A"}`,
+    `Gender: ${data.gender || "N/A"}`,
+    `DOB: ${data.dob || "N/A"}`,
+    ``,
+    `Message: ${data.message || "No message provided."}`
+  ].join("\n");
+
   const score = computeLeadScore({
     name: data.name,
     email: data.email,
     phone: data.phone ?? null,
-    company: data.company,
-    message: data.message,
+    company: data.company || "Individual",
+    message: registrationDetails,
   });
 
   await db.insert(leads).values({
     name: data.name,
     email: data.email,
     phone: data.phone ?? null,
-    company: data.company,
-    message: data.message,
+    company: data.company || "Individual",
+    message: registrationDetails,
     source: data.source ?? null,
     score,
   });
@@ -72,8 +88,8 @@ export async function POST(req: Request) {
       name: data.name,
       email: data.email,
       phone: data.phone ?? undefined,
-      company: data.company,
-      message: data.message,
+      company: data.company || "Individual",
+      message: registrationDetails,
       source: data.source ?? undefined,
     });
   } catch (err) {

@@ -1,13 +1,9 @@
 export const dynamic = "force-dynamic";
 
 import type { Metadata } from "next";
-import { Hero } from "@/components/sections/Hero";
-import { AILmsTmsShowcase } from "@/components/sections/AILmsTmsShowcase";
-import { ELearningShowcase } from "@/components/sections/ELearningShowcase";
+import { CoursesCarousel } from "@/components/sections/CoursesCarousel";
 import { CMSShowcase } from "@/components/sections/CMSShowcase";
-import { Services } from "@/components/sections/Services";
 import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
-import { FeaturedPosts } from "@/components/sections/FeaturedPosts";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -43,13 +39,9 @@ export default function HomePage() {
     <>
       <Navbar />
       <main>
-        <Hero />
-        <AILmsTmsShowcase />
-        <ELearningShowcase />
+        <CoursesCarousel />
         <CMSShowcase />
-        <Services />
         <WhyChooseUs />
-        <FeaturedPosts />
         <ContactForm />
       </main>
       <Footer />
