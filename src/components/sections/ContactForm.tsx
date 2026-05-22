@@ -4,14 +4,6 @@ import { useState } from "react";
 import { Container } from "@/components/layout/Container";
 import { TurnstileWidget } from "@/components/forms/TurnstileWidget";
 
-const MOCK_COURSES = [
-  "Generative AI for Executives",
-  "WSQ Data Analytics with Python",
-  "Advanced Prompt Engineering",
-  "Full-Stack Web Development BootCamp",
-  "Certified AI Ethics & Governance",
-];
-
 export function ContactForm() {
   const [state, setState] = useState<"idle" | "sending" | "ok" | "err">("idle");
   const [msg, setMsg] = useState<string>("");
@@ -39,19 +31,22 @@ export function ContactForm() {
   }
 
   return (
-    <section id="contact" className="relative py-4 overflow-hidden">
+    <section id="contact" className="relative py-20 overflow-hidden">
       <div className="glow-blob" style={{ top: "10%", right: "0", width: 480, height: 480, background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)" }} />
       <Container className="max-w-4xl relative">
-        <div className="text-center mb-6">
-          <div className="kicker mb-4">[ REGISTER TODAY ]</div>
+        <div className="text-center mb-8">
+          <div className="kicker mb-4">[ REGISTER NOW ]</div>
           <h2 className="font-display text-[clamp(2rem,5vw,3.5rem)] font-extrabold leading-[1.05] mb-4">
-            Course <span className="gradient-text">Registration</span>.
+            Register for the <span className="gradient-text">Advanced Certificate</span>
           </h2>
-          <p className="text-(--color-muted) text-lg">
-            Secure your spot in our upcoming classes. Fill in your details below.
+          <p className="text-(--color-muted) text-lg max-w-xl mx-auto">
+            Secure your spot in the Advanced Certificate in Cyber Security. Fill in your details below and our team will get in touch.
           </p>
         </div>
         <form onSubmit={onSubmit} className="glass p-8 md:p-10 space-y-5">
+          {/* Hidden course field */}
+          <input type="hidden" name="course" value="Advanced Certificate in Cyber Security" />
+
           <div className="grid md:grid-cols-2 gap-5">
             <Input name="name" label="Student Name" required />
             <Input name="email" label="Email" type="email" required />
@@ -60,7 +55,17 @@ export function ContactForm() {
             <Input name="nric" label="NRIC (Last 4 Characters)" required />
             <Select name="gender" label="Gender" options={["Male", "Female", "Prefer not to say"]} required />
             <Input name="dob" label="Date of Birth" type="date" required />
-            <Select name="course" label="Course Interested" options={MOCK_COURSES} required />
+            <Select
+              name="residency"
+              label="Residency Status"
+              options={[
+                "Singaporean (≥ 40 yrs old)",
+                "Singaporean (< 40 yrs old)",
+                "Singapore PR",
+                "Non-Singaporean",
+              ]}
+              required
+            />
           </div>
           <div>
             <label className="kicker block mb-2">Message</label>
@@ -132,9 +137,10 @@ function Select({
       <select
         name={name}
         required={required}
+        defaultValue=""
         className="w-full px-4 py-3 rounded-lg bg-white/3 border border-white/10 focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition appearance-none"
       >
-        <option value="" disabled selected>Select an option</option>
+        <option value="" disabled>Select an option</option>
         {options.map((opt) => (
           <option key={opt} value={opt} className="bg-(--color-bg-elevated) text-white">
             {opt}

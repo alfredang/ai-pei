@@ -20,8 +20,10 @@ async function loadMenu() {
 
 const FALLBACK = [
   { label: "Home", href: "/" },
-  { label: "Courses", href: "/#featured-courses" },
-  { label: "Contact", href: "/#contact" },
+  { label: "About Us", href: "/#why-us" },
+  { label: "Programme", href: "/#featured-course" },
+  { label: "Trainers", href: "/#trainers" },
+  { label: "Admissions", href: "/#admissions" },
 ];
 
 export async function Navbar() {

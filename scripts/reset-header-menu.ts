@@ -4,13 +4,10 @@ import { menus, menuItems } from "../src/db/schema";
 
 const ITEMS = [
   { label: "Home", href: "/" },
-  { label: "SSG Services", href: "/#ssg-services" },
-  { label: "AI Services", href: "/#ai-services" },
-  { label: "AI Chatbots", href: "/ai-chatbot-portfolio" },
-  { label: "LMS/TMS", href: "/#ai-lms-tms" },
-  { label: "e-Learning", href: "/#e-learning" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact" },
+  { label: "About Us", href: "/#why-us" },
+  { label: "Programme", href: "/#featured-course" },
+  { label: "Trainers", href: "/#trainers" },
+  { label: "Admissions", href: "/#admissions" },
 ];
 
 async function main() {
