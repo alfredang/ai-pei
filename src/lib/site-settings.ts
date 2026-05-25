@@ -120,6 +120,8 @@ export async function getLeadEmailConfig(): Promise<LeadEmailConfig> {
   }
 }
 
+let cachedSiteBrand: SiteBrand | null = null;
+
 export async function getSiteBrand(): Promise<SiteBrand> {
   try {
     const rows = await db
@@ -131,14 +133,16 @@ export async function getSiteBrand(): Promise<SiteBrand> {
       const v = typeof r.value === "string" ? r.value : "";
       if (v) map.set(r.key as BrandKey, v);
     }
-    return {
+    const brand = {
       shortName: map.get("company_short_name") || DEFAULTS.shortName,
       fullName: map.get("company_name") || DEFAULTS.fullName,
       logoUrl: map.get("company_logo_url") || null,
       uen: map.get("company_uen") || null,
     };
+    cachedSiteBrand = brand;
+    return brand;
   } catch {
-    return DEFAULTS;
+    return cachedSiteBrand || DEFAULTS;
   }
 }
 
@@ -175,6 +179,8 @@ export const CONTACT_DEFAULTS: CompanyContact = {
   website: "https://www.tertiarycourses.com.sg/",
 };
 
+let cachedCompanyContact: CompanyContact | null = null;
+
 export async function getCompanyContact(): Promise<CompanyContact> {
   try {
     const rows = await db
@@ -186,7 +192,7 @@ export async function getCompanyContact(): Promise<CompanyContact> {
       const v = typeof r.value === "string" ? r.value : "";
       if (v) map.set(r.key as ContactKey, v);
     }
-    return {
+    const contact = {
       email: map.get("company_email") || CONTACT_DEFAULTS.email,
       supportEmail: map.get("company_support_email") || CONTACT_DEFAULTS.supportEmail,
       tel: map.get("company_tel") || CONTACT_DEFAULTS.tel,
@@ -194,8 +200,10 @@ export async function getCompanyContact(): Promise<CompanyContact> {
       address: map.get("company_address") || CONTACT_DEFAULTS.address,
       website: map.get("company_website") || CONTACT_DEFAULTS.website,
     };
+    cachedCompanyContact = contact;
+    return contact;
   } catch {
-    return CONTACT_DEFAULTS;
+    return cachedCompanyContact || CONTACT_DEFAULTS;
   }
 }
 

@@ -8,16 +8,6 @@ import { getSiteBrand, getCompanyContact } from "@/lib/site-settings";
 import { FaWhatsapp } from "react-icons/fa6";
 import { HiPhone } from "react-icons/hi2";
 
-async function loadMenu() {
-  try {
-    const [menu] = await db.select().from(menus).where(eq(menus.location, "header")).limit(1);
-    if (!menu) return [];
-    return db.select().from(menuItems).where(eq(menuItems.menuId, menu.id)).orderBy(asc(menuItems.sortOrder));
-  } catch {
-    return [];
-  }
-}
-
 const FALLBACK = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/#why-us" },
@@ -26,13 +16,30 @@ const FALLBACK = [
   { label: "Admissions", href: "/#admissions" },
 ];
 
+let cachedMenuItems: any[] | null = null;
+
+async function loadMenu() {
+  try {
+    const [menu] = await db.select().from(menus).where(eq(menus.location, "header")).limit(1);
+    if (!menu) return cachedMenuItems || FALLBACK;
+    const items = await db.select().from(menuItems).where(eq(menuItems.menuId, menu.id)).orderBy(asc(menuItems.sortOrder));
+    if (items.length > 0) {
+      cachedMenuItems = items;
+      return items;
+    }
+    return cachedMenuItems || FALLBACK;
+  } catch {
+    return cachedMenuItems || FALLBACK;
+  }
+}
+
 export async function Navbar() {
   const [items, brand, contact] = await Promise.all([
     loadMenu(),
     getSiteBrand(),
     getCompanyContact(),
   ]);
-  const links = items.length > 0 ? items : FALLBACK;
+  const links = items;
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-(--color-bg)/75 border-b border-(--color-border) relative">
