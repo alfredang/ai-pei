@@ -28,7 +28,12 @@ export default async function AdminLayout({
     h.get("x-pathname") ?? h.get("next-url") ?? h.get("x-invoke-path") ?? "";
   const isLoginPage = pathname === "/admin/login" || pathname.endsWith("/admin/login");
 
-  if (isLoginPage) return <>{children}</>;
+  if (isLoginPage)
+    return (
+      <div data-theme="dark" className="min-h-screen bg-(--color-bg) text-(--color-text)">
+        {children}
+      </div>
+    );
 
   const cookieStore = await cookies();
   const hasSessionCookie =
@@ -67,7 +72,7 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen flex">
+    <div data-theme="dark" className="min-h-screen flex bg-(--color-bg) text-(--color-text)">
       <SidebarShell
         brand={{ shortName: brand.shortName, logoUrl: brand.logoUrl }}
         email={email}

@@ -42,7 +42,7 @@ export async function Navbar() {
   const links = items;
 
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-xl bg-(--color-bg)/75 border-b border-(--color-border) relative">
+    <header className="sticky top-0 z-50 backdrop-blur-xl bg-(--color-bg-elevated) border-b border-(--color-border) relative text-(--color-text)">
       <Container className="flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group">
           {brand.logoUrl ? (
@@ -53,7 +53,12 @@ export async function Navbar() {
               className="w-9 h-9 rounded-md object-contain"
             />
           ) : (
-            <span className="w-7 h-7 rounded-md bg-gradient-to-br from-(--color-purple) to-(--color-cyan) shadow-[var(--shadow-glow-cyan)] grid place-items-center text-xs font-mono font-bold">TI</span>
+            <span
+              data-theme="dark"
+              className="w-8 h-8 rounded-lg bg-gradient-to-br from-(--color-purple) to-(--color-cyan) grid place-items-center text-xs font-mono font-bold text-white shadow-sm ring-1 ring-black/5"
+            >
+              TI
+            </span>
           )}
           <span className="font-display font-bold text-lg tracking-tight">{brand.shortName}</span>
         </Link>

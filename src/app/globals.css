@@ -5,6 +5,63 @@
 @source not "../../node_modules";
 
 @theme {
+  /* ===== LIGHT THEME (default, public site) ===== */
+  --color-bg: #F7F9FC;
+  --color-bg-elevated: #FFFFFF;
+  --color-bg-deeper: #EDF1F7;
+  --color-border: rgba(15, 23, 42, 0.10);
+  --color-text: #0B1220;
+  --color-muted: #5A6473;
+
+  /*
+   * `--color-white` deliberately overrides Tailwind's default white so that the
+   * many hardcoded `text-white` / `bg-white/10` / `border-white/12` utilities —
+   * originally "light-on-dark" contrast — invert to "ink-on-light" on the white
+   * theme. The dark admin scope restores it to real white below.
+   * `--ink-rgb` is the matching raw channel triple for literal rgba() tints in
+   * the shared component classes further down this file.
+   */
+  --color-white: #0B1220;
+  --ink-rgb: 15 23 42;
+
+  /* Accents — darkened just enough to stay readable as text on white while
+   * keeping the cyan / amber / green / purple brand family. */
+  --color-cyan: #0E7490;
+  --color-amber: #B45309;
+  --color-green: #059669;
+  --color-purple: #5C00E5;
+  --color-purple-light: #7C3AED;
+
+  /* Gradient-text stops (theme-aware via the dark scope below) */
+  --gt-from: #0E7490;
+  --gt-via: #7C3AED;
+  --gt-to: #5C00E5;
+
+  /* Legacy aliases used by older components - keep them mapped to new palette */
+  --color-dark-primary: #FFFFFF;
+  --color-dark-deeper: #F7F9FC;
+  --color-dark-surface: #FFFFFF;
+  --color-neon-blue: #0E7490;
+  --color-neon-cyan: #0E7490;
+  --color-neon-purple: #5C00E5;
+  --color-neon-pink: #B45309;
+
+  --font-display: var(--font-display-import), "Exo 2", system-ui, sans-serif;
+  --font-sans: var(--font-sans-import), Inter, system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-mono-import), "JetBrains Mono", ui-monospace, monospace;
+
+  --shadow-glow-cyan: 0 0 40px rgba(14, 116, 144, 0.18);
+  --shadow-glow-purple: 0 0 40px rgba(92, 0, 229, 0.20);
+  --shadow-glow-amber: 0 0 40px rgba(180, 83, 9, 0.18);
+  --shadow-card: 0 8px 30px rgba(15, 23, 42, 0.10);
+}
+
+/* ===== DARK THEME (scoped to /admin) =====
+ * Re-asserts the original neon-on-dark palette for any subtree marked
+ * data-theme="dark". Because every utility/class references these CSS vars,
+ * overriding them here flips the whole admin back to dark with no per-file edits.
+ */
+[data-theme="dark"] {
   --color-bg: #060A14;
   --color-bg-elevated: #0C0D1A;
   --color-bg-deeper: #03060E;
@@ -12,13 +69,19 @@
   --color-text: #FFFFFF;
   --color-muted: #AAA8B1;
 
+  --color-white: #FFFFFF;
+  --ink-rgb: 255 255 255;
+
   --color-cyan: #59EBFD;
   --color-amber: #F6AE64;
   --color-green: #01C982;
   --color-purple: #5C00E5;
   --color-purple-light: #8757F2;
 
-  /* Legacy aliases used by older components - keep them mapped to new palette */
+  --gt-from: #59EBFD;
+  --gt-via: #8757F2;
+  --gt-to: #5C00E5;
+
   --color-dark-primary: #0C0D1A;
   --color-dark-deeper: #060A14;
   --color-dark-surface: #0C0D1A;
@@ -27,14 +90,13 @@
   --color-neon-purple: #5C00E5;
   --color-neon-pink: #F6AE64;
 
-  --font-display: var(--font-display-import), "Exo 2", system-ui, sans-serif;
-  --font-sans: var(--font-sans-import), Inter, system-ui, -apple-system, sans-serif;
-  --font-mono: var(--font-mono-import), "JetBrains Mono", ui-monospace, monospace;
-
   --shadow-glow-cyan: 0 0 40px rgba(89, 235, 253, 0.25);
   --shadow-glow-purple: 0 0 40px rgba(92, 0, 229, 0.35);
   --shadow-glow-amber: 0 0 40px rgba(246, 174, 100, 0.25);
   --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.45);
+
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 @keyframes gradient-shift {
@@ -173,10 +235,12 @@ body::before {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 15% -10%, rgba(92, 0, 229, 0.25), transparent 50%),
-    radial-gradient(ellipse at 85% 0%, rgba(89, 235, 253, 0.15), transparent 50%);
+    radial-gradient(ellipse at 15% -10%, rgba(92, 0, 229, 0.07), transparent 50%),
+    radial-gradient(ellipse at 85% 0%, rgba(14, 116, 144, 0.06), transparent 50%);
   z-index: 0;
 }
+/* The dark admin scope renders an opaque background over <body>, so the
+ * vignette above only ever shows on the light public site. */
 
 /* Utilities */
 .font-display { font-family: var(--font-display); letter-spacing: -0.02em; }
@@ -191,7 +255,7 @@ body::before {
 }
 
 .gradient-text {
-  background: linear-gradient(90deg, #59EBFD 0%, #8757F2 50%, #5C00E5 100%);
+  background: linear-gradient(90deg, var(--gt-from) 0%, var(--gt-via) 50%, var(--gt-to) 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -200,7 +264,7 @@ body::before {
 }
 
 .gradient-text-warm {
-  background: linear-gradient(90deg, #F6AE64 0%, #01C982 100%);
+  background: linear-gradient(90deg, var(--color-amber) 0%, var(--color-green) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -210,8 +274,8 @@ body::before {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    linear-gradient(rgb(var(--ink-rgb) / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--ink-rgb) / 0.06) 1px, transparent 1px);
   background-size: 60px 60px;
   mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
   -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
@@ -233,7 +297,7 @@ body::before {
   border-radius: 0.85rem;
 }
 .glass-soft {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgb(var(--ink-rgb) / 0.03);
   border: 1px solid var(--color-border);
   border-radius: 0.85rem;
   backdrop-filter: blur(8px);
@@ -274,12 +338,12 @@ body::before {
   border-radius: 0.65rem;
   font-weight: 600;
   font-family: var(--font-display);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: white;
-  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgb(var(--ink-rgb) / 0.18);
+  color: var(--color-text);
+  background: rgb(var(--ink-rgb) / 0.02);
   transition: background 200ms ease, border-color 200ms ease;
 }
-.btn-secondary:hover { background: rgba(255, 255, 255, 0.06); border-color: rgba(89, 235, 253, 0.4); }
+.btn-secondary:hover { background: rgb(var(--ink-rgb) / 0.06); border-color: color-mix(in srgb, var(--color-cyan) 50%, transparent); }
 
 .reveal { animation: reveal-up 600ms cubic-bezier(.22,.61,.36,1) both; }
 .reveal-d1 { animation-delay: 80ms; }
@@ -289,13 +353,13 @@ body::before {
 
 /* Prose tweaks for blog/CMS HTML */
 .prose-dark {
-  color: #D6D5DC;
+  color: color-mix(in srgb, var(--color-text) 88%, transparent);
   font-size: 1.05rem;
   line-height: 1.75;
 }
 .prose-dark h2, .prose-dark h3, .prose-dark h4 {
   font-family: var(--font-display);
-  color: white;
+  color: var(--color-text);
   margin-top: 2em;
   margin-bottom: 0.6em;
   letter-spacing: -0.01em;
@@ -370,7 +434,7 @@ body::before {
 }
 .prose-dark code {
   font-family: var(--font-mono);
-  background: rgba(255,255,255,0.06);
+  background: rgb(var(--ink-rgb) / 0.06);
   padding: 0.15em 0.4em;
   border-radius: 0.3em;
   font-size: 0.92em;
@@ -392,34 +456,34 @@ body::before {
   border-spacing: 0;
   margin: 1.8em 0;
   font-size: 0.95rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgb(var(--ink-rgb) / 0.12);
   border-radius: 0.65rem;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgb(var(--ink-rgb) / 0.02);
 }
 .prose-dark table thead {
-  background: rgba(89, 235, 253, 0.06);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  background: color-mix(in srgb, var(--color-cyan) 8%, transparent);
+  border-bottom: 1px solid rgb(var(--ink-rgb) / 0.12);
 }
 .prose-dark table th {
   text-align: left;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-text);
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgb(var(--ink-rgb) / 0.12);
+  border-right: 1px solid rgb(var(--ink-rgb) / 0.06);
   white-space: nowrap;
 }
 .prose-dark table th:last-child { border-right: none; }
 .prose-dark table td {
   padding: 0.7rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgb(var(--ink-rgb) / 0.06);
+  border-right: 1px solid rgb(var(--ink-rgb) / 0.06);
   vertical-align: top;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgb(var(--ink-rgb) / 0.82);
 }
 .prose-dark table td:last-child { border-right: none; }
 .prose-dark table tbody tr:last-child td { border-bottom: none; }
-.prose-dark table tbody tr:nth-child(even) td { background: rgba(255, 255, 255, 0.015); }
+.prose-dark table tbody tr:nth-child(even) td { background: rgb(var(--ink-rgb) / 0.025); }
 .prose-dark table tbody tr:hover td { background: rgba(92, 0, 229, 0.05); }
 .prose-dark table a { color: var(--color-cyan); }
 
@@ -553,14 +617,14 @@ body::before {
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgb(var(--ink-rgb) / 0.5);
   background: transparent;
   border: none;
   cursor: pointer;
   transition: color 200ms ease;
   white-space: nowrap;
 }
-.tab-btn:hover { color: rgba(255, 255, 255, 0.8); }
+.tab-btn:hover { color: rgb(var(--ink-rgb) / 0.8); }
 .tab-btn.tab-active {
   color: var(--color-cyan);
 }
@@ -633,7 +697,7 @@ body::before {
   width: 8px;
   height: 8px;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgb(var(--ink-rgb) / 0.2);
   border: none;
   cursor: pointer;
   transition: all 250ms ease;
@@ -647,8 +711,8 @@ body::before {
 .role-card {
   padding: 1rem 1.25rem;
   border-radius: 0.75rem;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgb(var(--ink-rgb) / 0.02);
+  border: 1px solid rgb(var(--ink-rgb) / 0.06);
   transition: all 250ms ease;
 }
 .role-card:hover {
@@ -661,8 +725,8 @@ body::before {
 .funding-option {
   padding: 0.85rem 1.25rem;
   border-radius: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgb(var(--ink-rgb) / 0.08);
+  background: rgb(var(--ink-rgb) / 0.02);
   cursor: pointer;
   transition: all 200ms ease;
   text-align: left;

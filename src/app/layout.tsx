@@ -91,7 +91,7 @@ export default async function RootLayout({
   };
 
   return (
-    <html lang="en" className={`dark ${inter.variable} ${exo2.variable} ${mono.variable}`}>
+    <html lang="en" className={`${inter.variable} ${exo2.variable} ${mono.variable}`}>
       <body className="min-h-screen antialiased">
         {children}
         <ChatBot />
