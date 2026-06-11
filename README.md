@@ -12,11 +12,11 @@
 [![Anthropic](https://img.shields.io/badge/Claude_Agent_SDK-D4A574?logo=anthropic&logoColor=white)](https://www.anthropic.com/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![License](https://img.shields.io/badge/License-Proprietary-red)](#license)
-[![Live Demo](https://img.shields.io/badge/Live_Demo-tertiaryinfotech.com-22D3EE?logo=vercel&logoColor=white)](https://www.tertiaryinfotech.com/)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-tertiaryinfotech.edu.sg-22D3EE?logo=vercel&logoColor=white)](https://www.tertiaryinfotech.edu.sg/)
 
 **Customizable frontend and backend, AI-driven content generation, a self-running weekly auto-blog scheduler, a self-improving Nemo lead-gen chatbot, and SEO + lead-generation built into every page — powered by Claude Code. No vendor lock-in.**
 
-🌐 **Live demo:** [https://www.tertiaryinfotech.com/](https://www.tertiaryinfotech.com/)
+🌐 **Live demo:** [https://www.tertiaryinfotech.edu.sg/](https://www.tertiaryinfotech.edu.sg/)
 
 </div>
 
@@ -245,6 +245,10 @@ scripts/
 | `npm run db:migrate` | Run migrations (production) |
 | `npm run seed:admin` | Seed admin user + default menus |
 | `npm run migrate:wp` | Import a WordPress SQL dump |
+
+## Course Proposals
+
+The [`courses/`](courses/) folder holds CPE/SSG course write-up proposals authored from the Tertiary Infotech Academy template ([`courses/template.doc`](courses/template.doc)) — e.g. the *Advanced Certificate in Agentic AI Coding and Architecting*. AI-authoring context for the repo lives in [`CLAUDE.md`](CLAUDE.md) and the [`.claude/`](.claude/) skills and commands.
 
 ## Deployment
 
