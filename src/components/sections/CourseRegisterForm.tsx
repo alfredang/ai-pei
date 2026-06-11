@@ -4,21 +4,30 @@ import { useState } from "react";
 import { Container } from "@/components/layout/Container";
 import { TurnstileWidget } from "@/components/forms/TurnstileWidget";
 
-export function ContactForm({
-  courseName = "Advanced Certificate in Cyber Security",
-  source = "home",
-  heading,
+/**
+ * Course-specific "Register Your Interest" form. Unlike the generic ContactForm,
+ * it locks the course it's tied to and offers a module-of-interest dropdown
+ * built from that course's actual modules (the cert is stackable). Submissions
+ * still flow through /api/contact → leads, tagged with source `course-<slug>`.
+ */
+export function CourseRegisterForm({
+  courseTitle,
+  courseSlug,
+  modules,
 }: {
-  /** Course name pre-filled in the hidden `course` field + default heading. */
-  courseName?: string;
-  /** Lead source tag stored on the submission (e.g. "course-<slug>"). */
-  source?: string;
-  /** Optional override for the section heading line. */
-  heading?: React.ReactNode;
-} = {}) {
+  courseTitle: string;
+  courseSlug: string;
+  modules: string[];
+}) {
   const [state, setState] = useState<"idle" | "sending" | "ok" | "err">("idle");
   const [msg, setMsg] = useState<string>("");
   const [turnstileToken, setTurnstileToken] = useState<string>("");
+
+  const moduleOptions = [
+    "Full Certificate (all modules)",
+    ...modules,
+    "Not sure yet — please advise",
+  ];
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -29,11 +38,16 @@ export function ContactForm({
       const r = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...payload, source, turnstileToken }),
+        body: JSON.stringify({
+          ...payload,
+          course: courseTitle,
+          source: `course-${courseSlug}`,
+          turnstileToken,
+        }),
       });
       if (!r.ok) throw new Error(await r.text());
       setState("ok");
-      setMsg("Thanks — our staff will get back to you in 3-5 business days.");
+      setMsg(`Thanks — our team will get in touch about ${courseTitle} within 3-5 business days.`);
       (e.target as HTMLFormElement).reset();
     } catch (err) {
       setState("err");
@@ -42,25 +56,49 @@ export function ContactForm({
   }
 
   return (
-    <section id="contact" className="relative py-20 overflow-hidden">
-      <div className="glow-blob" style={{ top: "10%", right: "0", width: 480, height: 480, background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)" }} />
+    <section id="register" className="relative py-20 overflow-hidden">
+      <div
+        className="glow-blob"
+        style={{
+          top: "10%",
+          right: "0",
+          width: 480,
+          height: 480,
+          background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)",
+        }}
+      />
       <Container className="max-w-4xl relative">
         <div className="text-center mb-8">
           <div className="kicker mb-4">[ REGISTER NOW ]</div>
           <h2 className="font-display text-[clamp(2rem,5vw,3.5rem)] font-extrabold leading-[1.05] mb-4">
-            {heading ?? (
-              <>
-                Register for the <span className="gradient-text">Advanced Certificate</span>
-              </>
-            )}
+            Register Your <span className="gradient-text">Interest</span>
           </h2>
           <p className="text-(--color-muted) text-lg max-w-xl mx-auto">
-            Secure your spot in the {courseName}. Fill in your details below and our team will get in touch.
+            Fill in your details below and our team will get in touch about your enrolment.
           </p>
         </div>
+
         <form onSubmit={onSubmit} className="glass p-8 md:p-10 space-y-5">
-          {/* Hidden course field */}
-          <input type="hidden" name="course" value={courseName} />
+          {/* Locked course — the registrant always sees what they're signing up for */}
+          <div>
+            <label className="kicker block mb-2">Course</label>
+            <div className="w-full px-4 py-3 rounded-lg bg-(--color-cyan)/10 border border-(--color-cyan)/30 text-white font-medium flex items-center justify-between gap-3">
+              <span>{courseTitle}</span>
+              <span className="text-[10px] text-(--color-cyan) font-mono uppercase tracking-wider shrink-0">
+                Selected
+              </span>
+            </div>
+            <input type="hidden" name="course" value={courseTitle} />
+          </div>
+
+          {modules.length > 0 && (
+            <Select
+              name="module"
+              label="Module of Interest"
+              options={moduleOptions}
+              required
+            />
+          )}
 
           <div className="grid md:grid-cols-2 gap-5">
             <Input name="name" label="Student Name" required />
@@ -82,23 +120,30 @@ export function ContactForm({
               required
             />
           </div>
+
           <div>
             <label className="kicker block mb-2">Message</label>
             <textarea
               name="message"
               rows={3}
               className="w-full px-4 py-3 rounded-lg bg-white/3 border border-white/10 focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition placeholder:text-white/30"
-              placeholder="Any special requests or inquiries?"
+              placeholder="Any special requests or questions about this course?"
             />
           </div>
+
           <div className="flex items-center justify-between gap-4 flex-wrap pt-2">
             <p className="text-xs text-(--color-muted) font-mono">
               [ We reply within 3-5 business days ]
             </p>
-            <button type="submit" disabled={state === "sending"} className="btn-primary disabled:opacity-60">
+            <button
+              type="submit"
+              disabled={state === "sending"}
+              className="btn-primary disabled:opacity-60"
+            >
               {state === "sending" ? "Submitting…" : "Submit Registration →"}
             </button>
           </div>
+
           {msg && (
             <p className={state === "ok" ? "text-(--color-green) text-sm font-mono" : "text-red-400 text-sm font-mono"}>
               {msg}
@@ -155,7 +200,9 @@ function Select({
         defaultValue=""
         className="w-full px-4 py-3 rounded-lg bg-white/3 border border-white/10 focus:outline-none focus:border-(--color-cyan) focus:ring-2 focus:ring-(--color-cyan)/20 transition appearance-none"
       >
-        <option value="" disabled>Select an option</option>
+        <option value="" disabled className="bg-(--color-bg-elevated) text-white">
+          Select an option
+        </option>
         {options.map((opt) => (
           <option key={opt} value={opt} className="bg-(--color-bg-elevated) text-white">
             {opt}

@@ -8,6 +8,10 @@
  */
 import { cookies } from "next/headers";
 import { getToken } from "next-auth/jwt";
+import { eq } from "drizzle-orm";
+import { db } from "@/db";
+import { users } from "@/db/schema";
+import { ADMIN_COOKIE_NAME, verifyAdminSessionValue } from "@/lib/admin-session";
 
 export type AdminRole = "admin" | "editor" | "author";
 
@@ -17,6 +21,27 @@ export async function getAdminSession(): Promise<{
   id: string;
 } | null> {
   const jar = await cookies();
+
+  const custom = verifyAdminSessionValue(jar.get(ADMIN_COOKIE_NAME)?.value);
+  if (custom) {
+    const [user] = await db
+      .select({
+        id: users.id,
+        email: users.email,
+        role: users.role,
+      })
+      .from(users)
+      .where(eq(users.id, custom.userId))
+      .limit(1);
+    if (user && user.email === custom.email) {
+      return {
+        role: user.role,
+        email: user.email,
+        id: String(user.id),
+      };
+    }
+  }
+
   const cookieHeader = jar
     .getAll()
     .map((c) => `${c.name}=${c.value}`)
@@ -33,13 +58,33 @@ export async function getAdminSession(): Promise<{
           : "authjs.session-token",
     });
     if (!token) return null;
-    const rawRole = typeof token.role === "string" ? token.role : "admin";
-    const role: AdminRole =
-      rawRole === "editor" || rawRole === "author" ? rawRole : "admin";
+    const email = typeof token.email === "string" ? token.email : "";
+    const uid = typeof token.uid === "string" ? Number(token.uid) : NaN;
+    if (!email) return null;
+    const [user] = Number.isFinite(uid)
+      ? await db
+          .select({
+            id: users.id,
+            email: users.email,
+            role: users.role,
+          })
+          .from(users)
+          .where(eq(users.id, uid))
+          .limit(1)
+      : await db
+          .select({
+            id: users.id,
+            email: users.email,
+            role: users.role,
+          })
+          .from(users)
+          .where(eq(users.email, email))
+          .limit(1);
+    if (!user || user.email !== email) return null;
     return {
-      role,
-      email: typeof token.email === "string" ? token.email : "",
-      id: typeof token.uid === "string" ? token.uid : "",
+      role: user.role,
+      email: user.email,
+      id: String(user.id),
     };
   } catch {
     return null;

@@ -4,10 +4,9 @@ import { menus, menuItems } from "../src/db/schema";
 
 const ITEMS = [
   { label: "Home", href: "/" },
-  { label: "About Us", href: "/#why-us" },
-  { label: "Programme", href: "/#featured-course" },
-  { label: "Trainers", href: "/#trainers" },
-  { label: "Admissions", href: "/#admissions" },
+  { label: "PEI Advanced Certificate", href: "/courses" },
+  { label: "Blog", href: "/blog" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 async function main() {
@@ -25,6 +24,7 @@ async function main() {
       label: it.label,
       href: it.href,
       sortOrder: i,
+      openInNewTab: "openInNewTab" in it ? Boolean(it.openInNewTab) : false,
     })),
   );
   console.log(`Header menu rewritten with ${ITEMS.length} items:`);

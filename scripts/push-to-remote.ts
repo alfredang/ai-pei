@@ -6,12 +6,16 @@
  *   SYNC_API_TOKEN=<token> \
  *   npx tsx scripts/push-to-remote.ts <resource> [...]
  *
- * Resources: menus, settings, taxonomy, pages, posts, all
+ * Resources: menus, settings, taxonomy, pages, posts, courses, all
  *
  * Examples:
  *   npx tsx scripts/push-to-remote.ts menus
  *   npx tsx scripts/push-to-remote.ts settings pages
+ *   npx tsx scripts/push-to-remote.ts courses
  *   npx tsx scripts/push-to-remote.ts all
+ *
+ * Note: the courses endpoint provisions the `courses` + `course_modules`
+ * tables on the remote on first call (idempotent), so no manual DDL is needed.
  */
 
 import { eq, asc } from "drizzle-orm";
@@ -26,13 +30,31 @@ import {
   tags,
   postTags,
   users,
+  courses,
+  courseModules,
 } from "../src/db/schema";
 
-type Resource = "menus" | "settings" | "taxonomy" | "pages" | "posts" | "users";
+type Resource =
+  | "menus"
+  | "settings"
+  | "taxonomy"
+  | "pages"
+  | "posts"
+  | "courses"
+  | "users";
 // `users` is intentionally NOT in ALL — must be explicitly requested.
-const ALL: Resource[] = ["menus", "settings", "taxonomy", "pages", "posts"];
-// taxonomy must run before posts (FK by slug); users runs first so pages/posts can resolve authors
-const ORDER: Resource[] = ["users", "taxonomy", "settings", "menus", "pages", "posts"];
+const ALL: Resource[] = ["menus", "settings", "taxonomy", "pages", "posts", "courses"];
+// taxonomy must run before posts (FK by slug); users runs first so pages/posts can resolve authors.
+// courses have no cross-table FKs, so order is flexible — placed after posts.
+const ORDER: Resource[] = [
+  "users",
+  "taxonomy",
+  "settings",
+  "menus",
+  "pages",
+  "posts",
+  "courses",
+];
 
 function getEnv() {
   const baseUrl = process.env.REMOTE_SYNC_URL?.replace(/\/$/, "");
@@ -246,6 +268,61 @@ async function pushPosts() {
   }
 }
 
+// ---- courses ----------------------------------------------------------------
+
+async function pushCourses() {
+  const rows = await db.select().from(courses);
+  if (rows.length === 0) {
+    console.log("  [courses] skipped (no rows)");
+    return;
+  }
+  const allModules = await db.select().from(courseModules).orderBy(asc(courseModules.sortOrder));
+  const modulesByCourse = new Map<number, typeof allModules>();
+  for (const m of allModules) {
+    const arr = modulesByCourse.get(m.courseId) ?? [];
+    arr.push(m);
+    modulesByCourse.set(m.courseId, arr);
+  }
+
+  const payload = rows.map((c) => ({
+    slug: c.slug,
+    title: c.title,
+    courseCode: c.courseCode,
+    certificate: c.certificate,
+    summary: c.summary,
+    overview: c.overview,
+    outcomes: c.outcomes,
+    whoShouldEnroll: c.whoShouldEnroll,
+    assessment: c.assessment,
+    priceExclGst: c.priceExclGst,
+    priceInclGst: c.priceInclGst,
+    fundingTags: c.fundingTags ?? [],
+    brochureUrl: c.brochureUrl,
+    heroImage: c.heroImage,
+    status: c.status,
+    sortOrder: c.sortOrder,
+    seoTitle: c.seoTitle,
+    seoDescription: c.seoDescription,
+    createdAt: c.createdAt ? c.createdAt.toISOString() : null,
+    modules: (modulesByCourse.get(c.id) ?? []).map((m) => ({
+      title: m.title,
+      kind: m.kind,
+      details: m.details,
+      sessions: m.sessions,
+      duration: m.duration,
+      registrationLink: m.registrationLink,
+      sortOrder: m.sortOrder,
+    })),
+  }));
+
+  const CHUNK = 100;
+  for (let i = 0; i < payload.length; i += CHUNK) {
+    const slice = payload.slice(i, i + CHUNK);
+    const res = await postJson("/api/admin/sync/courses", { courses: slice });
+    console.log(`  [courses] ${i + slice.length}/${payload.length} — ${res}`);
+  }
+}
+
 // ---- users ------------------------------------------------------------------
 
 async function pushUsers() {
@@ -275,6 +352,7 @@ const HANDLERS: Record<Resource, () => Promise<void>> = {
   taxonomy: pushTaxonomy,
   pages: pushPages,
   posts: pushPosts,
+  courses: pushCourses,
 };
 
 async function main() {

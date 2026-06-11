@@ -7,7 +7,7 @@ argument-hint: [resource...|all]
 
 Push local Postgres rows to the production database through the bearer-token sync API (`/api/admin/sync/*`).
 
-**Arguments**: `$ARGUMENTS` — one or more of `menus`, `settings`, `taxonomy`, `pages`, `posts`, or `all`. If empty, default to a guided flow: show the user what's locally different and ask which resources to push.
+**Arguments**: `$ARGUMENTS` — one or more of `menus`, `settings`, `taxonomy`, `pages`, `posts`, `courses`, or `all`. If empty, default to a guided flow: show the user what's locally different and ask which resources to push. (`courses` auto-provisions its `courses` + `course_modules` tables on the remote on first push — no manual DDL needed.)
 
 ## Workflow
 
@@ -30,7 +30,7 @@ Push local Postgres rows to the production database through the bearer-token syn
    ```bash
    npx tsx scripts/push-to-remote.ts $ARGUMENTS
    ```
-   Stream the script output verbatim to the user. The script runs resources in dependency order (`taxonomy → settings → menus → pages → posts`) regardless of argument order.
+   Stream the script output verbatim to the user. The script runs resources in dependency order (`taxonomy → settings → menus → pages → posts → courses`) regardless of argument order.
 
 5. **Verify**. After a successful push, hit a public production URL to spot-check (`curl -sI https://www.tertiaryinfotech.com/` for nav, or fetch a specific page's HTML and grep for the new content). Report back the verification result.
 

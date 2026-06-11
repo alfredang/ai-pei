@@ -9,6 +9,7 @@ const ALL_NAV: (NavItem & { roles: AdminRole[] })[] = [
   { href: "/admin", label: "Dashboard", icon: "dashboard", roles: ["admin", "editor", "author"] },
   { href: "/admin/pages", label: "Pages", icon: "pages", roles: ["admin", "editor"] },
   { href: "/admin/posts", label: "Posts", icon: "posts", roles: ["admin", "editor", "author"] },
+  { href: "/admin/courses", label: "Courses", icon: "courses", roles: ["admin", "editor"] },
   { href: "/admin/categories", label: "Categories", icon: "categories", roles: ["admin", "editor"] },
   { href: "/admin/tags", label: "Tags", icon: "tags", roles: ["admin", "editor"] },
   { href: "/admin/menus", label: "Menus", icon: "menus", roles: ["admin", "editor"] },
@@ -46,10 +47,11 @@ export default async function AdminLayout({
   }
 
   const [brand, session] = await Promise.all([getSiteBrand(), getAdminSession()]);
-  // If JWT decode failed but a cookie is present, default to admin (legacy
-  // behaviour) so we don't lock the user out due to a transient hiccup.
-  const role: AdminRole = session?.role ?? "admin";
-  const email = session?.email ?? "";
+  if (!session) {
+    redirect(`/admin/login?from=${encodeURIComponent(pathname || "/admin")}`);
+  }
+  const role: AdminRole = session.role;
+  const email = session.email;
 
   // Per-role route enforcement (defense in depth — middleware should already
   // handle this for non-admin routes, but the layout is the cleanest place

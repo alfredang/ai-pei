@@ -108,6 +108,52 @@ export const postTags = pgTable(
   (t) => [uniqueIndex("post_tags_pk").on(t.postId, t.tagId)],
 );
 
+export const courses = pgTable(
+  "courses",
+  {
+    id: serial("id").primaryKey(),
+    slug: varchar("slug", { length: 255 }).notNull(),
+    title: varchar("title", { length: 500 }).notNull(),
+    courseCode: varchar("course_code", { length: 64 }),
+    certificate: text("certificate"), // certification awarded
+    summary: text("summary"), // short blurb for listing cards
+    overview: text("overview"), // "What's This Course About"
+    outcomes: text("outcomes"), // Program Outcomes (one bullet per line)
+    whoShouldEnroll: text("who_should_enroll"), // Who Should Enroll (one bullet per line)
+    assessment: varchar("assessment", { length: 255 }),
+    priceExclGst: varchar("price_excl_gst", { length: 50 }),
+    priceInclGst: varchar("price_incl_gst", { length: 50 }),
+    fundingTags: jsonb("funding_tags").$type<string[]>().default([]),
+    brochureUrl: text("brochure_url"),
+    heroImage: text("hero_image"),
+    status: statusEnum("status").notNull().default("draft"),
+    sortOrder: integer("sort_order").notNull().default(0),
+    seoTitle: varchar("seo_title", { length: 500 }),
+    seoDescription: text("seo_description"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (t) => [uniqueIndex("courses_slug_uq").on(t.slug)],
+);
+
+export const courseModules = pgTable(
+  "course_modules",
+  {
+    id: serial("id").primaryKey(),
+    courseId: integer("course_id")
+      .notNull()
+      .references(() => courses.id, { onDelete: "cascade" }),
+    title: varchar("title", { length: 500 }).notNull(),
+    kind: varchar("kind", { length: 32 }), // 'foundation' | 'elective'
+    details: text("details"),
+    sessions: varchar("sessions", { length: 255 }),
+    duration: varchar("duration", { length: 255 }),
+    registrationLink: text("registration_link"),
+    sortOrder: integer("sort_order").notNull().default(0),
+  },
+  (t) => [index("course_modules_course_idx").on(t.courseId)],
+);
+
 export const menus = pgTable("menus", {
   id: serial("id").primaryKey(),
   location: varchar("location", { length: 50 }).notNull().unique(), // 'header' | 'footer'
@@ -216,4 +262,15 @@ export const postTagsRelations = relations(postTags, ({ one }) => ({
 
 export const pagesRelations = relations(pages, ({ one }) => ({
   author: one(users, { fields: [pages.authorId], references: [users.id] }),
+}));
+
+export const coursesRelations = relations(courses, ({ many }) => ({
+  modules: many(courseModules),
+}));
+
+export const courseModulesRelations = relations(courseModules, ({ one }) => ({
+  course: one(courses, {
+    fields: [courseModules.courseId],
+    references: [courses.id],
+  }),
 }));
