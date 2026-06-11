@@ -15,6 +15,11 @@ FROM base AS runner
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
+# Bind the standalone server to all interfaces. Docker sets HOSTNAME to the
+# container ID by default, and Next's server.js binds to process.env.HOSTNAME —
+# without this it listens on the container-ID host only and Coolify's proxy
+# can't reach it (502/504 despite the container being "Running").
+ENV HOSTNAME=0.0.0.0
 # Give the `app` user a real, writable HOME. The Claude Agent SDK caches its
 # refreshed OAuth access token in ~/.claude/.credentials.json on each turn.
 # Without a writable HOME the cache write silently fails and the next turn's
