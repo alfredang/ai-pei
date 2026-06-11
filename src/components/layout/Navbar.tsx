@@ -10,10 +10,9 @@ import { HiPhone } from "react-icons/hi2";
 
 const FALLBACK = [
   { label: "Home", href: "/" },
-  { label: "About Us", href: "/#why-us" },
-  { label: "Programme", href: "/#featured-course" },
-  { label: "Trainers", href: "/#trainers" },
-  { label: "Admissions", href: "/#admissions" },
+  { label: "PEI Advanced Certificate", href: "/courses" },
+  { label: "Blog", href: "/blog" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 let cachedMenuItems: any[] | null = null;
