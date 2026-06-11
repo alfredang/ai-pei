@@ -14,6 +14,22 @@ import { media } from "@/db/schema";
 import { getR2Config, uploadToR2 } from "@/lib/r2";
 
 const PUBLIC_DIR = path.join(process.cwd(), "public");
+const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
+const ALLOWED_MIME_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/webp",
+  "image/svg+xml",
+  "image/x-icon",
+  "application/pdf",
+]);
+const ALLOWED_LOGO_MIME_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/x-icon",
+]);
 
 export async function POST(req: Request) {
   if (!(await isAdminRequest())) {
@@ -27,6 +43,18 @@ export async function POST(req: Request) {
   const file = form.get("file");
   if (!(file instanceof File)) {
     return NextResponse.json({ error: "No file" }, { status: 400 });
+  }
+  if (file.size <= 0 || file.size > MAX_UPLOAD_BYTES) {
+    return NextResponse.json(
+      { error: "File must be between 1 byte and 10 MB" },
+      { status: 413 },
+    );
+  }
+  if (!ALLOWED_MIME_TYPES.has(file.type)) {
+    return NextResponse.json({ error: "Unsupported file type" }, { status: 415 });
+  }
+  if (asLogo && !ALLOWED_LOGO_MIME_TYPES.has(file.type)) {
+    return NextResponse.json({ error: "Logo must be an image file" }, { status: 415 });
   }
 
   const r2 = await getR2Config();

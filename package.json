@@ -14,8 +14,7 @@
     "seed:admin": "tsx --env-file=.env scripts/seed-admin.ts",
     "migrate:wp": "tsx --env-file=.env scripts/migrate-wp.ts",
     "migrate:r2": "tsx --env-file=.env scripts/migrate-uploads-to-r2.ts",
-    "regen:covers": "tsx --env-file=.env scripts/regenerate-post-covers.ts",
-    "download:images": "tsx --env-file=.env scripts/download-images.ts"
+    "regen:covers": "tsx --env-file=.env scripts/regenerate-post-covers.ts"
   },
   "dependencies": {
     "@anthropic-ai/claude-agent-sdk": "^0.2.140",

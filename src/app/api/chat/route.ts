@@ -25,6 +25,7 @@ import { leads } from "@/db/schema";
 import { computeLeadScore } from "@/lib/lead-score";
 import { sendLeadEmail } from "@/lib/email";
 import { getNemoLessons, reflectOnLead } from "@/lib/nemo-reflect";
+import { checkRateLimit, clientIp } from "@/lib/rate-limit";
 
 export const maxDuration = 120;
 
@@ -32,6 +33,24 @@ type Msg = { role: "user" | "model"; content: string };
 
 export async function POST(req: Request) {
   try {
+    const ip = clientIp(req);
+    const limited = checkRateLimit(`chat:${ip}`, {
+      limit: 20,
+      windowMs: 10 * 60 * 1000,
+    });
+    if (!limited.ok) {
+      return NextResponse.json(
+        {
+          error: "Too many requests",
+          response: "I am getting a lot of messages right now. Please try again shortly.",
+        },
+        {
+          status: 429,
+          headers: { "Retry-After": String(limited.retryAfterSec) },
+        },
+      );
+    }
+
     const { message, history = [] } = (await req.json()) as {
       message: string;
       history?: Msg[];
