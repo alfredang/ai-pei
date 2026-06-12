@@ -4,12 +4,12 @@ import { Container } from "@/components/layout/Container";
 import { useEffect, useRef, useState } from "react";
 
 const STATS = [
-  { value: "4", label: "Stackable Modules", suffix: "" },
-  { value: "70", label: "WSQ Funding", suffix: "%" },
-  { value: "20", label: "Career Roles", suffix: "+" },
-  { value: "2", label: "Months Full-Time", suffix: "" },
-  { value: "5", label: "CompTIA Certs", suffix: "" },
-  { value: "3", label: "Hour Assessment", suffix: "hrs" },
+  { value: "4", label: "Future-Tech Disciplines", suffix: "" },
+  { value: "100", label: "English-Taught", suffix: "%" },
+  { value: "600", label: "ASEAN Market Reach", suffix: "M+" },
+  { value: "1", label: "Asia Tech & Fintech Hub", suffix: "st" },
+  { value: "3", label: "Visa & Pass Pathways", suffix: "+" },
+  { value: "20", label: "Tech Career Roles", suffix: "+" },
 ];
 
 function AnimatedCounter({ target, suffix }: { target: string; suffix: string }) {

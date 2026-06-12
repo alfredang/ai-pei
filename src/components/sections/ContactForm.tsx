@@ -5,12 +5,9 @@ import { Container } from "@/components/layout/Container";
 import { TurnstileWidget } from "@/components/forms/TurnstileWidget";
 
 export function ContactForm({
-  courseName = "Advanced Certificate in Cyber Security",
   source = "home",
   heading,
 }: {
-  /** Course name pre-filled in the hidden `course` field + default heading. */
-  courseName?: string;
   /** Lead source tag stored on the submission (e.g. "course-<slug>"). */
   source?: string;
   /** Optional override for the section heading line. */
@@ -46,41 +43,50 @@ export function ContactForm({
       <div className="glow-blob" style={{ top: "10%", right: "0", width: 480, height: 480, background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)" }} />
       <Container className="max-w-4xl relative">
         <div className="text-center mb-8">
-          <div className="kicker mb-4">[ REGISTER NOW ]</div>
+          <div className="kicker mb-4">[ APPLY NOW ]</div>
           <h2 className="font-display text-[clamp(2rem,5vw,3.5rem)] font-extrabold leading-[1.05] mb-4">
             {heading ?? (
               <>
-                Register for the <span className="gradient-text">Advanced Certificate</span>
+                Apply to Study Tech in <span className="gradient-text">Singapore</span>
               </>
             )}
           </h2>
           <p className="text-(--color-muted) text-lg max-w-xl mx-auto">
-            Secure your spot in the {courseName}. Fill in your details below and our team will get in touch.
+            Tell us your goals and we&apos;ll guide you on programmes, fees and visa options.
+            International learners welcome — our team replies within 3-5 business days.
           </p>
         </div>
         <form onSubmit={onSubmit} className="glass p-8 md:p-10 space-y-5">
-          {/* Hidden course field */}
-          <input type="hidden" name="course" value={courseName} />
-
           <div className="grid md:grid-cols-2 gap-5">
-            <Input name="name" label="Student Name" required />
+            <Input name="name" label="Full Name" required />
             <Input name="email" label="Email" type="email" required />
-            <Input name="phone" label="Tel" required />
+            <Input name="phone" label="Phone (with country code)" required />
             <Input name="nationality" label="Nationality" required />
-            <Input name="nric" label="NRIC (Last 4 Characters)" required />
-            <Select name="gender" label="Gender" options={["Male", "Female", "Prefer not to say"]} required />
-            <Input name="dob" label="Date of Birth" type="date" required />
+            <Select
+              name="course"
+              label="Programme of Interest"
+              options={[
+                "Cybersecurity",
+                "Artificial Intelligence",
+                "Blockchain",
+                "Quantum Computing",
+                "Not sure yet — please advise",
+              ]}
+              required
+            />
             <Select
               name="residency"
               label="Residency Status"
               options={[
-                "Singaporean (≥ 40 yrs old)",
-                "Singaporean (< 40 yrs old)",
+                "International / Non-Singaporean",
+                "Foreigner on Employment Pass / S Pass",
                 "Singapore PR",
-                "Non-Singaporean",
+                "Singaporean",
               ]}
               required
             />
+            <Input name="passport" label="Passport / ID No. (optional)" />
+            <Input name="dob" label="Date of Birth" type="date" required />
           </div>
           <div>
             <label className="kicker block mb-2">Message</label>

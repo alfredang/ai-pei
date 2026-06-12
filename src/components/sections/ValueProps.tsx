@@ -1,26 +1,26 @@
 import { Container } from "@/components/layout/Container";
-import { HiRocketLaunch, HiWrenchScrewdriver, HiCalendarDays } from "react-icons/hi2";
+import { HiGlobeAlt, HiLanguage, HiBriefcase } from "react-icons/hi2";
 
 const PROPS = [
   {
-    icon: HiRocketLaunch,
-    title: "Career Advancement",
+    icon: HiGlobeAlt,
+    title: "Globally Recognised",
     description:
-      "Earn in-demand cybersecurity skills that demonstrate your expertise. Our CompTIA-aligned certification prepares you for 20+ career roles in one of the fastest-growing industries.",
+      "Earn portable, industry-aligned certifications that employers trust worldwide. Study in Singapore and carry your qualification anywhere your career takes you.",
     color: "var(--color-cyan)",
   },
   {
-    icon: HiWrenchScrewdriver,
-    title: "Practical Knowledge",
+    icon: HiLanguage,
+    title: "English-Taught, Foreigner-Ready",
     description:
-      "Get hands-on training from industry veterans. Our modules cover real-world scenarios — from IT support and Linux administration to penetration testing and SOC operations.",
+      "Every programme is delivered in English in one of the world's safest, most English-fluent cities — so you can settle in fast and focus on learning, not logistics.",
     color: "var(--color-purple-light)",
   },
   {
-    icon: HiCalendarDays,
-    title: "Flexible & Funded",
+    icon: HiBriefcase,
+    title: "Career & Relocation Pathways",
     description:
-      "Complete your certification in just 2 months via online classes. Up to 70% WSQ funding for eligible learners, with remaining fees claimable via SkillsFuture Credit.",
+      "Train where the jobs are. We guide you on visa and relocation options and connect your new skills to MNCs, startups and government tech employers across Asia.",
     color: "var(--color-amber)",
   },
 ];

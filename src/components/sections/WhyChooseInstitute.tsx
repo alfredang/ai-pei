@@ -1,24 +1,24 @@
 import { Container } from "@/components/layout/Container";
-import { HiShieldCheck, HiAcademicCap, HiGlobeAlt } from "react-icons/hi2";
+import { HiBuildingOffice2, HiShieldCheck, HiGlobeAlt } from "react-icons/hi2";
 
 const REASONS = [
   {
-    icon: HiShieldCheck,
-    title: "WSQ & IBF Approved Training Organisation",
+    icon: HiBuildingOffice2,
+    title: "Asia's #1 Tech & Fintech Hub",
     description:
-      "We are a SkillsFuture Singapore (SSG) recognised WSQ and IBF Approved Training Organisation. Our programmes are eligible for up to 70% government funding, making quality education accessible and affordable.",
+      "Singapore's Smart Nation initiative has drawn the regional headquarters of the world's biggest technology, banking and fintech companies. Study here and you study minutes from the MNCs, startups and government employers hiring future-tech talent.",
   },
   {
-    icon: HiAcademicCap,
-    title: "CompTIA Authorised Delivery Partner",
+    icon: HiShieldCheck,
+    title: "Safe, English-Speaking & Easy for Foreigners",
     description:
-      "As an official CompTIA Authorised Delivery Partner, our curriculum follows globally recognised certification standards. Graduates are prepared for internationally accepted CompTIA exams including A+, Security+, Linux+, CySA+ and PenTest+.",
+      "Ranked among the world's safest cities, Singapore is English-speaking, clean and welcoming to international learners. Settling in is simple — so you can focus on your studies and your career from day one.",
   },
   {
     icon: HiGlobeAlt,
-    title: "Flexible E-Learning with Expert Trainers",
+    title: "Your Gateway to ASEAN & Asia",
     description:
-      "Our online classes offer flexibility without sacrificing quality. Learn from PhD-qualified trainers and industry professionals with a teacher-to-student ratio of 1:20, ensuring personalised guidance and support.",
+      "Singapore is the strategic launchpad into a market of 600+ million people. With heavy government investment in cybersecurity and AI, demand for skilled talent is high — and a Singapore qualification opens doors right across the region.",
   },
 ];
 
@@ -40,14 +40,15 @@ export function WhyChooseInstitute() {
 
       <Container className="relative">
         <div className="max-w-3xl mx-auto text-center mb-14">
-          <div className="kicker mb-4">[ WHY CHOOSE US ]</div>
+          <div className="kicker mb-4">[ WHY SINGAPORE ]</div>
           <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
-            Why Choose <span className="gradient-text">Tertiary Infotech Academy</span>?
+            Why Study Tech in <span className="gradient-text">Singapore</span>?
           </h2>
           <p className="mt-5 text-(--color-muted) text-lg">
-            Established in 2012, we are a leading skills-based training provider dedicated to
-            supporting Singapore&apos;s Industry 4.0 transformation. As a registered Private Education
-            Institute (PEI), we deliver certified programmes in Cyber Security and Artificial Intelligence.
+            For international professionals and students, Singapore is the smartest place in Asia
+            to build a future-tech career. A world-class, English-speaking environment, deep
+            government investment in cybersecurity and AI, and a strategic gateway to ASEAN make
+            it the launchpad foreign learners choose.
           </p>
         </div>
 
@@ -74,16 +75,16 @@ export function WhyChooseInstitute() {
         {/* Partner logos strip */}
         <div className="mt-14 text-center">
           <div className="text-xs font-mono uppercase tracking-wider text-(--color-muted) mb-6">
-            Authorised Training & Testing Partners
+            Accreditations &amp; Industry Partners
           </div>
           <div className="flex flex-wrap items-center justify-center gap-4">
             {[
-              "Microsoft Learning Partner",
-              "CompTIA Delivery Partner",
-              "Linux Foundation Partner",
-              "AWS Training Partner",
-              "Pearson VUE Test Center",
-              "Kryterion Test Center",
+              "[PLACEHOLDER: Accreditation 1]",
+              "[PLACEHOLDER: Accreditation 2]",
+              "[PLACEHOLDER: Certification Partner]",
+              "[PLACEHOLDER: Industry Partner]",
+              "[PLACEHOLDER: Hiring Partner]",
+              "[PLACEHOLDER: Test Centre]",
             ].map((partner) => (
               <span
                 key={partner}

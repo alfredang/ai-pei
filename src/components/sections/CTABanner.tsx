@@ -22,25 +22,23 @@ export function CTABanner() {
           {/* Top accent line */}
           <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-(--color-cyan) to-transparent" />
 
-          <div className="kicker mb-5">[ ENROL TODAY ]</div>
+          <div className="kicker mb-5">[ INTAKE CLOSING SOON ]</div>
           <h2 className="font-display text-[clamp(2rem,5vw,3.5rem)] font-extrabold leading-[1.05] mb-5">
-            Level Up Your Career in{" "}
-            <span className="gradient-text">Cyber Security</span>
+            Start Your Future-Tech Career in{" "}
+            <span className="gradient-text">Singapore</span>
           </h2>
           <p className="text-(--color-muted) text-lg max-w-2xl mx-auto mb-10">
-            With up to 70% WSQ funding and SkillsFuture Credit claimable, there has never been a better
-            time to gain globally recognised cybersecurity certifications. Secure your spot today.
+            Seats for international learners are limited each intake. Secure your place in
+            Cybersecurity, AI, Blockchain or Quantum Computing — and start building a globally
+            recognised career in Asia&apos;s #1 tech hub. [PLACEHOLDER: next intake date.]
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <a href="#contact" className="btn-primary text-lg px-8 py-4">
-              Register Now
+              Apply Now
               <span aria-hidden>→</span>
             </a>
-            <Link
-              href="/courses/advanced-certificate-in-cyber-security"
-              className="btn-secondary text-lg px-8 py-4"
-            >
-              View Course Details
+            <Link href="/courses" className="btn-secondary text-lg px-8 py-4">
+              Browse All Programmes
             </Link>
           </div>
         </div>

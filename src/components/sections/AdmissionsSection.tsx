@@ -17,29 +17,30 @@ export function AdmissionsSection() {
 
       <Container className="relative">
         <div className="text-center mb-14">
-          <div className="kicker mb-4">[ ADMISSIONS ]</div>
+          <div className="kicker mb-4">[ ADMISSIONS & VISA ]</div>
           <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
-            Entry <span className="gradient-text">Requirements</span>
+            Admissions for <span className="gradient-text">International Learners</span>
           </h2>
           <p className="mt-4 text-(--color-muted) text-lg max-w-2xl mx-auto">
-            Our programme welcomes Singapore Citizens, PRs, and work permit holders.
-            Flexible, career-focused qualifications for everyone.
+            A simple, foreigner-friendly path to studying tech in Singapore — with guidance on
+            the visa and pass options that fit your plans.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {/* Local students */}
+          {/* Who can apply */}
           <div className="glass p-8">
             <div className="flex items-center gap-3 mb-6">
-              <span className="text-2xl">🇸🇬</span>
-              <h3 className="font-display font-bold text-xl text-white">Local Students</h3>
+              <span className="text-2xl">🎓</span>
+              <h3 className="font-display font-bold text-xl text-white">Who Can Apply</h3>
             </div>
             <ul className="space-y-4">
               {[
                 "Age: 21 years old and above",
-                "Language: At least C6 for GCE \"O\" Level English",
-                "Academic: At least C6 for GCE \"O\" Level in any 3 subjects",
-                "Applicants lacking English proficiency must complete the English Proficiency Placement Test",
+                "Open to applicants from any country",
+                "Provide your relevant education certificates",
+                "English-taught — a short English placement check may apply",
+                "Recognition of Prior Learning exemptions available on verification",
               ].map((req) => (
                 <li key={req} className="flex items-start gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-(--color-cyan) shrink-0 mt-2" />
@@ -49,18 +50,18 @@ export function AdmissionsSection() {
             </ul>
           </div>
 
-          {/* International students */}
+          {/* Visa & relocation */}
           <div className="glass p-8">
             <div className="flex items-center gap-3 mb-6">
               <span className="text-2xl">🌏</span>
-              <h3 className="font-display font-bold text-xl text-white">International Students</h3>
+              <h3 className="font-display font-bold text-xl text-white">Visa &amp; Relocation</h3>
             </div>
             <ul className="space-y-4">
               {[
-                "Age: 21 years old and above",
-                "Provide all relevant education certificates",
-                "May be asked to sit for an English placement test before enrolment",
-                "Recognition of Prior Learning exemptions may be granted upon verification",
+                "Guidance on the right pass for your study plan",
+                "Part-time study suits Employment Pass / S Pass holders already in Singapore",
+                "Support documents for your visa or pass application",
+                "Practical relocation tips — housing, banking and settling in",
               ].map((req) => (
                 <li key={req} className="flex items-start gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-(--color-amber) shrink-0 mt-2" />
@@ -70,8 +71,9 @@ export function AdmissionsSection() {
             </ul>
             <div className="mt-5 p-4 rounded-lg bg-white/3 border border-white/6">
               <p className="text-xs text-(--color-muted) leading-relaxed">
-                International students pursuing part-time programmes will need an Employment Pass,
-                S Pass, Work Permit, Dependent&apos;s Pass or Long-Term Visit Pass.
+                Pass eligibility is set by Singapore&apos;s authorities and depends on your
+                circumstances. [PLACEHOLDER: confirm the exact passes your programmes support.]
+                Our admissions team will advise you on the best route.
               </p>
             </div>
           </div>
