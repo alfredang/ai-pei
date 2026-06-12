@@ -88,6 +88,11 @@ export default async function CoursesIndex() {
               and Blockchain — built for international students and career switchers. WSQ funding
               available for eligible Singaporeans.
             </p>
+            <div className="mt-6">
+              <Link href="/study-in-singapore" className="btn-primary">
+                International student? Study in Singapore →
+              </Link>
+            </div>
           </Container>
         </section>
 

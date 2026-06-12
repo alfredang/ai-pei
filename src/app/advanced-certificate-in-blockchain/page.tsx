@@ -17,6 +17,7 @@ import {
 import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { InternationalStudentSupport } from "@/components/sections/InternationalStudentSupport";
 
 const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
 const PAGE_URL = `${SITE_URL}/advanced-certificate-in-blockchain`;
@@ -560,6 +561,7 @@ export default function AdvancedCertificateInBlockchainPage() {
             </p>
           </Container>
         </section>
+        <InternationalStudentSupport />
       </main>
       <Footer />
 

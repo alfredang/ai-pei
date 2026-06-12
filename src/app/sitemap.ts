@@ -19,6 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/advanced-certificate-in-ai-security-analyst`, changeFrequency: "monthly", priority: 0.9 },
     { url: `${BASE}/advanced-certificate-in-agentic-ai-coding`, changeFrequency: "monthly", priority: 0.9 },
     { url: `${BASE}/advanced-certificate-in-blockchain`, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${BASE}/study-in-singapore`, changeFrequency: "monthly", priority: 0.9 },
     { url: `${BASE}/training-management-system`, changeFrequency: "monthly", priority: 0.9 },
     { url: `${BASE}/learning-management-system`, changeFrequency: "monthly", priority: 0.9 },
     { url: `${BASE}/ai-solutions`, changeFrequency: "monthly", priority: 0.9 },

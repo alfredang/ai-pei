@@ -6,6 +6,7 @@ import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { CourseRegisterForm } from "@/components/sections/CourseRegisterForm";
+import { InternationalStudentSupport } from "@/components/sections/InternationalStudentSupport";
 import { fundingColor } from "@/lib/funding";
 import {
   HiAcademicCap,
@@ -388,6 +389,9 @@ export default async function CourseDetail({
             </div>
           </Container>
         </section>
+
+        {/* International student support */}
+        <InternationalStudentSupport />
 
         {/* Register */}
         <CourseRegisterForm
