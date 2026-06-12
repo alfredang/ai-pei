@@ -12,6 +12,7 @@ import { AdmissionsSection } from "@/components/sections/AdmissionsSection";
 import { FaqSection } from "@/components/sections/FaqSection";
 import { CTABanner } from "@/components/sections/CTABanner";
 import { ContactForm } from "@/components/sections/ContactForm";
+import { FeaturedPosts } from "@/components/sections/FeaturedPosts";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
@@ -105,6 +106,7 @@ export default function HomePage() {
         <CareersOutcomes />
         <SocialProof />
         <AdmissionsSection />
+        <FeaturedPosts />
         <FaqSection />
         <CTABanner />
         <ContactForm />

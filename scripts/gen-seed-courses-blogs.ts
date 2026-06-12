@@ -8,6 +8,7 @@
 import fs from "node:fs";
 import { htmlToTipTap } from "../src/lib/tiptap-from-html";
 
+const AUTHOR_ID = process.env.AUTHOR_ID ?? "1"; // prod admin = 1; override for other envs
 const TAG = "$tia$";
 const q = (s: string | null | undefined) => (s == null ? "NULL" : `${TAG}${s}${TAG}`);
 const jsonb = (v: unknown) => `${TAG}${JSON.stringify(v)}${TAG}::jsonb`;
@@ -134,7 +135,7 @@ FROM (VALUES
 for (const p of POSTS) {
   out.push(`
 INSERT INTO posts (slug, title, excerpt, content, content_html, status, seo_title, seo_description, seo_keywords, author_id, reading_time, featured, published_at, created_at, updated_at)
-VALUES (${q(p.slug)}, ${q(p.title)}, ${q(p.excerpt)}, ${jsonb(p.content)}, ${q(p.html)}, 'published', ${q(p.seoTitle)}, ${q(p.seoDescription)}, ${q(p.seoKeywords)}, 1, ${p.readingTime}, true, now(), now(), now())
+VALUES (${q(p.slug)}, ${q(p.title)}, ${q(p.excerpt)}, ${jsonb(p.content)}, ${q(p.html)}, 'published', ${q(p.seoTitle)}, ${q(p.seoDescription)}, ${q(p.seoKeywords)}, ${AUTHOR_ID}, ${p.readingTime}, true, now(), now(), now())
 ON CONFLICT (slug) DO UPDATE SET
   title=EXCLUDED.title, excerpt=EXCLUDED.excerpt, content=EXCLUDED.content, content_html=EXCLUDED.content_html,
   status='published', seo_title=EXCLUDED.seo_title, seo_description=EXCLUDED.seo_description, seo_keywords=EXCLUDED.seo_keywords,
