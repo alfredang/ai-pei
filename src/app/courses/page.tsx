@@ -13,18 +13,18 @@ export const dynamic = "force-dynamic";
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.tertiaryinfotech.edu.sg";
 
 export const metadata: Metadata = {
-  title: "Courses | WSQ Advanced Certificates",
+  title: "Advanced Certificate Courses in AI, Cyber Security & Blockchain",
   description:
-    "WSQ-funded advanced certificate courses from Tertiary Infotech Academy — stackable, industry-aligned training pathways with up to 70% subsidy and SkillsFuture Credit claimable.",
+    "Browse Advanced Certificate courses in AI, Cyber Security and Blockchain at Tertiary Infotech Academy — a Singapore Private Education Institution. Hands-on, industry-recognised certifications for international students and career switchers.",
   keywords:
-    "WSQ courses Singapore, advanced certificate, SkillsFuture courses, stackable certification, Tertiary Infotech Academy courses",
+    "advanced certificate courses Singapore, cyber security course Singapore, AI course Singapore, blockchain course Singapore, study tech in Singapore, courses for international students Singapore, Tertiary Infotech Academy courses",
   alternates: { canonical: "/courses" },
   openGraph: {
     type: "website",
     url: "/courses",
-    title: "Courses | Tertiary Infotech Academy",
+    title: "Advanced Certificate Courses in AI, Cyber Security & Blockchain | Tertiary Infotech Academy",
     description:
-      "WSQ-funded advanced certificate courses — stackable, industry-aligned training pathways.",
+      "Advanced Certificate courses in AI, Cyber Security and Blockchain — hands-on, industry-recognised training in Singapore for international students.",
     locale: "en_SG",
     siteName: "Tertiary Infotech Academy",
     images: [{ url: "/icon-192.png", width: 192, height: 192, alt: "Tertiary Infotech Academy" }],
@@ -50,8 +50,9 @@ export default async function CoursesIndex() {
       url: `${BASE}/courses/${c.slug}`,
       ...(c.summary ? { description: c.summary } : {}),
       provider: {
-        "@type": "Organization",
+        "@type": "EducationalOrganization",
         name: "Tertiary Infotech Academy",
+        url: BASE,
         sameAs: BASE,
       },
     })),
@@ -80,11 +81,12 @@ export default async function CoursesIndex() {
           <Container className="relative">
             <div className="kicker mb-4">[ COURSES ]</div>
             <h1 className="font-display text-[clamp(1.75rem,4vw,3rem)] font-extrabold leading-[1.15]">
-              WSQ <span className="gradient-text">Advanced Certificates</span>
+              Advanced Certificate <span className="gradient-text">Courses</span>
             </h1>
             <p className="mt-5 text-(--color-muted) text-lg max-w-2xl">
-              Stackable, industry-aligned training pathways with up to 70% WSQ funding and
-              SkillsFuture Credit claimable.
+              Hands-on, industry-recognised Advanced Certificate courses in AI, Cyber Security
+              and Blockchain — built for international students and career switchers. WSQ funding
+              available for eligible Singaporeans.
             </p>
           </Container>
         </section>
@@ -135,6 +137,67 @@ export default async function CoursesIndex() {
                 ))}
               </div>
             )}
+          </Container>
+        </section>
+
+        {/* Specialisation tracks — SEO landers for the AI / Blockchain pillars */}
+        <section className="pb-24">
+          <Container>
+            <div className="mb-8">
+              <div className="kicker mb-3">[ SPECIALISATION TRACKS ]</div>
+              <h2 className="font-display text-2xl md:text-3xl font-extrabold">
+                AI, Cyber Security &amp; <span className="gradient-text">Blockchain</span>
+              </h2>
+              <p className="mt-3 text-(--color-muted) max-w-2xl">
+                Explore our Advanced Certificate tracks — built for international students and
+                career switchers entering Singapore&apos;s tech sector.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                {
+                  href: "/courses/advanced-certificate-in-cyber-security",
+                  tag: "Cyber Security",
+                  title: "Advanced Certificate in Cyber Security",
+                  body: "Four stackable CompTIA modules — A+, Security+, Linux+, and CySA+ / PenTest+ electives.",
+                },
+                {
+                  href: "/advanced-certificate-in-ai-security-analyst",
+                  tag: "AI + Security",
+                  title: "Advanced Certificate in AI Security Analyst",
+                  body: "Defend systems with AI and secure AI/LLM systems — threat detection, SOC automation, LLM security.",
+                },
+                {
+                  href: "/advanced-certificate-in-agentic-ai-coding",
+                  tag: "AI Engineering",
+                  title: "Advanced Certificate in Agentic AI Coding & Architecting",
+                  body: "Design, build and deploy autonomous AI agents — agentic patterns, RAG, and production architecture.",
+                },
+                {
+                  href: "/advanced-certificate-in-blockchain",
+                  tag: "Blockchain / Web3",
+                  title: "Advanced Certificate in Blockchain",
+                  body: "Smart contracts, DApps and Web3 — Solidity, Ethereum/EVM, and smart-contract security.",
+                },
+              ].map((p) => (
+                <Link
+                  key={p.href}
+                  href={p.href}
+                  className="card-hover glass overflow-hidden flex flex-col group p-6"
+                >
+                  <div className="mb-4">
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold text-(--color-cyan) border border-(--color-cyan)/40 bg-(--color-cyan)/10">
+                      {p.tag}
+                    </span>
+                  </div>
+                  <h3 className="font-display font-bold text-lg text-white group-hover:text-(--color-cyan) transition mb-2 leading-tight">
+                    {p.title}
+                  </h3>
+                  <p className="text-sm text-(--color-muted) leading-relaxed flex-1">{p.body}</p>
+                  <span className="mt-4 text-xs text-(--color-cyan) font-mono">View details →</span>
+                </Link>
+              ))}
+            </div>
           </Container>
         </section>
       </main>

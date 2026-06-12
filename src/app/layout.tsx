@@ -27,13 +27,13 @@ const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "AI LMS & TMS for WSQ, TPQA & SSG ATO Compliance | Tertiary Infotech Academy",
+    default: "Advanced Certificate Courses in AI, Cyber Security & Blockchain in Singapore | Tertiary Infotech Academy",
     template: "%s | Tertiary Infotech Academy",
   },
   description:
-    "AI-powered LMS & TMS for Singapore training providers — automate WSQ compliance, pass TPQA audits, and integrate with SSG out of the box.",
+    "Study Advanced Certificate courses in AI, Cyber Security and Blockchain at Tertiary Infotech Academy — a Singapore Private Education Institution. Industry-recognised, hands-on certifications for international students and career switchers.",
   keywords:
-    "AI LMS Singapore, AI TMS Singapore, SSG ATO application, WSQ LMS, TPQA consultancy, training provider Singapore, e-learning Singapore, Tertiary Infotech Academy",
+    "advanced certificate Singapore, cyber security course Singapore, AI course Singapore, blockchain course Singapore, study cyber security in Singapore, study AI in Singapore, international students Singapore, CompTIA certification Singapore, Private Education Institution Singapore, Tertiary Infotech Academy",
   openGraph: {
     type: "website",
     siteName: "Tertiary Infotech Academy",
@@ -58,9 +58,11 @@ export default async function RootLayout({
 
   const orgLd = {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": "EducationalOrganization",
     name: brand?.fullName ?? "Tertiary Infotech Academy Pte Ltd",
-    alternateName: brand?.shortName ?? undefined,
+    alternateName: brand?.shortName ?? "Tertiary Infotech Academy",
+    description:
+      "Singapore Private Education Institution offering Advanced Certificate courses in AI, Cyber Security and Blockchain for international students and career switchers.",
     url: SITE_URL,
     logo: brand?.logoUrl ? new URL(brand.logoUrl, SITE_URL).toString() : `${SITE_URL}/favicon.ico`,
     email: contact?.email,
@@ -72,6 +74,8 @@ export default async function RootLayout({
           addressCountry: "SG",
         }
       : undefined,
+    areaServed: "Worldwide",
+    knowsAbout: ["Artificial Intelligence", "Cyber Security", "Blockchain", "CompTIA Certification"],
     sameAs: socials.map((s) => s.href),
     taxID: brand?.uen ?? undefined,
   };

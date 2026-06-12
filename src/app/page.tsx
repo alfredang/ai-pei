@@ -14,27 +14,27 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "Advanced Certificate in Cyber Security | Tertiary Infotech Academy — WSQ & IBF ATO",
+  title: "Advanced Certificate Courses in Cyber Security, AI & Blockchain in Singapore | Tertiary Infotech Academy",
   description:
-    "Tertiary Infotech Academy is a WSQ & IBF Approved Training Organisation and registered PEI offering the Advanced Certificate in Cyber Security — 4 stackable CompTIA modules with up to 70% WSQ funding.",
+    "Tertiary Infotech Academy is a Singapore Private Education Institution (PEI) offering hands-on Advanced Certificate courses in Cyber Security, AI and Blockchain — industry-recognised, CompTIA-aligned training for international students and career switchers. WSQ funding available for eligible Singaporeans.",
   keywords:
-    "Tertiary Infotech Academy, Advanced Certificate in Cyber Security, WSQ Cyber Security Singapore, CompTIA A+, Security+, Linux+, CySA+, PenTest+, SkillsFuture Credit, PEI Singapore, cybersecurity training",
+    "Advanced Certificate Singapore, cyber security course Singapore, AI course Singapore, blockchain course Singapore, study cyber security in Singapore, study AI in Singapore international students, CompTIA A+, Security+, CySA+, PenTest+, PEI Singapore, Tertiary Infotech Academy",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: "/",
-    title: "Advanced Certificate in Cyber Security | Tertiary Infotech Academy",
+    title: "Advanced Certificate Courses in Cyber Security, AI & Blockchain | Tertiary Infotech Academy",
     description:
-      "WSQ & IBF Approved Training Organisation offering the Advanced Certificate in Cyber Security — up to 70% government funding. SkillsFuture Credit claimable.",
+      "Study Advanced Certificate courses in Cyber Security, AI and Blockchain at a Singapore Private Education Institution — built for international students and career switchers.",
     locale: "en_SG",
     siteName: "Tertiary Infotech Academy",
-    images: [{ url: "/images/hero-classroom.png", width: 1200, height: 630, alt: "Cyber Security Training Classroom" }],
+    images: [{ url: "/images/hero-classroom.png", width: 1200, height: 630, alt: "Tertiary Infotech Academy — Advanced Certificate Courses in Singapore" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Advanced Certificate in Cyber Security | Tertiary Infotech Academy",
+    title: "Advanced Certificate Courses in Cyber Security, AI & Blockchain | Tertiary Infotech Academy",
     description:
-      "WSQ-funded cyber security certification — 4 stackable CompTIA modules with up to 70% subsidy.",
+      "Hands-on Advanced Certificate courses in Cyber Security, AI and Blockchain — study in Singapore as an international student or career switcher.",
     images: ["/images/hero-classroom.png"],
   },
 };

@@ -80,7 +80,7 @@ export async function Footer() {
               <span className="font-display font-bold text-lg">{brand.shortName}</span>
             </div>
             <p className="text-sm text-(--color-muted) max-w-xs">
-              We are a bespoke EdTech solution provider, specializing in full-stack IT and AI solutions to power your business to the next level.
+              A Singapore Private Education Institution offering Advanced Certificate courses in AI, Cyber Security and Blockchain — for international students and career switchers.
             </p>
             <div className="mt-5 flex items-center gap-2">
               {socials.map((s) => {

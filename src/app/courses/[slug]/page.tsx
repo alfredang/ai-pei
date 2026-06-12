@@ -55,9 +55,11 @@ export async function generateMetadata({
   const data = await getCourse(slug);
   if (!data) return { title: "Course not found" };
   const { course: c } = data;
-  const title = c.seoTitle || `${c.title} | WSQ Funded`;
+  const title = c.seoTitle || `${c.title} in Singapore`;
   const description =
-    c.seoDescription || c.summary || `${c.title} — WSQ-funded training pathway.`;
+    c.seoDescription ||
+    c.summary ||
+    `${c.title} at Tertiary Infotech Academy — a hands-on Advanced Certificate in Singapore for international students and career switchers.`;
   return {
     title,
     description,
@@ -105,10 +107,28 @@ export default async function CourseDetail({
       ? { description: c.seoDescription || c.summary }
       : {}),
     ...(c.courseCode ? { courseCode: c.courseCode } : {}),
+    inLanguage: "en",
+    ...(c.certificate ? { educationalCredentialAwarded: "Advanced Certificate" } : {}),
     provider: {
-      "@type": "Organization",
+      "@type": "EducationalOrganization",
       name: "Tertiary Infotech Academy",
+      url: BASE,
       sameAs: BASE,
+    },
+    hasCourseInstance: {
+      "@type": "CourseInstance",
+      courseMode: "Onsite",
+      location: {
+        "@type": "Place",
+        name: "Tertiary Infotech Academy",
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "12 Woodlands Square #07-85/86/87 Woods Square Tower 1",
+          addressLocality: "Singapore",
+          postalCode: "737715",
+          addressCountry: "SG",
+        },
+      },
     },
   };
 
