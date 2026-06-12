@@ -224,7 +224,6 @@ export default function StudyInSingaporePage() {
                   <div className="kicker mb-3">[ START HERE ]</div>
                   <ContactForm
                     source="study-in-singapore"
-                    courseName="Study in Singapore enquiry"
                     heading={
                       <>
                         Get your <span className="gradient-text">free study-in-Singapore</span> consultation
@@ -330,7 +329,6 @@ export default function StudyInSingaporePage() {
         {/* FINAL CTA FORM */}
         <ContactForm
           source="study-in-singapore-footer"
-          courseName="Study in Singapore enquiry"
           heading={
             <>
               Ready to <span className="gradient-text">study in Singapore</span>?
