@@ -28,7 +28,8 @@ export const metadata: Metadata = {
     "Become an AI Security Analyst in Singapore. A practical PEI programme blending AI/machine learning with cyber security — AI-powered threat detection, securing LLM systems, and a hands-on capstone. Built for international students and career switchers.",
   keywords:
     "AI Security Analyst course Singapore, study AI cyber security Singapore, advanced certificate AI security, international students cyber security Singapore, SOC analyst training, securing LLM systems, OWASP LLM Top 10, AI threat detection course",
-  alternates: { canonical: PAGE_URL },
+  // The full course (curriculum + enrolment) lives in the catalog; point canonical there.
+  alternates: { canonical: `${SITE_URL}/courses/advanced-certificate-in-ai-security-analyst` },
   openGraph: {
     type: "website",
     locale: "en_SG",
@@ -40,9 +41,9 @@ export const metadata: Metadata = {
     siteName: "Tertiary Infotech Academy",
     images: [
       {
-        url: "/icon-192.png",
-        width: 192,
-        height: 192,
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
         alt: "Advanced Certificate in AI Security Analyst — Tertiary Infotech Academy",
       },
     ],
@@ -53,7 +54,7 @@ export const metadata: Metadata = {
       "Advanced Certificate in AI Security Analyst — Study in Singapore",
     description:
       "Blend AI and cyber security. Defend systems with AI and secure AI/LLM systems themselves. A Singapore PEI programme for international students and career switchers.",
-    images: ["/icon-192.png"],
+    images: ["/opengraph-image"],
   },
 };
 

@@ -31,7 +31,8 @@ export const metadata: Metadata = {
     "Go beyond chatbots. Design, build and deploy autonomous AI agents and agentic systems on this Advanced Certificate at Tertiary Infotech Academy, a Singapore Private Education Institution. Open to international students and career switchers.",
   keywords:
     "Advanced Certificate Agentic AI, AI agents course Singapore, agentic AI coding course, study AI in Singapore, AI engineer course international students, RAG course, multi-agent orchestration course, AI solutions architect training",
-  alternates: { canonical: PAGE_URL },
+  // The full course (curriculum + enrolment) lives in the catalog; point canonical there.
+  alternates: { canonical: `${SITE_URL}/courses/advanced-certificate-in-agentic-ai-coding` },
   openGraph: {
     type: "website",
     locale: "en_SG",
@@ -43,9 +44,9 @@ export const metadata: Metadata = {
     siteName: "Tertiary Infotech Academy",
     images: [
       {
-        url: "/icon-192.png",
-        width: 192,
-        height: 192,
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
         alt: "Advanced Certificate in Agentic AI Coding — Tertiary Infotech Academy",
       },
     ],
@@ -56,7 +57,7 @@ export const metadata: Metadata = {
       "Advanced Certificate in Agentic AI Coding & Architecting — Study in Singapore",
     description:
       "Go beyond chatbots — build and architect autonomous AI agents. Open to international students at Tertiary Infotech Academy, Singapore.",
-    images: ["/icon-192.png"],
+    images: ["/opengraph-image"],
   },
 };
 
