@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Container } from "@/components/layout/Container";
 import {
   HiShieldCheck,
@@ -18,6 +18,100 @@ const DISCIPLINES = [
   { id: "quantum", label: "Quantum Computing", icon: HiSparkles, color: "var(--color-cyan)" },
 ];
 
+/** Matrix-style digital rain of falling characters (top → bottom). Hero only. */
+function MatrixRain() {
+  const ref = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = ref.current;
+    const parent = canvas?.parentElement;
+    if (!canvas || !parent) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#*+=/&%<>$".split("");
+    const pick = () => CHARS[Math.floor(Math.random() * CHARS.length)];
+    const cell = 22;
+    const fontSize = 16;
+    const trailLen = 16;
+
+    let w = 0, h = 0;
+    let heads: number[] = [];
+    let speeds: number[] = [];
+    let rows: number[] = [];
+    let trails: string[][] = [];
+
+    function setup() {
+      const rect = parent!.getBoundingClientRect();
+      w = Math.max(1, rect.width);
+      h = Math.max(1, rect.height);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas!.width = Math.floor(w * dpr);
+      canvas!.height = Math.floor(h * dpr);
+      canvas!.style.width = `${w}px`;
+      canvas!.style.height = `${h}px`;
+      ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx!.font = `${fontSize}px "JetBrains Mono", ui-monospace, monospace`;
+      ctx!.textBaseline = "top";
+      const cols = Math.ceil(w / cell);
+      heads = Array.from({ length: cols }, () => -Math.random() * h);
+      speeds = Array.from({ length: cols }, () => 1.5 + Math.random() * 3.5);
+      rows = heads.map(() => -999);
+      trails = heads.map(() => []);
+    }
+
+    let raf = 0;
+    function frame() {
+      raf = requestAnimationFrame(frame);
+      ctx!.clearRect(0, 0, w, h); // transparent — lets the blue backdrop show through
+      for (let i = 0; i < heads.length; i++) {
+        heads[i] += speeds[i];
+        const headRow = Math.floor(heads[i] / cell);
+        if (headRow !== rows[i]) {
+          rows[i] = headRow;
+          trails[i].unshift(pick());
+          if (trails[i].length > trailLen) trails[i].pop();
+        }
+        const x = i * cell;
+        for (let k = 0; k < trails[i].length; k++) {
+          const yy = (headRow - k) * cell;
+          if (yy < -cell || yy > h) continue;
+          if (k === 0) {
+            ctx!.fillStyle = "rgba(205,255,215,0.95)"; // bright leading char
+          } else {
+            const op = (1 - k / trailLen) * 0.85;
+            ctx!.fillStyle = `rgba(60,224,124,${op.toFixed(3)})`; // green tail
+          }
+          ctx!.fillText(trails[i][k], x, yy);
+        }
+        if (heads[i] > h + trailLen * cell) {
+          heads[i] = -Math.random() * h * 0.5 - cell;
+          speeds[i] = 1.5 + Math.random() * 3.5;
+          rows[i] = -999;
+          trails[i] = [];
+        }
+      }
+    }
+
+    setup();
+    raf = requestAnimationFrame(frame);
+
+    let rt = 0;
+    const onResize = () => {
+      window.clearTimeout(rt);
+      rt = window.setTimeout(setup, 150);
+    };
+    window.addEventListener("resize", onResize);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(rt);
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
+
+  return <canvas ref={ref} className="absolute inset-0 h-full w-full" aria-hidden />;
+}
+
 export function HomeHero() {
   const [selected, setSelected] = useState(DISCIPLINES[0].id);
 
@@ -27,69 +121,19 @@ export function HomeHero() {
       data-theme="dark"
       className="relative isolate overflow-hidden text-white"
     >
-      {/* Animated background — matches the reference hero (glow blobs + orbit particles) */}
-      <div className="absolute inset-0 -z-10 bg-(--color-bg) overflow-hidden">
-        <div className="grid-bg" />
-        <div className="scanline" />
-
-        {/* glow blobs (drifting) */}
+      {/* Matrix character-rain over a blue backdrop — applies only to this hero */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        {/* blue gradient base (matches the reference image) */}
         <div
-          className="glow-blob animate-[float-drift_18s_ease-in-out_infinite]"
+          className="absolute inset-0"
           style={{
-            top: "-15%",
-            left: "-8%",
-            width: 640,
-            height: 640,
-            background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)",
+            background:
+              "radial-gradient(ellipse 95% 85% at 50% 22%, #19386f 0%, #0d2150 45%, #060a16 100%)",
           }}
         />
-        <div
-          className="glow-blob animate-[float-drift_22s_ease-in-out_infinite_reverse]"
-          style={{
-            top: "20%",
-            right: "-12%",
-            width: 600,
-            height: 600,
-            background: "radial-gradient(circle, #59EBFD 0%, transparent 70%)",
-          }}
-        />
-        <div
-          className="glow-blob"
-          style={{
-            bottom: "-25%",
-            left: "30%",
-            width: 500,
-            height: 500,
-            background: "radial-gradient(circle, #F6AE64 0%, transparent 70%)",
-            opacity: 0.18,
-          }}
-        />
-
-        {/* orbiting particles */}
-        <div className="absolute top-1/2 right-[8%] hidden lg:block pointer-events-none">
-          <div
-            className="orbit-dot bg-(--color-cyan) shadow-[0_0_12px_4px_rgba(89,235,253,0.7)]"
-            style={{ ["--orbit-r" as string]: "220px" }}
-          />
-          <div
-            className="orbit-dot bg-(--color-purple-light) shadow-[0_0_10px_3px_rgba(135,87,242,0.7)]"
-            style={{ ["--orbit-r" as string]: "300px", animationDuration: "20s", animationDirection: "reverse" }}
-          />
-          <div
-            className="orbit-dot bg-(--color-amber) shadow-[0_0_10px_3px_rgba(246,174,100,0.7)]"
-            style={{ ["--orbit-r" as string]: "380px", animationDuration: "26s" }}
-          />
-        </div>
-
-        {/* film-grain overlay */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-[0.05]"
-          style={{
-            backgroundImage:
-              "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-            mixBlendMode: "overlay",
-          }}
-        />
+        <MatrixRain />
+        {/* readability scrim — keeps the left-side headline legible */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/30 to-transparent" />
       </div>
 
       <Container className="relative z-10">
