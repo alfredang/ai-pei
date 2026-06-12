@@ -20,7 +20,7 @@ export type SiteBrand = {
 const DEFAULTS: SiteBrand = {
   shortName: "Tertiary Infotech Academy",
   fullName: "Tertiary Infotech Academy Pte Ltd",
-  logoUrl: null,
+  logoUrl: "https://pub-62aa61537a134e9780c302c6f0795233.r2.dev/uploads/tertiary-logo.png",
   uen: null,
 };
 
@@ -136,7 +136,7 @@ export async function getSiteBrand(): Promise<SiteBrand> {
     const brand = {
       shortName: map.get("company_short_name") || DEFAULTS.shortName,
       fullName: map.get("company_name") || DEFAULTS.fullName,
-      logoUrl: map.get("company_logo_url") || null,
+      logoUrl: map.get("company_logo_url") || DEFAULTS.logoUrl,
       uen: map.get("company_uen") || null,
     };
     cachedSiteBrand = brand;

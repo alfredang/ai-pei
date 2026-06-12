@@ -12,8 +12,8 @@ import {
 } from "react-icons/hi2";
 
 const DISCIPLINES = [
-  { id: "cybersecurity", label: "Cybersecurity", icon: HiShieldCheck, color: "var(--color-cyan)" },
   { id: "ai", label: "Artificial Intelligence", icon: HiCpuChip, color: "var(--color-purple-light)" },
+  { id: "cybersecurity", label: "Cyber Security", icon: HiShieldCheck, color: "var(--color-cyan)" },
   { id: "blockchain", label: "Blockchain", icon: HiCubeTransparent, color: "var(--color-amber)" },
   { id: "quantum", label: "Quantum Computing", icon: HiSparkles, color: "var(--color-cyan)" },
 ];
@@ -27,39 +27,77 @@ export function HomeHero() {
       data-theme="dark"
       className="relative isolate overflow-hidden text-white"
     >
-      {/* Designed background — replaces the full-bleed photograph */}
-      <div className="absolute inset-0 -z-10 bg-(--color-bg)">
-        <div className="grid-bg opacity-40" />
+      {/* Animated background — matches the reference hero (glow blobs + orbit particles) */}
+      <div className="absolute inset-0 -z-10 bg-(--color-bg) overflow-hidden">
+        <div className="grid-bg" />
+        <div className="scanline" />
+
+        {/* glow blobs (drifting) */}
         <div
-          className="glow-blob"
+          className="glow-blob animate-[float-drift_18s_ease-in-out_infinite]"
           style={{
-            top: "-10%",
-            left: "-5%",
-            width: 560,
-            height: 560,
-            background: "radial-gradient(circle, #5C00E5 0%, transparent 60%)",
-            opacity: 0.22,
+            top: "-15%",
+            left: "-8%",
+            width: 640,
+            height: 640,
+            background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)",
+          }}
+        />
+        <div
+          className="glow-blob animate-[float-drift_22s_ease-in-out_infinite_reverse]"
+          style={{
+            top: "20%",
+            right: "-12%",
+            width: 600,
+            height: 600,
+            background: "radial-gradient(circle, #59EBFD 0%, transparent 70%)",
           }}
         />
         <div
           className="glow-blob"
           style={{
-            bottom: "-15%",
-            right: "0%",
-            width: 620,
-            height: 620,
-            background: "radial-gradient(circle, #59EBFD 0%, transparent 60%)",
-            opacity: 0.16,
+            bottom: "-25%",
+            left: "30%",
+            width: 500,
+            height: 500,
+            background: "radial-gradient(circle, #F6AE64 0%, transparent 70%)",
+            opacity: 0.18,
+          }}
+        />
+
+        {/* orbiting particles */}
+        <div className="absolute top-1/2 right-[8%] hidden lg:block pointer-events-none">
+          <div
+            className="orbit-dot bg-(--color-cyan) shadow-[0_0_12px_4px_rgba(89,235,253,0.7)]"
+            style={{ ["--orbit-r" as string]: "220px" }}
+          />
+          <div
+            className="orbit-dot bg-(--color-purple-light) shadow-[0_0_10px_3px_rgba(135,87,242,0.7)]"
+            style={{ ["--orbit-r" as string]: "300px", animationDuration: "20s", animationDirection: "reverse" }}
+          />
+          <div
+            className="orbit-dot bg-(--color-amber) shadow-[0_0_10px_3px_rgba(246,174,100,0.7)]"
+            style={{ ["--orbit-r" as string]: "380px", animationDuration: "26s" }}
+          />
+        </div>
+
+        {/* film-grain overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.05]"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+            mixBlendMode: "overlay",
           }}
         />
       </div>
 
       <Container className="relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[82vh] py-24">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center min-h-[70vh] py-16">
           {/* LEFT — copy + discipline dropdown */}
           <div className="max-w-xl">
             <div className="kicker mb-5 reveal">
-              [ STUDY TECH IN SINGAPORE · ASIA&apos;S #1 TECH HUB ]
+              [ STUDY TECH IN SINGAPORE · ASIA&apos;S LEADING TECH HUB ]
             </div>
 
             <h1 className="font-display font-medium tracking-tight leading-[1.06] text-[clamp(2.3rem,5.2vw,4.25rem)] reveal">
@@ -67,7 +105,7 @@ export function HomeHero() {
             </h1>
 
             <p className="mt-6 text-lg md:text-xl text-white/80 leading-relaxed reveal reveal-d1">
-              English-taught programmes for international learners across four fields shaping
+              Advanced Certificate programmes for international learners across four fields shaping
               the next decade — your gateway to Asia&apos;s fastest-growing tech market.
             </p>
 
@@ -112,8 +150,7 @@ export function HomeHero() {
 
             {/* Trust line */}
             <p className="mt-8 text-sm text-white/55 reveal reveal-d2">
-              English-taught · Globally recognised · Visa &amp; relocation guidance ·
-              [PLACEHOLDER: 1,000+ learners trained]
+              English-taught · Globally recognised · Visa &amp; relocation guidance
             </p>
           </div>
 
@@ -166,7 +203,7 @@ export function HomeHero() {
               aria-hidden
             >
               <span className="text-xs font-mono text-(--color-muted)">
-                4 disciplines · 1 launchpad
+                Future-tech disciplines · one launchpad
               </span>
             </div>
           </div>

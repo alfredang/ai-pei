@@ -9,45 +9,41 @@ import {
 const OUTCOMES = [
   {
     icon: HiBanknotes,
-    stat: "[PLACEHOLDER: e.g. S$X,000]",
-    label: "Average Starting Salary",
+    label: "Competitive Salaries",
     description:
-      "Future-tech roles are among the best-paid in Singapore. Insert your verified salary benchmark here to show real earning potential.",
+      "Future-tech roles are among the best-paid careers in Singapore, and your skills are built to command strong earning power across the region.",
     color: "var(--color-cyan)",
   },
   {
     icon: HiBuildingOffice2,
-    stat: "[PLACEHOLDER: e.g. 50+]",
-    label: "Hiring Partners",
+    label: "Hiring Across Asia",
     description:
-      "From global banks and MNCs to high-growth startups and government tech agencies — list the employers who recruit your graduates.",
+      "Global banks, MNCs, high-growth startups and government tech agencies all recruit future-tech talent — and they are concentrated right here in Singapore.",
     color: "var(--color-purple-light)",
   },
   {
     icon: HiGlobeAlt,
-    stat: "[PLACEHOLDER: e.g. 30+]",
-    label: "Countries Represented",
+    label: "A Global Cohort",
     description:
-      "Learners join from across the world and graduate with globally portable skills they can take to any market in Asia and beyond.",
+      "Learn alongside ambitious peers from around the world and graduate with qualifications that travel with you to any market in Asia and beyond.",
     color: "var(--color-amber)",
   },
   {
     icon: HiArrowTrendingUp,
-    stat: "[PLACEHOLDER: e.g. 90%]",
-    label: "Career-Outcome Rate",
+    label: "Career Mobility",
     description:
-      "Show the share of graduates who advance into a new tech role, promotion or relocation within months of completing a programme.",
+      "Globally portable, in-demand skills open doors to new roles, promotions and relocation opportunities as your career grows.",
     color: "var(--color-green)",
   },
 ];
 
 export function CareersOutcomes() {
   return (
-    <section id="careers" className="relative py-20 overflow-hidden">
+    <section id="careers" className="relative py-4 overflow-hidden">
       <div className="grid-bg opacity-25" />
 
       <Container className="relative">
-        <div className="text-center mb-14">
+        <div className="text-center mb-8">
           <div className="kicker mb-4">[ CAREER OUTCOMES ]</div>
           <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
             Skills That Travel. <span className="gradient-text">Careers That Scale.</span>
@@ -65,7 +61,7 @@ export function CareersOutcomes() {
             return (
               <div
                 key={o.label}
-                className="glass p-7 hover:border-white/15 transition-all duration-300 group"
+                className="glass p-6 hover:border-white/15 transition-all duration-300 group"
               >
                 <div
                   className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-transform group-hover:scale-110"
@@ -73,22 +69,12 @@ export function CareersOutcomes() {
                 >
                   <Icon className="w-6 h-6" style={{ color: o.color }} />
                 </div>
-                <div
-                  className="font-display font-extrabold text-2xl leading-tight mb-1"
-                  style={{ color: o.color }}
-                >
-                  {o.stat}
-                </div>
-                <div className="font-display font-bold text-sm text-white mb-2">{o.label}</div>
-                <p className="text-xs text-(--color-muted) leading-relaxed">{o.description}</p>
+                <div className="font-display font-bold text-base text-white mb-2">{o.label}</div>
+                <p className="text-sm text-(--color-muted) leading-relaxed">{o.description}</p>
               </div>
             );
           })}
         </div>
-
-        <p className="mt-8 text-center text-xs text-(--color-muted) font-mono">
-          [ Replace the placeholder figures above with your verified, audited outcome data ]
-        </p>
       </Container>
     </section>
   );

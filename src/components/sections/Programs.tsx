@@ -33,7 +33,7 @@ const PROGRAMS: Program[] = [
     outcomes: [
       "Hands-on SOC, threat-hunting and penetration-testing labs",
       "Career paths: Security Analyst, SOC Engineer, Penetration Tester",
-      "Globally portable certifications [PLACEHOLDER: certification body]",
+      "Globally portable, industry-aligned certifications",
     ],
     cta: { label: "Explore Cybersecurity courses in Singapore", href: "/courses" },
     accent: "var(--color-cyan)",
@@ -87,7 +87,7 @@ const PROGRAMS: Program[] = [
 
 export function Programs() {
   return (
-    <section id="programs" className="relative py-20 overflow-hidden">
+    <section id="programs" className="relative py-4 overflow-hidden">
       <div
         className="glow-blob"
         style={{
@@ -101,7 +101,7 @@ export function Programs() {
       />
 
       <Container className="relative">
-        <div className="text-center mb-14">
+        <div className="text-center mb-8">
           <div className="kicker mb-4">[ OUR PROGRAMMES ]</div>
           <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
             Four Future-Tech Disciplines.{" "}
@@ -120,8 +120,20 @@ export function Programs() {
               <div
                 key={p.id}
                 id={p.id}
-                className="glass p-8 flex flex-col group hover:border-white/15 transition-all duration-300"
+                className="card-hover glass p-6 flex flex-col group relative overflow-hidden"
               >
+                {/* top accent line (per discipline) */}
+                <div
+                  className="absolute top-0 inset-x-0 h-px"
+                  style={{ background: `linear-gradient(to right, ${p.accent}, transparent)` }}
+                />
+                {/* corner glow — fades in on hover */}
+                <div
+                  className="absolute -top-12 -right-12 w-40 h-40 rounded-full opacity-0 group-hover:opacity-60 transition duration-500"
+                  style={{
+                    background: `radial-gradient(circle, color-mix(in srgb, ${p.accent} 40%, transparent) 0%, transparent 70%)`,
+                  }}
+                />
                 <div className="flex items-center gap-4 mb-5">
                   <div
                     className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"

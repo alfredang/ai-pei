@@ -3,7 +3,7 @@ import { Container } from "@/components/layout/Container";
 
 export function CTABanner() {
   return (
-    <section className="relative py-20 overflow-hidden">
+    <section className="relative py-4 overflow-hidden">
       <div
         className="glow-blob"
         style={{
@@ -18,7 +18,7 @@ export function CTABanner() {
       />
 
       <Container className="relative">
-        <div className="glass p-10 md:p-16 text-center overflow-hidden relative">
+        <div className="glass p-6 md:p-10 text-center overflow-hidden relative">
           {/* Top accent line */}
           <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-(--color-cyan) to-transparent" />
 
@@ -30,7 +30,7 @@ export function CTABanner() {
           <p className="text-(--color-muted) text-lg max-w-2xl mx-auto mb-10">
             Seats for international learners are limited each intake. Secure your place in
             Cybersecurity, AI, Blockchain or Quantum Computing — and start building a globally
-            recognised career in Asia&apos;s #1 tech hub. [PLACEHOLDER: next intake date.]
+            recognised career in Asia&apos;s leading tech hub.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <a href="#contact" className="btn-primary text-lg px-8 py-4">

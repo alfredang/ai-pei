@@ -4,7 +4,7 @@ import { HiBuildingOffice2, HiShieldCheck, HiGlobeAlt } from "react-icons/hi2";
 const REASONS = [
   {
     icon: HiBuildingOffice2,
-    title: "Asia's #1 Tech & Fintech Hub",
+    title: "Asia's Leading Tech & Fintech Hub",
     description:
       "Singapore's Smart Nation initiative has drawn the regional headquarters of the world's biggest technology, banking and fintech companies. Study here and you study minutes from the MNCs, startups and government employers hiring future-tech talent.",
   },
@@ -18,13 +18,13 @@ const REASONS = [
     icon: HiGlobeAlt,
     title: "Your Gateway to ASEAN & Asia",
     description:
-      "Singapore is the strategic launchpad into a market of 600+ million people. With heavy government investment in cybersecurity and AI, demand for skilled talent is high — and a Singapore qualification opens doors right across the region.",
+      "Singapore is the strategic launchpad into one of the world's largest and fastest-growing regional markets. With strong government investment in cybersecurity and AI, demand for skilled talent is high — and a Singapore qualification opens doors right across the region.",
   },
 ];
 
 export function WhyChooseInstitute() {
   return (
-    <section id="why-us" className="relative py-20 overflow-hidden">
+    <section id="why-us" className="relative py-4 overflow-hidden">
       <div className="grid-bg opacity-30" />
       <div
         className="glow-blob"
@@ -39,7 +39,7 @@ export function WhyChooseInstitute() {
       />
 
       <Container className="relative">
-        <div className="max-w-3xl mx-auto text-center mb-14">
+        <div className="max-w-3xl mx-auto text-center mb-8">
           <div className="kicker mb-4">[ WHY SINGAPORE ]</div>
           <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
             Why Study Tech in <span className="gradient-text">Singapore</span>?
@@ -58,7 +58,7 @@ export function WhyChooseInstitute() {
             return (
               <div
                 key={reason.title}
-                className="glass p-8 hover:border-white/15 transition-all duration-300 group"
+                className="glass p-6 hover:border-white/15 transition-all duration-300 group"
               >
                 <div className="w-12 h-12 rounded-xl bg-(--color-cyan)/10 border border-(--color-cyan)/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <Icon className="w-6 h-6 text-(--color-cyan)" />
@@ -70,30 +70,6 @@ export function WhyChooseInstitute() {
               </div>
             );
           })}
-        </div>
-
-        {/* Partner logos strip */}
-        <div className="mt-14 text-center">
-          <div className="text-xs font-mono uppercase tracking-wider text-(--color-muted) mb-6">
-            Accreditations &amp; Industry Partners
-          </div>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            {[
-              "[PLACEHOLDER: Accreditation 1]",
-              "[PLACEHOLDER: Accreditation 2]",
-              "[PLACEHOLDER: Certification Partner]",
-              "[PLACEHOLDER: Industry Partner]",
-              "[PLACEHOLDER: Hiring Partner]",
-              "[PLACEHOLDER: Test Centre]",
-            ].map((partner) => (
-              <span
-                key={partner}
-                className="px-4 py-2 rounded-lg bg-white/4 border border-white/8 text-xs font-medium text-white/50 hover:text-white/70 hover:border-white/15 transition"
-              >
-                {partner}
-              </span>
-            ))}
-          </div>
         </div>
       </Container>
     </section>

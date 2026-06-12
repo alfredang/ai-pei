@@ -27,7 +27,7 @@ const PROPS = [
 
 export function ValueProps() {
   return (
-    <section className="relative py-20 overflow-hidden">
+    <section className="relative py-4 overflow-hidden">
       <Container>
         <div className="grid md:grid-cols-3 gap-6">
           {PROPS.map((prop) => {
@@ -35,7 +35,7 @@ export function ValueProps() {
             return (
               <div
                 key={prop.title}
-                className="glass p-8 group hover:border-white/15 transition-all duration-300"
+                className="glass p-6 group hover:border-white/15 transition-all duration-300"
               >
                 <div
                   className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110"

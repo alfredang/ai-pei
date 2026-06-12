@@ -2,7 +2,7 @@ import { Container } from "@/components/layout/Container";
 
 export function AdmissionsSection() {
   return (
-    <section id="admissions" className="relative py-20 overflow-hidden">
+    <section id="admissions" className="relative py-4 overflow-hidden">
       <div
         className="glow-blob"
         style={{
@@ -16,7 +16,7 @@ export function AdmissionsSection() {
       />
 
       <Container className="relative">
-        <div className="text-center mb-14">
+        <div className="text-center mb-8">
           <div className="kicker mb-4">[ ADMISSIONS & VISA ]</div>
           <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
             Admissions for <span className="gradient-text">International Learners</span>
@@ -29,7 +29,7 @@ export function AdmissionsSection() {
 
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Who can apply */}
-          <div className="glass p-8">
+          <div className="glass p-6">
             <div className="flex items-center gap-3 mb-6">
               <span className="text-2xl">🎓</span>
               <h3 className="font-display font-bold text-xl text-white">Who Can Apply</h3>
@@ -51,7 +51,7 @@ export function AdmissionsSection() {
           </div>
 
           {/* Visa & relocation */}
-          <div className="glass p-8">
+          <div className="glass p-6">
             <div className="flex items-center gap-3 mb-6">
               <span className="text-2xl">🌏</span>
               <h3 className="font-display font-bold text-xl text-white">Visa &amp; Relocation</h3>
@@ -72,8 +72,7 @@ export function AdmissionsSection() {
             <div className="mt-5 p-4 rounded-lg bg-white/3 border border-white/6">
               <p className="text-xs text-(--color-muted) leading-relaxed">
                 Pass eligibility is set by Singapore&apos;s authorities and depends on your
-                circumstances. [PLACEHOLDER: confirm the exact passes your programmes support.]
-                Our admissions team will advise you on the best route.
+                circumstances. Our admissions team will advise you on the best route.
               </p>
             </div>
           </div>

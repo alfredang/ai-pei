@@ -5,9 +5,7 @@ import { HomeHero } from "@/components/sections/HomeHero";
 import { ValueProps } from "@/components/sections/ValueProps";
 import { WhyChooseInstitute } from "@/components/sections/WhyChooseInstitute";
 import { Programs } from "@/components/sections/Programs";
-import { StatsStrip } from "@/components/sections/StatsStrip";
 import { CareersOutcomes } from "@/components/sections/CareersOutcomes";
-import { SocialProof } from "@/components/sections/SocialProof";
 import { AdmissionsSection } from "@/components/sections/AdmissionsSection";
 import { FaqSection } from "@/components/sections/FaqSection";
 import { CTABanner } from "@/components/sections/CTABanner";
@@ -30,7 +28,7 @@ export const metadata: Metadata = {
     url: "/",
     title: "Study Tech in Singapore — Cyber, AI, Blockchain & Quantum",
     description:
-      "English-taught Cybersecurity, AI, Blockchain & Quantum Computing courses for international learners in Asia's #1 tech hub.",
+      "English-taught Cybersecurity, AI, Blockchain & Quantum Computing courses for international learners in Asia's leading tech hub.",
     locale: "en_SG",
     siteName: "Tertiary Infotech Academy",
     images: [
@@ -46,7 +44,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Study Tech in Singapore — Cyber, AI, Blockchain & Quantum",
     description:
-      "English-taught future-tech courses for foreigners in Asia's #1 tech hub. Globally recognised, career-ready.",
+      "English-taught future-tech courses for foreigners in Asia's leading tech hub. Globally recognised, career-ready.",
     images: ["/images/hero-classroom.png"],
   },
 };
@@ -102,9 +100,7 @@ export default function HomePage() {
         <ValueProps />
         <WhyChooseInstitute />
         <Programs />
-        <StatsStrip />
         <CareersOutcomes />
-        <SocialProof />
         <AdmissionsSection />
         <FeaturedPosts />
         <FaqSection />

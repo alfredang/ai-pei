@@ -11,6 +11,7 @@ import { HiPhone } from "react-icons/hi2";
 const FALLBACK = [
   { label: "Home", href: "/" },
   { label: "PEI Advanced Certificate", href: "/courses" },
+  { label: "Study in Singapore", href: "/study-in-singapore" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/#contact" },
 ];
