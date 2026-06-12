@@ -6,8 +6,6 @@ import {
   HiCursorArrowRays,
   HiPencilSquare,
   HiPaperAirplane,
-  HiClock,
-  HiCheckBadge,
   HiDocumentText,
   HiAcademicCap,
   HiGlobeAlt,
@@ -25,7 +23,7 @@ const PAGE_URL = `${SITE_URL}/pei-course-submission`;
 export const metadata: Metadata = {
   title: "PEI Course Submission Singapore — How to Register a New Course with SSG",
   description:
-    "Step-by-step guide for registered Private Education Institutions (PEIs) to submit a new course via GoBusiness Licensing. Learn the 'Offer a New Course' process, required documents, who submits, and SSG course permission.",
+    "Step-by-step guide for registered Private Education Institutions (PEIs) to add a new course via GoBusiness — My Licences → Amend → Amendment on Courses → Add new courses and modules. Includes Academic Level and Language Proficiency wording, the document checklist, and SSG course permission.",
   keywords:
     "PEI course submission, register new PEI course Singapore, offer a new course GoBusiness, SSG course permission, CPE course registration, Private Education Institution new course, course permission letter SSG",
   alternates: { canonical: PAGE_URL },
@@ -50,60 +48,60 @@ export const metadata: Metadata = {
 
 const STEPS = [
   {
-    id: "prepare",
-    title: "Prepare your documents",
-    icon: HiClipboardDocumentList,
+    id: "my-licences",
+    title: "Open “My Licences” in GoBusiness",
+    icon: HiArrowRightOnRectangle,
     accent: "cyan" as const,
     body:
-      "Compile every supporting document before you start — course write-up, sample certificate, and any developer or university approvals. The submission form expects these as uploads.",
+      "Log in to GoBusiness with your PEI's CorpPass and go to My Licences. Find your active “Registration of Private Education Institutions” licence (Agency: SSG).",
   },
   {
-    id: "login",
-    title: "Log in to GoBusiness Licensing",
-    icon: HiArrowRightOnRectangle,
+    id: "amend",
+    title: "Select Action → Amend",
+    icon: HiCursorArrowRays,
     accent: "blue" as const,
     body:
-      "Sign in to GoBusiness Licensing with your PEI's CorpPass. The submission must be made by the PEI Manager (or a CorpPass user authorised for the PEI), tied to your registered entity.",
+      "On the licence row, open the “Select Action” menu and choose “Amend”. New courses are added by amending your existing PEI registration — there is no separate licence application.",
   },
   {
-    id: "select",
-    title: "Select “Offer a New Course”",
-    icon: HiCursorArrowRays,
+    id: "add-course",
+    title: "Amendment on Courses → Add new courses and modules",
+    icon: HiPencilSquare,
     accent: "purple" as const,
     body:
-      "Open your existing Registration of Private Education Institutions and start an update/notification application. Choose the “Offer a New Course” application type to seek SSG's permission.",
+      "In Application Details, choose “Amendment on Courses”, then under “I want to” select “Add new courses and modules”. This opens the New Courses and Modules form.",
   },
   {
-    id: "complete",
-    title: "Complete the course form",
-    icon: HiPencilSquare,
+    id: "course-details",
+    title: "Fill in the course details",
+    icon: HiClipboardDocumentList,
     accent: "amber" as const,
     body:
-      "Fill in the course details — title, level, duration, mode of delivery, learning outcomes and assessment — and upload the required documents using SSG's templates.",
+      "Enter the Course Title, Course Level (e.g. Certificate) and Minimum Age (e.g. 21), then complete the entry-requirement fields — Academic Level and Language Proficiency.",
   },
   {
-    id: "submit",
-    title: "Submit the application",
-    icon: HiPaperAirplane,
+    id: "entry-requirements",
+    title: "State Academic Level & Language Proficiency",
+    icon: HiAcademicCap,
     accent: "cyan" as const,
     body:
-      "Submit through GoBusiness. The application moves to Processing while SSG reviews it. Confirm any fee shown at the submission step before you pay.",
+      "Give the minimum academic entry requirement and the English-language proficiency a student needs to enrol. Recommended wording is below — keep both consistent with your Minimum Age.",
   },
   {
-    id: "review",
-    title: "Await SSG review",
-    icon: HiClock,
+    id: "documents",
+    title: "Upload supporting documents",
+    icon: HiDocumentText,
     accent: "blue" as const,
     body:
-      "SSG evaluates the course against the Enhanced Registration Framework. They may raise queries — respond promptly to avoid delays.",
+      "Attach the course write-up, sample certificate and academic-board approval. Each file must be 7 MB or less; filenames may use only letters, numbers, underscores and hyphens.",
   },
   {
-    id: "permission",
-    title: "Receive Course Permission Letter",
-    icon: HiCheckBadge,
+    id: "declaration",
+    title: "Review, declare & make payment",
+    icon: HiPaperAirplane,
     accent: "green" as const,
     body:
-      "Once permitted, you receive a Course Permission Letter. Only then may you advertise, offer or deliver the course. A PEI must have at least one SSG-permitted course at all times.",
+      "Complete the Review Form and Declaration steps, then make payment if a fee is shown. The application moves to Processing while SSG reviews it; on approval you receive a Course Permission Letter.",
   },
 ];
 
@@ -143,36 +141,78 @@ const ACCENT: Record<string, { ring: string; iconText: string; chip: string; lin
 const DOCUMENTS = [
   {
     icon: HiDocumentText,
-    title: "Course write-up",
+    title: "Course Write-up",
     body:
-      "Using SSG's template. There is a specific template for External Degree Programmes (EDPs) and another for other courses.",
+      "The full course synopsis using SSG's template. There is a specific template for External Degree Programmes (EDPs) and another for other courses.",
   },
   {
     icon: HiAcademicCap,
-    title: "Sample certificate",
-    body: "A sample of the certificate or award the learner receives on completion of the course.",
+    title: "Sample Certificate",
+    body: "A sample of the certificate or award issued to students on completion of the course.",
   },
   {
     icon: HiUserGroup,
-    title: "External course developer approval",
-    body: "If the course is not developed in-house, the developer's approval to deliver it.",
-  },
-  {
-    icon: HiBookOpen,
-    title: "University approval (EDPs)",
-    body:
-      "For External Degree Programmes — the university approval letter plus the university website link or course handbook.",
+    title: "Approval from Academic Board",
+    body: "Your PEI Academic Board's approval to offer the new course.",
   },
   {
     icon: HiDocumentText,
-    title: "Articulation agreement",
-    body: "Where the course articulates into a further qualification, the relevant articulation agreement.",
+    title: "Course Developer's Permissions",
+    body:
+      "Proof that the course developer or proprietor allows the PEI to offer the course, where the course is not developed in-house.",
+  },
+  {
+    icon: HiBookOpen,
+    title: "Validation Agreement",
+    body:
+      "Proof that the course has been validated, accredited, or offered an articulation pathway, if applicable.",
+  },
+  {
+    icon: HiAcademicCap,
+    title: "Highest Academic & Language Certificates",
+    body:
+      "Highest Academic Qualifications and Highest Language Qualifications certificates supporting your stated entry requirements.",
+  },
+  {
+    icon: HiBookOpen,
+    title: "Vice-Chancellor's Letter (EDPs)",
+    body:
+      "For External Degree Programmes — a letter from the Vice-Chancellor / President (or equivalent) of the foreign institution.",
   },
   {
     icon: HiGlobeAlt,
-    title: "E-learning checklist",
+    title: "Other Documents",
     body:
-      "For online courses, SSG's e-learning information checklist. Industrial attachment documentation is required where applicable.",
+      "Any other supporting documents if necessary. Each upload is 1 file at 7 MB or less; filenames allow only letters, numbers, underscores (_) and hyphens (-).",
+  },
+];
+
+const ENTRY_REQUIREMENTS = [
+  {
+    icon: HiAcademicCap,
+    field: "Academic Level",
+    heading: "Minimum Academic Entry Requirement",
+    intro: "Applicants should possess at least one of the following:",
+    items: [
+      "GCE 'A' Level with a minimum of 1 H2 pass; or",
+      "Local Polytechnic Diploma; or",
+      "NITEC / Higher NITEC from ITE; or",
+      "GCE 'O' Level with a minimum of 3 passes; or",
+      "Equivalent academic qualifications recognised in the applicant's home country.",
+    ],
+    note: "Mature-candidate route: applicants aged 21+ who do not meet the above may be admitted on relevant work experience, subject to interview and Academic Board approval.",
+  },
+  {
+    icon: HiGlobeAlt,
+    field: "Language Proficiency",
+    heading: "Medium of Instruction: English",
+    intro: "Applicants should meet one of the following:",
+    items: [
+      "GCE 'O' Level English (Grade C6 or better); or",
+      "Completed prior education with English as the medium of instruction; or",
+      "IELTS 5.5 / TOEFL iBT 46 / equivalent for applicants from non-English-medium backgrounds.",
+    ],
+    note: "Applicants who do not meet the above may be admitted upon passing an internal English proficiency assessment conducted by the institution.",
   },
 ];
 
@@ -182,8 +222,8 @@ const FAQ = [
     a: "The application must be submitted by the PEI Manager, or a CorpPass user authorised to transact on behalf of the PEI, through GoBusiness Licensing. It is tied to your registered PEI entity.",
   },
   {
-    q: "Which application type do I select?",
-    a: "Open your existing 'Registration of Private Education Institutions' and start an update/notification application, then choose 'Offer a New Course'. This is the application that seeks SSG's permission for a new course.",
+    q: "Where do I start the application in GoBusiness?",
+    a: "Go to My Licences, find your active 'Registration of Private Education Institutions' licence, and use Select Action → Amend. Under Application Details choose 'Amendment on Courses', then 'Add new courses and modules'. There is no separate licence — a new course is an amendment to your existing PEI registration.",
   },
   {
     q: "Can I advertise the course once I submit?",
@@ -204,7 +244,7 @@ const howToLd = {
   "@type": "HowTo",
   name: "How to submit a new PEI course via GoBusiness Licensing in Singapore",
   description:
-    "Seven-step process for a registered Private Education Institution to register a new course with SSG through the 'Offer a New Course' application on GoBusiness Licensing.",
+    "Seven-step process for a registered Private Education Institution to add a new course with SSG by amending its registration on GoBusiness — My Licences → Amend → Amendment on Courses → Add new courses and modules.",
   step: STEPS.map((s, i) => ({
     "@type": "HowToStep",
     position: i + 1,
@@ -283,7 +323,7 @@ export default function PeiCourseSubmissionPage() {
               </p>
               <div className="flex flex-wrap items-center gap-3 mb-6">
                 <span className="px-3 py-1.5 rounded-full text-xs font-mono bg-(--color-cyan)/10 text-(--color-cyan) border border-(--color-cyan)/30">
-                  &ldquo;Offer a New Course&rdquo; application
+                  My Licences → Amend → Courses
                 </span>
                 <span className="px-3 py-1.5 rounded-full text-xs font-mono bg-(--color-purple)/15 text-(--color-purple-light) border border-(--color-purple)/40">
                   Submitted by PEI Manager
@@ -325,7 +365,7 @@ export default function PeiCourseSubmissionPage() {
                 },
                 {
                   title: "Every new programme",
-                  body: "Course permission is per-course. Adding a new programme to your existing PEI registration always requires a fresh 'Offer a New Course' submission.",
+                  body: "Course permission is per-course. Adding a new programme means amending your existing PEI registration via 'Amendment on Courses' → 'Add new courses and modules'.",
                 },
                 {
                   title: "Overseas delivery",
@@ -377,6 +417,56 @@ export default function PeiCourseSubmissionPage() {
                 );
               })}
             </ol>
+          </Container>
+        </section>
+
+        {/* ENTRY REQUIREMENTS */}
+        <section id="entry-requirements" className="relative py-10 scroll-mt-20">
+          <Container>
+            <div className="max-w-3xl mb-8">
+              <div className="kicker mb-3">[ KEY FORM FIELDS ]</div>
+              <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold leading-tight">
+                Two fields applicants get stuck on:{" "}
+                <span className="gradient-text">Academic Level</span> &amp; Language Proficiency.
+              </h2>
+              <p className="text-(--color-muted) mt-4 text-sm">
+                Both are mandatory free-text fields in the New Courses and Modules form. Reviewers
+                expect a clear, verifiable threshold with an international-equivalence route.
+                Below is ready-to-use wording for an Advanced Certificate (Minimum Age 21) — adapt
+                the qualification floor to your course level.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+              {ENTRY_REQUIREMENTS.map((r) => {
+                const Icon = r.icon;
+                return (
+                  <div key={r.field} className="glass p-6 relative overflow-hidden">
+                    <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-(--color-cyan) to-transparent" />
+                    <div className="flex items-center gap-2 mb-3">
+                      <Icon className="w-6 h-6 text-(--color-cyan)" />
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-(--color-cyan)/10 text-(--color-cyan)">
+                        {r.field}
+                      </span>
+                    </div>
+                    <h3 className="font-display font-bold text-base mb-2">{r.heading}</h3>
+                    <p className="text-sm text-(--color-muted) mb-2">{r.intro}</p>
+                    <ul className="space-y-1.5 mb-4">
+                      {r.items.map((it) => (
+                        <li
+                          key={it}
+                          className="text-sm text-white/85 leading-relaxed pl-4 relative before:absolute before:left-0 before:top-2 before:w-1.5 before:h-1.5 before:rounded-full before:bg-(--color-cyan)/70"
+                        >
+                          {it}
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="text-xs text-(--color-muted) leading-relaxed border-t border-white/10 pt-3">
+                      {r.note}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
           </Container>
         </section>
 
