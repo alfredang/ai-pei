@@ -21,14 +21,14 @@ export const metadata: Metadata = {
       "Terms of Service governing use of the Tertiary Infotech Academy website, training services, and video content published to platforms including TikTok.",
     locale: "en_SG",
     siteName: BRAND,
-    images: [{ url: "/icon-192.png", width: 192, height: 192, alt: BRAND }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: BRAND }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Terms of Service — Tertiary Infotech Academy",
     description:
       "Terms governing use of our website, services, and video content published to TikTok and other platforms.",
-    images: ["/icon-192.png"],
+    images: ["/opengraph-image"],
   },
 };
 

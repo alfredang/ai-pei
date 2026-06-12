@@ -22,14 +22,14 @@ export const metadata: Metadata = {
       "Reach Tertiary Infotech Academy by phone, email, WhatsApp. Located in Singapore — Woods Square, Woodlands.",
     locale: "en_SG",
     siteName: "Tertiary Infotech Academy",
-    images: [{ url: "/icon-192.png", width: 192, height: 192, alt: "Tertiary Infotech Academy" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Tertiary Infotech Academy" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Contact Us — Tertiary Infotech Academy",
     description:
       "Reach Tertiary Infotech Academy by phone, email, WhatsApp. Singapore-based.",
-    images: ["/icon-192.png"],
+    images: ["/opengraph-image"],
   },
 };
 

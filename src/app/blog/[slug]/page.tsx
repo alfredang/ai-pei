@@ -66,7 +66,7 @@ export async function generateMetadata({
   const post = await getPost(slug);
   if (!post) return { title: "Not found" };
   const canonical = post.canonicalUrl ?? `/blog/${post.slug}`;
-  const ogImage = post.ogImage ?? post.featuredImage ?? "/icon-192.png";
+  const ogImage = post.ogImage ?? post.featuredImage ?? "/opengraph-image";
   return {
     title: post.seoTitle ?? post.title,
     description: post.seoDescription ?? post.excerpt ?? undefined,

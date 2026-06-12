@@ -35,14 +35,14 @@ export const metadata: Metadata = {
     description:
       "A practical, step-by-step guide for PEIs to register a new course via GoBusiness Licensing — the 'Offer a New Course' application, required documents, and SSG course permission.",
     siteName: "Tertiary Infotech Academy",
-    images: [{ url: "/icon-192.png", width: 192, height: 192, alt: "PEI Course Submission — Tertiary Infotech Academy" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "PEI Course Submission — Tertiary Infotech Academy" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "PEI Course Submission Singapore — How to Register a New Course with SSG",
     description:
       "Step-by-step guide for PEIs to submit a new course via GoBusiness Licensing — application type, documents, and SSG course permission.",
-    images: ["/icon-192.png"],
+    images: ["/opengraph-image"],
   },
 };
 

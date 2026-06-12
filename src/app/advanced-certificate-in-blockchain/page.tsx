@@ -37,14 +37,14 @@ export const metadata: Metadata = {
     description:
       "A hands-on Advanced Certificate in Blockchain — smart contracts, DApps and Web3 — for international students and career switchers, at a Singapore Private Education Institution.",
     siteName: "Tertiary Infotech Academy",
-    images: [{ url: "/icon-192.png", width: 192, height: 192, alt: "Advanced Certificate in Blockchain — Tertiary Infotech Academy" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Advanced Certificate in Blockchain — Tertiary Infotech Academy" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Advanced Certificate in Blockchain — Study in Singapore",
     description:
       "Smart contracts, DApps and Web3 — a hands-on Advanced Certificate in Blockchain for international students at a Singapore PEI.",
-    images: ["/icon-192.png"],
+    images: ["/opengraph-image"],
   },
 };
 

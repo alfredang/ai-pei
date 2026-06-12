@@ -34,13 +34,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       locale: "en_SG",
       siteName: "Tertiary Infotech Academy",
-      images: [{ url: "/icon-192.png", width: 192, height: 192, alt: "Tertiary Infotech Academy" }],
+      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Tertiary Infotech Academy" }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: ["/icon-192.png"],
+      images: ["/opengraph-image"],
     },
   };
 }

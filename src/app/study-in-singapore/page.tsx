@@ -36,14 +36,14 @@ export const metadata: Metadata = {
     description:
       "Short 3–6 month Advanced Certificate courses in AI, Cyber Security and Blockchain — with Student Pass, accommodation, Singapore tour and networking support for foreign students.",
     siteName: "Tertiary Infotech Academy",
-    images: [{ url: "/icon-192.png", width: 192, height: 192, alt: "Study in Singapore — Tertiary Infotech Academy" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Study in Singapore — Tertiary Infotech Academy" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Study AI, Cyber Security & Blockchain in Singapore — International Students",
     description:
       "Short 3–6 month Advanced Certificate courses for international students — full Student Pass, accommodation and settling-in support.",
-    images: ["/icon-192.png"],
+    images: ["/opengraph-image"],
   },
 };
 

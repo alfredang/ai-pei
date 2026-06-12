@@ -22,14 +22,14 @@ export const metadata: Metadata = {
       "How Tertiary Infotech Academy collects, uses, and protects personal data under Singapore PDPA, including data related to TikTok content publishing.",
     locale: "en_SG",
     siteName: BRAND,
-    images: [{ url: "/icon-192.png", width: 192, height: 192, alt: BRAND }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: BRAND }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Privacy Policy — Tertiary Infotech Academy",
     description:
       "How we collect, use, and protect personal data under Singapore PDPA.",
-    images: ["/icon-192.png"],
+    images: ["/opengraph-image"],
   },
 };
 

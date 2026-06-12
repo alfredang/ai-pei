@@ -23,13 +23,13 @@ export const metadata: Metadata = {
       "Live AI voice agents and web chatbots — Retell AI, Gemini, n8n. Try the demos and book a free consultation.",
     locale: "en_SG",
     siteName: "Tertiary Infotech Academy",
-    images: [{ url: "/icon-192.png", width: 192, height: 192, alt: "Tertiary Infotech Academy" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Tertiary Infotech Academy" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "AI Voice & Web Chatbot Portfolio | Tertiary Infotech Academy",
     description: "Live AI voice agents and web chatbots built by Tertiary Infotech Academy.",
-    images: ["/icon-192.png"],
+    images: ["/opengraph-image"],
   },
 };
 

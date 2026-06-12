@@ -22,7 +22,7 @@ export const metadata: Metadata = {
       "Padlet, Whiteboard, Live Q&A, Pareto, Fishbone, CyberLabs, HackLabs, NovaStats, NovaSPC, Carbon Calculator and more — all bundled in our AI-LMS-TMS.",
     locale: "en_SG",
     siteName: "Tertiary Infotech Academy",
-    images: [{ url: "/icon-192.png", width: 192, height: 192, alt: "Tertiary Infotech Academy" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Tertiary Infotech Academy" }],
   },
 };
 

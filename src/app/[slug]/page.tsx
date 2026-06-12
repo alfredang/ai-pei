@@ -32,7 +32,7 @@ export async function generateMetadata({
   const page = await getPage(slug);
   if (!page) return { title: "Not found" };
   const canonical = page.canonicalUrl ?? `/${page.slug}`;
-  const ogImage = page.ogImage ?? "/icon-192.png";
+  const ogImage = page.ogImage ?? "/opengraph-image";
   return {
     title: page.seoTitle ?? page.title,
     description: page.seoDescription ?? page.excerpt ?? undefined,

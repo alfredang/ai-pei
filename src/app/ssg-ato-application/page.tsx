@@ -36,14 +36,14 @@ export const metadata: Metadata = {
     description:
       "End-to-end consultancy for the SSG/TPGateway ATO application in Singapore. We prepare your QMS, policies, SOPs, course submission and audit-readiness.",
     siteName: "Tertiary Infotech Academy",
-    images: [{ url: "/icon-192.png", width: 192, height: 192, alt: "SSG ATO Application — Tertiary Infotech Academy" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "SSG ATO Application — Tertiary Infotech Academy" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "SSG ATO Application Singapore — Become a Registered Training Provider",
     description:
       "End-to-end consultancy for the SSG/TPGateway ATO application. QMS, SOPs, course submission, audit-readiness — all in one engagement.",
-    images: ["/icon-192.png"],
+    images: ["/opengraph-image"],
   },
 };
 
