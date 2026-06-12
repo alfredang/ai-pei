@@ -6,7 +6,7 @@ import { ServiceLeadForm } from "@/components/sections/ServiceLeadForm";
 import { HiArrowUpRight, HiCheckCircle } from "react-icons/hi2";
 import { FaGithub } from "react-icons/fa";
 
-const PAGE_URL = "https://www.tertiaryinfotech.com/ai-chatbot-portfolio";
+const PAGE_URL = "https://www.tertiaryinfotech.edu.sg/ai-chatbot-portfolio";
 
 export const metadata: Metadata = {
   title: "AI Voice & Web Chatbot Portfolio | Tertiary Infotech Academy",

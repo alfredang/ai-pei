@@ -55,7 +55,7 @@ const STEP_ACCENT: Record<NonNullable<TimelineStep["accent"]>, { ring: string; i
 
 /** Render a full service landing page from a ServicePageContent config. */
 export function ServicePageTemplate({ content }: { content: ServicePageContent }) {
-  const SITE_URL = "https://www.tertiaryinfotech.com";
+  const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
   const pageUrl = `${SITE_URL}/${content.slug}`;
 
   const serviceLd = {

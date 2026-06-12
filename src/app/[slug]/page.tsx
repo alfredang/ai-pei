@@ -74,7 +74,7 @@ export default async function CmsPage({
   const page = await getPage(slug);
   if (!page) notFound();
 
-  const SITE_URL = "https://www.tertiaryinfotech.com";
+  const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
   const pageUrl = `${SITE_URL}/${page.slug}`;
   const breadcrumbLd = {
     "@context": "https://schema.org",

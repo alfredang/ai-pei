@@ -308,7 +308,7 @@ export async function runWeeklyBlogJob(opts: { trigger: Trigger }): Promise<JobR
         seoTitle: draft.seoTitle,
         seoDescription: draft.seoDescription,
         seoKeywords: draft.seoKeywords,
-        canonicalUrl: `https://www.tertiaryinfotech.com/blog/${uniqueSlug}`,
+        canonicalUrl: `https://www.tertiaryinfotech.edu.sg/blog/${uniqueSlug}`,
         authorId,
         featuredImage,
         categoryId,
@@ -328,7 +328,7 @@ export async function runWeeklyBlogJob(opts: { trigger: Trigger }): Promise<JobR
 
     // Mirror to production if configured. When the job runs ON production,
     // REMOTE_SYNC_URL is unset and this is a no-op. When the admin fires
-    // "Run now" locally, this lands the same post on www.tertiaryinfotech.com.
+    // "Run now" locally, this lands the same post on www.tertiaryinfotech.edu.sg.
     const pushOn = await getSetting<boolean | string>("blog_schedule_push_to_remote", true);
     let remoteMsg = "";
     if (pushOn === true || pushOn === "true") {

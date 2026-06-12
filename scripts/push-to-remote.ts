@@ -2,7 +2,7 @@
  * Push local DB → remote DB via /api/admin/sync/* endpoints.
  *
  * Usage:
- *   REMOTE_SYNC_URL=https://www.tertiaryinfotech.com \
+ *   REMOTE_SYNC_URL=https://www.tertiaryinfotech.edu.sg \
  *   SYNC_API_TOKEN=<token> \
  *   npx tsx scripts/push-to-remote.ts <resource> [...]
  *
@@ -59,7 +59,7 @@ const ORDER: Resource[] = [
 function getEnv() {
   const baseUrl = process.env.REMOTE_SYNC_URL?.replace(/\/$/, "");
   if (!baseUrl)
-    throw new Error("REMOTE_SYNC_URL is not set (e.g. https://www.tertiaryinfotech.com)");
+    throw new Error("REMOTE_SYNC_URL is not set (e.g. https://www.tertiaryinfotech.edu.sg)");
   const token = process.env.SYNC_API_TOKEN;
   const email = process.env.ADMIN_EMAIL;
   const password = process.env.ADMIN_PASSWORD;

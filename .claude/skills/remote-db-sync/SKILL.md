@@ -32,7 +32,7 @@ Local Postgres ──► scripts/push-to-remote.ts ──► HTTPS + Bearer toke
    - **Local** `.env`:
      ```
      SYNC_API_TOKEN=<token>
-     REMOTE_SYNC_URL=https://www.tertiaryinfotech.com
+     REMOTE_SYNC_URL=https://www.tertiaryinfotech.edu.sg
      ```
    - **Production** (Coolify env vars):
      ```

@@ -3,7 +3,7 @@
  * map to production, without depending on whatever state the local DB is in.
  *
  * Usage (env via npm script or `set -a; source .env; set +a; ...`):
- *   REMOTE_SYNC_URL=https://www.tertiaryinfotech.com \
+ *   REMOTE_SYNC_URL=https://www.tertiaryinfotech.edu.sg \
  *   SYNC_API_TOKEN=<token> \
  *   npx tsx scripts/seed-lead-email-prod.ts
  *

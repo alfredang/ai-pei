@@ -19,7 +19,7 @@ import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
-const SITE_URL = "https://www.tertiaryinfotech.com";
+const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
 const PAGE_URL = `${SITE_URL}/pei-course-submission`;
 
 export const metadata: Metadata = {

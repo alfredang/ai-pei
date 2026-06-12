@@ -30,6 +30,7 @@ Every change to the cover image must obey **all** of these:
 - **Trigger from editor** — [src/components/admin/PostEditorForm.tsx](src/components/admin/PostEditorForm.tsx)
   - Called automatically after "Generate full post" when Claude returns a title.
   - The "✨ AI Regenerate Image" button on the Featured image card re-runs it with the current title + suggested category as the kicker.
+  - Kickers align to Tertiary Infotech Academy's three pillars plus a general bucket: **AI**, **Cybersecurity**, **Blockchain**, and **Career / Study in Singapore**. Illustrative accent mapping within the existing palette — Cybersecurity → cyan, AI → purple, Blockchain → amber. The color tokens and dimensions below are unchanged regardless of kicker.
 - **Consumed in** — [src/app/blog/page.tsx](src/app/blog/page.tsx) (list, inside `<div className="aspect-[16/10] overflow-hidden">`) and [src/app/blog/[slug]/page.tsx](src/app/blog/[slug]/page.tsx) (post detail, full bleed).
 
 ## SVG anatomy (mental model)
@@ -38,15 +39,15 @@ Every change to the cover image must obey **all** of these:
 0 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1200
 │   ──── 2px cyan top border ────                       │
 │                                                       │
-│   100 ─→  [ AI AUTOMATION ]   (kicker, cyan mono 20)  │
+│   100 ─→  [ CYBERSECURITY ]   (kicker, cyan mono 20) │
 │                                                       │
-│   100 ─→  Why Kajima Chose                            │
-│           AI Governance                                │
-│           Training in 2026   (title, sans-serif 64)   │
+│   100 ─→  Why Study an                                │
+│           Advanced Certificate                         │
+│           in Singapore   (title, sans-serif 64)       │
 │                                                       │
 │                                                       │
 │   ┌──┐   Tertiary Infotech Academy                    │
-│   │TI│   tertiaryinfotech.com   (brand, sans 18 / 13) │
+│   │TI│   tertiaryinfotech.edu.sg   (brand, sans 18 / 13) │
 │   └──┘                                                │
 0 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 750
 ```

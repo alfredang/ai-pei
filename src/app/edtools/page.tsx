@@ -7,7 +7,7 @@ import { ServiceLeadForm } from "@/components/sections/ServiceLeadForm";
 import { EDTOOLS, ED_TOOL_CATEGORIES, getEdToolsGrouped } from "@/lib/edtools-data";
 import { HiArrowUpRight } from "react-icons/hi2";
 
-const PAGE_URL = "https://www.tertiaryinfotech.com/edtools";
+const PAGE_URL = "https://www.tertiaryinfotech.edu.sg/edtools";
 
 export const metadata: Metadata = {
   title: "50+ EdTools — Interactive Classroom, Analytics, Cybersecurity, Finance",

@@ -3,7 +3,7 @@ import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
-const PAGE_URL = "https://www.tertiaryinfotech.com/privacy";
+const PAGE_URL = "https://www.tertiaryinfotech.edu.sg/privacy";
 const COMPANY = "Tertiary Infotech Academy Pte Ltd";
 const BRAND = "Tertiary Infotech Academy";
 const EFFECTIVE_DATE = "16 May 2026";
@@ -79,10 +79,10 @@ export default function PrivacyPage() {
                   {COMPANY} (&ldquo;{BRAND}&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, or &ldquo;our&rdquo;) is committed to
                   protecting the privacy of visitors to{" "}
                   <a
-                    href="https://www.tertiaryinfotech.com"
+                    href="https://www.tertiaryinfotech.edu.sg"
                     className="text-(--color-cyan) hover:underline"
                   >
-                    www.tertiaryinfotech.com
+                    www.tertiaryinfotech.edu.sg
                   </a>{" "}
                   and users of our training and consultancy services. This
                   Privacy Policy explains what personal data we collect, why we

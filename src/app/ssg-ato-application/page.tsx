@@ -19,7 +19,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SsgAtoLeadForm } from "@/components/sections/SsgAtoLeadForm";
 
-const PAGE_URL = "https://www.tertiaryinfotech.com/ssg-ato-application";
+const PAGE_URL = "https://www.tertiaryinfotech.edu.sg/ssg-ato-application";
 
 export const metadata: Metadata = {
   title: "SSG ATO Application Singapore — Become a Registered Training Provider",
@@ -228,7 +228,7 @@ const serviceLd = {
   provider: {
     "@type": "Organization",
     name: "Tertiary Infotech Academy",
-    url: "https://www.tertiaryinfotech.com",
+    url: "https://www.tertiaryinfotech.edu.sg",
   },
   areaServed: { "@type": "Country", name: "Singapore" },
   description:
@@ -262,7 +262,7 @@ const faqLd = {
   })),
 };
 
-const SITE_URL = "https://www.tertiaryinfotech.com";
+const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
 const breadcrumbLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",

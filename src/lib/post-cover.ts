@@ -126,7 +126,7 @@ export function buildPostCoverSvg(title: string, kicker?: string): string {
     <rect width="48" height="48" rx="8" fill="url(#glow1)" stroke="#5C00E5" stroke-opacity="0.6"/>
     <text x="24" y="32" fill="#ffffff" font-family="monospace" font-size="20" font-weight="700" text-anchor="middle">TI</text>
     <text x="64" y="22" fill="#ffffff" font-family="sans-serif" font-size="18" font-weight="600">Tertiary Infotech Academy</text>
-    <text x="64" y="42" fill="#59EBFD" font-family="monospace" font-size="13" letter-spacing="1.5">tertiaryinfotech.com</text>
+    <text x="64" y="42" fill="#59EBFD" font-family="monospace" font-size="13" letter-spacing="1.5">tertiaryinfotech.edu.sg</text>
   </g>
 </svg>`;
 }

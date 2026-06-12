@@ -4,7 +4,7 @@ import { pages, posts, courses } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { EDTOOLS } from "@/lib/edtools-data";
 
-const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.tertiaryinfotech.com";
+const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.tertiaryinfotech.edu.sg";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [allPages, allPosts, allCourses] = await Promise.all([

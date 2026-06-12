@@ -17,7 +17,7 @@ import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
 
-const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.tertiaryinfotech.com";
+const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.tertiaryinfotech.edu.sg";
 
 // Shared boilerplate — identical for every course, edited here once.
 const VENUE =

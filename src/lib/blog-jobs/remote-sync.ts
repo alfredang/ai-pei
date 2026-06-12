@@ -1,7 +1,7 @@
 /**
  * Mirror a single newly-created post to the production CMS via the existing
  * /api/admin/sync/posts endpoint. Used by the weekly-blog orchestrator so a
- * local "Run now" actually publishes to www.tertiaryinfotech.com.
+ * local "Run now" actually publishes to www.tertiaryinfotech.edu.sg.
  *
  * When run on the production container itself, REMOTE_SYNC_URL is unset and
  * this is a no-op — the post is already on prod.

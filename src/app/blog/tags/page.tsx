@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/blog/tags" },
   openGraph: {
     type: "website",
-    url: "https://www.tertiaryinfotech.com/blog/tags",
+    url: "https://www.tertiaryinfotech.edu.sg/blog/tags",
     title: "All Tags — Tertiary Infotech Academy Journal",
     description:
       "Every tag in our journal — AI, SSG, WSQ, TPQA, TMS, agentic AI and more.",

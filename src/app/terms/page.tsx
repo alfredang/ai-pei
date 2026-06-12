@@ -3,7 +3,7 @@ import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
-const PAGE_URL = "https://www.tertiaryinfotech.com/terms";
+const PAGE_URL = "https://www.tertiaryinfotech.edu.sg/terms";
 const COMPANY = "Tertiary Infotech Academy Pte Ltd";
 const BRAND = "Tertiary Infotech Academy";
 const EFFECTIVE_DATE = "16 May 2026";
@@ -78,10 +78,10 @@ export default function TermsPage() {
                   These Terms of Service (&ldquo;Terms&rdquo;) govern your access to and use of
                   the website at{" "}
                   <a
-                    href="https://www.tertiaryinfotech.com"
+                    href="https://www.tertiaryinfotech.edu.sg"
                     className="text-(--color-cyan) hover:underline"
                   >
-                    www.tertiaryinfotech.com
+                    www.tertiaryinfotech.edu.sg
                   </a>
                   , together with all training, consultancy, and digital content
                   services (collectively, the &ldquo;Services&rdquo;) operated by{" "}

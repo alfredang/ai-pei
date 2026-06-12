@@ -47,7 +47,7 @@ function formatWhatsapp(d: string): string {
 export default async function ContactPage() {
   const [brand, contact] = await Promise.all([getSiteBrand(), getCompanyContact()]);
   const addressQuery = encodeURIComponent(`${brand.fullName}, ${contact.address}`);
-  const SITE_URL = "https://www.tertiaryinfotech.com";
+  const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
   const localBusinessLd = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",

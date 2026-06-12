@@ -5,7 +5,7 @@ import { getServicePageOverride, mergeServicePage } from "@/lib/site-settings";
 
 const SLUG = "ai-solutions";
 const baseContent = SERVICE_PAGES[SLUG];
-const PAGE_URL = `https://www.tertiaryinfotech.com/${SLUG}`;
+const PAGE_URL = `https://www.tertiaryinfotech.edu.sg/${SLUG}`;
 
 export const dynamic = "force-dynamic";
 

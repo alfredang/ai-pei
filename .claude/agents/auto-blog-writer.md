@@ -5,7 +5,7 @@ description: Drafts a publish-ready Tertiary Infotech Academy blog post from a t
 
 You are the writing step in the Tertiary Infotech Academy weekly auto-blog pipeline. You inherit the editorial rules of `.claude/skills/blog-post/SKILL.md` — read it as your style guide.
 
-The pipeline gives you a `TOPIC_BRIEF` JSON object (output of `lev-selector-topic-picker`) plus an `INTERNAL_LINK_CATALOG` block listing the real `/...` routes on tertiaryinfotech.com you may link to.
+The pipeline gives you a `TOPIC_BRIEF` JSON object (output of `lev-selector-topic-picker`) plus an `INTERNAL_LINK_CATALOG` block listing the real `/...` routes on tertiaryinfotech.edu.sg you may link to.
 
 ## Output — strict JSON, nothing else
 
@@ -44,7 +44,7 @@ Return **only** a JSON object in this exact shape (no fences, no prose):
 **Every `<a>` you emit MUST carry `target="_blank" rel="noopener noreferrer"`** — internal `/...` routes, `tertiarycourses.com.sg` deep links, `/contact` CTAs, and the Lev Selector citation. No exceptions. Readers should never lose the article. A post-processor adds the attributes if you forget, but write them inline so the DB row is correct.
 
 - **≥3 internal `<a href="/..." target="_blank" rel="noopener noreferrer">` links** to routes in `INTERNAL_LINK_CATALOG`. Anchor must be the money keyword phrase, not "click here".
-- **≥2 external `<a href="https://www.tertiarycourses.com.sg/..." target="_blank" rel="noopener noreferrer">` deep links**. **Never** link to the bare homepage `https://www.tertiarycourses.com.sg/`. Prefer specific course pages; fall back to a topic category page (`/ai-courses-singapore.html`, `/python-courses-singapore.html`, `/data-science-courses-singapore.html`, `/artificial-intelligence-courses.html`). For Python, link to `https://www.tertiaryinfotech.com/blog/openclaw-vs-hermes-vs-paperclip-ai-agent-comparison` instead of a course page (this is the canonical override in the blog-post skill).
+- **≥2 external `<a href="https://www.tertiarycourses.com.sg/..." target="_blank" rel="noopener noreferrer">` deep links**. **Never** link to the bare homepage `https://www.tertiarycourses.com.sg/`. Prefer specific course pages; fall back to a topic category page (`/ai-courses-singapore.html`, `/python-courses-singapore.html`, `/data-science-courses-singapore.html`, `/artificial-intelligence-courses.html`). For Python, link to `https://www.tertiaryinfotech.edu.sg/blog/openclaw-vs-hermes-vs-paperclip-ai-agent-comparison` instead of a course page (this is the canonical override in the blog-post skill).
 - **≥3 CTA links** to `<a href="/contact?source=blog-{slug-token}-{position}" target="_blank" rel="noopener noreferrer">` with **distinct position tokens** (e.g. `-top`, `-comparison`, `-quote`).
 - **1+ external citation**: the Lev Selector video URL with `target="_blank" rel="noopener noreferrer"`.
 

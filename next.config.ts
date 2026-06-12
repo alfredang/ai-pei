@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns: [
-      { protocol: "https", hostname: "www.tertiaryinfotech.com" },
+      { protocol: "https", hostname: "www.tertiaryinfotech.edu.sg" },
       // Cloudflare R2 public buckets (logo, uploaded media).
       { protocol: "https", hostname: "*.r2.dev" },
       // R2 custom domain / S3 endpoint.

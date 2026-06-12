@@ -270,7 +270,7 @@ ${features.length > 0 ? `<h2>Key features</h2><ul>${features.map((f) => `<li>${e
   <li><a href="/ai-solutions?source=${escapeHtml(ctaSource)}-aisol">Browse our AI Solutions service →</a></li>
 </ul>
 
-<p><em>Built and maintained by <a href="https://www.tertiaryinfotech.com">Tertiary Infotech Academy</a> — see our <a href="/ai-solutions?source=${escapeHtml(ctaSource)}-foot">AI Solutions</a>, <a href="/ai-agent-deployment?source=${escapeHtml(ctaSource)}-foot">AI Agent Deployment</a>, and <a href="/training-management-system?source=${escapeHtml(ctaSource)}-foot">Training Management System</a> services.</em></p>
+<p><em>Built and maintained by <a href="https://www.tertiaryinfotech.edu.sg">Tertiary Infotech Academy</a> — see our <a href="/ai-solutions?source=${escapeHtml(ctaSource)}-foot">AI Solutions</a>, <a href="/ai-agent-deployment?source=${escapeHtml(ctaSource)}-foot">AI Agent Deployment</a>, and <a href="/training-management-system?source=${escapeHtml(ctaSource)}-foot">Training Management System</a> services.</em></p>
 `.trim();
 }
 

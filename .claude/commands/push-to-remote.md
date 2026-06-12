@@ -32,7 +32,7 @@ Push local Postgres rows to the production database through the bearer-token syn
    ```
    Stream the script output verbatim to the user. The script runs resources in dependency order (`taxonomy → settings → menus → pages → posts → courses`) regardless of argument order.
 
-5. **Verify**. After a successful push, hit a public production URL to spot-check (`curl -sI https://www.tertiaryinfotech.com/` for nav, or fetch a specific page's HTML and grep for the new content). Report back the verification result.
+5. **Verify**. After a successful push, hit a public production URL to spot-check (`curl -sI https://www.tertiaryinfotech.edu.sg/` for nav, or fetch a specific page's HTML and grep for the new content). Report back the verification result.
 
 ## Safety rules
 

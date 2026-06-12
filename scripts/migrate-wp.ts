@@ -2,7 +2,7 @@
  * Phase 4: WordPress → Postgres CMS migration.
  *
  * Parses tertiar2_newTIWp2025.sql, extracts wp_posts (post / page) + their meta,
- * downloads referenced images from www.tertiaryinfotech.com into public/blog/,
+ * downloads referenced images from www.tertiaryinfotech.edu.sg into public/blog/,
  * rewrites <img src> to local paths, and inserts into pages/posts/redirects.
  *
  * Run with: pnpm migrate:wp
@@ -21,7 +21,7 @@ import { slugify } from "../src/lib/slugify";
 import sanitizeHtml from "sanitize-html";
 
 const SQL_PATH = path.join(process.cwd(), "tertiar2_newTIWp2025.sql");
-const LIVE_HOST = "https://www.tertiaryinfotech.com";
+const LIVE_HOST = "https://www.tertiaryinfotech.edu.sg";
 const IMAGE_DIR = path.join(process.cwd(), "public", "blog");
 
 type WpRow = {

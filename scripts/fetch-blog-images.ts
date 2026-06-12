@@ -4,7 +4,7 @@ import path from "node:path";
 import { db } from "../src/db";
 import { posts } from "../src/db/schema";
 
-const LIVE = "https://www.tertiaryinfotech.com";
+const LIVE = "https://www.tertiaryinfotech.edu.sg";
 const BLOG_DIR = path.resolve(process.cwd(), "public/blog");
 
 async function fetchHtml(url: string): Promise<string | null> {

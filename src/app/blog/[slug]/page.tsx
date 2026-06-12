@@ -131,7 +131,7 @@ export default async function PostPage({
   const bodyHtml = stripLeadingImage(post.contentHtml ?? "", post.featuredImage);
   const { intro: introHtml, rest: restHtml } = splitIntroSection(bodyHtml);
 
-  const SITE_URL = "https://www.tertiaryinfotech.com";
+  const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
   const postUrl = `${SITE_URL}/blog/${post.slug}`;
   const articleLd = {
     "@context": "https://schema.org",

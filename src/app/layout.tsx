@@ -22,7 +22,7 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
-const SITE_URL = "https://www.tertiaryinfotech.com";
+const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

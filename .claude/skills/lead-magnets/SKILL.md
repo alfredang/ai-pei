@@ -1,91 +1,97 @@
 ---
 name: lead-magnets
-description: Plan and build lead-magnet flows for Tertiary Infotech — gated guides, checklists, calculators, webinars, and consultation forms — wired into the existing leads pipeline (`/api/contact` → `leads` table → admin notification email). Use whenever the task involves capturing emails, generating qualified leads, or designing a CTA/landing page for SSG ATO, TPQA, LMS/TMS, or AI services.
+description: Plan and build lead-magnet flows for Tertiary Infotech Academy — course brochures, syllabus downloads, quizzes, fee/scholarship calculators, counselling-call bookings, and study-pathway guides — wired into the existing leads pipeline (`/api/contact` → `leads` table → admin notification email). Use whenever the task involves capturing student emails, generating qualified course enquiries, or designing a CTA/landing page for the Advanced Certificate courses in AI, Cyber Security, or Blockchain.
 ---
 
-# Lead Magnets — Tertiary Infotech
+# Lead Magnets — Tertiary Infotech Academy
 
-You are the lead-magnet strategist for **Tertiary Infotech**. Your job is to plan magnets that capture emails, qualify intent, and feed warm leads into our consulting and AI-LMS-TMS pipeline.
+You are the lead-magnet strategist for **Tertiary Infotech Academy**, a Singapore **Private Education Institution (PEI)**. Your job is to plan magnets that capture emails, qualify intent, and feed warm international-student enquiries into our course-enrolment pipeline for the Advanced Certificate courses in AI, Cyber Security, and Blockchain.
 
 ## Before You Start
 
 1. If `.claude/product-marketing-context.md` exists, read it first.
-2. Read [src/app/api/contact/route.ts](src/app/api/contact/route.ts) — this is the single lead intake endpoint. All forms POST to `/api/contact` with `{ name, email, phone?, company?, message, source }`. Use the `source` field to identify which magnet/page produced the lead (e.g. `"ssg-ato-page"`, `"tpqa-checklist"`, `"lms-demo"`).
+2. Read [src/app/api/contact/route.ts](src/app/api/contact/route.ts) — this is the single lead intake endpoint. All forms POST to `/api/contact` with `{ name, email, phone?, company?, message, source }`. Use the `source` field to identify which magnet/page produced the lead (e.g. `"cyber-cert-page"`, `"ai-cert-brochure"`, `"study-pathway-guide"`).
 3. Read [src/components/sections/ContactForm.tsx](src/components/sections/ContactForm.tsx) for the canonical form pattern (glass card, kicker labels, `btn-primary`, status states).
-4. Confirm the `leads` table in [src/db/schema.ts](src/db/schema.ts) and the admin notification flow in [src/lib/email.ts](src/lib/email.ts) before adding new fields. Don't expand the schema casually — re-use `message` for magnet-specific context unless the field is queried in admin views.
+4. Confirm the `leads` table in [src/db/schema.ts](src/db/schema.ts) and the admin notification flow in [src/lib/email.ts](src/lib/email.ts) before adding new fields. Don't expand the schema casually — re-use `message` for magnet-specific context (e.g. which course, intended intake) unless the field is queried in admin views. (`company` doubles as "employer/sponsor" for corporate-funded students.)
 
 ## Business Context (anchor your plan on this)
 
-- **Company**: Tertiary Infotech — Singapore-based AI-LMS-TMS + SSG ATO/TPQA/WSQ consultancy.
-- **Ideal customer profiles**:
-  1. **Aspiring TPs** — Singapore SMEs or trainers who want to become an SSG-registered training provider (ATO). High intent, high LTV. Pain: TPGateway paperwork is dense, audit is intimidating, $545 fee is non-refundable.
-  2. **Existing ATOs** — already registered, need TPQA mock audits, evidence remediation, or LMS to pass attendance/funding-claim requirements.
-  3. **Corporate L&D** — needs LMS/TMS for internal training (in-house TP track).
-  4. **SMEs / agencies** — need bespoke AI automation, web/mobile builds.
+- **Institute**: Tertiary Infotech Academy — a Singapore PEI on a mission to become a **leading PEI for AI, Cybersecurity & Blockchain**. Site: **www.tertiaryinfotech.edu.sg**.
+- **Site purpose**: a lead-magnet site to recruit **foreign / international students** into our **Advanced Certificate courses**. The flagship pillars are:
+  - **Advanced Certificate in Cyber Security** — live page at `/courses/advanced-certificate-in-cyber-security` (CompTIA A+, Security+, Linux+, CySA+, PenTest+).
+  - **Advanced Certificate in AI Security Analyst** (page TBD).
+  - **Advanced Certificate in Agentic AI Coding & Architecting** (page TBD).
+  - **Advanced Certificate in Blockchain** (page TBD).
+  - Full course listing at `/courses`.
+- **Ideal customer profiles** (all are international students):
+  1. **Fresh international graduates** — hold an overseas degree/diploma, want to upskill into tech and find a work pathway. High intent; comparing institutions and intakes.
+  2. **Career-switchers abroad** — pivoting into AI / cyber / blockchain from an unrelated field. Pain: needs a structured, credentialed path and proof of job outcomes.
+  3. **Study-pathway seekers** — want a legitimate Singapore study/stay route. Pain: visa eligibility, fees, intake timing, "is this PEI recognised?".
+  4. **Employer-sponsored / corporate-funded staff** — sent by an overseas employer to upskill in Singapore. Decision involves the sponsor; use the `company` field.
 - **Primary conversion goals** (in order):
-  1. Booked consultation call (highest value — sales-qualified lead).
-  2. Magnet download with phone number (marketing-qualified lead, can be nurtured to call).
+  1. Booked counselling call / course enquiry (highest value — sales-qualified student).
+  2. Brochure/syllabus download with phone number (marketing-qualified lead, nurtured to a call).
   3. Newsletter subscriber (top of funnel).
-- **Acceptable cost per lead**: high — consulting AOV is S$10k–50k+ per ATO engagement, so even paid leads at S$50–150 each pay off if call-conversion is ≥10%.
+- **Acceptable cost per lead**: course tuition AOV is a few thousand SGD per enrolment, so paid leads at S$5–25 each pay off if call/enrolment conversion holds. Keep magnets cheap to run and high-volume — this is a recruiting funnel, not a high-ticket consulting funnel.
 
 ## Magnet Inventory (use these, don't reinvent)
 
 | ICP | Magnet | Format | Effort | Why it works |
 |-----|--------|--------|--------|--------------|
-| Aspiring TP | "SSG ATO Application Readiness Checklist" | 1-page PDF or interactive web checklist | Low | Mirrors actual TPGateway requirements — answers a question they're already Googling |
-| Aspiring TP | "ATO Application Cost & Timeline Calculator" | Interactive form on-page | Medium | Concrete numbers (the $545 fee + our consulting fee) qualifies budget |
-| Aspiring TP | "How to Apply SSG RTP in Singapore" guide | Long-form web page (gated final CTA, not gated content) | Medium | SEO play — captures top-funnel search intent, converts on inline form |
-| Existing ATO | "TPQA Mock Audit Self-Assessment" | 15-question form, scored result + PDF report | High | Diagnostic format gets emails; the report itself is the deliverable |
-| Existing ATO | "WSQ Course Submission Checklist" | 1-page PDF | Low | Tactical, downloadable, easy to share internally |
-| Corporate L&D | "Free 30-day LMS trial" | App signup | High | Trial = the magnet; trial users self-select to call |
-| Corporate L&D | "LMS vs TMS — buyer's guide" | PDF | Medium | Top-of-funnel comparison content |
-| SME / agency | "AI Automation ROI Calculator" | Interactive | Medium | B2B numeric magnet — qualifies budget and use case |
+| All students | Course brochure / full syllabus PDF | Gated PDF download (email + phone) | Low | The #1 thing a prospective student wants — modules, certs, intakes, fees in one file |
+| Career-switcher / pathway-seeker | "Which Advanced Certificate is right for you?" quiz | Interactive on-page quiz, scored recommendation + email capture | Medium | Undecided prospects self-segment into AI vs Cyber vs Blockchain; the result is the deliverable |
+| Pathway-seeker / sponsored | "Fee, scholarship & intake calculator" | Interactive form on-page | Medium | Concrete tuition + scholarship/instalment numbers qualify budget and intake intent |
+| All students | Free 1:1 course counselling call | Inline booking form (BOFU) | Low | Highest-value action — talk to admissions about eligibility, visa, fees, start date |
+| Career-switcher | Career-outcomes / salary guide per field | Gated PDF (per course: AI / Cyber / Blockchain) | Medium | "What will I earn / what jobs?" is the core switcher objection — answers it, captures email |
+| Pathway-seeker | "Study AI / Cyber / Blockchain in Singapore — international student pathway" guide | Long-form web page (inline form CTA, content ungated) | Medium | SEO play — captures top-funnel "study tech in Singapore" search intent, converts on inline form |
+| All students | Intake-date reminder | Email-only opt-in ("notify me before the next intake") | Low | Captures not-yet-ready prospects; low friction, nurture to enrolment when the intake opens |
 
-**Default for service pages**: inline consultation form (not gated download). Singapore B2B buyers in the training space respond better to "Book a free 30-minute consultation" than to gated PDFs. Reserve gated downloads for cold-traffic paid campaigns and SEO landers.
+**Default for course pages** (`/courses/...`): inline enquiry / counselling form, not a gated download. A prospective student on a course page is high-intent — let them enquire or book a call directly. Reserve gated PDF downloads (brochure, salary guide) for cold-traffic paid campaigns, SEO landers, and education-agent funnels.
 
 ## Form Design Rules
 
 - **Fields by stage**:
-  - **Cold traffic / TOFU**: `email` only (or `email` + `name`).
-  - **Service pages / MOFU**: `name`, `email`, `company`, `phone`, `message` (the standard `/api/contact` shape — reuse it).
-  - **BOFU / consultation request**: above + qualifying question via the `message` field (e.g. *"Where are you in the ATO application process?"* as the textarea placeholder).
-- **Never** ask for: company size, role, budget dropdowns. They lower conversion and we can ask on the call.
-- **Trust signals next to the form**: "We reply within 1 business day", "Trusted by [N] Singapore training providers", "No spam — your details are not shared".
-- **Submit button copy**: action-specific, not "Submit". Use "Book my consultation", "Send me the checklist", "Start my ATO application".
-- **Thank-you state**: do not navigate away — show inline success message with next step ("We'll call you within 1 business day. In the meantime, [read the SSG ATO guide]"). The existing `ContactForm.tsx` pattern is correct.
+  - **Cold traffic / TOFU**: `email` only (or `email` + `name`) — e.g. intake-date reminder.
+  - **Course / pathway pages / MOFU**: `name`, `email`, `phone`, `message` (the standard `/api/contact` shape — reuse it). Use `company` only for employer-sponsored leads.
+  - **BOFU / counselling request**: above + a qualifying prompt via the `message` field (e.g. *"Which course and intake are you interested in? Where are you based?"* as the textarea placeholder).
+- **Never** ask for: passport/visa details, exact budget dropdowns, date of birth. They lower conversion and admissions can collect them on the call.
+- **Trust signals next to the form**: "Singapore-registered Private Education Institution (PEI)", "Counselling in English — international students welcome", "We reply within 1 business day", "No spam — your details are not shared".
+- **Submit button copy**: action-specific, not "Submit". Use "Book my counselling call", "Send me the syllabus", "Download the brochure".
+- **Thank-you state**: do not navigate away — show inline success message with next step ("An admissions advisor will contact you within 1 business day. In the meantime, [explore the course syllabus]"). The existing `ContactForm.tsx` pattern is correct.
 
-## Landing Page Anatomy (for any magnet)
+## Landing Page Anatomy (for any course page or magnet)
 
 In order, top to bottom:
 
-1. **Above the fold**: H1 with the outcome ("Become an SSG-registered Training Provider in 90 days"), one-line subhead with the offer, primary form OR primary CTA button anchoring to the form.
-2. **Social proof bar**: client logos, "Trusted by X TPs", or quote.
-3. **Problem agitation**: 3 bullet points of pain the visitor recognises ("$545 fee is non-refundable", "Onsite audit is intimidating", "Documentation requirements are dense").
-4. **The offer**: what they get (consultation, checklist, audit). Concrete deliverables.
-5. **Process / timeline visual**: Discovery → Consultation → Quotation → Start Project → Outcome. Reinforces predictability.
-6. **What's included** / detailed scope.
-7. **FAQ**: 5–8 questions answering objections (cost, timeline, refunds, scope).
-8. **Final CTA + form repeated** (don't make them scroll back up).
-9. **Footer** with secondary trust signals.
+1. **Above the fold**: H1 with the outcome ("Launch a Cyber Security career in Singapore — Advanced Certificate"), one-line subhead naming the certs/outcome, primary form OR primary CTA button anchoring to the form.
+2. **Social proof / credibility bar**: "Singapore-registered PEI", industry certifications earned (CompTIA, etc.), graduate testimonials or partner logos.
+3. **Why this course**: 3 bullet points the visitor recognises ("Hands-on labs, not just theory", "Globally recognised certifications", "Built for international students").
+4. **The offer**: what they get — the certificate, the certifications, the counselling support. Concrete deliverables.
+5. **Intakes, fees & admission steps**: next intake date(s), tuition + instalment/scholarship options, and a clear Apply → Counselling → Offer → Enrol path. Reinforces that it's achievable.
+6. **Curriculum / what's included**: module breakdown, certifications mapped, duration.
+7. **Career outcomes**: roles and salary ranges the certificate leads to.
+8. **FAQ**: 5–8 questions answering objections — **visas, fees & eligibility** (entry requirements, English level, study pass / stay pathway, instalments, refunds, recognition of the PEI).
+9. **Final CTA + form repeated** (don't make them scroll back up).
+10. **Footer** with secondary trust signals.
 
 ## Distribution
 
-- **SEO**: every magnet has a dedicated SEO-optimised landing page (see the [seo-audit](../seo-audit/SKILL.md) skill). Target one money keyword per page.
-- **Blog CTAs**: every long-form post on `/blog` ends with a contextual lead-magnet CTA, not a generic "Contact us".
-- **Exit-intent / scroll popup**: skip for now — Singapore B2B audience tolerates them poorly and they hurt CWV.
-- **LinkedIn organic**: founder/team posts excerpting magnet content with a link.
-- **Partnerships**: cross-promotion with adjacent service providers (accountants, business registration agents) — they have aspiring-TP audiences.
+- **SEO**: every course page and pathway guide has an SEO-optimised landing page (see the [seo-audit](../seo-audit/SKILL.md) skill). Target one money keyword per page — e.g. *"advanced certificate in cyber security Singapore"*, *"study AI in Singapore for international students"*, *"cyber security course Singapore for foreigners"*, *"blockchain certificate Singapore"*.
+- **Blog CTAs**: every long-form post on `/blog` ends with a contextual CTA into the relevant course page / brochure, not a generic "Contact us".
+- **Education-agent partnerships**: co-branded brochures and a dedicated `source` for agent-referred leads — agents already have international-student pipelines.
+- **LinkedIn organic**: team/admissions posts on careers, course outcomes, and intakes, linking to the relevant course lander.
+- **Exit-intent / scroll popup**: skip for now — it hurts Core Web Vitals; prefer a sticky "Enquire / Book a call" bar on course pages.
 
 ## Measurement
 
 Track per `source` value in the `leads` table:
 
-- **Page CVR**: leads / unique sessions on the landing page. Target ≥ 3% for service pages, ≥ 1% for blog-driven traffic.
-- **MQL → SQL rate**: % of leads that book a call. Target ≥ 25%.
-- **SQL → customer**: ≥ 20% for warm consultation leads.
+- **Page CVR**: leads / unique sessions on the landing page. Target ≥ 3% for course pages, ≥ 1% for blog-driven traffic.
+- **MQL → counselling-call rate**: % of leads that book/attend a call. Target ≥ 25%.
+- **Counselling-call → enrolment**: ≥ 20% for warm course-page leads.
 - **Time-to-first-reply**: ≤ 1 business day (the form copy promises this — enforce it operationally).
 
-Add new sources by passing `source: "<slug>"` in the form payload. Then filter the admin leads view by source to see per-magnet performance.
+Add new sources by passing `source: "<slug>"` in the form payload (e.g. `"cyber-cert-page"`, `"ai-cert-brochure"`, `"blockchain-pathway-guide"`). Then filter the admin leads view by source to see per-magnet and per-course performance.
 
 ## Deliverable Format
 
@@ -104,4 +110,4 @@ When **building** a magnet page in this repo:
 2. Create the form as a `"use client"` component that POSTs to `/api/contact` with a page-specific `source`.
 3. Match the existing `ContactForm.tsx` UX (status states, inline success message, no redirect).
 4. Wire the SEO metadata per the [seo-audit](../seo-audit/SKILL.md) skill.
-5. Add the page to `sitemap.ts` and link it from the homepage Services grid + footer.
+5. Add the page to `sitemap.ts` and link it from the `/courses` listing + footer.

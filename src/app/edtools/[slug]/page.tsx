@@ -8,7 +8,7 @@ import { ServiceLeadForm } from "@/components/sections/ServiceLeadForm";
 import { EDTOOLS, getEdToolBySlug } from "@/lib/edtools-data";
 import { HiArrowUpRight, HiCheck } from "react-icons/hi2";
 
-const SITE_URL = "https://www.tertiaryinfotech.com";
+const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
 
 type Props = { params: Promise<{ slug: string }> };
 
