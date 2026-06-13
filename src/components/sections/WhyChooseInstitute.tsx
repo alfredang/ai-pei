@@ -24,7 +24,7 @@ const REASONS = [
 
 export function WhyChooseInstitute() {
   return (
-    <section id="why-us" className="relative py-20 overflow-hidden">
+    <section id="why-us" className="relative py-7 overflow-hidden">
       <div className="grid-bg opacity-30" />
       <div
         className="glow-blob"
@@ -40,7 +40,6 @@ export function WhyChooseInstitute() {
 
       <Container className="relative">
         <div className="max-w-3xl mx-auto text-center mb-14">
-          <div className="kicker mb-4">[ WHY SINGAPORE ]</div>
           <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
             Why Study Tech in <span className="gradient-text">Singapore</span>?
           </h2>
@@ -79,12 +78,12 @@ export function WhyChooseInstitute() {
           </div>
           <div className="flex flex-wrap items-center justify-center gap-4">
             {[
-              "[PLACEHOLDER: Accreditation 1]",
-              "[PLACEHOLDER: Accreditation 2]",
-              "[PLACEHOLDER: Certification Partner]",
-              "[PLACEHOLDER: Industry Partner]",
-              "[PLACEHOLDER: Hiring Partner]",
-              "[PLACEHOLDER: Test Centre]",
+              "CPE-Registered PEI",
+              "English-Medium Instruction",
+              "Industry-Aligned Curriculum",
+              "Globally Portable Certificates",
+              "Student Pass Guidance",
+              "Career & Relocation Support",
             ].map((partner) => (
               <span
                 key={partner}

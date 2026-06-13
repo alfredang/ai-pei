@@ -66,7 +66,7 @@ export default async function CoursesIndex() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <section className="relative pt-24 pb-10 overflow-hidden">
+        <section className="relative pt-8 pb-8 overflow-hidden">
           <div className="grid-bg opacity-60" />
           <div
             className="glow-blob"

@@ -5,8 +5,9 @@ import { menus, menuItems } from "../src/db/schema";
 const ITEMS = [
   { label: "Home", href: "/" },
   { label: "PEI Advanced Certificate", href: "/courses" },
+  { label: "Study in Singapore", href: "/study-in-singapore" },
   { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/#contact" },
+  { label: "Contact", href: "/contact" },
 ];
 
 async function main() {

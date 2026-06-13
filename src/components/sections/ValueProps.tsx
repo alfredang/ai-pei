@@ -27,7 +27,7 @@ const PROPS = [
 
 export function ValueProps() {
   return (
-    <section className="relative py-20 overflow-hidden">
+    <section className="relative py-7 overflow-hidden">
       <Container>
         <div className="grid md:grid-cols-3 gap-6">
           {PROPS.map((prop) => {

@@ -167,7 +167,7 @@ export default async function PostPage({
   return (
     <>
       <Navbar />
-      <main className="pt-16">
+      <main className="pt-4">
         <article className="py-6">
           <Container className="max-w-4xl">
             <div className="grid md:grid-cols-2 gap-8 items-start mb-6">

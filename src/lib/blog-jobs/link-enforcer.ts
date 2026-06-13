@@ -106,11 +106,11 @@ export function enforceLinks(
   }
 
   const internalCandidates = [
-    { href: "/ai-solutions", text: "Full Stack AI-Enabled Solutions" },
-    { href: "/ai-agent-deployment", text: "AI Agent Deployment" },
-    { href: "/learning-management-system", text: "Learning Management System" },
-    { href: "/training-management-system", text: "Training Management System" },
-    { href: "/wsq-course-development", text: "WSQ Course Development" },
+    { href: "/advanced-certificate-in-ai-security-analyst", text: "Advanced Certificate in AI Security Analyst" },
+    { href: "/advanced-certificate-in-agentic-ai-coding", text: "Advanced Certificate in Agentic AI Coding" },
+    { href: "/advanced-certificate-in-blockchain", text: "Advanced Certificate in Blockchain" },
+    { href: "/study-in-singapore", text: "Study in Singapore" },
+    { href: "/courses", text: "all Advanced Certificate courses" },
   ];
   const tcCandidates = [
     {
@@ -132,7 +132,7 @@ export function enforceLinks(
   for (let i = 0; i < needInternal && i < internalCandidates.length; i++) {
     const c = internalCandidates[i];
     lis.push(
-      `<li><a href="${c.href}" target="_blank" rel="noopener noreferrer">${c.text}</a> — explore the service page.</li>`,
+      `<li><a href="${c.href}" target="_blank" rel="noopener noreferrer">${c.text}</a> — explore the course.</li>`,
     );
   }
   for (let i = 0; i < needTC && i < tcCandidates.length; i++) {

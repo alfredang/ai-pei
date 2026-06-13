@@ -108,7 +108,7 @@ export default async function CmsPage({
   return (
     <>
       <Navbar />
-      <main className="pt-16">
+      <main className="pt-4">
         <Container className="max-w-3xl py-16">
           <h1 className="text-3xl md:text-5xl font-bold mb-6">{page.title}</h1>
           {githubUrl && (

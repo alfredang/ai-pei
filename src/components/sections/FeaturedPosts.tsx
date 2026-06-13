@@ -144,7 +144,6 @@ export async function FeaturedPosts() {
         <Container>
           <div className="flex items-end justify-between mb-6 gap-6 flex-wrap">
             <div>
-              <div className="kicker mb-4">[ LATEST ]</div>
               <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
                 From our blog
               </h2>

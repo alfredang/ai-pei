@@ -7,7 +7,6 @@ import { WhyChooseInstitute } from "@/components/sections/WhyChooseInstitute";
 import { Programs } from "@/components/sections/Programs";
 import { StatsStrip } from "@/components/sections/StatsStrip";
 import { CareersOutcomes } from "@/components/sections/CareersOutcomes";
-import { SocialProof } from "@/components/sections/SocialProof";
 import { AdmissionsSection } from "@/components/sections/AdmissionsSection";
 import { FaqSection } from "@/components/sections/FaqSection";
 import { CTABanner } from "@/components/sections/CTABanner";
@@ -16,7 +15,7 @@ import { FeaturedPosts } from "@/components/sections/FeaturedPosts";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
-const SITE_URL = "https://www.tertiaryinfotech.com";
+const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
 
 export const metadata: Metadata = {
   title: { absolute: "Study Tech in Singapore — Cyber, AI, Blockchain, Quantum" },
@@ -104,7 +103,6 @@ export default function HomePage() {
         <Programs />
         <StatsStrip />
         <CareersOutcomes />
-        <SocialProof />
         <AdmissionsSection />
         <FeaturedPosts />
         <FaqSection />

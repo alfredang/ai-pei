@@ -60,7 +60,7 @@ function AnimatedCounter({ target, suffix }: { target: string; suffix: string })
 
 export function StatsStrip() {
   return (
-    <section className="relative py-8 border-y border-white/5 bg-(--color-bg-elevated)/50">
+    <section className="relative py-6 border-y border-white/5 bg-(--color-bg-elevated)/50">
       <Container>
         <div className="stats-strip">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-4">

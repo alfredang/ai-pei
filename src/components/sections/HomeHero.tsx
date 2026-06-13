@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Container } from "@/components/layout/Container";
+import { MatrixRain } from "@/components/sections/MatrixRain";
 import {
   HiShieldCheck,
   HiCpuChip,
@@ -27,9 +28,10 @@ export function HomeHero() {
       data-theme="dark"
       className="relative isolate overflow-hidden text-white"
     >
-      {/* Designed background — replaces the full-bleed photograph */}
+      {/* Designed background — matrix rain + grid + glow blobs */}
       <div className="absolute inset-0 -z-10 bg-(--color-bg)">
-        <div className="grid-bg opacity-40" />
+        <MatrixRain className="absolute inset-0 h-full w-full opacity-35" />
+        <div className="grid-bg opacity-25" />
         <div
           className="glow-blob"
           style={{
@@ -55,18 +57,18 @@ export function HomeHero() {
       </div>
 
       <Container className="relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[82vh] py-24">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center min-h-[64vh] pt-8 pb-14 lg:pt-10 lg:pb-16">
           {/* LEFT — copy + discipline dropdown */}
           <div className="max-w-xl">
-            <div className="kicker mb-5 reveal">
-              [ STUDY TECH IN SINGAPORE · ASIA&apos;S #1 TECH HUB ]
-            </div>
-
             <h1 className="font-display font-medium tracking-tight leading-[1.06] text-[clamp(2.3rem,5.2vw,4.25rem)] reveal">
-              Build a Future-Tech Career in Singapore
+              Build a Future-Tech<br />Career in Singapore
             </h1>
 
-            <p className="mt-6 text-lg md:text-xl text-white/80 leading-relaxed reveal reveal-d1">
+            <p className="mt-4 font-display font-semibold leading-tight text-[clamp(1.25rem,2.8vw,2rem)] gradient-text reveal reveal-d1">
+              Study Tech in Singapore, Asia&apos;s Leading Tech Hub
+            </p>
+
+            <p className="mt-5 text-lg md:text-xl text-white/80 leading-relaxed reveal reveal-d1">
               English-taught programmes for international learners across four fields shaping
               the next decade — your gateway to Asia&apos;s fastest-growing tech market.
             </p>
@@ -112,18 +114,36 @@ export function HomeHero() {
 
             {/* Trust line */}
             <p className="mt-8 text-sm text-white/55 reveal reveal-d2">
-              English-taught · Globally recognised · Visa &amp; relocation guidance ·
-              [PLACEHOLDER: 1,000+ learners trained]
+              English-taught · Globally recognised · CPE-registered PEI in Singapore ·
+              Visa &amp; relocation guidance
             </p>
           </div>
 
           {/* RIGHT — designed visual: the four disciplines (swap for a photo anytime) */}
           <div className="relative reveal reveal-d1">
-            <div className="glass p-6 md:p-8">
-              <div className="text-xs font-mono uppercase tracking-wider text-(--color-muted) mb-5">
+            {/* Glow aura behind the launchpad */}
+            <div
+              className="glow-blob"
+              style={{
+                top: "0%",
+                left: "8%",
+                width: 520,
+                height: 520,
+                background: "radial-gradient(circle, rgba(89,235,253,0.30) 0%, transparent 70%)",
+                opacity: 0.9,
+              }}
+            />
+            <div
+              className="relative glass rounded-3xl p-7 md:p-9 border border-(--color-cyan)/25"
+              style={{
+                boxShadow:
+                  "0 0 70px -10px rgba(89,235,253,0.40), 0 0 0 1px rgba(89,235,253,0.10), inset 0 0 60px -30px rgba(124,87,242,0.45)",
+              }}
+            >
+              <div className="text-sm font-mono uppercase tracking-[0.2em] text-(--color-cyan)/90 mb-6">
                 Choose your future-tech path
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-5">
                 {DISCIPLINES.map((d) => {
                   const Icon = d.icon;
                   const active = d.id === selected;
@@ -133,24 +153,34 @@ export function HomeHero() {
                       type="button"
                       onClick={() => setSelected(d.id)}
                       aria-pressed={active}
-                      className={`text-left rounded-2xl p-5 border transition-all duration-300 ${
+                      className={`group text-left rounded-2xl p-6 border transition-all duration-300 ${
                         active
-                          ? "bg-white/10 border-white/30 scale-[1.02]"
-                          : "bg-white/3 border-white/10 hover:border-white/20"
+                          ? "bg-white/10 border-white/40 scale-[1.03]"
+                          : "bg-white/3 border-white/10 hover:border-white/25 hover:-translate-y-0.5"
                       }`}
+                      style={
+                        active
+                          ? { boxShadow: `0 0 36px -6px color-mix(in srgb, ${d.color} 60%, transparent)` }
+                          : undefined
+                      }
                     >
                       <div
-                        className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform"
-                        style={{ background: `color-mix(in srgb, ${d.color} 16%, transparent)` }}
+                        className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 transition-transform group-hover:scale-110"
+                        style={{
+                          background: `color-mix(in srgb, ${d.color} 18%, transparent)`,
+                          boxShadow: active
+                            ? `0 0 24px -4px color-mix(in srgb, ${d.color} 70%, transparent)`
+                            : undefined,
+                        }}
                       >
-                        <Icon className="w-6 h-6" style={{ color: d.color }} />
+                        <Icon className="w-7 h-7" style={{ color: d.color }} />
                       </div>
-                      <div className="font-display font-bold text-sm text-white leading-snug">
+                      <div className="font-display font-bold text-base text-white leading-snug">
                         {d.label}
                       </div>
                       <div
-                        className="mt-2 text-[0.7rem] font-mono uppercase tracking-wider transition-opacity"
-                        style={{ color: d.color, opacity: active ? 1 : 0.5 }}
+                        className="mt-2 text-xs font-mono uppercase tracking-wider transition-opacity"
+                        style={{ color: d.color, opacity: active ? 1 : 0.55 }}
                       >
                         {active ? "Selected →" : "Select"}
                       </div>

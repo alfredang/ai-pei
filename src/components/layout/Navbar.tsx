@@ -11,8 +11,9 @@ import { HiPhone } from "react-icons/hi2";
 const FALLBACK = [
   { label: "Home", href: "/" },
   { label: "PEI Advanced Certificate", href: "/courses" },
+  { label: "Study in Singapore", href: "/study-in-singapore" },
   { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/#contact" },
+  { label: "Contact", href: "/contact" },
 ];
 
 let cachedMenuItems: any[] | null = null;
@@ -77,7 +78,7 @@ export async function Navbar() {
           href="/#contact"
           className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-(--color-cyan)/40 text-sm text-(--color-cyan) hover:bg-(--color-cyan)/10 transition"
         >
-          Register Now
+          Enquire Now
           <span aria-hidden>→</span>
         </Link>
 

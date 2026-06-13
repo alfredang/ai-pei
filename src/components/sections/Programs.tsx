@@ -33,7 +33,7 @@ const PROGRAMS: Program[] = [
     outcomes: [
       "Hands-on SOC, threat-hunting and penetration-testing labs",
       "Career paths: Security Analyst, SOC Engineer, Penetration Tester",
-      "Globally portable certifications [PLACEHOLDER: certification body]",
+      "Globally portable, industry-aligned certifications",
     ],
     cta: { label: "Explore Cybersecurity courses in Singapore", href: "/courses" },
     accent: "var(--color-cyan)",
@@ -87,7 +87,7 @@ const PROGRAMS: Program[] = [
 
 export function Programs() {
   return (
-    <section id="programs" className="relative py-20 overflow-hidden">
+    <section id="programs" className="relative py-7 overflow-hidden">
       <div
         className="glow-blob"
         style={{
@@ -102,7 +102,6 @@ export function Programs() {
 
       <Container className="relative">
         <div className="text-center mb-14">
-          <div className="kicker mb-4">[ OUR PROGRAMMES ]</div>
           <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
             Four Future-Tech Disciplines.{" "}
             <span className="gradient-text">One Launchpad.</span>

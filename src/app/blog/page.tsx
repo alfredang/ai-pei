@@ -29,27 +29,27 @@ function snippetFromHtml(html: string | null | undefined, max = 200): string {
 }
 
 export const metadata: Metadata = {
-  title: "Journal",
+  title: "Tech Study Blog — AI, Cyber Security & Blockchain in Singapore",
   description:
-    "Field notes from SSG and AI services and building Agentic AI workflows — AI Agents, LMS and TMS case studies from Tertiary Infotech Academy.",
+    "Insights for international students on studying future-tech in Singapore — AI, Cyber Security, Blockchain and Quantum Computing. Admissions, Student Pass, careers and the skills global employers hire for.",
   keywords:
-    "AI agents Singapore, WSQ LMS blog, training provider blog, SSG ATO insights, TPQA case studies, agentic AI Singapore",
+    "study tech in Singapore, international students Singapore, AI courses Singapore for foreigners, cybersecurity course Singapore, blockchain course Singapore, study in Singapore for international students, Advanced Certificate Singapore, tech education Singapore",
   alternates: { canonical: "/blog" },
   openGraph: {
     type: "website",
     url: "/blog",
-    title: "Journal | Tertiary Infotech Academy",
+    title: "Tech Study Blog for International Students | Tertiary Infotech Academy",
     description:
-      "AI Agents, LMS and TMS case studies from the Tertiary Infotech Academy.",
+      "Guides for foreign students on studying AI, Cyber Security, Blockchain and Quantum Computing in Singapore — admissions, careers and future-tech skills.",
     locale: "en_SG",
     siteName: "Tertiary Infotech Academy",
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Tertiary Infotech Academy" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Tertiary Infotech Academy — study future-tech in Singapore" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Journal | Tertiary Infotech Academy",
+    title: "Tech Study Blog for International Students | Tertiary Infotech Academy",
     description:
-      "AI Agents, LMS and TMS case studies from the Tertiary Infotech Academy.",
+      "Guides for foreign students on studying AI, Cyber Security, Blockchain and Quantum in Singapore — admissions, careers and future-tech skills.",
     images: ["/opengraph-image"],
   },
 };
@@ -163,7 +163,7 @@ export default async function BlogIndex({
     <>
       <Navbar />
       <main>
-        <section className="relative pt-24 pb-10 overflow-hidden">
+        <section className="relative pt-10 pb-8 overflow-hidden">
           <div className="grid-bg opacity-60" />
           <div
             className="glow-blob"
@@ -176,13 +176,14 @@ export default async function BlogIndex({
             }}
           />
           <Container className="relative">
-            <div className="kicker mb-4">[ JOURNAL ]</div>
+            <div className="kicker mb-4">[ STUDENT JOURNAL ]</div>
             <h1 className="font-display text-[clamp(1.75rem,4vw,3rem)] font-extrabold leading-[1.15]">
-              Field notes from SSG and AI services and{" "}
-              <span className="gradient-text">building Agentic AI workflows</span>.
+              Your guide to studying{" "}
+              <span className="gradient-text">future-tech in Singapore</span>.
             </h1>
             <p className="mt-5 text-(--color-muted) text-lg max-w-2xl">
-              AI Agents, LMS and TMS case studies from the Tertiary Infotech Academy.
+              Insights for international students on AI, Cyber Security, Blockchain and Quantum
+              Computing — admissions, careers and the skills global employers hire for.
             </p>
           </Container>
         </section>

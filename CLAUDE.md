@@ -22,7 +22,6 @@ npm run db:generate    # Generate migrations from schema changes
 npm run db:studio      # Drizzle Studio (DB browser)
 
 npm run seed:admin     # Seed initial admin user + default menus + settings (one-time)
-npm run migrate:wp     # Import a WordPress SQL dump (parses wp_*, downloads images, writes 301 redirects)
 ```
 
 There is no test suite — verification is `npm run build` + browser smoke-testing the dev server. The Next build also runs the TS type-check, so it's the canonical "is this broken" gate.

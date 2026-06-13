@@ -90,7 +90,7 @@ export function HeroBanner() {
           {/* CTAs */}
           <div className="flex flex-wrap gap-4">
             <Link href="#contact" className="btn-primary text-base">
-              Register Now
+              Enquire Now
               <span aria-hidden>→</span>
             </Link>
             <Link href="#course-details" className="btn-secondary text-base">

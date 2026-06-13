@@ -12,7 +12,6 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "seed:admin": "tsx --env-file=.env scripts/seed-admin.ts",
-    "migrate:wp": "tsx --env-file=.env scripts/migrate-wp.ts",
     "migrate:r2": "tsx --env-file=.env scripts/migrate-uploads-to-r2.ts",
     "regen:covers": "tsx --env-file=.env scripts/regenerate-post-covers.ts"
   },

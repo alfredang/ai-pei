@@ -80,16 +80,6 @@ export default async function EditPost({
     }
   }
 
-  // WordPress-imported posts have a placeholder TipTap doc and the real body
-  // in contentHtml. Detect that case and feed the HTML string to the editor
-  // (Editor.tsx will parse it back into JSON on first render).
-  const isWpPlaceholder =
-    JSON.stringify(p.content).includes("(Imported from WordPress)");
-  const editorContent: JSONContent | string =
-    isWpPlaceholder && p.contentHtml
-      ? p.contentHtml
-      : (p.content as JSONContent);
-
   // Load current category + tag slugs so the editor can display + edit them.
   const [currentCat] = p.categoryId
     ? await db.select().from(categories).where(eq(categories.id, p.categoryId)).limit(1)
@@ -105,7 +95,7 @@ export default async function EditPost({
     title: p.title,
     slug: p.slug,
     excerpt: p.excerpt ?? "",
-    content: editorContent,
+    content: p.content as JSONContent,
     contentHtml: p.contentHtml ?? "",
     status: p.status,
     seoTitle: p.seoTitle ?? "",

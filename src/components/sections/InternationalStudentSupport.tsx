@@ -64,7 +64,6 @@ export function InternationalStudentSupport({
       />
       <Container className="relative">
         <div className="max-w-3xl mb-10">
-          <div className="kicker mb-3">[ INTERNATIONAL STUDENT SUPPORT ]</div>
           <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold leading-tight">
             {heading ?? (
               <>

@@ -207,48 +207,6 @@ export async function getCompanyContact(): Promise<CompanyContact> {
   }
 }
 
-// --- Service-page overrides (CMS editable per slug) ------------------------
-
-import type { ServicePageContent } from "@/lib/service-pages";
-
-/**
- * Read an admin override for a service page from `settings.value` keyed by
- * `service_page:<slug>`. Returns null if no override is saved — caller should
- * fall back to the file-based defaults in SERVICE_PAGES.
- */
-export async function getServicePageOverride(
-  slug: string,
-): Promise<Partial<ServicePageContent> | null> {
-  try {
-    const [row] = await db
-      .select()
-      .from(settings)
-      .where(inArray(settings.key, [`service_page:${slug}`] as unknown as string[]));
-    if (!row) return null;
-    const v = row.value;
-    if (v && typeof v === "object" && !Array.isArray(v)) {
-      return v as Partial<ServicePageContent>;
-    }
-    return null;
-  } catch {
-    return null;
-  }
-}
-
-/** Merge the admin override (shallow) onto the file-based default. */
-export function mergeServicePage(
-  base: ServicePageContent,
-  override: Partial<ServicePageContent> | null,
-): ServicePageContent {
-  if (!override) return base;
-  return {
-    ...base,
-    ...override,
-    hero: { ...base.hero, ...(override.hero ?? {}) },
-    meta: { ...base.meta, ...(override.meta ?? {}) },
-  };
-}
-
 // --- Social links (Footer) --------------------------------------------------
 
 export type SocialLink = {
@@ -392,29 +350,28 @@ export type HeroKpi = {
 
 export const HERO_KPI_DEFAULTS: HeroKpi[] = [
   {
-    value: "600+",
-    label: "SSG Services",
-    sublabel: "WSQ · IBF · CASL · ATO · TPQA",
-    href: "/#services",
+    value: "3",
+    label: "Advanced Certificates",
+    sublabel: "AI · Cyber Security · Blockchain",
+    href: "/courses",
   },
   {
-    value: "10+",
-    label: "LMS & TMS Setup",
-    sublabel: "SSG RTP · E-Learning",
-    href: "/real-clients",
-    openInNewTab: true,
+    value: "100%",
+    label: "English-Taught",
+    sublabel: "Built for international students",
+    href: "/study-in-singapore",
   },
   {
-    value: "50+",
-    label: "Open-Source EdTools",
-    sublabel: "Live Poll · Whiteboard · Flashcard",
-    href: "https://github.com/alfredang?tab=repositories",
+    value: "CPE",
+    label: "Registered PEI",
+    sublabel: "SSG-permitted courses",
+    href: "/pei-course-submission",
   },
   {
-    value: "10+",
-    label: "AI Agents Deployed",
-    sublabel: "OpenClaw · Hermes Agent · Nebula",
-    href: "/ai-agent-deployment",
+    value: "#1",
+    label: "Tech Hub in Asia",
+    sublabel: "Study in Singapore",
+    href: "/study-in-singapore",
   },
 ];
 

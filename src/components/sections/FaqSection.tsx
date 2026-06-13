@@ -12,11 +12,11 @@ export const HOME_FAQ = [
   },
   {
     q: "Are the certifications globally recognised?",
-    a: "Yes. Our future-tech programmes lead to globally portable, industry-aligned qualifications [PLACEHOLDER: name your accreditation and certification bodies] that are valued by employers in Singapore, across Asia and worldwide.",
+    a: "Yes. Our future-tech programmes lead to globally portable, industry-aligned qualifications that are valued by employers in Singapore, across Asia and worldwide.",
   },
   {
     q: "What does it cost, and is funding available for foreigners?",
-    a: "Course fees vary by programme [PLACEHOLDER: insert fee ranges]. Most government subsidies are reserved for Singapore Citizens and PRs, but international learners are eligible for transparent self-funded pricing and any instalment options we offer. Speak to our team for an exact quote.",
+    a: "Course fees vary by programme. Most government subsidies are reserved for Singapore Citizens and PRs, but international learners are eligible for transparent self-funded pricing and any instalment options we offer. Speak to our team for an exact quote.",
   },
   {
     q: "Will studying here help me get a tech job in Singapore or Asia?",
@@ -36,10 +36,9 @@ export function FaqSection() {
   };
 
   return (
-    <section id="faq" className="relative py-20 overflow-hidden">
+    <section id="faq" className="relative py-7 overflow-hidden">
       <Container className="max-w-4xl relative">
         <div className="text-center mb-12">
-          <div className="kicker mb-3">[ FAQ ]</div>
           <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
             Foreign Learner <span className="gradient-text">Questions</span>
           </h2>

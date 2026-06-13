@@ -4,13 +4,14 @@ import {
   HiClipboardDocumentList,
   HiArrowRightOnRectangle,
   HiCursorArrowRays,
-  HiPencilSquare,
+  HiUserPlus,
   HiPaperAirplane,
   HiDocumentText,
   HiAcademicCap,
-  HiGlobeAlt,
+  HiIdentification,
   HiUserGroup,
-  HiBookOpen,
+  HiShieldCheck,
+  HiClock,
   HiExclamationTriangle,
 } from "react-icons/hi2";
 import { Container } from "@/components/layout/Container";
@@ -18,30 +19,30 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
 const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
-const PAGE_URL = `${SITE_URL}/pei-course-submission`;
+const PAGE_URL = `${SITE_URL}/pei-add-teachers`;
 
 export const metadata: Metadata = {
-  title: "PEI Course Submission Singapore — How to Register a New Course with SSG",
+  title: "How to Add Teachers to a PEI in Singapore — Notify SSG via GoBusiness",
   description:
-    "Step-by-step guide for registered Private Education Institutions (PEIs) to add a new course via GoBusiness — My Licences → Amend → Amendment on Courses → Add new courses and modules. Includes Academic Level and Language Proficiency wording, the document checklist, and SSG course permission.",
+    "Step-by-step guide for registered Private Education Institutions (PEIs) to add a teacher via GoBusiness — My Licences → Amend → Amendment on Teachers → Add new teachers. Includes the 7-day notice rule, Regulation 26 eligibility, and the supporting documents to keep on file.",
   keywords:
-    "PEI course submission, register new PEI course Singapore, offer a new course GoBusiness, SSG course permission, CPE course registration, Private Education Institution new course, course permission letter SSG",
+    "add teacher PEI Singapore, notify SSG new teacher, PEI teacher registration GoBusiness, Amendment on Teachers, Regulation 26 teacher qualifications, CPE teacher deployment, Private Education Institution add teaching staff",
   alternates: { canonical: PAGE_URL },
   openGraph: {
     type: "article",
     locale: "en_SG",
     url: PAGE_URL,
-    title: "PEI Course Submission Singapore — How to Register a New Course with SSG",
+    title: "How to Add Teachers to a PEI in Singapore — Notify SSG via GoBusiness",
     description:
-      "A practical, step-by-step guide for PEIs to register a new course via GoBusiness Licensing — the 'Offer a New Course' application, required documents, and SSG course permission.",
+      "A practical, step-by-step guide for PEIs to add a teacher via GoBusiness Licensing — the 'Amendment on Teachers' application, the 7-day notice rule, Regulation 26 eligibility, and supporting documents.",
     siteName: "Tertiary Infotech Academy",
-    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "PEI Course Submission — Tertiary Infotech Academy" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Add Teachers to a PEI — Tertiary Infotech Academy" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "PEI Course Submission Singapore — How to Register a New Course with SSG",
+    title: "How to Add Teachers to a PEI in Singapore — Notify SSG via GoBusiness",
     description:
-      "Step-by-step guide for PEIs to submit a new course via GoBusiness Licensing — application type, documents, and SSG course permission.",
+      "Step-by-step guide for PEIs to add a teacher via GoBusiness Licensing — application type, the 7-day notice rule, and supporting documents to keep on file.",
     images: ["/opengraph-image"],
   },
 };
@@ -61,47 +62,47 @@ const STEPS = [
     icon: HiCursorArrowRays,
     accent: "blue" as const,
     body:
-      "On the licence row, open the “Select Action” menu and choose “Amend”. New courses are added by amending your existing PEI registration — there is no separate licence application.",
+      "On the licence row, open the “Select Action” menu and choose “Amend”. Teachers are added by amending your existing PEI registration — there is no separate licence application.",
   },
   {
-    id: "add-course",
-    title: "Amendment on Courses → Add new courses and modules",
-    icon: HiPencilSquare,
+    id: "add-teacher",
+    title: "Amendment on Teachers → Add new teachers",
+    icon: HiUserPlus,
     accent: "purple" as const,
     body:
-      "In Application Details, choose “Amendment on Courses”, then under “I want to” select “Add new courses and modules”. This opens the New Courses and Modules form.",
+      "In Application Details, choose “Amendment on Teachers”, then under “I want to” select “Add new teachers”. This opens the teacher-particulars form.",
   },
   {
-    id: "course-details",
-    title: "Fill in the course details",
+    id: "teacher-details",
+    title: "Fill in the teacher's particulars",
     icon: HiClipboardDocumentList,
     accent: "amber" as const,
     body:
-      "Enter the Course Title, Course Level (e.g. Certificate) and Minimum Age (e.g. 21), then complete the entry-requirement fields — Academic Level and Language Proficiency.",
+      "Enter the teacher's full name, NRIC or passport number and nationality, and the course(s) or module(s) the teacher will be deployed to teach.",
   },
   {
-    id: "entry-requirements",
-    title: "State Academic Level & Language Proficiency",
-    icon: HiAcademicCap,
+    id: "eligibility",
+    title: "Confirm the teacher meets Regulation 26",
+    icon: HiShieldCheck,
     accent: "cyan" as const,
     body:
-      "Give the minimum academic entry requirement and the English-language proficiency a student needs to enrol. Recommended wording is below — keep both consistent with your Minimum Age.",
+      "Before deployment, satisfy yourself that the teacher meets the minimum qualifications and experience stipulated under Regulation 26(3) of the Private Education Regulations, and complete the Regulation 26(2) self-declaration.",
   },
   {
     id: "documents",
-    title: "Upload supporting documents",
+    title: "Keep the supporting documents on file",
     icon: HiDocumentText,
     accent: "blue" as const,
     body:
-      "Attach the course write-up, sample certificate and academic-board approval. Each file must be 7 MB or less; filenames may use only letters, numbers, underscores and hyphens.",
+      "These records are not uploaded to GoBusiness, but your PEI must maintain them and produce them if SSG requests: CV, highest academic qualification, Letters of Permission and the self-declaration.",
   },
   {
-    id: "declaration",
-    title: "Review, declare & make payment",
-    icon: HiPaperAirplane,
+    id: "notice",
+    title: "Submit at least 7 days before deployment",
+    icon: HiClock,
     accent: "green" as const,
     body:
-      "Complete the Review Form and Declaration steps, then make payment if a fee is shown. The application moves to Processing while SSG reviews it; on approval you receive a Course Permission Letter.",
+      "Notify SSG via GoBusiness at least 7 days before the teacher's actual deployment. Do not deploy a teacher to teach until the notification has been submitted and the 7-day notice period has elapsed.",
   },
 ];
 
@@ -140,111 +141,93 @@ const ACCENT: Record<string, { ring: string; iconText: string; chip: string; lin
 
 const DOCUMENTS = [
   {
+    icon: HiIdentification,
+    title: "NRIC / Passport & Nationality",
+    body: "The teacher's NRIC or passport number and nationality information.",
+  },
+  {
     icon: HiDocumentText,
-    title: "Course Write-up",
-    body:
-      "The full course synopsis using SSG's template. There is a specific template for External Degree Programmes (EDPs) and another for other courses.",
+    title: "Curriculum Vitae / Resume",
+    body: "A CV or resume setting out the teacher's relevant work and teaching experience.",
   },
   {
     icon: HiAcademicCap,
-    title: "Sample Certificate",
-    body: "A sample of the certificate or award issued to students on completion of the course.",
+    title: "Highest Academic Qualification",
+    body: "The certificate or transcript evidencing the teacher's highest academic qualification.",
   },
   {
     icon: HiUserGroup,
-    title: "Approval from Academic Board",
-    body: "Your PEI Academic Board's approval to offer the new course.",
+    title: "Letter of Permission — Academic Board",
+    body: "A Letter of Permission from your PEI's Academic Board authorising the teacher to teach.",
   },
   {
-    icon: HiDocumentText,
-    title: "Course Developer's Permissions",
-    body:
-      "Proof that the course developer or proprietor allows the PEI to offer the course, where the course is not developed in-house.",
+    icon: HiUserGroup,
+    title: "Letter of Permission — Course Developer",
+    body: "A Letter of Permission from the external course developer, where the course is not developed in-house.",
   },
   {
-    icon: HiBookOpen,
-    title: "Validation Agreement",
-    body:
-      "Proof that the course has been validated, accredited, or offered an articulation pathway, if applicable.",
-  },
-  {
-    icon: HiAcademicCap,
-    title: "Highest Academic & Language Certificates",
-    body:
-      "Highest Academic Qualifications and Highest Language Qualifications certificates supporting your stated entry requirements.",
-  },
-  {
-    icon: HiBookOpen,
-    title: "Vice-Chancellor's Letter (EDPs)",
-    body:
-      "For External Degree Programmes — a letter from the Vice-Chancellor / President (or equivalent) of the foreign institution.",
-  },
-  {
-    icon: HiGlobeAlt,
-    title: "Other Documents",
-    body:
-      "Any other supporting documents if necessary. Each upload is 1 file at 7 MB or less; filenames allow only letters, numbers, underscores (_) and hyphens (-).",
+    icon: HiShieldCheck,
+    title: "Self-Declaration (Regulation 26(2))",
+    body: "A signed self-declaration confirming the teacher's compliance with Regulation 26(2) of the Private Education Regulations.",
   },
 ];
 
-const ENTRY_REQUIREMENTS = [
+const ELIGIBILITY = [
   {
     icon: HiAcademicCap,
-    field: "Academic Level",
-    heading: "Minimum Academic Entry Requirement",
-    intro: "Applicants should possess at least one of the following:",
+    field: "Qualifications",
+    heading: "Minimum Academic & Subject-Matter Qualifications",
+    intro: "Under Regulation 26(3), a teacher should generally hold:",
     items: [
-      "GCE 'A' Level with a minimum of 1 H2 pass; or",
-      "Local Polytechnic Diploma; or",
-      "NITEC / Higher NITEC from ITE; or",
-      "GCE 'O' Level with a minimum of 3 passes; or",
-      "Equivalent academic qualifications recognised in the applicant's home country.",
+      "A qualification at least one level above the course being taught (or equivalent); and",
+      "A qualification relevant to the subject area of the course; and",
+      "Recognised teacher-training or a teaching qualification, where required for the course type.",
     ],
-    note: "Mature-candidate route: applicants aged 21+ who do not meet the above may be admitted on relevant work experience, subject to interview and Academic Board approval.",
+    note: "Where a teacher's qualification is below the stipulated level, the PEI must document the relevant experience relied on and obtain Academic Board approval before deployment.",
   },
   {
-    icon: HiGlobeAlt,
-    field: "Language Proficiency",
-    heading: "Medium of Instruction: English",
-    intro: "Applicants should meet one of the following:",
+    icon: HiShieldCheck,
+    field: "Experience & Declaration",
+    heading: "Relevant Experience & Self-Declaration",
+    intro: "Before deployment, the PEI must be satisfied that the teacher:",
     items: [
-      "GCE 'O' Level English (Grade C6 or better); or",
-      "Completed prior education with English as the medium of instruction; or",
-      "IELTS 5.5 / TOEFL iBT 46 / equivalent for applicants from non-English-medium backgrounds.",
+      "Has the relevant teaching or industry experience for the course; and",
+      "Meets the requirements stipulated under Regulation 26(3); and",
+      "Has signed the Regulation 26(2) self-declaration on compliance.",
     ],
-    note: "Applicants who do not meet the above may be admitted upon passing an internal English proficiency assessment conducted by the institution.",
+    note: "All supporting records must be maintained on file and produced to SSG on request — they are not uploaded through GoBusiness.",
   },
 ];
 
 const FAQ = [
   {
-    q: "Who can submit a new course application?",
-    a: "The application must be submitted by the PEI Manager, or a CorpPass user authorised to transact on behalf of the PEI, through GoBusiness Licensing. It is tied to your registered PEI entity.",
+    q: "How much notice must I give before deploying a teacher?",
+    a: "At least 7 days. A PEI must notify SSG via GoBusiness Licensing at least 7 days before the teacher's actual deployment. Do not deploy the teacher to teach before the notification is submitted and the notice period has elapsed.",
+  },
+  {
+    q: "Do I upload the teacher's documents in GoBusiness?",
+    a: "No. The teacher's CV, qualification certificates, Letters of Permission and the Regulation 26(2) self-declaration are not uploaded — but your PEI must maintain them on file and produce them to SSG on request.",
   },
   {
     q: "Where do I start the application in GoBusiness?",
-    a: "Go to My Licences, find your active 'Registration of Private Education Institutions' licence, and use Select Action → Amend. Under Application Details choose 'Amendment on Courses', then 'Add new courses and modules'. There is no separate licence — a new course is an amendment to your existing PEI registration.",
+    a: "Go to My Licences, find your active 'Registration of Private Education Institutions' licence, and use Select Action → Amend. Under Application Details choose 'Amendment on Teachers', then 'Add new teachers'. Adding a teacher is an amendment to your existing PEI registration, not a separate licence.",
   },
   {
-    q: "Can I advertise the course once I submit?",
-    a: "No. You must not advertise, offer or deliver the new course until SSG has permitted it and issued a Course Permission Letter. A PEI must have at least one SSG-permitted course at all times.",
+    q: "What qualifications must a teacher have?",
+    a: "The teacher must meet the minimum qualifications and experience stipulated under Regulation 26(3) of the Private Education Regulations — generally a qualification at least one level above the course and relevant to the subject. The PEI confirms this and signs the Regulation 26(2) self-declaration before deployment.",
   },
   {
-    q: "How long does approval take and what does it cost?",
-    a: "SSG does not publish a fixed processing time or fee for a new-course application — the fee, if any, is shown at the submission step in GoBusiness. Responding quickly to SSG's queries is the biggest factor in avoiding delays.",
-  },
-  {
-    q: "Do courses delivered overseas need separate permission?",
-    a: "Yes. SSG-permitted courses may only be delivered in Singapore by default. To offer or deliver a course overseas — by yourself or with a partner — you must obtain SSG's separate permission.",
+    q: "How do I remove a teacher who has left?",
+    a: "Notify SSG through GoBusiness Licensing using the same 'Amendment on Teachers' flow and remove the teacher from your registration. SSG does not stipulate a fixed timeline for removals, but you should keep your teacher list accurate and current.",
   },
 ];
 
 const howToLd = {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  name: "How to submit a new PEI course via GoBusiness Licensing in Singapore",
+  name: "How to add a teacher to a PEI via GoBusiness Licensing in Singapore",
   description:
-    "Seven-step process for a registered Private Education Institution to add a new course with SSG by amending its registration on GoBusiness — My Licences → Amend → Amendment on Courses → Add new courses and modules.",
+    "Seven-step process for a registered Private Education Institution to add a teacher by notifying SSG on GoBusiness — My Licences → Amend → Amendment on Teachers → Add new teachers, at least 7 days before deployment.",
   step: STEPS.map((s, i) => ({
     "@type": "HowToStep",
     position: i + 1,
@@ -269,11 +252,11 @@ const breadcrumbLd = {
   itemListElement: [
     { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
     { "@type": "ListItem", position: 2, name: "Services", item: `${SITE_URL}/#services` },
-    { "@type": "ListItem", position: 3, name: "PEI Course Submission", item: PAGE_URL },
+    { "@type": "ListItem", position: 3, name: "Add Teachers to a PEI", item: PAGE_URL },
   ],
 };
 
-export default function PeiCourseSubmissionPage() {
+export default function PeiAddTeachersPage() {
   return (
     <>
       <Navbar />
@@ -304,13 +287,13 @@ export default function PeiCourseSubmissionPage() {
             <div className="max-w-3xl relative">
               <div className="kicker mb-4">[ SSG · CPE · GOBUSINESS LICENSING ]</div>
               <h1 className="font-display text-[clamp(2.25rem,5.2vw,3.75rem)] font-extrabold leading-[1.04] mb-5">
-                How to submit a{" "}
-                <span className="gradient-text">new PEI course</span> in Singapore.
+                How to add{" "}
+                <span className="gradient-text">teachers to a PEI</span> in Singapore.
               </h1>
               <p className="text-(--color-muted) text-lg mb-6">
                 A practical guide for registered Private Education Institutions (PEIs).
-                Every new course needs SSG&apos;s permission before you can advertise or
-                deliver it — submitted through the{" "}
+                Before a new teacher can be deployed, you must notify SSG at least 7 days in
+                advance — submitted through the{" "}
                 <a
                   href="https://licensing.gobusiness.gov.sg/licence-directory/ssg/registration-of-private-education-institutions"
                   target="_blank"
@@ -323,10 +306,10 @@ export default function PeiCourseSubmissionPage() {
               </p>
               <div className="flex flex-wrap items-center gap-3 mb-6">
                 <span className="px-3 py-1.5 rounded-full text-xs font-mono bg-(--color-cyan)/10 text-(--color-cyan) border border-(--color-cyan)/30">
-                  My Licences → Amend → Courses
+                  My Licences → Amend → Teachers
                 </span>
                 <span className="px-3 py-1.5 rounded-full text-xs font-mono bg-(--color-purple)/15 text-(--color-purple-light) border border-(--color-purple)/40">
-                  Submitted by PEI Manager
+                  7 days&apos; notice before deployment
                 </span>
                 <span className="px-3 py-1.5 rounded-full text-xs font-mono bg-(--color-amber)/10 text-(--color-amber) border border-(--color-amber)/30">
                   CorpPass required
@@ -351,25 +334,25 @@ export default function PeiCourseSubmissionPage() {
         <section className="relative py-10">
           <Container>
             <div className="max-w-3xl mb-8">
-              <div className="kicker mb-3">[ WHEN COURSE PERMISSION IS NEEDED ]</div>
+              <div className="kicker mb-3">[ WHEN YOU MUST NOTIFY SSG ]</div>
               <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold leading-tight">
-                A registered PEI still needs SSG permission for{" "}
-                <span className="gradient-text-warm">each new course</span>.
+                A PEI must notify SSG before deploying{" "}
+                <span className="gradient-text-warm">any new teacher</span>.
               </h2>
             </div>
             <div className="grid md:grid-cols-3 gap-4">
               {[
                 {
-                  title: "Before you advertise",
-                  body: "You must not market, advertise or open enrolment for a course until SSG has permitted it and issued a Course Permission Letter.",
+                  title: "At least 7 days ahead",
+                  body: "Submit the notification via GoBusiness at least 7 days before the teacher's actual deployment. Don't let a teacher start before the notice period elapses.",
                 },
                 {
-                  title: "Every new programme",
-                  body: "Course permission is per-course. Adding a new programme means amending your existing PEI registration via 'Amendment on Courses' → 'Add new courses and modules'.",
+                  title: "Every new teacher",
+                  body: "Notification is per-teacher. Adding teaching staff means amending your existing PEI registration via 'Amendment on Teachers' → 'Add new teachers'.",
                 },
                 {
-                  title: "Overseas delivery",
-                  body: "Permitted courses may only be delivered in Singapore by default. Delivering a course overseas requires SSG's separate permission.",
+                  title: "Meet Regulation 26",
+                  body: "The teacher must meet the minimum qualifications and experience under Regulation 26(3), and you must hold a Regulation 26(2) self-declaration on file.",
                 },
               ].map((b) => (
                 <div key={b.title} className="glass card-hover p-6 relative overflow-hidden">
@@ -388,8 +371,8 @@ export default function PeiCourseSubmissionPage() {
             <div className="max-w-3xl mb-10">
               <div className="kicker mb-3">[ THE PROCESS ]</div>
               <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold leading-tight">
-                Seven steps from draft to{" "}
-                <span className="gradient-text">Course Permission Letter</span>.
+                Seven steps to add a teacher to your{" "}
+                <span className="gradient-text">PEI registration</span>.
               </h2>
             </div>
 
@@ -420,24 +403,24 @@ export default function PeiCourseSubmissionPage() {
           </Container>
         </section>
 
-        {/* ENTRY REQUIREMENTS */}
-        <section id="entry-requirements" className="relative py-10 scroll-mt-20">
+        {/* ELIGIBILITY */}
+        <section id="eligibility" className="relative py-10 scroll-mt-20">
           <Container>
             <div className="max-w-3xl mb-8">
-              <div className="kicker mb-3">[ KEY FORM FIELDS ]</div>
+              <div className="kicker mb-3">[ TEACHER ELIGIBILITY ]</div>
               <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold leading-tight">
-                Two fields applicants get stuck on:{" "}
-                <span className="gradient-text">Academic Level</span> &amp; Language Proficiency.
+                What a teacher must meet under{" "}
+                <span className="gradient-text">Regulation 26</span>.
               </h2>
               <p className="text-(--color-muted) mt-4 text-sm">
-                Both are mandatory free-text fields in the New Courses and Modules form. Reviewers
-                expect a clear, verifiable threshold with an international-equivalence route.
-                Below is ready-to-use wording for an Advanced Certificate (Minimum Age 21) — adapt
-                the qualification floor to your course level.
+                The PEI is responsible for ensuring every teacher meets the minimum
+                qualifications and experience before deployment, and for keeping the
+                supporting records on file. The guidance below summarises the threshold —
+                always check the latest Private Education Regulations for your course type.
               </p>
             </div>
             <div className="grid md:grid-cols-2 gap-4">
-              {ENTRY_REQUIREMENTS.map((r) => {
+              {ELIGIBILITY.map((r) => {
                 const Icon = r.icon;
                 return (
                   <div key={r.field} className="glass p-6 relative overflow-hidden">
@@ -474,14 +457,14 @@ export default function PeiCourseSubmissionPage() {
         <section className="relative py-10">
           <Container>
             <div className="max-w-3xl mb-8">
-              <div className="kicker mb-3">[ DOCUMENTS TO PREPARE ]</div>
+              <div className="kicker mb-3">[ DOCUMENTS TO KEEP ON FILE ]</div>
               <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold leading-tight">
-                Have these ready before you open the form.
+                Maintain these records — SSG may ask for them.
               </h2>
               <p className="text-(--color-muted) mt-4 text-sm">
-                Exact requirements depend on the course type (e.g. External Degree Programmes
-                have additional university requirements). Use SSG&apos;s templates from
-                TPGateway.
+                These documents are <strong className="text-white">not uploaded</strong> through
+                GoBusiness when you add a teacher, but the PEI must keep them and produce them
+                if SSG requests. Have them ready before the teacher is deployed.
               </p>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -500,9 +483,9 @@ export default function PeiCourseSubmissionPage() {
             <div className="glass p-5 mt-6 flex gap-3 items-start border border-(--color-amber)/30">
               <HiExclamationTriangle className="w-5 h-5 text-(--color-amber) shrink-0 mt-0.5" />
               <p className="text-sm text-white/85 leading-relaxed">
-                Submitting an application does not constitute approval. Wait for the{" "}
-                <strong className="text-white">Course Permission Letter</strong> before you
-                advertise, enrol learners or deliver the course.
+                Do not deploy a teacher to teach until you have notified SSG and the{" "}
+                <strong className="text-white">7-day notice period</strong> has elapsed, and
+                you are satisfied the teacher meets Regulation 26.
               </p>
             </div>
 
@@ -536,7 +519,7 @@ export default function PeiCourseSubmissionPage() {
             <div className="mb-8">
               <div className="kicker mb-3">[ FAQ ]</div>
               <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold leading-tight">
-                Common questions about PEI course submission.
+                Common questions about adding teachers.
               </h2>
             </div>
             <div className="space-y-3">
@@ -574,12 +557,12 @@ export default function PeiCourseSubmissionPage() {
             <div className="text-center mb-8">
               <div className="kicker mb-3">[ NEED A HAND? ]</div>
               <h2 className="font-display text-[clamp(2rem,4.5vw,3rem)] font-extrabold leading-[1.05] mb-4">
-                We help PEIs prepare{" "}
-                <span className="gradient-text">course submissions</span>.
+                We help PEIs manage{" "}
+                <span className="gradient-text">teacher deployments</span>.
               </h2>
               <p className="text-(--color-muted) text-lg">
-                From course write-ups to the GoBusiness submission, we&apos;ll get your new
-                course ready for SSG permission.
+                From Regulation 26 checks to the GoBusiness notification, we&apos;ll get your
+                teaching staff registered with SSG on time.
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-3">
@@ -587,10 +570,10 @@ export default function PeiCourseSubmissionPage() {
                 Talk to a consultant →
               </Link>
               <Link
-                href="/pei-add-teachers"
+                href="/pei-course-submission"
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-white/15 text-white/85 hover:border-(--color-cyan)/50 hover:text-(--color-cyan) transition"
               >
-                Need to add teachers? See the guide
+                Adding a new course? Start here
               </Link>
             </div>
             <p className="mt-5 text-center text-xs text-(--color-muted) font-mono">

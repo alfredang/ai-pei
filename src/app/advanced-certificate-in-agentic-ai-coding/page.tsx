@@ -286,7 +286,7 @@ export default function AgenticAiCodingPage() {
       <Navbar />
       <main>
         {/* HERO */}
-        <section className="relative py-10 md:py-14 overflow-hidden">
+        <section className="relative py-6 md:py-9 overflow-hidden">
           <div
             className="glow-blob"
             style={{

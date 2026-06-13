@@ -9,46 +9,45 @@ import {
 const OUTCOMES = [
   {
     icon: HiBanknotes,
-    stat: "[PLACEHOLDER: e.g. S$X,000]",
-    label: "Average Starting Salary",
+    stat: "S$6k–10k",
+    label: "AI Engineer · Monthly Pay",
     description:
-      "Future-tech roles are among the best-paid in Singapore. Insert your verified salary benchmark here to show real earning potential.",
+      "AI and machine-learning engineers in Singapore start around S$6,000 a month and quickly climb past S$10,000 — among the best-paid roles in Asia.",
     color: "var(--color-cyan)",
   },
   {
     icon: HiBuildingOffice2,
-    stat: "[PLACEHOLDER: e.g. 50+]",
-    label: "Hiring Partners",
+    stat: "S$6.2k",
+    label: "Cyber Security · Median Pay",
     description:
-      "From global banks and MNCs to high-growth startups and government tech agencies — list the employers who recruit your graduates.",
+      "Cyber security professionals in Singapore earn a median of about S$6,236 a month in 2026, with senior engineers reaching well over S$14,000.",
     color: "var(--color-purple-light)",
   },
   {
-    icon: HiGlobeAlt,
-    stat: "[PLACEHOLDER: e.g. 30+]",
-    label: "Countries Represented",
+    icon: HiArrowTrendingUp,
+    stat: "+25%",
+    label: "AI-Skills Pay Premium",
     description:
-      "Learners join from across the world and graduate with globally portable skills they can take to any market in Asia and beyond.",
-    color: "var(--color-amber)",
+      "Engineers with AI skills are earning up to 25% more than their peers in 2026 — the skills our Advanced Certificates are built around.",
+    color: "var(--color-green)",
   },
   {
-    icon: HiArrowTrendingUp,
-    stat: "[PLACEHOLDER: e.g. 90%]",
-    label: "Career-Outcome Rate",
+    icon: HiGlobeAlt,
+    stat: "#1",
+    label: "Asia's Leading Tech Hub",
     description:
-      "Show the share of graduates who advance into a new tech role, promotion or relocation within months of completing a programme.",
-    color: "var(--color-green)",
+      "Singapore is consistently ranked Asia's top destination for tech talent and investment — your gateway to MNCs, startups and government tech across the region.",
+    color: "var(--color-amber)",
   },
 ];
 
 export function CareersOutcomes() {
   return (
-    <section id="careers" className="relative py-20 overflow-hidden">
+    <section id="careers" className="relative py-7 overflow-hidden">
       <div className="grid-bg opacity-25" />
 
       <Container className="relative">
         <div className="text-center mb-14">
-          <div className="kicker mb-4">[ CAREER OUTCOMES ]</div>
           <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
             Skills That Travel. <span className="gradient-text">Careers That Scale.</span>
           </h2>
@@ -87,7 +86,7 @@ export function CareersOutcomes() {
         </div>
 
         <p className="mt-8 text-center text-xs text-(--color-muted) font-mono">
-          [ Replace the placeholder figures above with your verified, audited outcome data ]
+          Salary data: NodeFlair, Morgan McKinley &amp; Vulcan Post — Singapore Tech Salary Reports 2026
         </p>
       </Container>
     </section>

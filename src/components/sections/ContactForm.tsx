@@ -39,11 +39,10 @@ export function ContactForm({
   }
 
   return (
-    <section id="contact" className="relative py-20 overflow-hidden">
+    <section id="contact" className="relative py-7 overflow-hidden">
       <div className="glow-blob" style={{ top: "10%", right: "0", width: 480, height: 480, background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)" }} />
       <Container className="max-w-4xl relative">
         <div className="text-center mb-8">
-          <div className="kicker mb-4">[ APPLY NOW ]</div>
           <h2 className="font-display text-[clamp(2rem,5vw,3.5rem)] font-extrabold leading-[1.05] mb-4">
             {heading ?? (
               <>

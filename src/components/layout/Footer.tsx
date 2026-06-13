@@ -64,7 +64,7 @@ export async function Footer() {
   return (
     <footer className="relative mt-10 border-t border-(--color-border) bg-(--color-bg-elevated)">
       <Container className="py-8">
-        <div className="grid md:grid-cols-3 gap-10">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
               {brand.logoUrl ? (
@@ -109,6 +109,17 @@ export async function Footer() {
                   {it.label}
                 </Link>
               ))}
+            </nav>
+          </div>
+          <div>
+            <div className="kicker mb-3">[ FOR PEIs ]</div>
+            <nav className="flex flex-col gap-2 text-sm">
+              <Link href="/pei-add-teachers" className="text-white/80 hover:text-(--color-cyan) transition">
+                How to add teachers
+              </Link>
+              <Link href="/pei-course-submission" className="text-white/80 hover:text-(--color-cyan) transition">
+                How to submit a new course
+              </Link>
             </nav>
           </div>
           <div>

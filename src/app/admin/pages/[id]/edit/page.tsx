@@ -17,21 +17,12 @@ export default async function EditPage({
   const [p] = await db.select().from(pages).where(eq(pages.id, pageId)).limit(1);
   if (!p) notFound();
 
-  // WordPress-imported pages have a placeholder TipTap doc and real body in
-  // contentHtml. Feed the HTML to the editor so editors see actual content.
-  const isWpPlaceholder =
-    JSON.stringify(p.content).includes("(Imported from WordPress)");
-  const editorContent: JSONContent | string =
-    isWpPlaceholder && p.contentHtml
-      ? p.contentHtml
-      : (p.content as JSONContent);
-
   const initial: PostFormData = {
     id: p.id,
     title: p.title,
     slug: p.slug,
     excerpt: p.excerpt ?? "",
-    content: editorContent,
+    content: p.content as JSONContent,
     contentHtml: p.contentHtml ?? "",
     status: p.status,
     seoTitle: p.seoTitle ?? "",

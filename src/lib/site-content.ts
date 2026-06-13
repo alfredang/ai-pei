@@ -1,169 +1,61 @@
 import {
-  HiAcademicCap,
-  HiBookOpen,
-  HiSparkles,
   HiShieldCheck,
   HiCpuChip,
   HiBuildingOffice2,
   HiCodeBracket,
   HiChartBar,
   HiRocketLaunch,
-  HiClipboardDocumentList,
-  HiBuildingLibrary,
-  HiCheckBadge,
-  HiNewspaper,
-  HiUserGroup,
-  HiBolt,
 } from "react-icons/hi2";
 
+/**
+ * Internal pages the AI blog writer may deep-link to. Tertiary Infotech Academy
+ * is a Private Education Institution (PEI) — these are the student-facing
+ * Advanced Certificate courses and PEI pages, not IT services.
+ */
 export const SERVICES = [
   {
-    id: "course-dev",
-    icon: HiClipboardDocumentList,
-    title: "Course Development",
+    title: "Advanced Certificate in AI Security Analyst",
+    href: "/advanced-certificate-in-ai-security-analyst",
     description:
-      "End-to-end development of accredited courses across Singapore's training frameworks — competency mapping, lesson plans, assessments and submission packages.",
-    features: [
-      "WSQ course development",
-      "CASL course development",
-      "IBF-STS / FTS course development",
-      "PWM course development",
-    ],
-    accent: "blue" as const,
-    href: "/wsq-course-development",
-    category: "ssg" as const,
+      "PEI Advanced Certificate training international students as AI-era security analysts — SOC operations, threat detection and securing AI systems.",
   },
   {
-    id: "ato",
-    icon: HiBuildingLibrary,
-    title: "ATO Application",
+    title: "Advanced Certificate in Agentic AI Coding",
+    href: "/advanced-certificate-in-agentic-ai-coding",
     description:
-      "Become an Approved Training Organisation (ATO) — we prepare your QMS, policies and SOPs and walk you through the SSG application from start to finish.",
-    features: [
-      "QMS, policies & SOPs",
-      "ATO submission package",
-      "Pre-audit gap assessment",
-      "Audit-readiness coaching",
-    ],
-    accent: "blue" as const,
-    href: "/ssg-ato-application",
-    category: "ssg" as const,
+      "PEI Advanced Certificate in building and shipping agentic-AI applications — Claude, multi-agent workflows and production deployment.",
   },
   {
-    id: "tpqa",
-    icon: HiCheckBadge,
-    title: "TPQA Consultancy",
+    title: "Advanced Certificate in Blockchain",
+    href: "/advanced-certificate-in-blockchain",
     description:
-      "Stay TPQA-compliant year-round. We run mock audits, fix gaps in your training-operations evidence, and prepare your team for the live SSG audit.",
-    features: [
-      "Mock TPQA audit",
-      "Evidence & documentation review",
-      "Gap remediation roadmap",
-      "On-site audit support",
-    ],
-    accent: "cyan" as const,
-    href: "/tpqa-consultancy",
-    category: "ssg" as const,
+      "PEI Advanced Certificate in blockchain and Web3 development — smart contracts, distributed ledgers and decentralised apps.",
   },
   {
-    id: "tms",
-    icon: HiAcademicCap,
-    title: "Training Management System",
+    title: "Study in Singapore",
+    href: "/study-in-singapore",
     description:
-      "Streamline your entire training lifecycle with our comprehensive TMS platform. From scheduling to certification, manage it all in one place.",
-    features: [
-      "Self-hosted on your domain — you own the data",
-      "Course scheduling & management",
-      "Enrollment & registration workflows",
-      "Reporting & analytics dashboards",
-      "Scalable for institutions of any size",
-    ],
-    accent: "blue" as const,
-    href: "/training-management-system",
-    category: "ai" as const,
+      "Guide for international students on studying future-tech in Singapore — admissions, Student Pass and living in Asia's leading tech hub.",
   },
   {
-    id: "lms",
-    icon: HiBookOpen,
-    title: "Learning Management System",
+    title: "All Courses",
+    href: "/courses",
     description:
-      "Deliver engaging, interactive learning experiences with our AI-enhanced LMS. Built for modern learners and educators alike.",
-    features: [
-      "Self-hosted on your domain — you own the data",
-      "Interactive eLearning delivery",
-      "Assessment & progress tracking",
-      "Instructor dashboards & analytics",
-      "Cloud-based multi-tenant platform",
-    ],
-    accent: "cyan" as const,
-    href: "/learning-management-system",
-    category: "ai" as const,
+      "Browse all Advanced Certificate courses in AI, Cyber Security, Quantum and Blockchain at Tertiary Infotech Academy.",
   },
   {
-    id: "ai",
-    icon: HiSparkles,
-    title: "Full Stack AI-Enabled Solutions",
+    title: "PEI Course Submission",
+    href: "/pei-course-submission",
     description:
-      "Production AI systems, automations and bespoke software — from agentic workflows to full-stack web tools and mobile apps.",
-    features: [
-      "Agentic AI · n8n · Claude Code · OpenCLAW",
-      "Harness Systems integration",
-      "Bespoke full-stack web tools across frameworks",
-      "Native and cross-platform mobile apps",
-    ],
-    accent: "purple" as const,
-    href: "/ai-solutions",
-    category: "ai" as const,
+      "How a registered Private Education Institution submits a new course to SSG via GoBusiness Licensing.",
   },
   {
-    id: "cms",
-    icon: HiNewspaper,
-    title: "Content Management System",
+    title: "PEI Add Teachers",
+    href: "/pei-add-teachers",
     description:
-      "Self-hosted, AI-powered CMS built for lead generation and SEO — every page is a funnel, every route is search-indexed.",
-    features: [
-      "Self-hosted on your domain — own the data",
-      "AI authoring with Claude Agent SDK",
-      "SEO + JSON-LD baked into every route",
-      "Source-tagged lead capture forms",
-    ],
-    accent: "blue" as const,
-    href: "/content-management-system",
-    category: "ai" as const,
+      "How a Private Education Institution notifies SSG and adds a teacher to its registration.",
   },
-  {
-    id: "hr",
-    icon: HiUserGroup,
-    title: "HR Management System",
-    description:
-      "Modern HRMS — payroll, leave, expense, appraisal, training and onboarding — built on Next.js with Singapore CPF + IRAS-ready payroll.",
-    features: [
-      "Payroll · CPF · IRAS-ready",
-      "Leave + expense workflows",
-      "Performance appraisal & 360°",
-      "Self-hosted, white-labeled",
-    ],
-    accent: "cyan" as const,
-    href: "/hr-management-system",
-    category: "ai" as const,
-  },
-  {
-    id: "ai-agent",
-    icon: HiBolt,
-    title: "AI Agent Deployment",
-    description:
-      "Production deployment of agentic AI — OpenClaw, Hermes Agent, Nebula and bespoke Claude agents wired into your existing systems.",
-    features: [
-      "OpenClaw · Hermes Agent · Nebula",
-      "Custom Claude Agent SDK builds",
-      "Webhook + n8n + API integration",
-      "Observability + cost guardrails",
-    ],
-    accent: "purple" as const,
-    href: "/ai-agent-deployment",
-    category: "ai" as const,
-  },
-];
+] as const;
 
 export const WHY_CHOOSE_US = [
   { icon: HiShieldCheck, title: "Secure & Scalable", description: "Enterprise-grade security with infrastructure that scales alongside your growth.", accent: "blue" as const },
@@ -172,14 +64,4 @@ export const WHY_CHOOSE_US = [
   { icon: HiCodeBracket, title: "Custom Development", description: "Tailored solutions engineered to fit your unique business requirements.", accent: "blue" as const },
   { icon: HiChartBar, title: "Data-Driven Insights", description: "Actionable analytics and intelligent reporting to power smarter decisions.", accent: "purple" as const },
   { icon: HiRocketLaunch, title: "Fast Deployment", description: "Rapid implementation with agile methodology. Go live faster without compromising quality.", accent: "cyan" as const },
-];
-
-export const AI_LMS_TMS_FEATURES = [
-  "WSQ and TPQA compliant out of the box",
-  "Fully SSG API integrated — TPGateway, MySkillsFuture, attendance & enrolment",
-  "50+ EdTools for trainers — quizzes, polls, breakouts, AI tutor, code sandbox",
-  "Native integration with Google Meet, Zoom, and Microsoft Teams",
-  "Auto enrolment, invoicing, and SkillsFuture claim workflows",
-  "CP & Courseware Generator — agent-built lesson plans, decks, and assessments",
-  "Claude Code-powered AI agent — content authoring, marking, and learner support",
 ];

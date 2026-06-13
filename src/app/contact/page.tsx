@@ -90,7 +90,7 @@ export default async function ContactPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
-      <main className="pt-16">
+      <main className="pt-4">
         <section className="py-10">
           <Container>
             <div className="max-w-3xl mb-10">
