@@ -45,8 +45,9 @@ export function ChatBot() {
     }
   }
 
-  // Chatbot is a customer-facing widget — never render on /admin pages.
-  if (pathname?.startsWith("/admin")) return null;
+  // The AI chatbot is now an internal admin tool — only render on /admin pages.
+  // (The public site uses the WhatsApp widget instead.)
+  if (!pathname?.startsWith("/admin")) return null;
   // Hide on mobile — the floating widget covers content and isn't useful on
   // small viewports. md (≥ 768px) and up only.
 
