@@ -7,6 +7,7 @@ import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ShareButtons } from "@/components/blog/ShareButtons";
+import { buildPostCoverSvg } from "@/lib/post-cover-svg";
 import { HiUser, HiCalendar, HiTag, HiFolder } from "react-icons/hi2";
 import type { Metadata } from "next";
 
@@ -180,32 +181,14 @@ export default async function PostPage({
                 />
               ) : (
                 // Branded fallback cover when the post has no featured image —
-                // keeps the two-column layout with a picture on the left.
+                // renders the SAME SVG as the R2-stored covers so it matches
+                // tertiaryinfotech.com pixel-for-pixel.
                 <div
-                  className="relative w-full aspect-[4/3] rounded-xl border border-white/10 overflow-hidden flex flex-col justify-center p-7"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #2e0f6e 0%, #1a1556 45%, #0c2c4e 100%)",
+                  className="w-full aspect-[16/10] rounded-xl border border-white/10 overflow-hidden [&>svg]:w-full [&>svg]:h-full"
+                  dangerouslySetInnerHTML={{
+                    __html: buildPostCoverSvg(post.title, category?.name ?? "Journal"),
                   }}
-                >
-                  <div className="kicker mb-4 text-(--color-cyan)">
-                    [ {category?.name ?? "Journal"} ]
-                  </div>
-                  <h2 className="font-display font-extrabold text-2xl md:text-3xl leading-tight text-white [text-wrap:balance]">
-                    {post.title}
-                  </h2>
-                  <div className="mt-auto flex items-center gap-2.5 pt-6">
-                    <span className="w-8 h-8 rounded-md bg-gradient-to-br from-(--color-purple) to-(--color-cyan) shrink-0" />
-                    <div className="leading-tight">
-                      <div className="font-display font-bold text-sm text-white">
-                        Tertiary Infotech Academy
-                      </div>
-                      <div className="text-[10px] text-white/50 font-mono">
-                        tertiaryinfotech.com
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                />
               )}
               <div>
                 <h1 className="text-3xl md:text-4xl font-bold mb-3 leading-tight">

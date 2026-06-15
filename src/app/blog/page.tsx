@@ -5,6 +5,7 @@ import { and, asc, desc, eq, ilike, inArray, or, sql } from "drizzle-orm";
 import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { buildPostCoverSvg } from "@/lib/post-cover-svg";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -321,33 +322,19 @@ export default async function BlogIndex({
                         />
                       ) : (
                         // Branded fallback cover when the post has no featured
-                        // image — mirrors the /blog/[slug] cover so cards never
-                        // show a bare slug.
+                        // image — renders the SAME SVG as the R2-stored covers
+                        // so cards match tertiaryinfotech.com pixel-for-pixel.
                         <div
-                          className="absolute inset-0 overflow-hidden flex flex-col justify-center p-6"
-                          style={{
-                            background:
-                              "linear-gradient(135deg, #2e0f6e 0%, #1a1556 45%, #0c2c4e 100%)",
+                          className="absolute inset-0 [&>svg]:w-full [&>svg]:h-full"
+                          dangerouslySetInnerHTML={{
+                            __html: buildPostCoverSvg(
+                              p.title,
+                              p.categoryId
+                                ? categoryNameById.get(p.categoryId) ?? "Journal"
+                                : "Journal",
+                            ),
                           }}
-                        >
-                          <div className="kicker mb-3 text-(--color-cyan)">
-                            [ {p.categoryId ? categoryNameById.get(p.categoryId) ?? "Journal" : "Journal"} ]
-                          </div>
-                          <h2 className="font-display font-extrabold text-xl md:text-2xl leading-tight text-white [text-wrap:balance] line-clamp-3">
-                            {p.title}
-                          </h2>
-                          <div className="mt-auto flex items-center gap-2.5 pt-5">
-                            <span className="w-7 h-7 rounded-md bg-gradient-to-br from-(--color-purple) to-(--color-cyan) shrink-0" />
-                            <div className="leading-tight">
-                              <div className="font-display font-bold text-xs text-white">
-                                Tertiary Infotech Academy
-                              </div>
-                              <div className="text-[10px] text-white/50 font-mono">
-                                tertiaryinfotech.com
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                        />
                       )}
                     </div>
                     <div className="p-6 flex-1 flex flex-col">
