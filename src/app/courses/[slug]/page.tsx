@@ -32,6 +32,107 @@ const POST_COURSE_SUPPORT =
 const CANCELLATION_POLICY =
   "You can register your interest without upfront payment. There is no penalty for withdrawal before the class commences. We reserve the right to cancel or re-schedule the course due to unforeseen circumstances; if cancelled, we refund 100% of any paid amount. The training venue is subject to change due to classroom availability.";
 
+const CYBER_SECURITY_SLUG = "advanced-certificate-in-cyber-security";
+
+const CYBER_SECURITY_JOB_ROLES = [
+  "IT Support Technician",
+  "IT Helpdesk Specialist",
+  "Desktop Support Engineer",
+  "System Support Engineer",
+  "Network Support Technician",
+  "Junior System Administrator",
+  "Linux System Administrator (Junior)",
+  "Cybersecurity Technician",
+  "Cybersecurity Executive",
+  "Security Operations Center (SOC) Analyst - Level 1",
+  "Cybersecurity Analyst (Junior)",
+  "Threat Intelligence Assistant",
+  "Incident Response Technician",
+  "Vulnerability Assessment Assistant",
+  "Penetration Testing Assistant (Junior Pen Tester)",
+  "IT Security Compliance Assistant",
+  "Information Security Administrator",
+  "Network Security Technician",
+  "Junior DevSecOps Support Engineer",
+  "Cloud Security Support Technician",
+];
+
+const CYBER_SECURITY_MODULE_REGISTRATION_LINKS = [
+  "https://www.tertiarycourses.com.sg/wsq-comptia-a-training.html",
+  "https://www.tertiarycourses.com.sg/wsq-comptia-security-certification-prep.html",
+  "https://www.tertiarycourses.com.sg/wsq-comptia-linux-training.html",
+  "https://www.tertiarycourses.com.sg/wsq-comptia-cybersecurity-analyst-cysa-training.html",
+  "https://www.tertiarycourses.com.sg/wsq-comptia-pentest-exam-prep.html",
+];
+
+const CYBER_SECURITY_TRAINERS = [
+  {
+    name: "Dr. Alfred Ang",
+    qualification: "PhD in Electrical Engineering",
+    conferredBy: "National University of Singapore",
+    appointment: "Full-Time",
+    programme: "Advanced Certificate in Cyber Security (E-Learning)",
+    modules: ["CompTIA A+", "CompTIA Security+", "CompTIA Linux+", "CompTIA CySA+ / PenTest+"],
+  },
+  {
+    name: "Dr. Sivanesan Sivakaruniam",
+    qualification: "Graduate Diploma in Business Systems",
+    conferredBy: "Monash University",
+    appointment: "Part-Time",
+    programme: "Advanced Certificate in Cyber Security (E-Learning)",
+    modules: ["CompTIA Security+", "CompTIA CySA+ / PenTest+"],
+  },
+];
+
+const CYBER_SECURITY_RECOMMENDED_COURSES = [
+  {
+    title: "WSQ - CompTIA Certified A+ Training (Core 1 and Core 2)",
+    href: "https://www.tertiarycourses.com.sg/wsq-comptia-certified-a-training-core-1-and-core-2.html",
+    reviews: "13 Review(s)",
+    priceExclGst: "$2,000.00",
+    priceInclGst: "$2,180.00",
+  },
+  {
+    title: "WSQ - CompTIA Certified Linux+ Training",
+    href: "https://www.tertiarycourses.com.sg/wsq-comptia-certified-linux-training.html",
+    reviews: "2 Review(s)",
+    priceExclGst: "$2,000.00",
+    priceInclGst: "$2,180.00",
+  },
+  {
+    title: "WSQ - CompTIA Cybersecurity Analyst (CySA+) Training",
+    href: "https://www.tertiarycourses.com.sg/wsq-comptia-cybersecurity-analyst-cysa-training.html",
+    priceExclGst: "$2,500.00",
+    priceInclGst: "$2,725.00",
+  },
+  {
+    title: "WSQ - CompTIA Certified SecurityX Training",
+    href: "https://www.tertiarycourses.com.sg/wsq-comptia-certified-securityx-training.html",
+    reviews: "10 Review(s)",
+    priceExclGst: "$2,000.00",
+    priceInclGst: "$2,180.00",
+  },
+  {
+    title: "WSQ - CompTIA PenTest+ Training",
+    href: "https://www.tertiarycourses.com.sg/wsq-comptia-pentest-training.html",
+    priceExclGst: "$3,000.00",
+    priceInclGst: "$3,270.00",
+  },
+  {
+    title: "WSQ - CompTIA Certified Security+ Training",
+    href: "https://www.tertiarycourses.com.sg/wsq-comptia-certified-security-training.html",
+    reviews: "4 Review(s)",
+    priceExclGst: "$2,000.00",
+    priceInclGst: "$2,180.00",
+  },
+];
+
+const CYBER_SECURITY_REVIEW_QUESTIONS = [
+  "Do you find the course meet your expectation?",
+  "Do you find the trainer knowledgeable in this subject?",
+  "How do you find the training environment?",
+];
+
 async function getCourse(slug: string) {
   const [c] = await db
     .select()
@@ -86,6 +187,17 @@ function lines(text: string | null | undefined): string[] {
     .filter(Boolean);
 }
 
+function moduleRegistrationLink(
+  savedLink: string | null,
+  isCyberSecurityCourse: boolean,
+  index: number,
+) {
+  return (
+    savedLink ||
+    (isCyberSecurityCourse ? CYBER_SECURITY_MODULE_REGISTRATION_LINKS[index] : null)
+  );
+}
+
 export default async function CourseDetail({
   params,
 }: {
@@ -98,6 +210,7 @@ export default async function CourseDetail({
 
   const outcomeItems = lines(c.outcomes);
   const enrollItems = lines(c.whoShouldEnroll);
+  const isCyberSecurityCourse = c.slug === CYBER_SECURITY_SLUG;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -275,9 +388,19 @@ export default async function CourseDetail({
                         {m.duration && <span>⏱ {m.duration}</span>}
                       </div>
                     )}
-                    {m.registrationLink && (
+                    {moduleRegistrationLink(
+                      m.registrationLink,
+                      isCyberSecurityCourse,
+                      i,
+                    ) && (
                       <a
-                        href={m.registrationLink}
+                        href={
+                          moduleRegistrationLink(
+                            m.registrationLink,
+                            isCyberSecurityCourse,
+                            i,
+                          ) ?? undefined
+                        }
                         target="_blank"
                         rel="noopener noreferrer"
                         className="mt-4 text-xs text-(--color-cyan) hover:underline font-mono"
@@ -330,6 +453,100 @@ export default async function CourseDetail({
               )}
             </Container>
           </section>
+        )}
+
+        {isCyberSecurityCourse && (
+          <>
+            <section className="py-12">
+              <Container>
+                <div className="text-center mb-10">
+                  <div className="kicker mb-4">[ CAREER PATHWAYS ]</div>
+                  <h2 className="font-display text-2xl md:text-3xl font-extrabold">
+                    Job <span className="gradient-text">Roles</span>
+                  </h2>
+                </div>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  {CYBER_SECURITY_JOB_ROLES.map((role, i) => (
+                    <div
+                      key={role}
+                      className="glass-soft p-4 flex gap-3 items-start min-h-20"
+                    >
+                      <span className="font-mono text-xs text-(--color-cyan) shrink-0">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="text-sm text-white/85 leading-snug">{role}</span>
+                    </div>
+                  ))}
+                </div>
+              </Container>
+            </section>
+
+            <section className="py-12">
+              <Container>
+                <div className="text-center mb-10">
+                  <div className="kicker mb-4">[ TRAINERS ]</div>
+                  <h2 className="font-display text-2xl md:text-3xl font-extrabold">
+                    Programme <span className="gradient-text">Trainers</span>
+                  </h2>
+                </div>
+                <div className="overflow-x-auto rounded-lg border border-white/8">
+                  <table className="w-full min-w-[860px] text-sm">
+                    <thead className="bg-white/5 text-white">
+                      <tr>
+                        <th className="px-4 py-3 text-left font-display">SN</th>
+                        <th className="px-4 py-3 text-left font-display">Name</th>
+                        <th className="px-4 py-3 text-left font-display">
+                          Highest Education Qualification
+                        </th>
+                        <th className="px-4 py-3 text-left font-display">Conferred By</th>
+                        <th className="px-4 py-3 text-left font-display">
+                          Full-/Part-Time
+                        </th>
+                        <th className="px-4 py-3 text-left font-display">
+                          Programme Taught
+                        </th>
+                        <th className="px-4 py-3 text-left font-display">Modules</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/8">
+                      {CYBER_SECURITY_TRAINERS.map((trainer, i) => (
+                        <tr key={trainer.name} className="bg-white/[0.02]">
+                          <td className="px-4 py-4 text-white/60 font-mono">{i + 1}</td>
+                          <td className="px-4 py-4 text-white font-semibold">
+                            {trainer.name}
+                          </td>
+                          <td className="px-4 py-4 text-(--color-muted)">
+                            {trainer.qualification}
+                          </td>
+                          <td className="px-4 py-4 text-(--color-muted)">
+                            {trainer.conferredBy}
+                          </td>
+                          <td className="px-4 py-4 text-(--color-muted)">
+                            {trainer.appointment}
+                          </td>
+                          <td className="px-4 py-4 text-(--color-muted)">
+                            {trainer.programme}
+                          </td>
+                          <td className="px-4 py-4">
+                            <div className="flex flex-wrap gap-1.5">
+                              {trainer.modules.map((module) => (
+                                <span
+                                  key={module}
+                                  className="px-2 py-1 rounded-full text-xs text-(--color-cyan) bg-(--color-cyan)/10 border border-(--color-cyan)/25"
+                                >
+                                  {module}
+                                </span>
+                              ))}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </Container>
+            </section>
+          </>
         )}
 
         {/* Certification + course info */}
@@ -389,6 +606,106 @@ export default async function CourseDetail({
             </div>
           </Container>
         </section>
+
+        {isCyberSecurityCourse && (
+          <>
+            <section className="py-12">
+              <Container>
+                <div className="text-center mb-10">
+                  <div className="kicker mb-4">[ REVIEW ]</div>
+                  <h2 className="font-display text-2xl md:text-3xl font-extrabold">
+                    Course <span className="gradient-text">Review</span>
+                  </h2>
+                </div>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="glass p-7">
+                    <h3 className="font-display font-bold text-lg mb-3">
+                      Write Your Own Review
+                    </h3>
+                    <p className="text-sm text-(--color-muted) leading-relaxed mb-5">
+                      You are reviewing: [MC] Advanced Certificate in Cyber Security
+                      (E-Learning)
+                    </p>
+                    <div className="space-y-3">
+                      {CYBER_SECURITY_REVIEW_QUESTIONS.map((question, i) => (
+                        <div
+                          key={question}
+                          className="p-4 rounded-lg bg-white/3 border border-white/6"
+                        >
+                          <div className="text-xs font-mono text-(--color-cyan) mb-1">
+                            Question {i + 1}
+                          </div>
+                          <p className="text-sm text-white/85">{question}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="glass p-7">
+                    <h3 className="font-display font-bold text-lg mb-3">
+                      Review Information
+                    </h3>
+                    <ul className="space-y-2.5 text-sm text-(--color-muted)">
+                      <li className="flex gap-3">
+                        <HiCheckBadge className="w-5 h-5 text-(--color-green) shrink-0 mt-0.5" />
+                        <span>Ratings use a 1-star to 5-star scale.</span>
+                      </li>
+                      <li className="flex gap-3">
+                        <HiCheckBadge className="w-5 h-5 text-(--color-green) shrink-0 mt-0.5" />
+                        <span>Reviews include nickname, summary, and detailed feedback.</span>
+                      </li>
+                      <li className="flex gap-3">
+                        <HiCheckBadge className="w-5 h-5 text-(--color-green) shrink-0 mt-0.5" />
+                        <span>
+                          Review submissions are moderated before publication.
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </Container>
+            </section>
+
+            <section className="py-12">
+              <Container>
+                <div className="text-center mb-10">
+                  <div className="kicker mb-4">[ RECOMMENDED COURSES ]</div>
+                  <h2 className="font-display text-2xl md:text-3xl font-extrabold">
+                    Related <span className="gradient-text">Courses</span>
+                  </h2>
+                </div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {CYBER_SECURITY_RECOMMENDED_COURSES.map((course) => (
+                    <a
+                      key={course.href}
+                      href={course.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="glass p-5 hover:border-(--color-cyan)/35 transition-colors"
+                    >
+                      <h3 className="font-display font-bold text-white leading-snug mb-3">
+                        {course.title}
+                      </h3>
+                      {course.reviews && (
+                        <p className="text-xs text-(--color-amber) mb-3">
+                          {course.reviews}
+                        </p>
+                      )}
+                      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm">
+                        <span className="font-semibold text-white">
+                          {course.priceExclGst}
+                        </span>
+                        <span className="text-white/45">GST-exclusive</span>
+                      </div>
+                      <p className="mt-1 text-xs text-white/45">
+                        {course.priceInclGst} GST-inclusive
+                      </p>
+                    </a>
+                  ))}
+                </div>
+              </Container>
+            </section>
+          </>
+        )}
 
         {/* International student support */}
         <InternationalStudentSupport />

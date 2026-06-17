@@ -68,30 +68,37 @@ const MODULES = [
     kind: "foundation",
     details:
       "Builds a strong foundation in IT support, covering hardware, operating systems, networking basics, and essential troubleshooting skills. Prepares learners to manage IT infrastructure, perform system diagnostics, and maintain secure device configurations.",
+    registrationLink: "https://www.tertiarycourses.com.sg/wsq-comptia-a-training.html",
   },
   {
     title: "Module 2: CompTIA Security+ — Core Cyber Security Principles",
     kind: "foundation",
     details:
       "Introduces essential cybersecurity concepts including threat intelligence, security controls, risk management, and incident response. Learners develop the ability to secure networks, apply cryptographic principles, and implement access management strategies.",
+    registrationLink:
+      "https://www.tertiarycourses.com.sg/wsq-comptia-security-certification-prep.html",
   },
   {
     title: "Module 3: CompTIA Linux+ — Linux Systems & Security Administration",
     kind: "foundation",
     details:
       "Trains learners to configure, maintain, and secure Linux environments through command-line operations, file permissions, scripting, and network configuration. Essential for system administration, security operations, and cloud security roles.",
+    registrationLink: "https://www.tertiarycourses.com.sg/wsq-comptia-linux-training.html",
   },
   {
     title: "Module 4A (Elective): CompTIA CySA+ — Cybersecurity Analyst",
     kind: "elective",
     details:
       "Focuses on security analytics, threat detection, SIEM monitoring, and behavioral analysis. Learners gain practical experience in incident response, vulnerability management, and security automation. Prepares for SOC and defensive security roles.",
+    registrationLink:
+      "https://www.tertiarycourses.com.sg/wsq-comptia-cybersecurity-analyst-cysa-training.html",
   },
   {
     title: "Module 4B (Elective): CompTIA PenTest+ — Penetration Testing & Ethical Hacking",
     kind: "elective",
     details:
       "Hands-on training in offensive security. Learners conduct vulnerability assessments, exploit network and application weaknesses, and perform post-exploitation activities using industry-standard tools. Prepares for penetration testing and red teaming roles.",
+    registrationLink: "https://www.tertiarycourses.com.sg/wsq-comptia-pentest-exam-prep.html",
   },
 ];
 
@@ -123,6 +130,7 @@ async function main() {
       title: m.title,
       kind: m.kind,
       details: m.details,
+      registrationLink: m.registrationLink,
       sortOrder: i,
     })),
   );
