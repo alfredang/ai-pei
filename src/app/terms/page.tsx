@@ -36,7 +36,7 @@ export default function TermsPage() {
   return (
     <>
       <Navbar />
-      <main className="relative overflow-hidden pt-32 pb-24">
+      <main className="relative overflow-hidden pt-14 pb-24">
         <div className="grid-bg opacity-40" />
         <div
           className="glow-blob"

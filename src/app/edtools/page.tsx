@@ -33,7 +33,7 @@ export default function EdToolsIndex() {
     <>
       <Navbar />
       <main>
-        <section className="relative pt-24 pb-12 overflow-hidden">
+        <section className="relative pt-10 pb-12 overflow-hidden">
           <div className="grid-bg opacity-60" />
           <div
             className="glow-blob"

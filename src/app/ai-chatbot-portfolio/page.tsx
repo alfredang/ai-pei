@@ -172,7 +172,7 @@ export default function AiChatbotPortfolioPage() {
           </Container>
         </section>
 
-        <section className="relative py-20 overflow-hidden">
+        <section className="relative pt-10 pb-20 overflow-hidden">
           <div
             className="glow-blob"
             style={{ bottom: "-20%", left: "40%", width: 500, height: 500, background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)", opacity: 0.3 }}

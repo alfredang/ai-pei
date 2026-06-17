@@ -175,7 +175,7 @@ export default function StudyInSingaporePage() {
       <Navbar />
       <main>
         {/* HERO */}
-        <section className="relative py-10 md:py-14 overflow-hidden">
+        <section className="relative pt-6 pb-10 md:pt-8 md:pb-14 overflow-hidden">
           <div
             className="glow-blob"
             style={{ top: "-10%", left: "-5%", width: 520, height: 520, background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)" }}

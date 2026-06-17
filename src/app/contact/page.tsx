@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/contact.html" },
   openGraph: {
     type: "website",
-    url: "/contact",
+    url: "/contact.html",
     title: "Contact Us — Tertiary Infotech Academy",
     description:
       "Reach Tertiary Infotech Academy by phone, email, WhatsApp. Located in Singapore — Woods Square, Woodlands.",
@@ -51,7 +51,7 @@ export default async function ContactPage() {
   const localBusinessLd = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "@id": `${SITE_URL}/contact`,
+    "@id": `${SITE_URL}/contact.html`,
     name: brand.fullName,
     image: brand.logoUrl ? new URL(brand.logoUrl, SITE_URL).toString() : `${SITE_URL}/favicon.ico`,
     url: SITE_URL,
@@ -75,8 +75,8 @@ export default async function ContactPage() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-      { "@type": "ListItem", position: 2, name: "Contact", item: `${SITE_URL}/contact` },
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/index.html` },
+      { "@type": "ListItem", position: 2, name: "Contact", item: `${SITE_URL}/contact.html` },
     ],
   };
   return (
@@ -90,8 +90,8 @@ export default async function ContactPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
-      <main className="pt-16">
-        <section className="py-10">
+      <main className="pt-4">
+        <section className="pt-6 pb-10">
           <Container>
             <div className="max-w-3xl mb-10">
               <div className="kicker mb-4">[ CONTACT ]</div>

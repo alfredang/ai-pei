@@ -269,7 +269,7 @@ export default function AdvancedCertificateInBlockchainPage() {
       <Navbar />
       <main>
         {/* HERO */}
-        <section className="relative py-10 md:py-14 overflow-hidden">
+        <section className="relative pt-6 pb-10 md:pt-8 md:pb-14 overflow-hidden">
           <div
             className="glow-blob"
             style={{

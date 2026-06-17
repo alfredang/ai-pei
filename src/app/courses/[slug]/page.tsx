@@ -257,7 +257,7 @@ export default async function CourseDetail({
         />
 
         {/* Hero */}
-        <section className="relative pt-24 pb-12 overflow-hidden">
+        <section className="relative pt-10 pb-12 overflow-hidden">
           <div className="grid-bg opacity-50" />
           <div
             className="glow-blob"

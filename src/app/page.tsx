@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/index.html" },
   openGraph: {
     type: "website",
-    url: "/",
+    url: "/index.html",
     title: "Study Tech in Singapore — Cyber, AI, Blockchain & Quantum",
     description:
       "English-taught Cybersecurity, AI, Blockchain & Quantum Computing courses for international learners in Asia's leading tech hub.",
