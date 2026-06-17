@@ -5,15 +5,16 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ServiceLeadForm } from "@/components/sections/ServiceLeadForm";
 import { EDTOOLS, ED_TOOL_CATEGORIES, getEdToolsGrouped } from "@/lib/edtools-data";
+import { htmlPath } from "@/lib/html-url";
 import { HiArrowUpRight } from "react-icons/hi2";
 
-const PAGE_URL = "https://www.tertiaryinfotech.edu.sg/edtools";
+const PAGE_URL = "https://www.tertiaryinfotech.edu.sg/edtools.html";
 
 export const metadata: Metadata = {
   title: "50+ EdTools — Interactive Classroom, Analytics, Cybersecurity, Finance",
   description:
     "Browse the 50+ EdTools bundled inside Tertiary Infotech Academy's AI-LMS-TMS — interactive classroom widgets, problem-solving frameworks, cybersecurity labs, data analytics, finance, statistics, sustainability, and blockchain tools.",
-  alternates: { canonical: "/edtools" },
+  alternates: { canonical: "/edtools.html" },
   openGraph: {
     type: "website",
     url: PAGE_URL,
@@ -57,11 +58,11 @@ export default function EdToolsIndex() {
               <span className="text-white/80">Slido</span>, and a dozen single-tool SaaS subscriptions.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/learning-management-system" className="btn-primary">
+              <Link href="/learning-management-system.html" className="btn-primary">
                 ← Back to LMS / TMS
               </Link>
               <Link
-                href="/contact?source=edtools-index-quote"
+                href="/contact.html?source=edtools-index-quote"
                 className="px-5 py-3 rounded-lg border border-(--color-cyan)/40 text-(--color-cyan) hover:bg-(--color-cyan)/10 text-sm font-medium"
               >
                 Get a deployment quote →
@@ -87,7 +88,7 @@ export default function EdToolsIndex() {
                     {tools.map((t) => (
                       <Link
                         key={t.slug}
-                        href={`/edtools/${t.slug}`}
+                        href={htmlPath(`/edtools/${t.slug}`)}
                         className="glass card-hover p-5 flex flex-col group"
                       >
                         <div className="flex items-start justify-between gap-3 mb-2">

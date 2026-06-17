@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { posts } from "@/db/schema";
 import { and, desc, eq } from "drizzle-orm";
 import { Container } from "@/components/layout/Container";
+import { htmlPath } from "@/lib/html-url";
 import { HiArrowUpRight, HiStar } from "react-icons/hi2";
 
 function snippetFromHtml(html: string | null | undefined, max = 200): string {
@@ -65,7 +66,7 @@ type PostLite = {
 function PostCard({ p }: { p: PostLite }) {
   return (
     <Link
-      href={`/blog/${p.slug}`}
+      href={htmlPath(`/blog/${p.slug}`)}
       className="card-hover glass overflow-hidden flex flex-col group"
     >
       <div className="aspect-[16/10] overflow-hidden bg-(--color-bg-deeper) relative">
@@ -126,7 +127,7 @@ export async function FeaturedPosts() {
               </h2>
             </div>
             <Link
-              href="/blog"
+              href="/blog.html"
               className="inline-flex items-center gap-2 text-sm font-mono text-(--color-cyan) hover:gap-3 transition-all"
             >
               ALL ARTICLES <HiArrowUpRight className="w-4 h-4" />
@@ -150,7 +151,7 @@ export async function FeaturedPosts() {
               </h2>
             </div>
             <Link
-              href="/blog"
+              href="/blog.html"
               className="inline-flex items-center gap-2 text-sm font-mono text-(--color-cyan) hover:gap-3 transition-all"
             >
               ALL ARTICLES <HiArrowUpRight className="w-4 h-4" />

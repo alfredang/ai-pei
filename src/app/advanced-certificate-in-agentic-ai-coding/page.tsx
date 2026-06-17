@@ -20,7 +20,7 @@ import { Footer } from "@/components/layout/Footer";
 import { InternationalStudentSupport } from "@/components/sections/InternationalStudentSupport";
 
 const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
-const PAGE_URL = `${SITE_URL}/advanced-certificate-in-agentic-ai-coding`;
+const PAGE_URL = `${SITE_URL}/advanced-certificate-in-agentic-ai-coding.html`;
 
 const ADDRESS = "12 Woodlands Square #07-85/86/87 Woods Square Tower 1, Singapore 737715";
 
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   keywords:
     "Advanced Certificate Agentic AI, AI agents course Singapore, agentic AI coding course, study AI in Singapore, AI engineer course international students, RAG course, multi-agent orchestration course, AI solutions architect training",
   // The full course (curriculum + enrolment) lives in the catalog; point canonical there.
-  alternates: { canonical: `${SITE_URL}/courses/advanced-certificate-in-agentic-ai-coding` },
+  alternates: { canonical: `${SITE_URL}/courses/advanced-certificate-in-agentic-ai-coding.html` },
   openGraph: {
     type: "website",
     locale: "en_SG",
@@ -269,8 +269,8 @@ const breadcrumbLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-    { "@type": "ListItem", position: 2, name: "Courses", item: `${SITE_URL}/courses` },
+    { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/index.html` },
+    { "@type": "ListItem", position: 2, name: "Courses", item: `${SITE_URL}/courses.html` },
     {
       "@type": "ListItem",
       position: 3,
@@ -335,7 +335,7 @@ export default function AgenticAiCodingPage() {
                 </span>
               </div>
               <div className="flex flex-wrap gap-3">
-                <Link href="/contact" className="btn-primary">
+                <Link href="/contact.html" className="btn-primary">
                   Talk to a course advisor →
                 </Link>
                 <a
@@ -558,11 +558,11 @@ export default function AgenticAiCodingPage() {
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-3">
-              <Link href="/contact" className="btn-primary">
+              <Link href="/contact.html" className="btn-primary">
                 Talk to a course advisor →
               </Link>
               <Link
-                href="/advanced-certificate-in-ai-security-analyst"
+                href="/advanced-certificate-in-ai-security-analyst.html"
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-white/15 text-white/85 hover:border-(--color-cyan)/50 hover:text-(--color-cyan) transition"
               >
                 Interested in AI security instead?
@@ -578,7 +578,7 @@ export default function AgenticAiCodingPage() {
             </div>
             <p className="mt-6 text-center text-xs text-(--color-muted) font-mono">
               [ Browse the full catalogue?{" "}
-              <Link href="/courses" className="hover:text-(--color-cyan)">
+              <Link href="/courses.html" className="hover:text-(--color-cyan)">
                 See all courses
               </Link>{" "}
               ]

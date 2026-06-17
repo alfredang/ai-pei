@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { HiArrowUpRight } from "react-icons/hi2";
 import { getHomepageCopy, getHeroKpis } from "@/lib/site-settings";
+import { htmlPath } from "@/lib/html-url";
 
 export async function Hero() {
   const [copy, kpis] = await Promise.all([getHomepageCopy(), getHeroKpis()]);
@@ -97,11 +98,11 @@ export async function Hero() {
         />
 
         <div className="reveal reveal-d3 mt-10 flex flex-wrap gap-3">
-          <Link href={copy.heroCtaPrimaryHref} className="btn-primary">
+          <Link href={htmlPath(copy.heroCtaPrimaryHref)} className="btn-primary">
             {copy.heroCtaPrimaryLabel}
             <span aria-hidden>→</span>
           </Link>
-          <Link href={copy.heroCtaSecondaryHref} className="btn-secondary">
+          <Link href={htmlPath(copy.heroCtaSecondaryHref)} className="btn-secondary">
             {copy.heroCtaSecondaryLabel}
           </Link>
         </div>

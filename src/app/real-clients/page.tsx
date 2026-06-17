@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     "Production LMS and TMS deployments by Tertiary Infotech Academy — IES Digital Academy, Intellisoft Systems, and Chariot Learning & Consultancy.",
   keywords:
     "LMS Singapore case studies, TMS Singapore clients, WSQ LMS deployments, training provider LMS, Tertiary Infotech Academy clients",
-  alternates: { canonical: "/real-clients" },
+  alternates: { canonical: "/real-clients.html" },
   openGraph: {
     type: "website",
     url: "/real-clients",
@@ -154,7 +154,7 @@ export default function RealClientsPage() {
                   <HiCheckCircle className="text-(--color-cyan)" /> WSQ + TPQA experts
                   <HiCheckCircle className="text-(--color-cyan)" /> Claude Code-powered
                 </p>
-                <Link href="/#contact" className="btn-primary">Request a demo →</Link>
+          <Link href="/index.html#contact" className="btn-primary">Request a demo →</Link>
               </div>
             </div>
           </Container>

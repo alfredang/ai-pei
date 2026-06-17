@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useTransition } from "react";
+import { htmlPath } from "@/lib/html-url";
 
 export type PostRow = {
   id: number;
@@ -217,7 +218,7 @@ export function PostsBulkTable({ rows, deleteMany, setFeatured }: Props) {
                   <div className="inline-flex items-center gap-1">
                     {p.status === "published" ? (
                       <a
-                        href={`/blog/${p.slug}`}
+                        href={htmlPath(`/blog/${p.slug}`)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="px-2 py-1 text-xs rounded border border-white/10 hover:border-(--color-cyan)/60 hover:text-(--color-cyan) hover:bg-(--color-cyan)/5 transition"

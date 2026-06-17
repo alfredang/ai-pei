@@ -6,6 +6,7 @@ import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { fundingColor } from "@/lib/funding";
+import { absoluteHtmlUrl, htmlPath } from "@/lib/html-url";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -18,10 +19,10 @@ export const metadata: Metadata = {
     "Browse Advanced Certificate courses in AI, Cyber Security and Blockchain at Tertiary Infotech Academy — a Singapore Private Education Institution. Hands-on, industry-recognised certifications for international students and career switchers.",
   keywords:
     "advanced certificate courses Singapore, cyber security course Singapore, AI course Singapore, blockchain course Singapore, study tech in Singapore, courses for international students Singapore, Tertiary Infotech Academy courses",
-  alternates: { canonical: "/courses" },
+  alternates: { canonical: "/courses.html" },
   openGraph: {
     type: "website",
-    url: "/courses",
+    url: "/courses.html",
     title: "Advanced Certificate Courses in AI, Cyber Security & Blockchain | Tertiary Infotech Academy",
     description:
       "Advanced Certificate courses in AI, Cyber Security and Blockchain — hands-on, industry-recognised training in Singapore for international students.",
@@ -43,11 +44,11 @@ export default async function CoursesIndex() {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: "Courses",
-    url: `${BASE}/courses`,
+    url: absoluteHtmlUrl(BASE, "/courses"),
     hasPart: list.map((c) => ({
       "@type": "Course",
       name: c.title,
-      url: `${BASE}/courses/${c.slug}`,
+      url: absoluteHtmlUrl(BASE, `/courses/${c.slug}`),
       ...(c.summary ? { description: c.summary } : {}),
       provider: {
         "@type": "EducationalOrganization",
@@ -89,7 +90,7 @@ export default async function CoursesIndex() {
               available for eligible Singaporeans.
             </p>
             <div className="mt-6">
-              <Link href="/study-in-singapore" className="btn-primary">
+              <Link href="/study-in-singapore.html" className="btn-primary">
                 International student? Study in Singapore →
               </Link>
             </div>
@@ -105,7 +106,7 @@ export default async function CoursesIndex() {
                 {list.map((c) => (
                   <Link
                     key={c.id}
-                    href={`/courses/${c.slug}`}
+                    href={htmlPath(`/courses/${c.slug}`)}
                     className="card-hover glass overflow-hidden flex flex-col group p-6"
                   >
                     <div className="flex flex-wrap gap-1.5 mb-4">
@@ -187,7 +188,7 @@ export default async function CoursesIndex() {
               ].map((p) => (
                 <Link
                   key={p.href}
-                  href={p.href}
+                  href={htmlPath(p.href)}
                   className="card-hover glass overflow-hidden flex flex-col group p-6"
                 >
                   <div className="mb-4">

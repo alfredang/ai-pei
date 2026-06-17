@@ -11,6 +11,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ServiceLeadForm } from "@/components/sections/ServiceLeadForm";
 import type { ServicePageContent, TimelineStep } from "@/lib/service-pages";
+import { absoluteHtmlUrl } from "@/lib/html-url";
 
 const STEP_ICONS = [
   HiMagnifyingGlass, // Discovery
@@ -56,7 +57,7 @@ const STEP_ACCENT: Record<NonNullable<TimelineStep["accent"]>, { ring: string; i
 /** Render a full service landing page from a ServicePageContent config. */
 export function ServicePageTemplate({ content }: { content: ServicePageContent }) {
   const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
-  const pageUrl = `${SITE_URL}/${content.slug}`;
+  const pageUrl = absoluteHtmlUrl(SITE_URL, `/${content.slug}`);
 
   const serviceLd = {
     "@context": "https://schema.org",
@@ -87,8 +88,8 @@ export function ServicePageTemplate({ content }: { content: ServicePageContent }
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-      { "@type": "ListItem", position: 2, name: "Services", item: `${SITE_URL}/#services` },
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/index.html` },
+      { "@type": "ListItem", position: 2, name: "Services", item: `${SITE_URL}/index.html#services` },
       { "@type": "ListItem", position: 3, name: content.title, item: pageUrl },
     ],
   };
@@ -337,7 +338,7 @@ export function ServicePageTemplate({ content }: { content: ServicePageContent }
             <ServiceLeadForm source={content.leadSource} />
             <p className="mt-5 text-center text-xs text-(--color-muted) font-mono">
               [{" "}
-              <Link href="/#services" className="hover:text-(--color-cyan)">
+              <Link href="/index.html#services" className="hover:text-(--color-cyan)">
                 See all services
               </Link>{" "}
               ]

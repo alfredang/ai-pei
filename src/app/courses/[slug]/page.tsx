@@ -8,6 +8,7 @@ import { Footer } from "@/components/layout/Footer";
 import { CourseRegisterForm } from "@/components/sections/CourseRegisterForm";
 import { InternationalStudentSupport } from "@/components/sections/InternationalStudentSupport";
 import { fundingColor } from "@/lib/funding";
+import { absoluteHtmlUrl, htmlPath } from "@/lib/html-url";
 import {
   HiAcademicCap,
   HiCheckBadge,
@@ -165,10 +166,10 @@ export async function generateMetadata({
   return {
     title,
     description,
-    alternates: { canonical: `/courses/${c.slug}` },
+    alternates: { canonical: htmlPath(`/courses/${c.slug}`) },
     openGraph: {
       type: "website",
-      url: `/courses/${c.slug}`,
+      url: htmlPath(`/courses/${c.slug}`),
       title: `${c.title} | Tertiary Infotech Academy`,
       description,
       locale: "en_SG",
@@ -216,7 +217,7 @@ export default async function CourseDetail({
     "@context": "https://schema.org",
     "@type": "Course",
     name: c.title,
-    url: `${BASE}/courses/${c.slug}`,
+    url: absoluteHtmlUrl(BASE, `/courses/${c.slug}`),
     ...(c.summary || c.seoDescription
       ? { description: c.seoDescription || c.summary }
       : {}),

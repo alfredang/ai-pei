@@ -3,8 +3,10 @@ import { db } from "@/db";
 import { pages, posts, courses } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { EDTOOLS } from "@/lib/edtools-data";
+import { absoluteHtmlUrl } from "@/lib/html-url";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.tertiaryinfotech.edu.sg";
+const url = (path: string) => absoluteHtmlUrl(BASE, path);
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [allPages, allPosts, allCourses] = await Promise.all([
@@ -13,49 +15,49 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     db.select().from(courses).where(eq(courses.status, "published")).catch(() => []),
   ]);
   return [
-    { url: `${BASE}/`, changeFrequency: "weekly", priority: 1 },
-    { url: `${BASE}/ssg-ato-application`, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE}/pei-course-submission`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${BASE}/advanced-certificate-in-ai-security-analyst`, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE}/advanced-certificate-in-agentic-ai-coding`, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE}/advanced-certificate-in-blockchain`, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE}/study-in-singapore`, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE}/training-management-system`, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE}/learning-management-system`, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE}/ai-solutions`, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE}/wsq-course-development`, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE}/tpqa-consultancy`, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE}/content-management-system`, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE}/hr-management-system`, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE}/ai-agent-deployment`, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${BASE}/contact`, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${BASE}/real-clients`, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${BASE}/ai-chatbot-portfolio`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${BASE}/blog`, changeFrequency: "daily", priority: 0.8 },
-    { url: `${BASE}/blog/tags`, changeFrequency: "weekly", priority: 0.5 },
-    { url: `${BASE}/courses`, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${BASE}/edtools`, changeFrequency: "monthly", priority: 0.8 },
+    { url: url("/"), changeFrequency: "weekly", priority: 1 },
+    { url: url("/ssg-ato-application"), changeFrequency: "monthly", priority: 0.9 },
+    { url: url("/pei-course-submission"), changeFrequency: "monthly", priority: 0.8 },
+    { url: url("/advanced-certificate-in-ai-security-analyst"), changeFrequency: "monthly", priority: 0.9 },
+    { url: url("/advanced-certificate-in-agentic-ai-coding"), changeFrequency: "monthly", priority: 0.9 },
+    { url: url("/advanced-certificate-in-blockchain"), changeFrequency: "monthly", priority: 0.9 },
+    { url: url("/study-in-singapore"), changeFrequency: "monthly", priority: 0.9 },
+    { url: url("/training-management-system"), changeFrequency: "monthly", priority: 0.9 },
+    { url: url("/learning-management-system"), changeFrequency: "monthly", priority: 0.9 },
+    { url: url("/ai-solutions"), changeFrequency: "monthly", priority: 0.9 },
+    { url: url("/wsq-course-development"), changeFrequency: "monthly", priority: 0.9 },
+    { url: url("/tpqa-consultancy"), changeFrequency: "monthly", priority: 0.9 },
+    { url: url("/content-management-system"), changeFrequency: "monthly", priority: 0.9 },
+    { url: url("/hr-management-system"), changeFrequency: "monthly", priority: 0.9 },
+    { url: url("/ai-agent-deployment"), changeFrequency: "monthly", priority: 0.9 },
+    { url: url("/contact"), changeFrequency: "monthly", priority: 0.7 },
+    { url: url("/real-clients"), changeFrequency: "monthly", priority: 0.7 },
+    { url: url("/ai-chatbot-portfolio"), changeFrequency: "monthly", priority: 0.8 },
+    { url: url("/blog"), changeFrequency: "daily", priority: 0.8 },
+    { url: url("/blog/tags"), changeFrequency: "weekly", priority: 0.5 },
+    { url: url("/courses"), changeFrequency: "weekly", priority: 0.8 },
+    { url: url("/edtools"), changeFrequency: "monthly", priority: 0.8 },
     ...EDTOOLS.map((t) => ({
-      url: `${BASE}/edtools/${t.slug}`,
+      url: url(`/edtools/${t.slug}`),
       changeFrequency: "monthly" as const,
       priority: 0.6,
     })),
-    { url: `${BASE}/terms`, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${BASE}/privacy`, changeFrequency: "yearly", priority: 0.3 },
+    { url: url("/terms"), changeFrequency: "yearly", priority: 0.3 },
+    { url: url("/privacy"), changeFrequency: "yearly", priority: 0.3 },
     ...allPages.map((p) => ({
-      url: `${BASE}/${p.slug}`,
+      url: url(`/${p.slug}`),
       lastModified: p.updatedAt,
       changeFrequency: "monthly" as const,
       priority: 0.6,
     })),
     ...allPosts.map((p) => ({
-      url: `${BASE}/blog/${p.slug}`,
+      url: url(`/blog/${p.slug}`),
       lastModified: p.updatedAt,
       changeFrequency: "weekly" as const,
       priority: 0.7,
     })),
     ...allCourses.map((c) => ({
-      url: `${BASE}/courses/${c.slug}`,
+      url: url(`/courses/${c.slug}`),
       lastModified: c.updatedAt,
       changeFrequency: "monthly" as const,
       priority: 0.8,

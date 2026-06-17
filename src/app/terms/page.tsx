@@ -3,7 +3,7 @@ import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
-const PAGE_URL = "https://www.tertiaryinfotech.edu.sg/terms";
+const PAGE_URL = "https://www.tertiaryinfotech.edu.sg/terms.html";
 const COMPANY = "Tertiary Infotech Academy Pte Ltd";
 const BRAND = "Tertiary Infotech Academy";
 const EFFECTIVE_DATE = "16 May 2026";
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: "Terms of Service",
   description:
     "Terms of Service for Tertiary Infotech Academy — covering use of our website, training services, and the publication of video content to third-party platforms including TikTok.",
-  alternates: { canonical: "/terms" },
+  alternates: { canonical: "/terms.html" },
   openGraph: {
     type: "website",
     url: PAGE_URL,
@@ -321,7 +321,7 @@ export default function TermsPage() {
                     angch@tertiaryinfotech.com
                   </a>
                   , or via our{" "}
-                  <a href="/contact" className="text-(--color-cyan) hover:underline">
+                  <a href="/contact.html" className="text-(--color-cyan) hover:underline">
                     contact page
                   </a>
                   .

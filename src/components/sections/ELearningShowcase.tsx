@@ -91,7 +91,7 @@ export function ELearningShowcase() {
               <Link href="#contact" className="btn-primary">
                 Request a demo
               </Link>
-              <Link href="/real-clients" className="btn-secondary">
+              <Link href="/real-clients.html" className="btn-secondary">
                 Real Clients
               </Link>
               <Link

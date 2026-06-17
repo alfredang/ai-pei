@@ -6,6 +6,7 @@ import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { buildPostCoverSvg } from "@/lib/post-cover-svg";
+import { htmlPath } from "@/lib/html-url";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -35,10 +36,10 @@ export const metadata: Metadata = {
     "Field notes from SSG and AI services and building Agentic AI workflows — AI Agents, LMS and TMS case studies from Tertiary Infotech Academy.",
   keywords:
     "AI agents Singapore, WSQ LMS blog, training provider blog, SSG ATO insights, TPQA case studies, agentic AI Singapore",
-  alternates: { canonical: "/blog" },
+  alternates: { canonical: "/blog.html" },
   openGraph: {
     type: "website",
-    url: "/blog",
+    url: "/blog.html",
     title: "Journal | Tertiary Infotech Academy",
     description:
       "AI Agents, LMS and TMS case studies from the Tertiary Infotech Academy.",
@@ -160,7 +161,7 @@ export default async function BlogIndex({
     if (query) params.set("q", query);
     if (next.page && next.page > 1) params.set("page", String(next.page));
     const qs = params.toString();
-    return qs ? `/blog?${qs}` : "/blog";
+    return qs ? `/blog.html?${qs}` : "/blog.html";
   }
 
   return (
@@ -195,7 +196,7 @@ export default async function BlogIndex({
         <section className="pb-4">
           <Container>
             <div className="glass p-5 space-y-4">
-              <form method="get" action="/blog" className="flex flex-wrap items-center gap-2">
+              <form method="get" action="/blog.html" className="flex flex-wrap items-center gap-2">
                 {selectedCategory && (
                   <input type="hidden" name="category" value={selectedCategory} />
                 )}
@@ -281,7 +282,7 @@ export default async function BlogIndex({
                     ))}
                     {allTags.length > TOP_TAG_LIMIT && (
                       <Link
-                        href="/blog/tags"
+                        href="/blog/tags.html"
                         className="px-3 py-1 rounded-full border text-xs transition border-(--color-cyan)/40 text-(--color-cyan) hover:bg-(--color-cyan)/10"
                       >
                         See all {allTags.length} tags →
@@ -308,7 +309,7 @@ export default async function BlogIndex({
                 {items.map((p) => (
                   <Link
                     key={p.id}
-                    href={`/blog/${p.slug}`}
+                    href={htmlPath(`/blog/${p.slug}`)}
                     className="card-hover glass overflow-hidden flex flex-col group"
                   >
                     <div className="aspect-[16/10] overflow-hidden bg-(--color-bg-deeper) relative">

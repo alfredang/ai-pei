@@ -6,6 +6,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ServiceLeadForm } from "@/components/sections/ServiceLeadForm";
 import { EDTOOLS, getEdToolBySlug } from "@/lib/edtools-data";
+import { absoluteHtmlUrl, htmlPath } from "@/lib/html-url";
 import { HiArrowUpRight, HiCheck } from "react-icons/hi2";
 
 const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
@@ -22,11 +23,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!tool) return { title: "EdTool not found" };
   const title = `${tool.name} — EdTool by Tertiary Infotech Academy`;
   const description = tool.description;
-  const url = `${SITE_URL}/edtools/${tool.slug}`;
+  const url = absoluteHtmlUrl(SITE_URL, `/edtools/${tool.slug}`);
   return {
     title,
     description,
-    alternates: { canonical: `/edtools/${tool.slug}` },
+    alternates: { canonical: htmlPath(`/edtools/${tool.slug}`) },
     openGraph: {
       type: "website",
       url,
@@ -71,7 +72,7 @@ export default async function EdToolDetail({ params }: Props) {
           />
           <Container className="relative">
             <div className="mb-4">
-              <Link href="/edtools" className="text-sm text-(--color-cyan) hover:underline">
+              <Link href="/edtools.html" className="text-sm text-(--color-cyan) hover:underline">
                 ← All EdTools
               </Link>
             </div>
@@ -102,7 +103,7 @@ export default async function EdToolDetail({ params }: Props) {
                 </a>
               )}
               <Link
-                href={`/contact?source=${sourceTag}-quote`}
+                href={htmlPath(`/contact?source=${sourceTag}-quote`)}
                 className="px-5 py-3 rounded-lg border border-(--color-cyan)/40 text-(--color-cyan) hover:bg-(--color-cyan)/10 text-sm font-medium"
               >
                 Get a quote →
@@ -166,17 +167,17 @@ export default async function EdToolDetail({ params }: Props) {
                   <h3 className="font-display text-lg font-bold mb-3">Three ways to engage</h3>
                   <ul className="space-y-3 text-sm">
                     <li>
-                      <Link href={`/contact?source=${sourceTag}-call`} className="text-(--color-cyan) hover:underline">
+                      <Link href={htmlPath(`/contact?source=${sourceTag}-call`)} className="text-(--color-cyan) hover:underline">
                         Book a 30-minute scoping call →
                       </Link>
                     </li>
                     <li>
-                      <Link href={`/contact?source=${sourceTag}-quote`} className="text-(--color-cyan) hover:underline">
+                      <Link href={htmlPath(`/contact?source=${sourceTag}-quote`)} className="text-(--color-cyan) hover:underline">
                         Request a custom-build quote →
                       </Link>
                     </li>
                     <li>
-                      <Link href="/edtools" className="text-(--color-cyan) hover:underline">
+                      <Link href="/edtools.html" className="text-(--color-cyan) hover:underline">
                         Browse the full EdTools catalogue →
                       </Link>
                     </li>
@@ -201,7 +202,7 @@ export default async function EdToolDetail({ params }: Props) {
               <h2 className="font-display text-2xl md:text-3xl font-bold">
                 More EdTools in <span className="gradient-text">{tool.category}</span>
               </h2>
-              <Link href="/edtools" className="text-sm text-(--color-cyan) hover:underline inline-flex items-center gap-1">
+              <Link href="/edtools.html" className="text-sm text-(--color-cyan) hover:underline inline-flex items-center gap-1">
                 All EdTools <HiArrowUpRight className="w-4 h-4" />
               </Link>
             </div>
@@ -211,7 +212,7 @@ export default async function EdToolDetail({ params }: Props) {
                 .map((t) => (
                   <Link
                     key={t.slug}
-                    href={`/edtools/${t.slug}`}
+                    href={htmlPath(`/edtools/${t.slug}`)}
                     className="glass card-hover p-5 group"
                   >
                     <div className="flex items-start justify-between gap-3 mb-2">

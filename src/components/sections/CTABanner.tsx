@@ -37,7 +37,7 @@ export function CTABanner() {
               Apply Now
               <span aria-hidden>→</span>
             </a>
-            <Link href="/courses" className="btn-secondary text-lg px-8 py-4">
+            <Link href="/courses.html" className="btn-secondary text-lg px-8 py-4">
               Browse All Programmes
             </Link>
           </div>

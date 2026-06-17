@@ -6,6 +6,7 @@ import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ServiceLeadForm } from "@/components/sections/ServiceLeadForm";
+import { absoluteHtmlUrl, htmlPath } from "@/lib/html-url";
 import { FaGithub } from "react-icons/fa";
 import { HiArrowUpRight } from "react-icons/hi2";
 import type { Metadata } from "next";
@@ -31,7 +32,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const page = await getPage(slug);
   if (!page) return { title: "Not found" };
-  const canonical = page.canonicalUrl ?? `/${page.slug}`;
+  const canonical = htmlPath(page.canonicalUrl ?? `/${page.slug}`);
   const ogImage = page.ogImage ?? "/opengraph-image";
   return {
     title: page.seoTitle ?? page.title,
@@ -44,7 +45,7 @@ export async function generateMetadata({
       description: page.seoDescription ?? page.excerpt ?? undefined,
       images: [ogImage],
       type: "article",
-      url: `/${page.slug}`,
+      url: htmlPath(`/${page.slug}`),
       locale: "en_SG",
       siteName: "Tertiary Infotech Academy",
     },
@@ -75,12 +76,12 @@ export default async function CmsPage({
   if (!page) notFound();
 
   const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
-  const pageUrl = `${SITE_URL}/${page.slug}`;
+  const pageUrl = absoluteHtmlUrl(SITE_URL, `/${page.slug}`);
   const breadcrumbLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/index.html` },
       { "@type": "ListItem", position: 2, name: page.title, item: pageUrl },
     ],
   };

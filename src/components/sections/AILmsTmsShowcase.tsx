@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { AI_LMS_TMS_FEATURES } from "@/lib/site-content";
+import { htmlPath } from "@/lib/html-url";
 import { HiCheckCircle, HiCpuChip } from "react-icons/hi2";
 
 export function AILmsTmsShowcase() {
@@ -30,7 +31,7 @@ export function AILmsTmsShowcase() {
             </ul>
             <div className="mt-10 flex flex-wrap gap-3">
               <Link href="#contact" className="btn-primary">Request a demo</Link>
-              <Link href="/real-clients" className="btn-secondary">Real Clients</Link>
+              <Link href="/real-clients.html" className="btn-secondary">Real Clients</Link>
               <Link
                 href="https://github.com/alfredang/AI-LMS-TMS"
                 target="_blank"
@@ -78,7 +79,7 @@ export function AILmsTmsShowcase() {
                   const classes =
                     "flex items-center justify-between gap-3 px-4 py-3 rounded-lg bg-white/3 border border-white/8 hover:border-(--color-cyan)/40 transition";
                   return item.href ? (
-                    <Link key={item.label} href={item.href} className={`${classes} cursor-pointer`}>
+                    <Link key={item.label} href={htmlPath(item.href)} className={`${classes} cursor-pointer`}>
                       {inner}
                     </Link>
                   ) : (

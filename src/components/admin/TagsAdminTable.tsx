@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
+import { htmlPath } from "@/lib/html-url";
 
 export type TagRow = {
   id: number;
@@ -104,7 +105,7 @@ export function TagsAdminTable({
                 </td>
                 <td className="px-3 py-1.5 text-right">
                   <a
-                    href={`/blog?tag=${encodeURIComponent(t.slug)}`}
+                    href={htmlPath(`/blog?tag=${encodeURIComponent(t.slug)}`)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs text-white/50 hover:text-(--color-cyan) mr-3"

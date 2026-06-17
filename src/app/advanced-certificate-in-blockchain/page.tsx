@@ -20,7 +20,7 @@ import { Footer } from "@/components/layout/Footer";
 import { InternationalStudentSupport } from "@/components/sections/InternationalStudentSupport";
 
 const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
-const PAGE_URL = `${SITE_URL}/advanced-certificate-in-blockchain`;
+const PAGE_URL = `${SITE_URL}/advanced-certificate-in-blockchain.html`;
 
 export const metadata: Metadata = {
   title: "Advanced Certificate in Blockchain — Study in Singapore",
@@ -257,8 +257,8 @@ const breadcrumbLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-    { "@type": "ListItem", position: 2, name: "Courses", item: `${SITE_URL}/courses` },
+    { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/index.html` },
+    { "@type": "ListItem", position: 2, name: "Courses", item: `${SITE_URL}/courses.html` },
     { "@type": "ListItem", position: 3, name: "Advanced Certificate in Blockchain", item: PAGE_URL },
   ],
 };
@@ -316,7 +316,7 @@ export default function AdvancedCertificateInBlockchainPage() {
                 </span>
               </div>
               <div className="flex flex-wrap gap-3">
-                <Link href="/contact" className="btn-primary">
+                <Link href="/contact.html" className="btn-primary">
                   Talk to a course advisor →
                 </Link>
                 <a
@@ -536,12 +536,12 @@ export default function AdvancedCertificateInBlockchainPage() {
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-3">
-              <Link href="/contact" className="btn-primary">
+              <Link href="/contact.html" className="btn-primary">
                 <HiBriefcase className="w-4 h-4" />
                 Talk to a course advisor →
               </Link>
               <Link
-                href="/courses"
+                href="/courses.html"
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-white/15 text-white/85 hover:border-(--color-cyan)/50 hover:text-(--color-cyan) transition"
               >
                 <HiAcademicCap className="w-4 h-4" />
@@ -552,7 +552,7 @@ export default function AdvancedCertificateInBlockchainPage() {
               <HiCheckBadge className="inline w-4 h-4 text-(--color-green) mr-1.5 align-text-bottom" />
               Prefer AI engineering?{" "}
               <Link
-                href="/advanced-certificate-in-agentic-ai-coding"
+                href="/advanced-certificate-in-agentic-ai-coding.html"
                 className="text-(--color-cyan) hover:underline"
               >
                 See the Advanced Certificate in Agentic AI Coding

@@ -3,7 +3,7 @@ import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
-const PAGE_URL = "https://www.tertiaryinfotech.edu.sg/privacy";
+const PAGE_URL = "https://www.tertiaryinfotech.edu.sg/privacy.html";
 const COMPANY = "Tertiary Infotech Academy Pte Ltd";
 const BRAND = "Tertiary Infotech Academy";
 const EFFECTIVE_DATE = "16 May 2026";
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
     "Privacy Policy for Tertiary Infotech Academy — how we collect, use, disclose, and protect personal data under the Singapore Personal Data Protection Act (PDPA), including data handled when publishing video content to TikTok and other platforms.",
-  alternates: { canonical: "/privacy" },
+  alternates: { canonical: "/privacy.html" },
   openGraph: {
     type: "website",
     url: PAGE_URL,
@@ -394,7 +394,7 @@ export default function PrivacyPage() {
                   <br />
                   Or via our{" "}
                   <a
-                    href="/contact"
+                href="/contact.html"
                     className="text-(--color-cyan) hover:underline"
                   >
                     contact page

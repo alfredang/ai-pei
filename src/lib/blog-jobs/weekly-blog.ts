@@ -308,7 +308,7 @@ export async function runWeeklyBlogJob(opts: { trigger: Trigger }): Promise<JobR
         seoTitle: draft.seoTitle,
         seoDescription: draft.seoDescription,
         seoKeywords: draft.seoKeywords,
-        canonicalUrl: `https://www.tertiaryinfotech.edu.sg/blog/${uniqueSlug}`,
+        canonicalUrl: `https://www.tertiaryinfotech.edu.sg/blog/${uniqueSlug}.html`,
         authorId,
         featuredImage,
         categoryId,

@@ -9,6 +9,7 @@ import {
   getSocialLinks,
   type SocialLink,
 } from "@/lib/site-settings";
+import { htmlPath } from "@/lib/html-url";
 import {
   FaFacebookF,
   FaYoutube,
@@ -105,7 +106,7 @@ export async function Footer() {
             <div className="kicker mb-3">[ NAVIGATE ]</div>
             <nav className="flex flex-col gap-2 text-sm">
               {items.map((it) => (
-                <Link key={it.id} href={it.href} className="text-white/80 hover:text-(--color-cyan) transition">
+                <Link key={it.id} href={htmlPath(it.href)} className="text-white/80 hover:text-(--color-cyan) transition">
                   {it.label}
                 </Link>
               ))}

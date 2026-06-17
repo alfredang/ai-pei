@@ -9,6 +9,8 @@
  *   - >=3 CTA links to /contact?source=blog-...
  */
 
+import { htmlPath } from "@/lib/html-url";
+
 export type LinkCounts = {
   internal: number;
   tertiaryCourses: number;
@@ -81,7 +83,7 @@ export function countLinks(html: string): LinkCounts {
   let contactCta = 0;
   for (const m of html.matchAll(HREF_RE)) {
     const href = m[1];
-    if (/^\/contact\b/.test(href) && /[?&]source=blog-/i.test(href)) contactCta++;
+    if (/^\/contact(?:\.html)?\b/.test(href) && /[?&]source=blog-/i.test(href)) contactCta++;
     if (/^\//.test(href)) internal++;
     if (TC_HOST_RE.test(href) && !TC_HOMEPAGE_RE.test(href)) tertiaryCourses++;
   }
@@ -106,11 +108,11 @@ export function enforceLinks(
   }
 
   const internalCandidates = [
-    { href: "/ai-solutions", text: "Full Stack AI-Enabled Solutions" },
-    { href: "/ai-agent-deployment", text: "AI Agent Deployment" },
-    { href: "/learning-management-system", text: "Learning Management System" },
-    { href: "/training-management-system", text: "Training Management System" },
-    { href: "/wsq-course-development", text: "WSQ Course Development" },
+    { href: htmlPath("/ai-solutions"), text: "Full Stack AI-Enabled Solutions" },
+    { href: htmlPath("/ai-agent-deployment"), text: "AI Agent Deployment" },
+    { href: htmlPath("/learning-management-system"), text: "Learning Management System" },
+    { href: htmlPath("/training-management-system"), text: "Training Management System" },
+    { href: htmlPath("/wsq-course-development"), text: "WSQ Course Development" },
   ];
   const tcCandidates = [
     {
@@ -123,9 +125,9 @@ export function enforceLinks(
     },
   ];
   const ctaCandidates = [
-    { href: `/contact?source=blog-${slugToken}-related`, text: "Book a 30-minute walkthrough" },
-    { href: `/contact?source=blog-${slugToken}-quote`, text: "Request a deployment quote" },
-    { href: `/contact?source=blog-${slugToken}-demo`, text: "Schedule a demo" },
+    { href: htmlPath(`/contact?source=blog-${slugToken}-related`), text: "Book a 30-minute walkthrough" },
+    { href: htmlPath(`/contact?source=blog-${slugToken}-quote`), text: "Request a deployment quote" },
+    { href: htmlPath(`/contact?source=blog-${slugToken}-demo`), text: "Schedule a demo" },
   ];
 
   const lis: string[] = [];

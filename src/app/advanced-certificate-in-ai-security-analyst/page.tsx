@@ -18,9 +18,10 @@ import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { InternationalStudentSupport } from "@/components/sections/InternationalStudentSupport";
+import { htmlPath } from "@/lib/html-url";
 
 const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
-const PAGE_URL = `${SITE_URL}/advanced-certificate-in-ai-security-analyst`;
+const PAGE_URL = `${SITE_URL}/advanced-certificate-in-ai-security-analyst.html`;
 
 export const metadata: Metadata = {
   title: "Advanced Certificate in AI Security Analyst — Study in Singapore",
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
   keywords:
     "AI Security Analyst course Singapore, study AI cyber security Singapore, advanced certificate AI security, international students cyber security Singapore, SOC analyst training, securing LLM systems, OWASP LLM Top 10, AI threat detection course",
   // The full course (curriculum + enrolment) lives in the catalog; point canonical there.
-  alternates: { canonical: `${SITE_URL}/courses/advanced-certificate-in-ai-security-analyst` },
+  alternates: { canonical: `${SITE_URL}/courses/advanced-certificate-in-ai-security-analyst.html` },
   openGraph: {
     type: "website",
     locale: "en_SG",
@@ -265,8 +266,8 @@ const breadcrumbLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-    { "@type": "ListItem", position: 2, name: "Courses", item: `${SITE_URL}/courses` },
+    { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/index.html` },
+    { "@type": "ListItem", position: 2, name: "Courses", item: `${SITE_URL}/courses.html` },
     {
       "@type": "ListItem",
       position: 3,
@@ -331,7 +332,7 @@ export default function AiSecurityAnalystPage() {
                 </span>
               </div>
               <div className="flex flex-wrap gap-3">
-                <Link href="/contact" className="btn-primary">
+                <Link href="/contact.html" className="btn-primary">
                   Talk to a course advisor →
                 </Link>
                 <a
@@ -571,17 +572,17 @@ export default function AiSecurityAnalystPage() {
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-3">
-              <Link href="/contact" className="btn-primary">
+              <Link href="/contact.html" className="btn-primary">
                 Talk to a course advisor →
               </Link>
               <Link
-                href="/courses"
+                href="/courses.html"
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-white/15 text-white/85 hover:border-(--color-cyan)/50 hover:text-(--color-cyan) transition"
               >
                 See all courses
               </Link>
               <Link
-                href="/courses/advanced-certificate-in-cyber-security"
+                href={htmlPath("/courses/advanced-certificate-in-cyber-security")}
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-white/15 text-white/85 hover:border-(--color-cyan)/50 hover:text-(--color-cyan) transition"
               >
                 Prefer pure cyber security?

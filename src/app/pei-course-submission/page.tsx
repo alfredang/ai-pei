@@ -18,7 +18,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
 const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
-const PAGE_URL = `${SITE_URL}/pei-course-submission`;
+const PAGE_URL = `${SITE_URL}/pei-course-submission.html`;
 
 export const metadata: Metadata = {
   title: "PEI Course Submission Singapore — How to Register a New Course with SSG",
@@ -267,8 +267,8 @@ const breadcrumbLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-    { "@type": "ListItem", position: 2, name: "Services", item: `${SITE_URL}/#services` },
+    { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/index.html` },
+    { "@type": "ListItem", position: 2, name: "Services", item: `${SITE_URL}/index.html#services` },
     { "@type": "ListItem", position: 3, name: "PEI Course Submission", item: PAGE_URL },
   ],
 };
@@ -337,7 +337,7 @@ export default function PeiCourseSubmissionPage() {
                   See the 7 steps →
                 </a>
                 <Link
-                  href="/contact"
+                    href="/contact.html"
                   className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-white/15 text-white/85 hover:border-(--color-cyan)/50 hover:text-(--color-cyan) transition"
                 >
                   Get help with your submission
@@ -583,11 +583,11 @@ export default function PeiCourseSubmissionPage() {
               </p>
             </div>
             <div className="flex flex-wrap justify-center gap-3">
-              <Link href="/contact" className="btn-primary">
+              <Link href="/contact.html" className="btn-primary">
                 Talk to a consultant →
               </Link>
               <Link
-                href="/ssg-ato-application"
+                href="/ssg-ato-application.html"
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-white/15 text-white/85 hover:border-(--color-cyan)/50 hover:text-(--color-cyan) transition"
               >
                 Not yet an ATO? Start here
@@ -595,7 +595,7 @@ export default function PeiCourseSubmissionPage() {
             </div>
             <p className="mt-5 text-center text-xs text-(--color-muted) font-mono">
               [ Looking at our other services?{" "}
-              <Link href="/#services" className="hover:text-(--color-cyan)">
+              <Link href="/index.html#services" className="hover:text-(--color-cyan)">
                 See all SSG services
               </Link>{" "}
               ]

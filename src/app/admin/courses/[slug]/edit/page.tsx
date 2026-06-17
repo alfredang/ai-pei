@@ -9,6 +9,7 @@ import {
 } from "@/components/admin/CourseEditorForm";
 import { CourseBackButton } from "@/components/admin/CourseBackButton";
 import { slugify, freeCourseSlug } from "@/lib/course-slug";
+import { htmlPath } from "@/lib/html-url";
 
 export default async function EditCourse({
   params,
@@ -128,7 +129,7 @@ export default async function EditCourse({
         </div>
         {c.status === "published" && (
           <a
-            href={`/courses/${c.slug}`}
+            href={htmlPath(`/courses/${c.slug}`)}
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs px-3 py-1.5 rounded border border-white/10 hover:bg-white/10"

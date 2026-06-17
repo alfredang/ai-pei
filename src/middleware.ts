@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { htmlPath } from "@/lib/html-url";
 
 // Cheap presence check only: if a session cookie exists, let the request
 // through and let the server-side `auth()` in AdminLayout do the real
@@ -12,6 +13,33 @@ const SESSION_COOKIE_NAMES = [
 
 export default function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+
+  const isPublicPageRequest =
+    !pathname.startsWith("/admin") &&
+    !pathname.startsWith("/api") &&
+    !pathname.startsWith("/_next") &&
+    pathname !== "/robots.txt" &&
+    pathname !== "/sitemap.xml" &&
+    pathname !== "/opengraph-image" &&
+    !pathname.includes(".");
+
+  if ((req.method === "GET" || req.method === "HEAD") && isPublicPageRequest) {
+    const url = req.nextUrl.clone();
+    url.pathname = htmlPath(pathname);
+    return NextResponse.redirect(url, 301);
+  }
+
+  const canRewriteHtml =
+    !pathname.startsWith("/admin") &&
+    !pathname.startsWith("/api") &&
+    !pathname.startsWith("/_next") &&
+    (pathname === "/index.html" || pathname.endsWith(".html"));
+
+  if (canRewriteHtml) {
+    const url = req.nextUrl.clone();
+    url.pathname = pathname === "/index.html" ? "/" : pathname.slice(0, -5);
+    return NextResponse.rewrite(url);
+  }
 
   // Always forward the resolved pathname so AdminLayout (RSC) can detect the
   // login route and skip its own cookie-bounce — otherwise /admin/login loops.
@@ -43,5 +71,5 @@ export default function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin", "/admin/:path*"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };

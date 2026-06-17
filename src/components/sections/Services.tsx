@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Container } from "@/components/layout/Container";
 import { SERVICES } from "@/lib/site-content";
 import { getHomepageCopy } from "@/lib/site-settings";
+import { htmlPath } from "@/lib/html-url";
 import { HiArrowRight } from "react-icons/hi2";
 
 const accentMap: Record<string, { glow: string; text: string; line: string }> = {
@@ -57,7 +58,7 @@ function ServiceCard({ s }: { s: Service }) {
       </ul>
       {href ? (
         <Link
-          href={href}
+          href={htmlPath(href)}
           aria-label={`Learn more about ${s.title}`}
           className="absolute inset-0"
         >

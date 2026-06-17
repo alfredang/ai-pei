@@ -5,6 +5,7 @@ import { asc, sql } from "drizzle-orm";
 import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { htmlPath } from "@/lib/html-url";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -13,10 +14,10 @@ export const metadata: Metadata = {
   title: "All Tags — Journal",
   description:
     "Browse every tag across the Tertiary Infotech Academy journal — AI, agentic AI, SSG funding, WSQ, TPQA, training management, and more.",
-  alternates: { canonical: "/blog/tags" },
+  alternates: { canonical: "/blog/tags.html" },
   openGraph: {
     type: "website",
-    url: "https://www.tertiaryinfotech.edu.sg/blog/tags",
+    url: "https://www.tertiaryinfotech.edu.sg/blog/tags.html",
     title: "All Tags — Tertiary Infotech Academy Journal",
     description:
       "Every tag in our journal — AI, SSG, WSQ, TPQA, TMS, agentic AI and more.",
@@ -65,7 +66,7 @@ export default async function AllTagsPage() {
             </p>
             <div className="mt-6">
               <Link
-                href="/blog"
+                href="/blog.html"
                 className="text-sm text-(--color-cyan) hover:underline"
               >
                 ← Back to all posts
@@ -82,7 +83,7 @@ export default async function AllTagsPage() {
                 return (
                   <Link
                     key={t.id}
-                    href={`/blog?tag=${encodeURIComponent(t.slug)}`}
+                    href={htmlPath(`/blog?tag=${encodeURIComponent(t.slug)}`)}
                     className="px-3 py-1.5 rounded-full border text-sm transition bg-white/3 border-white/10 text-white/70 hover:text-white hover:border-(--color-cyan)/40 hover:bg-(--color-cyan)/5"
                   >
                     #{t.name}

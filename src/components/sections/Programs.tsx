@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
+import { htmlPath } from "@/lib/html-url";
 import {
   HiShieldCheck,
   HiCpuChip,
@@ -167,7 +168,7 @@ export function Programs() {
                 </ul>
 
                 <Link
-                  href={p.cta.href}
+                  href={htmlPath(p.cta.href)}
                   className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-white/90 hover:text-white transition-colors"
                 >
                   {p.cta.label}

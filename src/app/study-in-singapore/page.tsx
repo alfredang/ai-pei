@@ -17,9 +17,10 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { InternationalStudentSupport } from "@/components/sections/InternationalStudentSupport";
 import { ContactForm } from "@/components/sections/ContactForm";
+import { htmlPath } from "@/lib/html-url";
 
 const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
-const PAGE_URL = `${SITE_URL}/study-in-singapore`;
+const PAGE_URL = `${SITE_URL}/study-in-singapore.html`;
 
 export const metadata: Metadata = {
   title: "Study AI, Cyber Security & Blockchain in Singapore — International Students",
@@ -162,8 +163,8 @@ const breadcrumbLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-    { "@type": "ListItem", position: 2, name: "Courses", item: `${SITE_URL}/courses` },
+    { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/index.html` },
+    { "@type": "ListItem", position: 2, name: "Courses", item: `${SITE_URL}/courses.html` },
     { "@type": "ListItem", position: 3, name: "Study in Singapore", item: PAGE_URL },
   ],
 };
@@ -252,7 +253,7 @@ export default function StudyInSingaporePage() {
               {COURSES.map((c) => {
                 const Icon = c.icon;
                 return (
-                  <Link key={c.href} href={c.href} className="glass card-hover p-6 group flex gap-4">
+                  <Link key={c.href} href={htmlPath(c.href)} className="glass card-hover p-6 group flex gap-4">
                     <Icon className="w-8 h-8 text-(--color-cyan) shrink-0" />
                     <div>
                       <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold text-(--color-cyan) border border-(--color-cyan)/40 bg-(--color-cyan)/10">

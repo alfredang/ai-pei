@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/layout/Container";
+import { htmlPath } from "@/lib/html-url";
 import { HiCheckCircle, HiCpuChip } from "react-icons/hi2";
 
 const FEATURES: string[] = [
@@ -109,7 +110,7 @@ export function CMSShowcase() {
                   const cls =
                     "flex items-center justify-between gap-3 px-4 py-3 rounded-lg bg-white/3 border border-white/8 hover:border-(--color-cyan)/40 transition";
                   return item.href ? (
-                    <Link key={item.label} href={item.href} className={cls}>
+                    <Link key={item.label} href={htmlPath(item.href)} className={cls}>
                       {inner}
                     </Link>
                   ) : (

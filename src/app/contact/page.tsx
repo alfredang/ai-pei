@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "Get in touch with Tertiary Infotech Academy — Singapore-based AI-LMS-TMS and SSG ATO consultancy. Phone, email, WhatsApp, and Google Map.",
   keywords:
     "contact Tertiary Infotech Academy, SSG ATO consultancy Singapore, LMS TMS Singapore, Woodlands training provider",
-  alternates: { canonical: "/contact" },
+  alternates: { canonical: "/contact.html" },
   openGraph: {
     type: "website",
     url: "/contact",

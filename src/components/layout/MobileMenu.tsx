@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { htmlPath } from "@/lib/html-url";
 
 type MenuLink = {
   label: string;
@@ -55,7 +56,7 @@ export function MobileMenu({ links }: { links: MenuLink[] }) {
             {links.map((l) => (
               <Link
                 key={l.href + l.label}
-                href={l.href}
+                href={htmlPath(l.href)}
                 target={l.openInNewTab ? "_blank" : undefined}
                 rel={l.openInNewTab ? "noopener noreferrer" : undefined}
                 onClick={() => setOpen(false)}
@@ -65,7 +66,7 @@ export function MobileMenu({ links }: { links: MenuLink[] }) {
               </Link>
             ))}
             <Link
-              href="/#contact"
+              href="/index.html#contact"
               onClick={() => setOpen(false)}
               className="mt-2 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-white/5 border border-(--color-cyan)/40 text-base text-(--color-cyan) hover:bg-(--color-cyan)/10 transition"
             >

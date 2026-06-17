@@ -8,6 +8,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ShareButtons } from "@/components/blog/ShareButtons";
 import { buildPostCoverSvg } from "@/lib/post-cover-svg";
+import { absoluteHtmlUrl, htmlPath } from "@/lib/html-url";
 import { HiUser, HiCalendar, HiTag, HiFolder } from "react-icons/hi2";
 import type { Metadata } from "next";
 
@@ -66,7 +67,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = await getPost(slug);
   if (!post) return { title: "Not found" };
-  const canonical = post.canonicalUrl ?? `/blog/${post.slug}`;
+  const canonical = htmlPath(post.canonicalUrl ?? `/blog/${post.slug}`);
   const ogImage = post.ogImage ?? post.featuredImage ?? "/opengraph-image";
   return {
     title: post.seoTitle ?? post.title,
@@ -79,7 +80,7 @@ export async function generateMetadata({
       description: post.seoDescription ?? post.excerpt ?? undefined,
       images: [ogImage],
       type: "article",
-      url: `/blog/${post.slug}`,
+      url: htmlPath(`/blog/${post.slug}`),
       publishedTime: post.publishedAt?.toISOString(),
       modifiedTime: post.updatedAt?.toISOString(),
       locale: "en_SG",
@@ -133,7 +134,7 @@ export default async function PostPage({
   const { intro: introHtml, rest: restHtml } = splitIntroSection(bodyHtml);
 
   const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
-  const postUrl = `${SITE_URL}/blog/${post.slug}`;
+  const postUrl = absoluteHtmlUrl(SITE_URL, `/blog/${post.slug}`);
   const articleLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -159,8 +160,8 @@ export default async function PostPage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-      { "@type": "ListItem", position: 2, name: "Journal", item: `${SITE_URL}/blog` },
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/index.html` },
+      { "@type": "ListItem", position: 2, name: "Journal", item: `${SITE_URL}/blog.html` },
       { "@type": "ListItem", position: 3, name: post.title, item: postUrl },
     ],
   };
@@ -210,7 +211,7 @@ export default async function PostPage({
                   <div className="flex flex-wrap items-center gap-2 mb-4">
                     {category && (
                       <Link
-                        href={`/blog?category=${category.slug}`}
+                        href={htmlPath(`/blog?category=${category.slug}`)}
                         className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] uppercase tracking-wider bg-yellow-400/10 text-yellow-300 border border-yellow-400/30 hover:bg-yellow-400/20 transition"
                       >
                         <HiFolder className="w-3 h-3" />
@@ -220,7 +221,7 @@ export default async function PostPage({
                     {tagRows.map((t) => (
                       <Link
                         key={t.slug}
-                        href={`/blog?tag=${t.slug}`}
+                        href={htmlPath(`/blog?tag=${t.slug}`)}
                         className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-white/5 border border-white/10 text-white/70 hover:bg-white/10 transition"
                       >
                         <HiTag className="w-3 h-3" />

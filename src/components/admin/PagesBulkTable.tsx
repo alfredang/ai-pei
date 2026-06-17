@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState, useTransition } from "react";
+import { htmlPath } from "@/lib/html-url";
 
 export type PageRow = {
   id: number;
@@ -285,7 +286,7 @@ export function PagesBulkTable({
                   <td className="px-3 py-1.5 text-right">
                     {p.status === "published" && (
                       <a
-                        href={`/${p.slug}`}
+                        href={htmlPath(`/${p.slug}`)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-xs text-white/50 hover:text-(--color-cyan) mr-3"

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { SavedToast } from "@/app/admin/_components/SavedToast";
 import { SERVICE_PAGES } from "@/lib/service-pages";
+import { htmlPath } from "@/lib/html-url";
 
 const SLUGS = Object.keys(SERVICE_PAGES);
 
@@ -107,7 +108,7 @@ export default async function ServicePagesAdmin({
             </p>
           </div>
           <a
-            href={`/${activeSlug}`}
+            href={htmlPath(`/${activeSlug}`)}
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs font-mono text-(--color-cyan) hover:underline"

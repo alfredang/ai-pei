@@ -2,6 +2,7 @@ import Link from "next/link";
 import { db } from "@/db";
 import { pages, posts, leads, tags, postTags } from "@/db/schema";
 import { count, desc, eq, sql } from "drizzle-orm";
+import { htmlPath } from "@/lib/html-url";
 
 export const dynamic = "force-dynamic";
 
@@ -103,7 +104,7 @@ export default async function AdminDashboard() {
                 <li key={t.id} className="flex items-center gap-3 text-sm">
                   <span className="w-5 text-right text-xs font-mono text-white/30">{i + 1}.</span>
                   <Link
-                    href={`/blog?tag=${encodeURIComponent(t.slug)}`}
+                    href={htmlPath(`/blog?tag=${encodeURIComponent(t.slug)}`)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 truncate hover:text-(--color-cyan) transition"
