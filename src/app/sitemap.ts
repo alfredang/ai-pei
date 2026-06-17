@@ -4,6 +4,7 @@ import { pages, posts, courses } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { EDTOOLS } from "@/lib/edtools-data";
 import { absoluteHtmlUrl } from "@/lib/html-url";
+import { peiEducationPosts } from "@/lib/pei-education-posts";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.tertiaryinfotech.edu.sg";
 const url = (path: string) => absoluteHtmlUrl(BASE, path);
@@ -14,6 +15,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     db.select().from(posts).where(eq(posts.status, "published")).catch(() => []),
     db.select().from(courses).where(eq(courses.status, "published")).catch(() => []),
   ]);
+  const dbPostSlugs = new Set(allPosts.map((post) => post.slug));
+  const staticPostDate = new Date("2026-06-17T09:00:00.000+08:00");
   return [
     { url: url("/"), changeFrequency: "weekly", priority: 1 },
     { url: url("/ssg-ato-application"), changeFrequency: "monthly", priority: 0.9 },
@@ -56,6 +59,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly" as const,
       priority: 0.7,
     })),
+    ...peiEducationPosts
+      .filter((p) => !dbPostSlugs.has(p.slug))
+      .map((p) => ({
+        url: `${BASE}/blog/${p.slug}`,
+        lastModified: staticPostDate,
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
+      })),
     ...allCourses.map((c) => ({
       url: url(`/courses/${c.slug}`),
       lastModified: c.updatedAt,

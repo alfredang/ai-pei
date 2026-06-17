@@ -7,11 +7,17 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { buildPostCoverSvg } from "@/lib/post-cover-svg";
 import { htmlPath } from "@/lib/html-url";
+import {
+  peiEducationPosts,
+  PEI_EDUCATION_CATEGORY,
+  PEI_EDUCATION_TAGS,
+} from "@/lib/pei-education-posts";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
 
 const PAGE_SIZE = 12;
+const STATIC_CATEGORY_ID = -100;
 
 /** Fallback teaser: strip HTML from contentHtml and trim to ~200 chars. */
 function snippetFromHtml(html: string | null | undefined, max = 200): string {
@@ -75,20 +81,46 @@ export default async function BlogIndex({
   const page = Math.max(1, Number(sp.page ?? "1") || 1);
 
   const [allCategories, allTags, tagCounts] = await Promise.all([
-    db.select().from(categories).orderBy(asc(categories.name)),
-    db.select().from(tags).orderBy(asc(tags.name)),
+    db.select().from(categories).orderBy(asc(categories.name)).catch(() => []),
+    db.select().from(tags).orderBy(asc(tags.name)).catch(() => []),
     db
       .select({ tagId: postTags.tagId, count: sql<number>`count(*)::int` })
       .from(postTags)
-      .groupBy(postTags.tagId),
+      .groupBy(postTags.tagId)
+      .catch(() => []),
   ]);
+  const categoryBySlug = new Map(allCategories.map((c) => [c.slug, c]));
+  const tagBySlug = new Map(allTags.map((t) => [t.slug, t]));
+  const mergedCategories = categoryBySlug.has(PEI_EDUCATION_CATEGORY.slug)
+    ? allCategories
+    : [
+        ...allCategories,
+        {
+          id: STATIC_CATEGORY_ID,
+          slug: PEI_EDUCATION_CATEGORY.slug,
+          name: PEI_EDUCATION_CATEGORY.name,
+          description: PEI_EDUCATION_CATEGORY.description,
+          type: PEI_EDUCATION_CATEGORY.type,
+        },
+      ].sort((a, b) => a.name.localeCompare(b.name));
+  const mergedTags = [
+    ...allTags,
+    ...PEI_EDUCATION_TAGS.filter((tag) => !tagBySlug.has(tag.slug)).map((tag, index) => ({
+      id: -200 - index,
+      slug: tag.slug,
+      name: tag.name,
+    })),
+  ].sort((a, b) => a.name.localeCompare(b.name));
 
   const categoryNameById = new Map<number, string>(
-    allCategories.map((c) => [c.id, c.name]),
+    mergedCategories.map((c) => [c.id, c.name]),
   );
   const countByTagId = new Map<number, number>(tagCounts.map((r) => [r.tagId, r.count]));
+  for (const tag of mergedTags) {
+    if (tag.id < 0) countByTagId.set(tag.id, peiEducationPosts.length);
+  }
   const TOP_TAG_LIMIT = 10;
-  const topTags = [...allTags]
+  const topTags = [...mergedTags]
     .sort(
       (a, b) =>
         (countByTagId.get(b.id) ?? 0) - (countByTagId.get(a.id) ?? 0) ||
@@ -98,7 +130,7 @@ export default async function BlogIndex({
   const displayedTags = (() => {
     if (!selectedTag) return topTags;
     if (topTags.some((t) => t.slug === selectedTag)) return topTags;
-    const sel = allTags.find((t) => t.slug === selectedTag);
+    const sel = mergedTags.find((t) => t.slug === selectedTag);
     return sel ? [...topTags, sel] : topTags;
   })();
 
@@ -111,7 +143,8 @@ export default async function BlogIndex({
       const rows = await db
         .select({ postId: postTags.postId })
         .from(postTags)
-        .where(eq(postTags.tagId, tagRow.id));
+        .where(eq(postTags.tagId, tagRow.id))
+        .catch(() => []);
       allowedPostIds = rows.map((r) => r.postId);
       if (allowedPostIds.length === 0) allowedPostIds = [-1];
     }
@@ -122,7 +155,9 @@ export default async function BlogIndex({
   if (selectedCategory) {
     const catRow = allCategories.find((c) => c.slug === selectedCategory);
     if (catRow) where.push(eq(posts.categoryId, catRow.id));
-    else where.push(eq(posts.id, -1)); // unknown category → empty result
+    else if (selectedCategory !== PEI_EDUCATION_CATEGORY.slug) {
+      where.push(eq(posts.id, -1)); // unknown category -> empty result
+    }
   }
   if (allowedPostIds) where.push(inArray(posts.id, allowedPostIds));
   if (q) {
@@ -136,11 +171,35 @@ export default async function BlogIndex({
     if (matchesText) where.push(matchesText);
   }
 
-  const allMatching = await db
+  const dbMatching = await db
     .select()
     .from(posts)
     .where(and(...where))
-    .orderBy(desc(posts.publishedAt));
+    .orderBy(desc(posts.publishedAt))
+    .catch(() => []);
+  const dbSlugs = new Set(dbMatching.map((post) => post.slug));
+  const staticMatching = peiEducationPosts
+    .filter((post) => !dbSlugs.has(post.slug))
+    .filter(() => !selectedCategory || selectedCategory === PEI_EDUCATION_CATEGORY.slug)
+    .filter(() => !selectedTag || PEI_EDUCATION_TAGS.some((tag) => tag.slug === selectedTag))
+    .filter((post) => {
+      if (!q) return true;
+      const haystack = `${post.title} ${post.excerpt} ${post.html} ${post.slug}`.toLowerCase();
+      return haystack.includes(q.toLowerCase());
+    })
+    .map((post, index) => ({
+      id: -1 - index,
+      slug: post.slug,
+      title: post.title,
+      excerpt: post.excerpt,
+      contentHtml: post.html,
+      featuredImage: null,
+      categoryId: categoryBySlug.get(PEI_EDUCATION_CATEGORY.slug)?.id ?? STATIC_CATEGORY_ID,
+      publishedAt: new Date("2026-06-17T09:00:00.000+08:00"),
+    }));
+  const allMatching = [...staticMatching, ...dbMatching].sort(
+    (a, b) => (b.publishedAt?.getTime() ?? 0) - (a.publishedAt?.getTime() ?? 0),
+  );
   const total = allMatching.length;
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   const safePage = Math.min(page, totalPages);
@@ -237,7 +296,7 @@ export default async function BlogIndex({
                   >
                     All
                   </Link>
-                  {allCategories.map((c) => (
+                  {mergedCategories.map((c) => (
                     <Link
                       key={c.id}
                       href={filterHref({ category: c.slug, page: 1 })}
@@ -253,7 +312,7 @@ export default async function BlogIndex({
                 </div>
               </div>
 
-              {allTags.length > 0 && (
+              {mergedTags.length > 0 && (
                 <div>
                   <div className="kicker mb-2">Tags</div>
                   <div className="flex flex-wrap gap-2">
@@ -280,12 +339,12 @@ export default async function BlogIndex({
                         #{t.name}
                       </Link>
                     ))}
-                    {allTags.length > TOP_TAG_LIMIT && (
+                    {mergedTags.length > TOP_TAG_LIMIT && (
                       <Link
                         href="/blog/tags.html"
                         className="px-3 py-1 rounded-full border text-xs transition border-(--color-cyan)/40 text-(--color-cyan) hover:bg-(--color-cyan)/10"
                       >
-                        See all {allTags.length} tags →
+                        See all {mergedTags.length} tags →
                       </Link>
                     )}
                   </div>

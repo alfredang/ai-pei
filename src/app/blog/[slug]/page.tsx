@@ -9,6 +9,11 @@ import { Footer } from "@/components/layout/Footer";
 import { ShareButtons } from "@/components/blog/ShareButtons";
 import { buildPostCoverSvg } from "@/lib/post-cover-svg";
 import { absoluteHtmlUrl, htmlPath } from "@/lib/html-url";
+import {
+  getPeiEducationPost,
+  PEI_EDUCATION_CATEGORY,
+  PEI_EDUCATION_TAGS,
+} from "@/lib/pei-education-posts";
 import { HiUser, HiCalendar, HiTag, HiFolder } from "react-icons/hi2";
 import type { Metadata } from "next";
 
@@ -51,12 +56,40 @@ function splitIntroSection(html: string): { intro: string; rest: string } {
 }
 
 async function getPost(slug: string) {
-  const [p] = await db
-    .select()
-    .from(posts)
-    .where(and(eq(posts.slug, slug), eq(posts.status, "published")))
-    .limit(1);
-  return p;
+  try {
+    const [p] = await db
+      .select()
+      .from(posts)
+      .where(and(eq(posts.slug, slug), eq(posts.status, "published")))
+      .limit(1);
+    return p;
+  } catch {
+    return undefined;
+  }
+}
+
+function staticPostAsRow(slug: string) {
+  const post = getPeiEducationPost(slug);
+  if (!post) return null;
+  const publishedAt = new Date("2026-06-17T09:00:00.000+08:00");
+  return {
+    id: -1,
+    slug: post.slug,
+    title: post.title,
+    excerpt: post.excerpt,
+    contentHtml: post.html.trim(),
+    status: "published",
+    seoTitle: post.seoTitle,
+    seoDescription: post.seoDescription,
+    seoKeywords: post.seoKeywords,
+    ogImage: null,
+    canonicalUrl: `https://www.tertiaryinfotech.edu.sg/blog/${post.slug}`,
+    noIndex: false,
+    featuredImage: null,
+    categoryId: null,
+    publishedAt,
+    updatedAt: publishedAt,
+  };
 }
 
 export async function generateMetadata({
@@ -65,7 +98,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getPost(slug);
+  const post = (await getPost(slug)) ?? staticPostAsRow(slug);
   if (!post) return { title: "Not found" };
   const canonical = htmlPath(post.canonicalUrl ?? `/blog/${post.slug}`);
   const ogImage = post.ogImage ?? post.featuredImage ?? "/opengraph-image";
@@ -101,33 +134,41 @@ export default async function PostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = await getPost(slug);
+  const dbPost = await getPost(slug);
+  const post = dbPost ?? staticPostAsRow(slug);
   if (!post) {
     // Honour the redirects table (e.g. a renamed post slug) before 404'ing.
     const [redir] = await db
       .select()
       .from(redirects)
       .where(eq(redirects.fromPath, `/blog/${slug}`))
-      .limit(1);
+      .limit(1)
+      .catch(() => []);
     if (redir) redirect(redir.toPath);
     notFound();
   }
 
   // Pull the post's category + tag chips for the header meta row.
   const [category, tagRows] = await Promise.all([
-    post.categoryId
+    dbPost?.categoryId
       ? db
           .select({ slug: categories.slug, name: categories.name })
           .from(categories)
-          .where(eq(categories.id, post.categoryId))
+          .where(eq(categories.id, dbPost.categoryId))
           .limit(1)
           .then((rows) => rows[0] ?? null)
-      : Promise.resolve(null),
-    db
-      .select({ slug: tags.slug, name: tags.name })
-      .from(postTags)
-      .innerJoin(tags, eq(tags.id, postTags.tagId))
-      .where(eq(postTags.postId, post.id)),
+      : Promise.resolve(
+          dbPost
+            ? null
+            : { slug: PEI_EDUCATION_CATEGORY.slug, name: PEI_EDUCATION_CATEGORY.name },
+        ),
+    dbPost
+      ? db
+          .select({ slug: tags.slug, name: tags.name })
+          .from(postTags)
+          .innerJoin(tags, eq(tags.id, postTags.tagId))
+          .where(eq(postTags.postId, dbPost.id))
+      : Promise.resolve(PEI_EDUCATION_TAGS.map((tag) => ({ slug: tag.slug, name: tag.name }))),
   ]);
 
   const bodyHtml = stripLeadingImage(post.contentHtml ?? "", post.featuredImage);
