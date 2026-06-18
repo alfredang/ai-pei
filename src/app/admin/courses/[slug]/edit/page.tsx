@@ -127,16 +127,34 @@ export default async function EditCourse({
           <CourseBackButton />
           <h1 className="text-2xl font-bold">Edit Course</h1>
         </div>
-        {c.status === "published" && (
+        <div className="flex items-center gap-2">
           <a
-            href={htmlPath(`/courses/${c.slug}`)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs px-3 py-1.5 rounded border border-white/10 hover:bg-white/10"
+            href={`/api/admin/courses/${encodeURIComponent(c.slug)}/pei-application-documents`}
+            className="text-xs px-3 py-1.5 rounded border border-(--color-cyan)/40 bg-(--color-cyan)/10 hover:bg-(--color-cyan)/20"
           >
-            View live ↗
+            Download PEI documents
           </a>
-        )}
+          {c.status === "published" && (
+            <a
+              href={htmlPath(`/courses/${c.slug}`)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs px-3 py-1.5 rounded border border-white/10 hover:bg-white/10"
+            >
+              View live ↗
+            </a>
+          )}
+        </div>
+      </div>
+      <div className="glass rounded-lg border border-white/10 p-4 mb-6">
+        <div className="text-xs uppercase tracking-[0.18em] text-(--color-cyan) font-mono">
+          PEI application pack
+        </div>
+        <p className="mt-2 text-sm text-white/70">
+          Generates a ZIP with sample certificate, Academic Board approval minutes,
+          course proposal, minimum entry requirements, e-learning checklist, and a
+          TP Gateway course write-up helper populated from this course.
+        </p>
       </div>
       <CourseEditorForm initial={initial} save={save} />
     </div>
