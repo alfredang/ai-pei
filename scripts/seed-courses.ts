@@ -13,9 +13,6 @@ import { courses, courseModules } from "../src/db/schema";
  */
 
 const SLUG = "advanced-certificate-in-cyber-security";
-const CYBERSECURITY_OPERATIONS_SLUG =
-  "advanced-certificate-in-cybersecurity-operations-analyst";
-const AI_AUDIT_ASSURANCE_SLUG = "advanced-certificate-in-ai-audit-and-assurance";
 
 const COURSE = {
   slug: SLUG,
@@ -105,222 +102,39 @@ const MODULES = [
   },
 ];
 
-const CYBERSECURITY_OPERATIONS_COURSE = {
-  slug: CYBERSECURITY_OPERATIONS_SLUG,
-  title: "Advanced Certificate in Cybersecurity Operations Analyst",
-  status: "published" as const,
-  summary:
-    "A 150-hour, 100% synchronous e-learning programme for front-line cybersecurity operations analysts. Build practical skills in infrastructure, monitoring, incident handling, GRC, protective controls, vulnerability management and threat intelligence.",
-  overview: [
-    "The Advanced Certificate in Cybersecurity Operations Analyst equips learners with the practical, hands-on skills required to operate as front-line cybersecurity operations analysts.",
-    "Upon successful completion, learners will demonstrate the ability to assess and safeguard networks, systems and applications; detect, analyse and respond to security incidents; apply principles of cybersecurity governance, risk and compliance; establish protective controls and manage vulnerabilities; and comprehend adversary behaviour in order to anticipate and counter attacks.",
-    "Delivery: 100% synchronous e-learning through live virtual classes. The course is delivered part-time over about 4 months, 3 days per week, from 7:00 PM to 10:00 PM. Total course hours: 150 hours, comprising 69 hours of online practical labs, 66 hours of live instructor-led virtual lectures and demonstrations, and 15 hours of assessment.",
-    "Each module consists of 10 sessions: 9 teaching/practical sessions and 1 assessment session. Practical work is delivered through online lab environments such as cloud sandbox, SIEM, network analysis and forensic analysis tools.",
-    "Minimum entry requirements: at least 21 years old; at least C6 at GCE O-Level in any 3 subjects, or equivalent; or mature candidate who is at least 25 years old with at least 4 years of working experience.",
-    "This is a stackable modular programme. Modular certificates stack towards the award of the Advanced Certificate in Cybersecurity Operations Analyst.",
-  ].join("\n\n"),
-  outcomes: [
-    "Assess and safeguard networks, systems and applications.",
-    "Detect, analyse and respond to security incidents using logs, alerts, monitoring tools and incident handling methods.",
-    "Apply cybersecurity governance, risk and compliance fundamentals across applications, cloud technology, data, networks, supply chain, systems, endpoints and web applications.",
-    "Establish protective controls and perform vulnerability assessment, identification, remediation and tracking.",
-    "Analyse threat landscapes, attack vectors, threat actors, threat intelligence sources and adversary methods.",
-  ].join("\n"),
-  whoShouldEnroll: [
-    "IT and cybersecurity professionals who want to specialise in security operations and incident detection and response, including SOC analysts, security engineers, system administrators and network administrators.",
-    "Cybersecurity practitioners seeking to strengthen their threat detection, monitoring and response capabilities.",
-    "Fresh graduates from IT, computer science, data science or engineering programmes who want career-ready cybersecurity operations skills.",
-    "Mid-career professionals seeking a career switch into cybersecurity operations or blue-team roles.",
-    "GRC analysts, auditors and compliance officers who need an operational understanding of cybersecurity principles and risk.",
-    "IT support and infrastructure staff moving into security-focused roles who need to monitor, detect and respond to threats.",
-    "Technical managers or team leads who need a strong cybersecurity operations foundation to guide teams or projects.",
-  ].join("\n"),
-  assessment:
-    "Five 3-hour online assessments, one after each module. Participants must pass all required assessments and maintain at least 75% attendance.",
-  fundingTags: [],
-  certificate:
-    "Advanced Certificate in Cybersecurity Operations Analyst - awarded by Tertiary Infotech Academy. To be awarded the certificate, participants must achieve a pass in all required assessments and maintain a minimum attendance of 75% throughout the course.",
-  sortOrder: 3,
-  seoTitle: "Advanced Certificate in Cybersecurity Operations Analyst in Singapore",
-  seoDescription:
-    "Train for front-line cybersecurity operations roles with a 150-hour synchronous e-learning Advanced Certificate covering SOC monitoring, incident handling, GRC, protective controls, vulnerability management and threat intelligence.",
-};
-
-const CYBERSECURITY_OPERATIONS_MODULES = [
-  {
-    title: "Module 1: Foundations of IT and Cloud Infrastructure",
-    kind: "foundation",
-    details:
-      "Build the technical foundation for security operations: computer and cloud networking, devices, ports and protocols, network segmentation and tooling; operating systems, databases, command line, virtualisation/containerisation and middleware; and applications, APIs, automated deployment, cloud applications and scripting/coding.",
-    sessions: "10 sessions (9 teaching + 1 assessment)",
-    duration: "30 hours",
-  },
-  {
-    title: "Module 2: Security Monitoring and Incident Handling",
-    kind: "foundation",
-    details:
-      "Detect incidents using data analytics, detection use cases, indicators of compromise and attack, logs, alerts and monitoring tools. Respond through incident handling and containment, forensic analysis, malware analysis, network traffic and packet analysis, and threat analysis.",
-    sessions: "10 sessions (9 teaching + 1 assessment)",
-    duration: "30 hours",
-  },
-  {
-    title: "Module 3: Governance, Risk and Compliance Fundamentals",
-    kind: "foundation",
-    details:
-      "Apply cybersecurity principles including compliance, objectives, governance, risk management, roles and responsibilities and cybersecurity models. Assess cybersecurity risk across applications, cloud technology, data, networks, supply chain, systems/endpoints and web applications.",
-    sessions: "10 sessions (9 teaching + 1 assessment)",
-    duration: "30 hours",
-  },
-  {
-    title: "Module 4: Protective Controls and Vulnerability Management",
-    kind: "foundation",
-    details:
-      "Implement protective controls including contingency planning, identity and access management, and industry best-practice frameworks and standards. Perform vulnerability management through assessment, identification, remediation and tracking.",
-    sessions: "10 sessions (9 teaching + 1 assessment)",
-    duration: "30 hours",
-  },
-  {
-    title: "Module 5: Threat Intelligence and Adversary Analysis",
-    kind: "foundation",
-    details:
-      "Analyse the threat landscape including attack vectors, threat actors and threat intelligence sources. Understand adversary means and methods including attack types, cyber attack stages, exploit techniques and penetration testing.",
-    sessions: "10 sessions (9 teaching + 1 assessment)",
-    duration: "30 hours",
-  },
-];
-
-const AI_AUDIT_ASSURANCE_COURSE = {
-  slug: AI_AUDIT_ASSURANCE_SLUG,
-  title: "Advanced Certificate in AI Audit and Assurance",
-  status: "published" as const,
-  summary:
-    "A 117-hour, 100% synchronous e-learning programme for professionals who need to govern, assess and audit artificial intelligence and machine-learning systems.",
-  overview: [
-    "The Advanced Certificate in AI Audit and Assurance equips professionals with the specialised skills to govern, assess and audit artificial intelligence and machine-learning systems.",
-    "On completing the course, learners will be equipped to guide responsible AI governance, manage AI-related risk and privacy, oversee AI operations throughout the solution lifecycle, and plan and conduct audits of AI systems using AI-specific techniques.",
-    "Delivery: 100% synchronous e-learning through live virtual classes. The course is delivered part-time over about 3.25 months, 3 days per week, from 7:00 PM to 10:00 PM. Total course hours: 117 hours, comprising 54 hours of hands-on online practical labs, 54 hours of live instructor-led virtual lectures and demonstrations, and 9 hours of assessment.",
-    "Each module consists of 13 sessions: 12 teaching/practical sessions and 1 assessment session. Practical work is delivered through online lab environments such as cloud sandbox, AI audit tooling and data analytics environments.",
-    "Minimum entry requirements: at least 21 years old; at least C6 at GCE O-Level in any 3 subjects, or equivalent; or mature candidate who is at least 25 years old with at least 4 years of working experience.",
-    "This is a stackable modular programme. Modular certificates stack towards the award of the Advanced Certificate in AI Audit and Assurance.",
-  ].join("\n\n"),
-  outcomes: [
-    "Advise stakeholders on AI governance, responsible AI practices, ethics, regulations and standards.",
-    "Assess AI models, organisational AI readiness, AI risk profiles and privacy/data governance requirements.",
-    "Oversee AI operations, change management and the AI solution lifecycle.",
-    "Apply testing techniques, audit planning, sampling, evidence collection and data analytics to AI audits.",
-    "Produce effective AI audit outputs and assurance reports for stakeholders.",
-  ].join("\n"),
-  whoShouldEnroll: [
-    "IT auditors, internal auditors and assurance professionals who want to specialise in auditing AI and machine-learning systems.",
-    "Risk, governance and compliance professionals responsible for AI oversight and AI regulatory requirements.",
-    "Cybersecurity and IT professionals moving into AI audit, assurance or governance roles.",
-    "Fresh graduates from accountancy, IT, computer science, data science or business programmes seeking career-ready AI audit and assurance skills.",
-    "Mid-career professionals seeking a career switch into AI audit, AI assurance or AI governance roles.",
-    "Data and ML practitioners who need to understand audit, control and governance expectations for the systems they build.",
-    "Technical managers or team leads who need a strong AI audit and governance foundation to guide their teams or projects.",
-  ].join("\n"),
-  assessment:
-    "Three 3-hour online assessments, one after each module. Participants must pass all required assessments and maintain at least 75% attendance.",
-  fundingTags: [],
-  certificate:
-    "Advanced Certificate in AI Audit and Assurance - awarded by Tertiary Infotech Academy. To be awarded the certificate, participants must achieve a pass in all required assessments and maintain a minimum attendance of 75% throughout the course.",
-  sortOrder: 4,
-  seoTitle: "Advanced Certificate in AI Audit and Assurance in Singapore",
-  seoDescription:
-    "Train to govern, assess and audit AI/ML systems with a 117-hour synchronous e-learning Advanced Certificate covering responsible AI, AI risk, AI operations, audit planning, evidence collection and assurance reporting.",
-};
-
-const AI_AUDIT_ASSURANCE_MODULES = [
-  {
-    title: "Module 1: AI Governance, Risk and Responsible AI",
-    kind: "foundation",
-    details:
-      "Advise stakeholders on implementing AI solutions that meet organisational strategic goals; evaluate AI models, considerations and requirements; establish AI governance and program management practices; manage AI risk; implement privacy and data governance programs; and apply leading practices, ethics, regulations and standards for responsible and ethical AI.",
-    sessions: "13 sessions (12 teaching + 1 assessment)",
-    duration: "39 hours",
-  },
-  {
-    title: "Module 2: AI Operations and Solution Lifecycle Management",
-    kind: "foundation",
-    details:
-      "Assess an organisation's AI risk profile and readiness; manage data, development methodologies and the AI solution lifecycle; govern change management and the supervision of AI outputs, impacts and decisions; apply testing techniques for AI solutions; and identify threats, vulnerabilities and incident response practices specific to AI.",
-    sessions: "13 sessions (12 teaching + 1 assessment)",
-    duration: "39 hours",
-  },
-  {
-    title: "Module 3: Auditing AI Systems - Tools and Techniques",
-    kind: "foundation",
-    details:
-      "Optimise audit outcomes for AI systems through innovation; plan and design AI audits; apply audit testing, sampling and evidence-collection techniques; assure audit data quality using data analytics; and produce effective AI audit outputs and reports.",
-    sessions: "13 sessions (12 teaching + 1 assessment)",
-    duration: "39 hours",
-  },
-];
-
-type CourseSeed = {
-  slug: string;
-  course: typeof courses.$inferInsert;
-  modules: Array<{
-    title: string;
-    kind: string;
-    details: string;
-    sessions?: string;
-    duration?: string;
-    registrationLink?: string;
-  }>;
-};
-
-const COURSE_SEEDS: CourseSeed[] = [
-  { slug: SLUG, course: COURSE, modules: MODULES },
-  {
-    slug: CYBERSECURITY_OPERATIONS_SLUG,
-    course: CYBERSECURITY_OPERATIONS_COURSE,
-    modules: CYBERSECURITY_OPERATIONS_MODULES,
-  },
-  {
-    slug: AI_AUDIT_ASSURANCE_SLUG,
-    course: AI_AUDIT_ASSURANCE_COURSE,
-    modules: AI_AUDIT_ASSURANCE_MODULES,
-  },
-];
-
 async function main() {
-  for (const seed of COURSE_SEEDS) {
   const [existing] = await db
     .select()
     .from(courses)
-      .where(eq(courses.slug, seed.slug))
+    .where(eq(courses.slug, SLUG))
     .limit(1);
 
   let courseId: number;
   if (existing) {
     await db
       .update(courses)
-        .set({ ...seed.course, updatedAt: new Date() })
+      .set({ ...COURSE, updatedAt: new Date() })
       .where(eq(courses.id, existing.id));
     courseId = existing.id;
-      console.log(`Updated course #${courseId} (${seed.slug})`);
+    console.log(`Updated course #${courseId} (${SLUG})`);
   } else {
-      const [created] = await db.insert(courses).values(seed.course).returning();
+    const [created] = await db.insert(courses).values(COURSE).returning();
     courseId = created.id;
-      console.log(`Created course #${courseId} (${seed.slug})`);
+    console.log(`Created course #${courseId} (${SLUG})`);
   }
 
   await db.delete(courseModules).where(eq(courseModules.courseId, courseId));
   await db.insert(courseModules).values(
-      seed.modules.map((m, i) => ({
+    MODULES.map((m, i) => ({
       courseId,
       title: m.title,
       kind: m.kind,
       details: m.details,
-        sessions: m.sessions ?? null,
-        duration: m.duration ?? null,
-        registrationLink: m.registrationLink ?? null,
+      registrationLink: m.registrationLink,
       sortOrder: i,
     })),
   );
-    console.log(`Seeded ${seed.modules.length} modules for ${seed.slug}.`);
-  }
+  console.log(`Seeded ${MODULES.length} modules.`);
   process.exit(0);
 }
 
