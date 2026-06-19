@@ -71,6 +71,13 @@ const COURSES = [
     body: "Build SOC, incident response, threat monitoring and vulnerability management skills.",
   },
   {
+    icon: HiClipboardDocumentCheck,
+    href: "/courses/advanced-certificate-in-ai-audit-and-assurance",
+    tag: "AI Audit",
+    title: "Advanced Certificate in AI Audit and Assurance",
+    body: "Govern, assess and audit AI/ML systems with responsible AI, risk and assurance skills.",
+  },
+  {
     icon: HiCpuChip,
     href: "/advanced-certificate-in-agentic-ai-coding",
     tag: "AI Engineering",

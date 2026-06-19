@@ -24,6 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: url("/advanced-certificate-in-ai-security-analyst"), changeFrequency: "monthly", priority: 0.9 },
     { url: url("/advanced-certificate-in-agentic-ai-coding"), changeFrequency: "monthly", priority: 0.9 },
     { url: url("/advanced-certificate-in-blockchain"), changeFrequency: "monthly", priority: 0.9 },
+    { url: url("/courses/advanced-certificate-in-ai-audit-and-assurance"), changeFrequency: "monthly", priority: 0.8 },
     { url: url("/study-in-singapore"), changeFrequency: "monthly", priority: 0.9 },
     { url: url("/training-management-system"), changeFrequency: "monthly", priority: 0.9 },
     { url: url("/learning-management-system"), changeFrequency: "monthly", priority: 0.9 },
