@@ -97,6 +97,45 @@ const COURSES: Course[] = [
       { title: "Capstone Project", kind: "elective", details: "Design, build and ship an end-to-end agentic AI system, demonstrating architecture, reliability and production-readiness.", sessions: "Capstone", duration: "Project" },
     ],
   },
+  {
+    slug: "advanced-certificate-in-cybersecurity-operations-analyst",
+    title: "Advanced Certificate in Cybersecurity Operations Analyst",
+    summary:
+      "A 150-hour, 100% synchronous e-learning programme for front-line cybersecurity operations analysts. Build practical skills in infrastructure, monitoring, incident handling, GRC, protective controls, vulnerability management and threat intelligence.",
+    overview:
+      "The Advanced Certificate in Cybersecurity Operations Analyst equips learners with the practical, hands-on skills required to operate as front-line cybersecurity operations analysts.\n\nUpon successful completion, learners will demonstrate the ability to assess and safeguard networks, systems and applications; detect, analyse and respond to security incidents; apply principles of cybersecurity governance, risk and compliance; establish protective controls and manage vulnerabilities; and comprehend adversary behaviour in order to anticipate and counter attacks.\n\nDelivery: 100% synchronous e-learning through live virtual classes. The course is delivered part-time over about 4 months, 3 days per week, from 7:00 PM to 10:00 PM. Total course hours: 150 hours, comprising 69 hours of online practical labs, 66 hours of live instructor-led virtual lectures and demonstrations, and 15 hours of assessment.\n\nEach module consists of 10 sessions: 9 teaching/practical sessions and 1 assessment session. Practical work is delivered through online lab environments such as cloud sandbox, SIEM, network analysis and forensic analysis tools.\n\nMinimum entry requirements: at least 21 years old; at least C6 at GCE O-Level in any 3 subjects, or equivalent; or mature candidate who is at least 25 years old with at least 4 years of working experience.\n\nThis is a stackable modular programme. Modular certificates stack towards the award of the Advanced Certificate in Cybersecurity Operations Analyst.",
+    outcomes: [
+      "Assess and safeguard networks, systems and applications",
+      "Detect, analyse and respond to security incidents using logs, alerts, monitoring tools and incident handling methods",
+      "Apply cybersecurity governance, risk and compliance fundamentals across applications, cloud technology, data, networks, supply chain, systems, endpoints and web applications",
+      "Establish protective controls and perform vulnerability assessment, identification, remediation and tracking",
+      "Analyse threat landscapes, attack vectors, threat actors, threat intelligence sources and adversary methods",
+    ],
+    who: [
+      "IT and cybersecurity professionals specialising in security operations and incident detection and response",
+      "Cybersecurity practitioners strengthening threat detection, monitoring and response capabilities",
+      "Fresh graduates in IT, computer science, data science or engineering seeking career-ready cybersecurity operations skills",
+      "Mid-career professionals switching into cybersecurity operations or blue-team roles",
+      "GRC analysts, auditors and compliance officers needing an operational understanding of cybersecurity principles and risk",
+      "IT support and infrastructure staff moving into security-focused roles",
+      "Technical managers or team leads needing a cybersecurity operations foundation",
+    ],
+    assessment:
+      "Five 3-hour online assessments, one after each module. Participants must pass all required assessments and maintain at least 75% attendance.",
+    certificate:
+      "Advanced Certificate in Cybersecurity Operations Analyst - awarded by Tertiary Infotech Academy. To be awarded the certificate, participants must achieve a pass in all required assessments and maintain a minimum attendance of 75% throughout the course.",
+    seoTitle: "Advanced Certificate in Cybersecurity Operations Analyst Singapore",
+    seoDescription:
+      "Train for front-line cybersecurity operations roles with a 150-hour synchronous e-learning Advanced Certificate covering SOC monitoring, incident handling, GRC, controls, vulnerability management and threat intelligence.",
+    sortOrder: 3,
+    modules: [
+      { title: "Module 1: Foundations of IT and Cloud Infrastructure", kind: "foundation", details: "Build the technical foundation for security operations: computer and cloud networking, devices, ports and protocols, network segmentation and tooling; operating systems, databases, command line, virtualisation/containerisation and middleware; and applications, APIs, automated deployment, cloud applications and scripting/coding.", sessions: "10 sessions (9 teaching + 1 assessment)", duration: "30 hours" },
+      { title: "Module 2: Security Monitoring and Incident Handling", kind: "foundation", details: "Detect incidents using data analytics, detection use cases, indicators of compromise and attack, logs, alerts and monitoring tools. Respond through incident handling and containment, forensic analysis, malware analysis, network traffic and packet analysis, and threat analysis.", sessions: "10 sessions (9 teaching + 1 assessment)", duration: "30 hours" },
+      { title: "Module 3: Governance, Risk and Compliance Fundamentals", kind: "foundation", details: "Apply cybersecurity principles including compliance, objectives, governance, risk management, roles and responsibilities and cybersecurity models. Assess cybersecurity risk across applications, cloud technology, data, networks, supply chain, systems/endpoints and web applications.", sessions: "10 sessions (9 teaching + 1 assessment)", duration: "30 hours" },
+      { title: "Module 4: Protective Controls and Vulnerability Management", kind: "foundation", details: "Implement protective controls including contingency planning, identity and access management, and industry best-practice frameworks and standards. Perform vulnerability management through assessment, identification, remediation and tracking.", sessions: "10 sessions (9 teaching + 1 assessment)", duration: "30 hours" },
+      { title: "Module 5: Threat Intelligence and Adversary Analysis", kind: "foundation", details: "Analyse the threat landscape including attack vectors, threat actors and threat intelligence sources. Understand adversary means and methods including attack types, cyber attack stages, exploit techniques and penetration testing.", sessions: "10 sessions (9 teaching + 1 assessment)", duration: "30 hours" },
+    ],
+  },
 ];
 
 // ----------------------------- POSTS -----------------------------

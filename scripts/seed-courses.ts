@@ -13,6 +13,8 @@ import { courses, courseModules } from "../src/db/schema";
  */
 
 const SLUG = "advanced-certificate-in-cyber-security";
+const CYBERSECURITY_OPERATIONS_SLUG =
+  "advanced-certificate-in-cybersecurity-operations-analyst";
 
 const COURSE = {
   slug: SLUG,
@@ -102,39 +104,149 @@ const MODULES = [
   },
 ];
 
+const CYBERSECURITY_OPERATIONS_COURSE = {
+  slug: CYBERSECURITY_OPERATIONS_SLUG,
+  title: "Advanced Certificate in Cybersecurity Operations Analyst",
+  status: "published" as const,
+  summary:
+    "A 150-hour, 100% synchronous e-learning programme for front-line cybersecurity operations analysts. Build practical skills in infrastructure, monitoring, incident handling, GRC, protective controls, vulnerability management and threat intelligence.",
+  overview: [
+    "The Advanced Certificate in Cybersecurity Operations Analyst equips learners with the practical, hands-on skills required to operate as front-line cybersecurity operations analysts.",
+    "Upon successful completion, learners will demonstrate the ability to assess and safeguard networks, systems and applications; detect, analyse and respond to security incidents; apply principles of cybersecurity governance, risk and compliance; establish protective controls and manage vulnerabilities; and comprehend adversary behaviour in order to anticipate and counter attacks.",
+    "Delivery: 100% synchronous e-learning through live virtual classes. The course is delivered part-time over about 4 months, 3 days per week, from 7:00 PM to 10:00 PM. Total course hours: 150 hours, comprising 69 hours of online practical labs, 66 hours of live instructor-led virtual lectures and demonstrations, and 15 hours of assessment.",
+    "Each module consists of 10 sessions: 9 teaching/practical sessions and 1 assessment session. Practical work is delivered through online lab environments such as cloud sandbox, SIEM, network analysis and forensic analysis tools.",
+    "Minimum entry requirements: at least 21 years old; at least C6 at GCE O-Level in any 3 subjects, or equivalent; or mature candidate who is at least 25 years old with at least 4 years of working experience.",
+    "This is a stackable modular programme. Modular certificates stack towards the award of the Advanced Certificate in Cybersecurity Operations Analyst.",
+  ].join("\n\n"),
+  outcomes: [
+    "Assess and safeguard networks, systems and applications.",
+    "Detect, analyse and respond to security incidents using logs, alerts, monitoring tools and incident handling methods.",
+    "Apply cybersecurity governance, risk and compliance fundamentals across applications, cloud technology, data, networks, supply chain, systems, endpoints and web applications.",
+    "Establish protective controls and perform vulnerability assessment, identification, remediation and tracking.",
+    "Analyse threat landscapes, attack vectors, threat actors, threat intelligence sources and adversary methods.",
+  ].join("\n"),
+  whoShouldEnroll: [
+    "IT and cybersecurity professionals who want to specialise in security operations and incident detection and response, including SOC analysts, security engineers, system administrators and network administrators.",
+    "Cybersecurity practitioners seeking to strengthen their threat detection, monitoring and response capabilities.",
+    "Fresh graduates from IT, computer science, data science or engineering programmes who want career-ready cybersecurity operations skills.",
+    "Mid-career professionals seeking a career switch into cybersecurity operations or blue-team roles.",
+    "GRC analysts, auditors and compliance officers who need an operational understanding of cybersecurity principles and risk.",
+    "IT support and infrastructure staff moving into security-focused roles who need to monitor, detect and respond to threats.",
+    "Technical managers or team leads who need a strong cybersecurity operations foundation to guide teams or projects.",
+  ].join("\n"),
+  assessment:
+    "Five 3-hour online assessments, one after each module. Participants must pass all required assessments and maintain at least 75% attendance.",
+  fundingTags: [],
+  certificate:
+    "Advanced Certificate in Cybersecurity Operations Analyst - awarded by Tertiary Infotech Academy. To be awarded the certificate, participants must achieve a pass in all required assessments and maintain a minimum attendance of 75% throughout the course.",
+  sortOrder: 3,
+  seoTitle: "Advanced Certificate in Cybersecurity Operations Analyst in Singapore",
+  seoDescription:
+    "Train for front-line cybersecurity operations roles with a 150-hour synchronous e-learning Advanced Certificate covering SOC monitoring, incident handling, GRC, protective controls, vulnerability management and threat intelligence.",
+};
+
+const CYBERSECURITY_OPERATIONS_MODULES = [
+  {
+    title: "Module 1: Foundations of IT and Cloud Infrastructure",
+    kind: "foundation",
+    details:
+      "Build the technical foundation for security operations: computer and cloud networking, devices, ports and protocols, network segmentation and tooling; operating systems, databases, command line, virtualisation/containerisation and middleware; and applications, APIs, automated deployment, cloud applications and scripting/coding.",
+    sessions: "10 sessions (9 teaching + 1 assessment)",
+    duration: "30 hours",
+  },
+  {
+    title: "Module 2: Security Monitoring and Incident Handling",
+    kind: "foundation",
+    details:
+      "Detect incidents using data analytics, detection use cases, indicators of compromise and attack, logs, alerts and monitoring tools. Respond through incident handling and containment, forensic analysis, malware analysis, network traffic and packet analysis, and threat analysis.",
+    sessions: "10 sessions (9 teaching + 1 assessment)",
+    duration: "30 hours",
+  },
+  {
+    title: "Module 3: Governance, Risk and Compliance Fundamentals",
+    kind: "foundation",
+    details:
+      "Apply cybersecurity principles including compliance, objectives, governance, risk management, roles and responsibilities and cybersecurity models. Assess cybersecurity risk across applications, cloud technology, data, networks, supply chain, systems/endpoints and web applications.",
+    sessions: "10 sessions (9 teaching + 1 assessment)",
+    duration: "30 hours",
+  },
+  {
+    title: "Module 4: Protective Controls and Vulnerability Management",
+    kind: "foundation",
+    details:
+      "Implement protective controls including contingency planning, identity and access management, and industry best-practice frameworks and standards. Perform vulnerability management through assessment, identification, remediation and tracking.",
+    sessions: "10 sessions (9 teaching + 1 assessment)",
+    duration: "30 hours",
+  },
+  {
+    title: "Module 5: Threat Intelligence and Adversary Analysis",
+    kind: "foundation",
+    details:
+      "Analyse the threat landscape including attack vectors, threat actors and threat intelligence sources. Understand adversary means and methods including attack types, cyber attack stages, exploit techniques and penetration testing.",
+    sessions: "10 sessions (9 teaching + 1 assessment)",
+    duration: "30 hours",
+  },
+];
+
+type CourseSeed = {
+  slug: string;
+  course: typeof courses.$inferInsert;
+  modules: Array<{
+    title: string;
+    kind: string;
+    details: string;
+    sessions?: string;
+    duration?: string;
+    registrationLink?: string;
+  }>;
+};
+
+const COURSE_SEEDS: CourseSeed[] = [
+  { slug: SLUG, course: COURSE, modules: MODULES },
+  {
+    slug: CYBERSECURITY_OPERATIONS_SLUG,
+    course: CYBERSECURITY_OPERATIONS_COURSE,
+    modules: CYBERSECURITY_OPERATIONS_MODULES,
+  },
+];
+
 async function main() {
+  for (const seed of COURSE_SEEDS) {
   const [existing] = await db
     .select()
     .from(courses)
-    .where(eq(courses.slug, SLUG))
+      .where(eq(courses.slug, seed.slug))
     .limit(1);
 
   let courseId: number;
   if (existing) {
     await db
       .update(courses)
-      .set({ ...COURSE, updatedAt: new Date() })
+        .set({ ...seed.course, updatedAt: new Date() })
       .where(eq(courses.id, existing.id));
     courseId = existing.id;
-    console.log(`Updated course #${courseId} (${SLUG})`);
+      console.log(`Updated course #${courseId} (${seed.slug})`);
   } else {
-    const [created] = await db.insert(courses).values(COURSE).returning();
+      const [created] = await db.insert(courses).values(seed.course).returning();
     courseId = created.id;
-    console.log(`Created course #${courseId} (${SLUG})`);
+      console.log(`Created course #${courseId} (${seed.slug})`);
   }
 
   await db.delete(courseModules).where(eq(courseModules.courseId, courseId));
   await db.insert(courseModules).values(
-    MODULES.map((m, i) => ({
+      seed.modules.map((m, i) => ({
       courseId,
       title: m.title,
       kind: m.kind,
       details: m.details,
-      registrationLink: m.registrationLink,
+        sessions: m.sessions ?? null,
+        duration: m.duration ?? null,
+        registrationLink: m.registrationLink ?? null,
       sortOrder: i,
     })),
   );
-  console.log(`Seeded ${MODULES.length} modules.`);
+    console.log(`Seeded ${seed.modules.length} modules for ${seed.slug}.`);
+  }
   process.exit(0);
 }
 

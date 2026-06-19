@@ -174,6 +174,12 @@ export default async function CoursesIndex() {
                   body: "Defend systems with AI and secure AI/LLM systems — threat detection, SOC automation, LLM security.",
                 },
                 {
+                  href: "/courses/advanced-certificate-in-cybersecurity-operations-analyst",
+                  tag: "Cyber Operations",
+                  title: "Advanced Certificate in Cybersecurity Operations Analyst",
+                  body: "Train for SOC, incident response, threat monitoring, vulnerability management and blue-team operations.",
+                },
+                {
                   href: "/advanced-certificate-in-agentic-ai-coding",
                   tag: "AI Engineering",
                   title: "Advanced Certificate in Agentic AI Coding & Architecting",

@@ -64,6 +64,13 @@ const COURSES = [
     body: "Defend systems with AI and secure AI/LLM systems themselves.",
   },
   {
+    icon: HiShieldCheck,
+    href: "/courses/advanced-certificate-in-cybersecurity-operations-analyst",
+    tag: "Cyber Operations",
+    title: "Advanced Certificate in Cybersecurity Operations Analyst",
+    body: "Build SOC, incident response, threat monitoring and vulnerability management skills.",
+  },
+  {
     icon: HiCpuChip,
     href: "/advanced-certificate-in-agentic-ai-coding",
     tag: "AI Engineering",

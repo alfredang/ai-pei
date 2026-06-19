@@ -34,6 +34,8 @@ const CANCELLATION_POLICY =
   "You can register your interest without upfront payment. There is no penalty for withdrawal before the class commences. We reserve the right to cancel or re-schedule the course due to unforeseen circumstances; if cancelled, we refund 100% of any paid amount. The training venue is subject to change due to classroom availability.";
 
 const CYBER_SECURITY_SLUG = "advanced-certificate-in-cyber-security";
+const CYBERSECURITY_OPERATIONS_SLUG =
+  "advanced-certificate-in-cybersecurity-operations-analyst";
 
 const CYBER_SECURITY_JOB_ROLES = [
   "IT Support Technician",
@@ -134,6 +136,115 @@ const CYBER_SECURITY_REVIEW_QUESTIONS = [
   "How do you find the training environment?",
 ];
 
+type CourseTrainer = {
+  name: string;
+  qualification: string;
+  conferredBy: string;
+  appointment: string;
+  programme: string;
+  modules: string[];
+};
+
+type RecommendedCourse = {
+  title: string;
+  href: string;
+  reviews?: string;
+  priceExclGst?: string;
+  priceInclGst?: string;
+  note?: string;
+};
+
+type CoursePageExtras = {
+  jobRoles: string[];
+  moduleRegistrationLinks?: string[];
+  trainers: CourseTrainer[];
+  reviewCourseName: string;
+  reviewQuestions: string[];
+  recommendedCourses: RecommendedCourse[];
+};
+
+const CYBERSECURITY_OPERATIONS_JOB_ROLES = [
+  "Cybersecurity Operations Analyst",
+  "Security Operations Center (SOC) Analyst (Tier 1 / Tier 2)",
+  "Incident Detection and Response Analyst",
+  "Threat Detection / Threat Monitoring Analyst",
+  "Cyber Threat Intelligence Analyst",
+  "Incident Response Analyst",
+  "Vulnerability Management Analyst",
+  "Cybersecurity Analyst / Engineer",
+  "Security Monitoring Specialist",
+  "Cybersecurity Governance, Risk & Compliance (GRC) Analyst",
+];
+
+const CYBERSECURITY_OPERATIONS_TRAINERS = [
+  {
+    name: "Dr Ang Chew Hoe",
+    qualification: "PhD in Electrical Engineering",
+    conferredBy: "National University of Singapore",
+    appointment: "Full-Time",
+    programme: "Advanced Certificate in Cybersecurity Operations Analyst (E-Learning)",
+    modules: [
+      "Foundations of IT and Cloud Infrastructure",
+      "Security Monitoring and Incident Handling",
+      "Governance, Risk and Compliance Fundamentals",
+      "Protective Controls and Vulnerability Management",
+      "Threat Intelligence and Adversary Analysis",
+    ],
+  },
+];
+
+const CYBERSECURITY_OPERATIONS_RECOMMENDED_COURSES = [
+  {
+    title: "Advanced Certificate in Cyber Security",
+    href: "/courses/advanced-certificate-in-cyber-security.html",
+    note: "Build a broader CompTIA-aligned cyber security foundation before or after this operations pathway.",
+  },
+  {
+    title: "Advanced Certificate in AI Security Analyst",
+    href: "/courses/advanced-certificate-in-ai-security-analyst.html",
+    note: "Extend blue-team skills into securing AI/ML systems and AI-assisted security operations.",
+  },
+  {
+    title: "WSQ - CompTIA Cybersecurity Analyst (CySA+) Training",
+    href: "https://www.tertiarycourses.com.sg/wsq-comptia-cybersecurity-analyst-cysa-training.html",
+    priceExclGst: "$2,500.00",
+    priceInclGst: "$2,725.00",
+  },
+  {
+    title: "WSQ - CompTIA Certified Security+ Training",
+    href: "https://www.tertiarycourses.com.sg/wsq-comptia-certified-security-training.html",
+    reviews: "4 Review(s)",
+    priceExclGst: "$2,000.00",
+    priceInclGst: "$2,180.00",
+  },
+];
+
+function coursePageExtras(slug: string): CoursePageExtras | null {
+  if (slug === CYBER_SECURITY_SLUG) {
+    return {
+      jobRoles: CYBER_SECURITY_JOB_ROLES,
+      moduleRegistrationLinks: CYBER_SECURITY_MODULE_REGISTRATION_LINKS,
+      trainers: CYBER_SECURITY_TRAINERS,
+      reviewCourseName: "[MC] Advanced Certificate in Cyber Security (E-Learning)",
+      reviewQuestions: CYBER_SECURITY_REVIEW_QUESTIONS,
+      recommendedCourses: CYBER_SECURITY_RECOMMENDED_COURSES,
+    };
+  }
+
+  if (slug === CYBERSECURITY_OPERATIONS_SLUG) {
+    return {
+      jobRoles: CYBERSECURITY_OPERATIONS_JOB_ROLES,
+      trainers: CYBERSECURITY_OPERATIONS_TRAINERS,
+      reviewCourseName:
+        "[MC] Advanced Certificate in Cybersecurity Operations Analyst (E-Learning)",
+      reviewQuestions: CYBER_SECURITY_REVIEW_QUESTIONS,
+      recommendedCourses: CYBERSECURITY_OPERATIONS_RECOMMENDED_COURSES,
+    };
+  }
+
+  return null;
+}
+
 async function getCourse(slug: string) {
   const [c] = await db
     .select()
@@ -190,13 +301,10 @@ function lines(text: string | null | undefined): string[] {
 
 function moduleRegistrationLink(
   savedLink: string | null,
-  isCyberSecurityCourse: boolean,
+  extras: CoursePageExtras | null,
   index: number,
 ) {
-  return (
-    savedLink ||
-    (isCyberSecurityCourse ? CYBER_SECURITY_MODULE_REGISTRATION_LINKS[index] : null)
-  );
+  return savedLink || extras?.moduleRegistrationLinks?.[index] || null;
 }
 
 export default async function CourseDetail({
@@ -211,7 +319,14 @@ export default async function CourseDetail({
 
   const outcomeItems = lines(c.outcomes);
   const enrollItems = lines(c.whoShouldEnroll);
-  const isCyberSecurityCourse = c.slug === CYBER_SECURITY_SLUG;
+  const extras = coursePageExtras(c.slug);
+  const isCybersecurityOperationsCourse = c.slug === CYBERSECURITY_OPERATIONS_SLUG;
+  const deliveryInfo = isCybersecurityOperationsCourse
+    ? {
+        heading: "Delivery Mode",
+        text: "100% synchronous e-learning through live virtual classes. Classes run 3 days per week, 7:00 PM to 10:00 PM Singapore time, with online practical labs in cloud sandbox, SIEM, network analysis and forensic analysis environments.",
+      }
+    : { heading: "Venue", text: VENUE };
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -232,18 +347,22 @@ export default async function CourseDetail({
     },
     hasCourseInstance: {
       "@type": "CourseInstance",
-      courseMode: "Onsite",
-      location: {
-        "@type": "Place",
-        name: "Tertiary Infotech Academy",
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: "12 Woodlands Square #07-85/86/87 Woods Square Tower 1",
-          addressLocality: "Singapore",
-          postalCode: "737715",
-          addressCountry: "SG",
-        },
-      },
+      courseMode: isCybersecurityOperationsCourse ? "Online" : "Onsite",
+      ...(!isCybersecurityOperationsCourse
+        ? {
+            location: {
+              "@type": "Place",
+              name: "Tertiary Infotech Academy",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "12 Woodlands Square #07-85/86/87 Woods Square Tower 1",
+                addressLocality: "Singapore",
+                postalCode: "737715",
+                addressCountry: "SG",
+              },
+            },
+          }
+        : {}),
     },
   };
 
@@ -391,14 +510,14 @@ export default async function CourseDetail({
                     )}
                     {moduleRegistrationLink(
                       m.registrationLink,
-                      isCyberSecurityCourse,
+                      extras,
                       i,
                     ) && (
                       <a
                         href={
                           moduleRegistrationLink(
                             m.registrationLink,
-                            isCyberSecurityCourse,
+                            extras,
                             i,
                           ) ?? undefined
                         }
@@ -456,7 +575,7 @@ export default async function CourseDetail({
           </section>
         )}
 
-        {isCyberSecurityCourse && (
+        {extras && (
           <>
             <section className="py-12">
               <Container>
@@ -467,7 +586,7 @@ export default async function CourseDetail({
                   </h2>
                 </div>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                  {CYBER_SECURITY_JOB_ROLES.map((role, i) => (
+                  {extras.jobRoles.map((role, i) => (
                     <div
                       key={role}
                       className="glass-soft p-4 flex gap-3 items-start min-h-20"
@@ -510,7 +629,7 @@ export default async function CourseDetail({
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/8">
-                      {CYBER_SECURITY_TRAINERS.map((trainer, i) => (
+                      {extras.trainers.map((trainer, i) => (
                         <tr key={trainer.name} className="bg-white/[0.02]">
                           <td className="px-4 py-4 text-white/60 font-mono">{i + 1}</td>
                           <td className="px-4 py-4 text-white font-semibold">
@@ -581,9 +700,13 @@ export default async function CourseDetail({
             <div className="glass p-7">
               <div className="flex items-center gap-2 mb-4">
                 <HiMapPin className="w-5 h-5 text-(--color-cyan)" />
-                <h2 className="font-display font-bold text-xl">Venue</h2>
+                <h2 className="font-display font-bold text-xl">
+                  {deliveryInfo.heading}
+                </h2>
               </div>
-              <p className="text-sm text-(--color-muted) leading-relaxed">{VENUE}</p>
+              <p className="text-sm text-(--color-muted) leading-relaxed">
+                {deliveryInfo.text}
+              </p>
             </div>
           </Container>
         </section>
@@ -608,7 +731,7 @@ export default async function CourseDetail({
           </Container>
         </section>
 
-        {isCyberSecurityCourse && (
+        {extras && (
           <>
             <section className="py-12">
               <Container>
@@ -624,11 +747,10 @@ export default async function CourseDetail({
                       Write Your Own Review
                     </h3>
                     <p className="text-sm text-(--color-muted) leading-relaxed mb-5">
-                      You are reviewing: [MC] Advanced Certificate in Cyber Security
-                      (E-Learning)
+                      You are reviewing: {extras.reviewCourseName}
                     </p>
                     <div className="space-y-3">
-                      {CYBER_SECURITY_REVIEW_QUESTIONS.map((question, i) => (
+                      {extras.reviewQuestions.map((question, i) => (
                         <div
                           key={question}
                           className="p-4 rounded-lg bg-white/3 border border-white/6"
@@ -675,33 +797,46 @@ export default async function CourseDetail({
                   </h2>
                 </div>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-                  {CYBER_SECURITY_RECOMMENDED_COURSES.map((course) => (
-                    <a
-                      key={course.href}
-                      href={course.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="glass p-5 hover:border-(--color-cyan)/35 transition-colors"
-                    >
-                      <h3 className="font-display font-bold text-white leading-snug mb-3">
-                        {course.title}
-                      </h3>
-                      {course.reviews && (
-                        <p className="text-xs text-(--color-amber) mb-3">
-                          {course.reviews}
-                        </p>
-                      )}
-                      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm">
-                        <span className="font-semibold text-white">
-                          {course.priceExclGst}
-                        </span>
-                        <span className="text-white/45">GST-exclusive</span>
-                      </div>
-                      <p className="mt-1 text-xs text-white/45">
-                        {course.priceInclGst} GST-inclusive
-                      </p>
-                    </a>
-                  ))}
+                  {extras.recommendedCourses.map((course) => {
+                    const external = course.href.startsWith("http");
+
+                    return (
+                      <a
+                        key={course.href}
+                        href={course.href}
+                        target={external ? "_blank" : undefined}
+                        rel={external ? "noopener noreferrer" : undefined}
+                        className="glass p-5 hover:border-(--color-cyan)/35 transition-colors"
+                      >
+                        <h3 className="font-display font-bold text-white leading-snug mb-3">
+                          {course.title}
+                        </h3>
+                        {course.reviews && (
+                          <p className="text-xs text-(--color-amber) mb-3">
+                            {course.reviews}
+                          </p>
+                        )}
+                        {course.note && (
+                          <p className="text-sm text-(--color-muted) leading-relaxed mb-3">
+                            {course.note}
+                          </p>
+                        )}
+                        {course.priceExclGst && (
+                          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm">
+                            <span className="font-semibold text-white">
+                              {course.priceExclGst}
+                            </span>
+                            <span className="text-white/45">GST-exclusive</span>
+                          </div>
+                        )}
+                        {course.priceInclGst && (
+                          <p className="mt-1 text-xs text-white/45">
+                            {course.priceInclGst} GST-inclusive
+                          </p>
+                        )}
+                      </a>
+                    );
+                  })}
                 </div>
               </Container>
             </section>
