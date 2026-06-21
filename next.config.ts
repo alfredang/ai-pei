@@ -1,3 +1,4 @@
+// Webhook auto-deploy smoke test — safe to remove.
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
