@@ -208,67 +208,6 @@ export default async function CoursesIndex() {
             )}
           </Container>
         </section>
-
-        {/* Specialisation tracks — SEO landers for the AI / Blockchain pillars */}
-        <section className="pb-24">
-          <Container>
-            <div className="mb-8">
-              <div className="kicker mb-3">[ SPECIALISATION TRACKS ]</div>
-              <h2 className="font-display text-2xl md:text-3xl font-extrabold">
-                AI, Cyber Security &amp; <span className="gradient-text">Blockchain</span>
-              </h2>
-              <p className="mt-3 text-(--color-muted) max-w-2xl">
-                Explore our Advanced Certificate tracks — built for international students and
-                career switchers entering Singapore&apos;s tech sector.
-              </p>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                {
-                  href: "/courses/advanced-certificate-in-cyber-security",
-                  tag: "Cyber Security",
-                  title: "Advanced Certificate in Cyber Security",
-                  body: "Four stackable CompTIA modules — A+, Security+, Linux+, and CySA+ / PenTest+ electives.",
-                },
-                {
-                  href: "/advanced-certificate-in-ai-security-analyst",
-                  tag: "AI + Security",
-                  title: "Advanced Certificate in AI Security Analyst",
-                  body: "Defend systems with AI and secure AI/LLM systems — threat detection, SOC automation, LLM security.",
-                },
-                {
-                  href: "/advanced-certificate-in-agentic-ai-coding",
-                  tag: "AI Engineering",
-                  title: "Advanced Certificate in Agentic AI Coding & Architecting",
-                  body: "Design, build and deploy autonomous AI agents — agentic patterns, RAG, and production architecture.",
-                },
-                {
-                  href: "/advanced-certificate-in-blockchain",
-                  tag: "Blockchain / Web3",
-                  title: "Advanced Certificate in Blockchain",
-                  body: "Smart contracts, DApps and Web3 — Solidity, Ethereum/EVM, and smart-contract security.",
-                },
-              ].map((p) => (
-                <Link
-                  key={p.href}
-                  href={htmlPath(p.href)}
-                  className="card-hover glass overflow-hidden flex flex-col group p-6"
-                >
-                  <div className="mb-4">
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold text-(--color-cyan) border border-(--color-cyan)/40 bg-(--color-cyan)/10">
-                      {p.tag}
-                    </span>
-                  </div>
-                  <h3 className="font-display font-bold text-lg text-white group-hover:text-(--color-cyan) transition mb-2 leading-tight">
-                    {p.title}
-                  </h3>
-                  <p className="text-sm text-(--color-muted) leading-relaxed flex-1">{p.body}</p>
-                  <span className="mt-4 text-xs text-(--color-cyan) font-mono">View details →</span>
-                </Link>
-              ))}
-            </div>
-          </Container>
-        </section>
       </main>
       <Footer />
     </>
