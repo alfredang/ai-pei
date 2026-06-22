@@ -35,7 +35,6 @@ tsconfig.tsbuildinfo
 wp-*.sql*
 .claude/scheduled_tasks.lock
 
-# Confidential PEI licence / registration & course-development documents — never commit
+# Confidential PEI licence / registration documents — never commit
 Tertiary Infotech Academy Pte Ltd/
-[0-9][0-9]. */
 ~$*
