@@ -33,8 +33,6 @@ const POST_COURSE_SUPPORT =
 const CANCELLATION_POLICY =
   "You can register your interest without upfront payment. There is no penalty for withdrawal before the class commences. We reserve the right to cancel or re-schedule the course due to unforeseen circumstances; if cancelled, we refund 100% of any paid amount. The training venue is subject to change due to classroom availability.";
 
-const CYBER_SECURITY_SLUG = "advanced-certificate-in-cyber-security";
-
 const CYBER_SECURITY_JOB_ROLES = [
   "IT Support Technician",
   "IT Helpdesk Specialist",
@@ -128,11 +126,108 @@ const CYBER_SECURITY_RECOMMENDED_COURSES = [
   },
 ];
 
-const CYBER_SECURITY_REVIEW_QUESTIONS = [
+const REVIEW_QUESTIONS = [
   "Do you find the course meet your expectation?",
   "Do you find the trainer knowledgeable in this subject?",
   "How do you find the training environment?",
 ];
+
+const AGENTIC_AI_JOB_ROLES = [
+  "AI Engineer",
+  "Agentic AI Developer",
+  "AI Solutions Architect",
+  "LLM / Generative AI Application Developer",
+  "AI Automation Engineer",
+  "Machine Learning Engineer (Applied / LLMOps)",
+  "AI Integration Engineer",
+  "Prompt Engineer",
+  "AI Platform / Tooling Engineer",
+  "AI DevOps / LLMOps Engineer",
+  "Technical AI Consultant",
+  "AI Product Engineer",
+];
+
+const AGENTIC_AI_TRAINERS = [
+  {
+    name: "Dr Ang Chew Hoe",
+    qualification: "PhD in Electrical Engineering",
+    conferredBy: "National University of Singapore",
+    appointment: "Full-Time",
+    programme:
+      "Advanced Certificate in Agentic AI Coding and Architecting (E-Learning)",
+    modules: [
+      "Agentic Architecture & Orchestration",
+      "Tool Design & MCP Integration",
+      "Claude Code Configuration & Workflows",
+      "Prompt Engineering & Structured Output",
+      "Context Management & Reliability",
+    ],
+  },
+];
+
+// Agentic course is self-developed (no external stackable WSQ components), so
+// "Related Courses" links the sibling AI Advanced Certificates on our own site.
+const AGENTIC_AI_RECOMMENDED_COURSES = [
+  {
+    title: "Advanced Certificate in AI Security Analyst",
+    href: "/courses/advanced-certificate-in-ai-security-analyst.html",
+  },
+  {
+    title: "Advanced Certificate in AI Audit and Assurance",
+    href: "/courses/advanced-certificate-in-ai-audit-and-assurance.html",
+  },
+  {
+    title: "Advanced Certificate in AI Risk Management",
+    href: "/courses/advanced-certificate-in-ai-risk-management.html",
+  },
+  {
+    title: "Advanced Certificate in AI Security and Governance Management",
+    href: "/courses/advanced-certificate-in-ai-security-and-governance-management.html",
+  },
+];
+
+type CourseExtras = {
+  jobRoles: string[];
+  trainers: {
+    name: string;
+    qualification: string;
+    conferredBy: string;
+    appointment: string;
+    programme: string;
+    modules: string[];
+  }[];
+  recommended: {
+    title: string;
+    href: string;
+    reviews?: string;
+    priceExclGst?: string;
+    priceInclGst?: string;
+  }[];
+  reviewSubject: string;
+  reviewQuestions: string[];
+  moduleRegistrationLinks?: string[];
+};
+
+// Per-course extra sections (Job Roles, Trainers, Review, Related Courses).
+// Add a slug here to opt a course into the richer layout.
+const COURSE_EXTRAS: Record<string, CourseExtras> = {
+  "advanced-certificate-in-cyber-security": {
+    jobRoles: CYBER_SECURITY_JOB_ROLES,
+    trainers: CYBER_SECURITY_TRAINERS,
+    recommended: CYBER_SECURITY_RECOMMENDED_COURSES,
+    reviewSubject: "[MC] Advanced Certificate in Cyber Security (E-Learning)",
+    reviewQuestions: REVIEW_QUESTIONS,
+    moduleRegistrationLinks: CYBER_SECURITY_MODULE_REGISTRATION_LINKS,
+  },
+  "advanced-certificate-in-agentic-ai-coding": {
+    jobRoles: AGENTIC_AI_JOB_ROLES,
+    trainers: AGENTIC_AI_TRAINERS,
+    recommended: AGENTIC_AI_RECOMMENDED_COURSES,
+    reviewSubject:
+      "[MC] Advanced Certificate in Agentic AI Coding and Architecting (E-Learning)",
+    reviewQuestions: REVIEW_QUESTIONS,
+  },
+};
 
 async function getCourse(slug: string) {
   const [c] = await db
@@ -190,13 +285,10 @@ function lines(text: string | null | undefined): string[] {
 
 function moduleRegistrationLink(
   savedLink: string | null,
-  isCyberSecurityCourse: boolean,
+  extras: CourseExtras | null,
   index: number,
 ) {
-  return (
-    savedLink ||
-    (isCyberSecurityCourse ? CYBER_SECURITY_MODULE_REGISTRATION_LINKS[index] : null)
-  );
+  return savedLink || extras?.moduleRegistrationLinks?.[index] || null;
 }
 
 export default async function CourseDetail({
@@ -211,7 +303,7 @@ export default async function CourseDetail({
 
   const outcomeItems = lines(c.outcomes);
   const enrollItems = lines(c.whoShouldEnroll);
-  const isCyberSecurityCourse = c.slug === CYBER_SECURITY_SLUG;
+  const extras = COURSE_EXTRAS[c.slug] ?? null;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -391,14 +483,14 @@ export default async function CourseDetail({
                     )}
                     {moduleRegistrationLink(
                       m.registrationLink,
-                      isCyberSecurityCourse,
+                      extras,
                       i,
                     ) && (
                       <a
                         href={
                           moduleRegistrationLink(
                             m.registrationLink,
-                            isCyberSecurityCourse,
+                            extras,
                             i,
                           ) ?? undefined
                         }
@@ -456,7 +548,7 @@ export default async function CourseDetail({
           </section>
         )}
 
-        {isCyberSecurityCourse && (
+        {extras && (
           <>
             <section className="py-12">
               <Container>
@@ -467,7 +559,7 @@ export default async function CourseDetail({
                   </h2>
                 </div>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                  {CYBER_SECURITY_JOB_ROLES.map((role, i) => (
+                  {extras.jobRoles.map((role, i) => (
                     <div
                       key={role}
                       className="glass-soft p-4 flex gap-3 items-start min-h-20"
@@ -510,7 +602,7 @@ export default async function CourseDetail({
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/8">
-                      {CYBER_SECURITY_TRAINERS.map((trainer, i) => (
+                      {extras.trainers.map((trainer, i) => (
                         <tr key={trainer.name} className="bg-white/[0.02]">
                           <td className="px-4 py-4 text-white/60 font-mono">{i + 1}</td>
                           <td className="px-4 py-4 text-white font-semibold">
@@ -608,7 +700,7 @@ export default async function CourseDetail({
           </Container>
         </section>
 
-        {isCyberSecurityCourse && (
+        {extras && (
           <>
             <section className="py-12">
               <Container>
@@ -624,11 +716,10 @@ export default async function CourseDetail({
                       Write Your Own Review
                     </h3>
                     <p className="text-sm text-(--color-muted) leading-relaxed mb-5">
-                      You are reviewing: [MC] Advanced Certificate in Cyber Security
-                      (E-Learning)
+                      You are reviewing: {extras.reviewSubject}
                     </p>
                     <div className="space-y-3">
-                      {CYBER_SECURITY_REVIEW_QUESTIONS.map((question, i) => (
+                      {extras.reviewQuestions.map((question, i) => (
                         <div
                           key={question}
                           className="p-4 rounded-lg bg-white/3 border border-white/6"
@@ -675,7 +766,7 @@ export default async function CourseDetail({
                   </h2>
                 </div>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-                  {CYBER_SECURITY_RECOMMENDED_COURSES.map((course) => (
+                  {extras.recommended.map((course) => (
                     <a
                       key={course.href}
                       href={course.href}
@@ -691,15 +782,23 @@ export default async function CourseDetail({
                           {course.reviews}
                         </p>
                       )}
-                      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm">
-                        <span className="font-semibold text-white">
-                          {course.priceExclGst}
+                      {course.priceExclGst ? (
+                        <>
+                          <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm">
+                            <span className="font-semibold text-white">
+                              {course.priceExclGst}
+                            </span>
+                            <span className="text-white/45">GST-exclusive</span>
+                          </div>
+                          <p className="mt-1 text-xs text-white/45">
+                            {course.priceInclGst} GST-inclusive
+                          </p>
+                        </>
+                      ) : (
+                        <span className="text-xs text-(--color-cyan) font-mono">
+                          View course →
                         </span>
-                        <span className="text-white/45">GST-exclusive</span>
-                      </div>
-                      <p className="mt-1 text-xs text-white/45">
-                        {course.priceInclGst} GST-inclusive
-                      </p>
+                      )}
                     </a>
                   ))}
                 </div>
