@@ -45,7 +45,7 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 
 ### Lead generation in every page
 - **Dedicated service landing pages** with visual 5-step timeline, sticky lead form, FAQ accordion, benefits grid
-- **Persistent CTAs** — sticky Get-a-Quote button (desktop), tap-to-call + WhatsApp icons (mobile), AI chatbot above the fold
+- **Persistent CTAs** — sticky Get-a-Quote button (desktop), tap-to-call + WhatsApp icons (mobile), floating WhatsApp click-to-chat widget on every public page
 - **Source-tagged forms** — every form POSTs to `/api/contact` with a `source` label so leads are attributable per page
 - **Gmail OAuth2 notification pipeline** — every submission lands in `/admin/leads` *and* emails sales in under 1 second
 - **Lead-magnet skill** — built-in conventions for ICP targeting, form-field rules, page anatomy
@@ -66,7 +66,8 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 - **Local ⇄ Remote DB sync** — push menus, settings, pages, posts, taxonomy from local to production via a bearer-token API (preserving `createdAt`); pull leads from production back to local (`scripts/pull-leads.ts`); idempotent prod-side schema migration runner at `POST /api/admin/sync/migrate`
 
 ### AI built in — Nemo self-improving lead-gen chatbot + Admin AI Assist
-- **Nemo AI chatbot** on every public page — branded floating widget that answers visitor questions about your services and routes warm leads to your contact form
+- **Floating WhatsApp widget** on every public page ([src/components/ui/WhatsAppWidget.tsx](src/components/ui/WhatsAppWidget.tsx)) — a pulsing click-to-chat launcher that opens a WhatsApp conversation (`wa.me/6588666375`) with a pre-filled course enquiry, routing visitors straight to a human
+- **Nemo AI chatbot engine** — still powers the `/api/chat` endpoint and Admin AI Assist via the Claude Agent SDK; answers visitor questions with your FAQ + live CMS as context and can be re-surfaced as an in-page widget
 - **Self-improving loop** ([src/lib/nemo-reflect.ts](src/lib/nemo-reflect.ts)) — after every captured lead, Nemo replays the transcript through the Claude Agent SDK, extracts ONE concrete tactical lesson (or skips if already optimal), and appends it to the `chat:nemo_lessons` DB row. The next visitor's system prompt includes the growing lessons list, so each new conversation is coached toward a higher lead score. Capped at 25 lessons, deduped, fire-and-forget so the chat response stays snappy.
 - **Mission file at the repo root** ([NEMO.md](NEMO.md)) — mission, five qualification signals (interest / use-case / budget / timeline / implementation), and curated seed lessons. Loaded into the system prompt verbatim every turn.
 - **Knowledge base + live CMS awareness** — a curated [src/lib/chatbot-knowledge.md](src/lib/chatbot-knowledge.md) covers the AI + SSG service lines with indicative pricing, and `getCmsKnowledgeSnippet()` injects up to 40 published pages + 20 most recent blog posts (5-min TTL) so Nemo can cite and link to live on-site content

@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter, Exo_2, JetBrains_Mono } from "next/font/google";
-import { ChatBot } from "@/components/ui/ChatBot";
+import { WhatsAppWidget } from "@/components/ui/WhatsAppWidget";
 import {
   getSiteBrand,
   getCompanyContact,
@@ -100,7 +100,7 @@ export default async function RootLayout({
     <html lang="en-SG" data-theme="dark" className={`${inter.variable} ${exo2.variable} ${mono.variable}`}>
       <body className="min-h-screen antialiased">
         {children}
-        <ChatBot />
+        <WhatsAppWidget />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }}
