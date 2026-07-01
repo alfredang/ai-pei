@@ -509,7 +509,7 @@ export default async function CourseDetail({
               </div>
               <div className="grid md:grid-cols-2 gap-5">
                 {modules.map((m, i) => (
-                  <div key={m.id} className="glass p-6 flex flex-col">
+                  <div key={m.id} className="glass card-hover p-6 flex flex-col">
                     <div className="flex items-center justify-between mb-3">
                       <span className="font-mono text-xs text-(--color-cyan)">
                         Module {String(i + 1).padStart(2, "0")}
@@ -572,7 +572,7 @@ export default async function CourseDetail({
           <section className="py-12">
             <Container className="grid md:grid-cols-2 gap-6">
               {outcomeItems.length > 0 && (
-                <div className="glass p-7">
+                <div className="glass card-hover p-7">
                   <div className="flex items-center gap-2 mb-4">
                     <HiAcademicCap className="w-5 h-5 text-(--color-cyan)" />
                     <h2 className="font-display font-bold text-xl">Program Outcomes</h2>
@@ -588,7 +588,7 @@ export default async function CourseDetail({
                 </div>
               )}
               {enrollItems.length > 0 && (
-                <div className="glass p-7">
+                <div className="glass card-hover p-7">
                   <div className="flex items-center gap-2 mb-4">
                     <HiClipboardDocumentCheck className="w-5 h-5 text-(--color-purple-light)" />
                     <h2 className="font-display font-bold text-xl">Who Should Enroll</h2>
@@ -621,7 +621,7 @@ export default async function CourseDetail({
                   {extras.jobRoles.map((role, i) => (
                     <div
                       key={role}
-                      className="glass-soft p-4 flex gap-3 items-start min-h-20"
+                      className="glass-soft card-hover p-4 flex gap-3 items-start min-h-20"
                     >
                       <span className="font-mono text-xs text-(--color-cyan) shrink-0">
                         {String(i + 1).padStart(2, "0")}
@@ -704,7 +704,7 @@ export default async function CourseDetail({
         {/* Certification + course info */}
         <section className="py-12">
           <Container className="grid md:grid-cols-2 gap-6">
-            <div className="glass p-7">
+            <div className="glass card-hover p-7">
               <div className="flex items-center gap-2 mb-4">
                 <HiCheckBadge className="w-5 h-5 text-(--color-green)" />
                 <h2 className="font-display font-bold text-xl">Certification</h2>
@@ -729,7 +729,7 @@ export default async function CourseDetail({
                 </p>
               )}
             </div>
-            <div className="glass p-7">
+            <div className="glass card-hover p-7">
               <div className="flex items-center gap-2 mb-4">
                 <HiMapPin className="w-5 h-5 text-(--color-cyan)" />
                 <h2 className="font-display font-bold text-xl">Venue</h2>
@@ -742,13 +742,13 @@ export default async function CourseDetail({
         {/* Support + policy */}
         <section className="pb-12">
           <Container className="grid md:grid-cols-2 gap-6">
-            <div className="glass p-7">
+            <div className="glass card-hover p-7">
               <h2 className="font-display font-bold text-lg mb-3">Post-Course Support</h2>
               <p className="text-sm text-(--color-muted) leading-relaxed">
                 {POST_COURSE_SUPPORT}
               </p>
             </div>
-            <div className="glass p-7">
+            <div className="glass card-hover p-7">
               <h2 className="font-display font-bold text-lg mb-3">
                 Cancellation &amp; Reschedule Policy
               </h2>
@@ -770,7 +770,7 @@ export default async function CourseDetail({
                   </h2>
                 </div>
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div className="glass p-7">
+                  <div className="glass card-hover p-7">
                     <h3 className="font-display font-bold text-lg mb-3">
                       Write Your Own Review
                     </h3>
@@ -791,7 +791,7 @@ export default async function CourseDetail({
                       ))}
                     </div>
                   </div>
-                  <div className="glass p-7">
+                  <div className="glass card-hover p-7">
                     <h3 className="font-display font-bold text-lg mb-3">
                       Review Information
                     </h3>
@@ -831,7 +831,7 @@ export default async function CourseDetail({
                       href={course.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="glass p-5 hover:border-(--color-cyan)/35 transition-colors"
+                      className="glass card-hover p-5"
                     >
                       <h3 className="font-display font-bold text-white leading-snug mb-3">
                         {course.title}
