@@ -12,10 +12,10 @@ import {
 } from "react-icons/hi2";
 
 const DISCIPLINES = [
-  { id: "ai", label: "Artificial Intelligence", icon: HiCpuChip, color: "var(--color-purple-light)" },
-  { id: "cybersecurity", label: "Cyber Security", icon: HiShieldCheck, color: "var(--color-cyan)" },
-  { id: "blockchain", label: "Blockchain", icon: HiCubeTransparent, color: "var(--color-amber)" },
-  { id: "quantum", label: "Quantum Computing", icon: HiSparkles, color: "var(--color-cyan)" },
+  { id: "ai", label: "Artificial Intelligence", icon: HiCpuChip, color: "var(--color-purple-light)", href: "/courses.html#artificial-intelligence" },
+  { id: "cybersecurity", label: "Cyber Security", icon: HiShieldCheck, color: "var(--color-cyan)", href: "/courses.html#cyber-security" },
+  { id: "blockchain", label: "Blockchain", icon: HiCubeTransparent, color: "var(--color-amber)", href: "/courses.html#blockchain" },
+  { id: "quantum", label: "Quantum Computing", icon: HiSparkles, color: "var(--color-cyan)", href: "/courses.html#quantum-computing" },
 ];
 
 /** Matrix-style digital rain of falling characters (top → bottom). Hero only. */
@@ -114,6 +114,8 @@ function MatrixRain() {
 
 export function HomeHero() {
   const [selected, setSelected] = useState(DISCIPLINES[0].id);
+  const selectedHref =
+    DISCIPLINES.find((d) => d.id === selected)?.href ?? "/courses.html";
 
   return (
     <section
@@ -175,7 +177,7 @@ export function HomeHero() {
                   <HiChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/60" />
                 </div>
                 <a
-                  href={`#${selected}`}
+                  href={selectedHref}
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-base font-semibold text-black transition-colors duration-200 hover:bg-white/90 whitespace-nowrap"
                 >
                   Explore Programme
@@ -207,18 +209,11 @@ export function HomeHero() {
               <div className="grid grid-cols-2 gap-4">
                 {DISCIPLINES.map((d) => {
                   const Icon = d.icon;
-                  const active = d.id === selected;
                   return (
-                    <button
+                    <a
                       key={d.id}
-                      type="button"
-                      onClick={() => setSelected(d.id)}
-                      aria-pressed={active}
-                      className={`text-left rounded-2xl p-5 border transition-all duration-300 ${
-                        active
-                          ? "bg-white/10 border-white/30 scale-[1.02]"
-                          : "bg-white/3 border-white/10 hover:border-white/20"
-                      }`}
+                      href={d.href}
+                      className="group/card text-left rounded-2xl p-5 border bg-white/3 border-white/10 transition-all duration-300 hover:bg-white/10 hover:border-white/30 hover:scale-[1.02]"
                     >
                       <div
                         className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform"
@@ -230,12 +225,12 @@ export function HomeHero() {
                         {d.label}
                       </div>
                       <div
-                        className="mt-2 text-[0.7rem] font-mono uppercase tracking-wider transition-opacity"
-                        style={{ color: d.color, opacity: active ? 1 : 0.5 }}
+                        className="mt-2 text-[0.7rem] font-mono uppercase tracking-wider opacity-60 transition-opacity group-hover/card:opacity-100"
+                        style={{ color: d.color }}
                       >
-                        {active ? "Selected →" : "Select"}
+                        View Courses →
                       </div>
-                    </button>
+                    </a>
                   );
                 })}
               </div>

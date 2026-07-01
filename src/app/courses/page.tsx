@@ -21,6 +21,10 @@ const CATEGORY_ORDER = [
   "Quantum Computing",
 ] as const;
 
+// Stable anchor slug per category — lets the homepage hero deep-link to a
+// discipline's section (e.g. /courses.html#artificial-intelligence).
+const catSlug = (c: string) => c.toLowerCase().replace(/\s+/g, "-");
+
 // Explicit slug → category map for the current catalogue.
 const COURSE_CATEGORY: Record<string, (typeof CATEGORY_ORDER)[number]> = {
   "advanced-certificate-in-ai-security-analyst": "Artificial Intelligence",
@@ -157,7 +161,7 @@ export default async function CoursesIndex() {
             ) : (
               <div className="space-y-14">
                 {orderedCategories.map((cat) => (
-                  <div key={cat}>
+                  <div key={cat} id={catSlug(cat)} className="scroll-mt-28">
                     <div className="kicker mb-3">[ {cat.toUpperCase()} ]</div>
                     <h2 className="font-display text-xl md:text-2xl font-extrabold mb-6">
                       {cat}

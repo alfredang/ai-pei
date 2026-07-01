@@ -20,7 +20,7 @@ export function WhatsAppWidget() {
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
       {open && (
         <div className="glass w-[min(88vw,300px)] rounded-2xl border border-white/15 overflow-hidden shadow-[var(--shadow-glow-blue-lg)]">
-          <header className="flex items-center gap-3 bg-[#25D366] px-4 py-3">
+          <header className="flex items-center gap-3 bg-[#075E54] px-4 py-3">
             <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20">
               <FaWhatsapp className="h-6 w-6 text-white" />
             </span>
@@ -44,7 +44,7 @@ export function WhatsAppWidget() {
               href={WA_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-4 py-2.5 font-semibold text-white hover:bg-[#1ebe57] transition"
+              className="flex items-center justify-center gap-2 rounded-full bg-[#075E54] px-4 py-2.5 font-semibold text-white hover:bg-[#054d45] transition"
             >
               <FaWhatsapp className="h-5 w-5" />
               Start Chat
@@ -56,10 +56,10 @@ export function WhatsAppWidget() {
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close WhatsApp chat" : "Chat on WhatsApp"}
-        className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-[var(--shadow-glow-blue-lg)] hover:scale-105 transition"
+        className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#075E54] shadow-[var(--shadow-glow-blue-lg)] hover:scale-105 transition"
       >
         {!open && (
-          <span className="wa-pulse pointer-events-none absolute inset-0 rounded-full border-2 border-[#25D366]" />
+          <span className="wa-pulse pointer-events-none absolute inset-0 rounded-full border-2 border-[#075E54]" />
         )}
         {open ? (
           <HiXMark className="relative h-6 w-6 text-white" />
