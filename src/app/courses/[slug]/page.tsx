@@ -132,18 +132,17 @@ const REVIEW_QUESTIONS = [
   "How do you find the training environment?",
 ];
 
+// Potential employment opportunities from the Agentic AI PEI write-up.
 const AGENTIC_AI_JOB_ROLES = [
-  "AI Engineer",
-  "Agentic AI Developer",
+  "AI Engineer / AI Agent Developer",
   "AI Solutions Architect",
-  "LLM / Generative AI Application Developer",
-  "AI Automation Engineer",
-  "Machine Learning Engineer (Applied / LLMOps)",
-  "AI Integration Engineer",
-  "Prompt Engineer",
-  "AI Platform / Tooling Engineer",
-  "AI DevOps / LLMOps Engineer",
+  "LLM Application Engineer",
+  "Conversational / Agentic AI Engineer",
+  "Machine Learning Engineer (LLMOps)",
+  "AI Integration Specialist",
+  "Automation Architect",
   "Technical AI Consultant",
+  "Developer Experience / Platform Engineer (AI tooling)",
   "AI Product Engineer",
 ];
 
@@ -171,6 +170,58 @@ const AGENTIC_AI_RECOMMENDED_COURSES = [
   {
     title: "Advanced Certificate in AI Security Analyst",
     href: "/courses/advanced-certificate-in-ai-security-analyst.html",
+  },
+  {
+    title: "Advanced Certificate in AI Audit and Assurance",
+    href: "/courses/advanced-certificate-in-ai-audit-and-assurance.html",
+  },
+  {
+    title: "Advanced Certificate in AI Risk Management",
+    href: "/courses/advanced-certificate-in-ai-risk-management.html",
+  },
+  {
+    title: "Advanced Certificate in AI Security and Governance Management",
+    href: "/courses/advanced-certificate-in-ai-security-and-governance-management.html",
+  },
+];
+
+// Potential employment opportunities from the AI Security Analyst PEI write-up.
+const AI_SECURITY_ANALYST_JOB_ROLES = [
+  "AI Security Analyst",
+  "AI/ML Security Engineer",
+  "Security Operations Center (SOC) Analyst (AI-augmented)",
+  "Cyber Threat Intelligence Analyst",
+  "AI Governance, Risk & Compliance (GRC) Analyst",
+  "AI Risk & Assurance Specialist",
+  "Machine Learning Security Specialist",
+  "Cybersecurity Analyst / Engineer",
+  "Incident Response Analyst",
+  "Cloud & AI Security Associate",
+  "Responsible AI / AI Compliance Officer",
+];
+
+const AI_SECURITY_ANALYST_TRAINERS = [
+  {
+    name: "Dr Ang Chew Hoe",
+    qualification: "PhD in Electrical Engineering",
+    conferredBy: "National University of Singapore",
+    appointment: "Full-Time",
+    programme: "Advanced Certificate in AI Security Analyst (E-Learning)",
+    modules: [
+      "Basic AI Concepts Related to Cybersecurity",
+      "Securing AI Systems",
+      "AI-Assisted Security",
+      "AI Governance, Risk & Compliance",
+    ],
+  },
+];
+
+// AI Security Analyst is self-developed, so "Related Courses" links the sibling
+// AI Advanced Certificates on our own site.
+const AI_SECURITY_ANALYST_RECOMMENDED_COURSES = [
+  {
+    title: "Advanced Certificate in Agentic AI Coding and Architecting",
+    href: "/courses/advanced-certificate-in-agentic-ai-coding.html",
   },
   {
     title: "Advanced Certificate in AI Audit and Assurance",
@@ -225,6 +276,14 @@ const COURSE_EXTRAS: Record<string, CourseExtras> = {
     recommended: AGENTIC_AI_RECOMMENDED_COURSES,
     reviewSubject:
       "[MC] Advanced Certificate in Agentic AI Coding and Architecting (E-Learning)",
+    reviewQuestions: REVIEW_QUESTIONS,
+  },
+  "advanced-certificate-in-ai-security-analyst": {
+    jobRoles: AI_SECURITY_ANALYST_JOB_ROLES,
+    trainers: AI_SECURITY_ANALYST_TRAINERS,
+    recommended: AI_SECURITY_ANALYST_RECOMMENDED_COURSES,
+    reviewSubject:
+      "[MC] Advanced Certificate in AI Security Analyst (E-Learning)",
     reviewQuestions: REVIEW_QUESTIONS,
   },
 };
