@@ -10,6 +10,7 @@ export const FUNDING_OPTIONS = [
   "SFEC",
   "Absentee Payroll",
   "MCES",
+  "PEI",
 ] as const;
 
 export type FundingScheme = (typeof FUNDING_OPTIONS)[number];
@@ -22,6 +23,7 @@ const FUNDING_COLORS: Record<string, string> = {
   SFEC: "#CA8A04", // gold
   "Absentee Payroll": "#1E3A8A", // navy
   MCES: "#7C3AED", // purple
+  PEI: "#059669", // emerald — Private Education Institution
 };
 
 /** Background colour for a funding badge; falls back to a neutral grey. */

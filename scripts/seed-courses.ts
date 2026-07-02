@@ -44,6 +44,7 @@ const COURSE = {
   priceExclGst: "$9,000.00",
   priceInclGst: "$9,810.00",
   fundingTags: [
+    "PEI",
     "WSQ",
     "SkillsFuture Credit",
     "PSEA",
