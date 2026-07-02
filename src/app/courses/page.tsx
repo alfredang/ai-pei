@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { db } from "@/db";
-import { courses } from "@/db/schema";
-import { asc, desc, eq } from "drizzle-orm";
+import { courses, courseModules } from "@/db/schema";
+import { asc, desc, eq, sql } from "drizzle-orm";
+import { courseFee } from "@/lib/course-fee";
 import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -82,6 +83,17 @@ export default async function CoursesIndex() {
     .where(eq(courses.status, "published"))
     .orderBy(asc(courses.sortOrder), desc(courses.updatedAt))
     .catch(() => []);
+
+  // Module counts drive the displayed course fee (modules × $1,800).
+  const moduleCounts = await db
+    .select({
+      courseId: courseModules.courseId,
+      n: sql<number>`count(*)::int`,
+    })
+    .from(courseModules)
+    .groupBy(courseModules.courseId)
+    .catch(() => []);
+  const countByCourse = new Map(moduleCounts.map((r) => [r.courseId, r.n]));
 
   // Group the published courses by category, preserving the DB sort order
   // within each group and CATEGORY_ORDER across groups.
@@ -192,16 +204,26 @@ export default async function CoursesIndex() {
                               {c.summary}
                             </p>
                           )}
-                          <div className="mt-4 flex items-center justify-between">
-                            {c.priceExclGst ? (
-                              <span className="text-sm font-semibold text-white">
-                                {c.priceExclGst}
-                                <span className="text-xs text-white/40 font-normal"> excl. GST</span>
-                              </span>
-                            ) : (
-                              <span />
-                            )}
-                            <span className="text-xs text-(--color-cyan) font-mono">View details →</span>
+                          <div className="mt-4 flex items-end justify-between">
+                            {(() => {
+                              const n = countByCourse.get(c.id) ?? 0;
+                              const fee = n > 0 ? courseFee(n) : null;
+                              const excl = fee?.exclText ?? c.priceExclGst;
+                              const incl = fee?.inclText ?? c.priceInclGst;
+                              if (!excl) return <span />;
+                              return (
+                                <span className="text-sm font-semibold text-white">
+                                  {excl}
+                                  <span className="text-xs text-white/40 font-normal"> excl. GST</span>
+                                  {incl && (
+                                    <span className="block text-xs text-white/40 font-normal">
+                                      {incl} incl. GST
+                                    </span>
+                                  )}
+                                </span>
+                              );
+                            })()}
+                            <span className="text-xs text-(--color-cyan) font-mono shrink-0">View details →</span>
                           </div>
                         </Link>
                       ))}

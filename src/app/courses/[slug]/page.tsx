@@ -8,6 +8,7 @@ import { Footer } from "@/components/layout/Footer";
 import { CourseRegisterForm } from "@/components/sections/CourseRegisterForm";
 import { InternationalStudentSupport } from "@/components/sections/InternationalStudentSupport";
 import { fundingColor } from "@/lib/funding";
+import { courseFee, MODULE_FEE } from "@/lib/course-fee";
 import { absoluteHtmlUrl, htmlPath } from "@/lib/html-url";
 import {
   HiAcademicCap,
@@ -364,6 +365,12 @@ export default async function CourseDetail({
   const enrollItems = lines(c.whoShouldEnroll);
   const extras = COURSE_EXTRAS[c.slug] ?? null;
 
+  // Course fee is computed from the module count (modules × $1,800), shown
+  // excl. and incl. GST. DB price fields are the fallback for module-less courses.
+  const fee = modules.length > 0 ? courseFee(modules.length) : null;
+  const feeExclText = fee?.exclText ?? c.priceExclGst;
+  const feeInclText = fee?.inclText ?? c.priceInclGst;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Course",
@@ -375,6 +382,16 @@ export default async function CourseDetail({
     ...(c.courseCode ? { courseCode: c.courseCode } : {}),
     inLanguage: "en",
     ...(c.certificate ? { educationalCredentialAwarded: "Advanced Certificate" } : {}),
+    ...(fee
+      ? {
+          offers: {
+            "@type": "Offer",
+            price: fee.incl.toFixed(2),
+            priceCurrency: "SGD",
+            category: "Paid",
+          },
+        }
+      : {}),
     provider: {
       "@type": "EducationalOrganization",
       name: "Tertiary Infotech Academy",
@@ -436,14 +453,14 @@ export default async function CourseDetail({
                   Course Code: <span className="text-white">{c.courseCode}</span>
                 </span>
               )}
-              {c.priceExclGst && (
+              {feeExclText && (
                 <span className="text-white">
-                  <span className="font-semibold">{c.priceExclGst}</span>{" "}
+                  <span className="font-semibold">{feeExclText}</span>{" "}
                   <span className="text-white/50">excl. GST</span>
-                  {c.priceInclGst && (
+                  {feeInclText && (
                     <span className="text-white/50">
                       {" "}
-                      · {c.priceInclGst} incl. GST
+                      · {feeInclText} incl. GST
                     </span>
                   )}
                 </span>
@@ -540,6 +557,16 @@ export default async function CourseDetail({
                         {m.duration && <span>⏱ {m.duration}</span>}
                       </div>
                     )}
+                    <div className="mt-4 pt-3 border-t border-white/8 text-sm">
+                      <span className="font-semibold text-white">
+                        {MODULE_FEE.exclText}
+                      </span>{" "}
+                      <span className="text-white/50">excl. GST</span>
+                      <span className="text-white/50">
+                        {" "}
+                        · {MODULE_FEE.inclText} incl. GST
+                      </span>
+                    </div>
                     {moduleRegistrationLink(
                       m.registrationLink,
                       extras,
@@ -563,6 +590,25 @@ export default async function CourseDetail({
                   </div>
                 ))}
               </div>
+              {fee && (
+                <div className="mt-8 glass p-6 md:p-7 text-center">
+                  <div className="kicker mb-3">[ COURSE FEE ]</div>
+                  <p className="text-sm text-(--color-muted) font-mono mb-2">
+                    {modules.length} module{modules.length > 1 ? "s" : ""} ×{" "}
+                    {MODULE_FEE.exclText}
+                  </p>
+                  <p className="text-white">
+                    <span className="font-display font-extrabold text-2xl md:text-3xl">
+                      {fee.exclText}
+                    </span>{" "}
+                    <span className="text-white/50 text-sm">excl. GST</span>
+                    <span className="text-white/50 text-sm">
+                      {" "}
+                      · {fee.inclText} incl. GST
+                    </span>
+                  </p>
+                </div>
+              )}
             </Container>
           </section>
         )}
