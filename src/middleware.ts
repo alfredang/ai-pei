@@ -28,7 +28,12 @@ export default function middleware(req: NextRequest) {
     if (target !== pathname) {
       const url = req.nextUrl.clone();
       url.pathname = target;
-      return NextResponse.redirect(url, 301);
+      // Browsers cache bare 301s forever; force revalidation so a future
+      // change to the URL scheme doesn't leave stale redirects in browsers.
+      return new NextResponse(null, {
+        status: 301,
+        headers: { location: url.toString(), "cache-control": "no-cache" },
+      });
     }
   }
 
@@ -43,7 +48,10 @@ export default function middleware(req: NextRequest) {
     if (pathname === "/index.html") {
       // The homepage canonical is "/" — send old /index.html links back to it.
       url.pathname = "/";
-      return NextResponse.redirect(url, 301);
+      return new NextResponse(null, {
+        status: 301,
+        headers: { location: url.toString(), "cache-control": "no-cache" },
+      });
     }
     url.pathname = pathname.slice(0, -5);
     return NextResponse.rewrite(url);
