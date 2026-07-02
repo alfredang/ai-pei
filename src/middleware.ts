@@ -46,12 +46,11 @@ export default function middleware(req: NextRequest) {
   if (canRewriteHtml) {
     const url = req.nextUrl.clone();
     if (pathname === "/index.html") {
-      // The homepage canonical is "/" — send old /index.html links back to it.
+      // Serve the homepage directly — no redirect. Browsers that cached the
+      // old "/" → "/index.html" 301 would otherwise visibly bounce twice.
+      // HomeUrlCleanup fixes the visible URL client-side.
       url.pathname = "/";
-      return new NextResponse(null, {
-        status: 301,
-        headers: { location: url.toString(), "cache-control": "no-cache" },
-      });
+      return NextResponse.rewrite(url);
     }
     url.pathname = pathname.slice(0, -5);
     return NextResponse.rewrite(url);

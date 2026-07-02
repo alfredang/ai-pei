@@ -13,8 +13,9 @@ import { ContactForm } from "@/components/sections/ContactForm";
 import { FeaturedPosts } from "@/components/sections/FeaturedPosts";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { HomeUrlCleanup } from "@/components/HomeUrlCleanup";
 
-const SITE_URL = "https://www.tertiaryinfotech.com";
+const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
 
 export const metadata: Metadata = {
   title: { absolute: "Study Tech in Singapore — Cyber, AI, Blockchain, Quantum" },
@@ -90,6 +91,7 @@ const educationalOrgLd = {
 export default function HomePage() {
   return (
     <>
+      <HomeUrlCleanup />
       <Navbar />
       <main>
         <script

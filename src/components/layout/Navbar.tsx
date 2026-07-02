@@ -44,8 +44,8 @@ export async function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-(--color-bg-elevated) border-b border-(--color-border) relative text-(--color-text)">
-      <Container className="flex h-16 items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 group">
+      <Container className="flex h-16 items-center justify-between gap-2">
+        <Link href="/" className="flex items-center gap-2 group shrink-0">
           {brand.logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -61,15 +61,19 @@ export async function Navbar() {
               TI
             </span>
           )}
-          <span className="font-display font-bold text-lg tracking-tight">{brand.shortName}</span>
+          <span className="font-display font-bold text-base sm:text-lg tracking-tight whitespace-nowrap">
+            {brand.shortName}
+          </span>
         </Link>
-        <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-8">
+        {/* In-flow (not absolutely centered) so the menu can never overlap the
+            brand or CTA; the full menu appears only from lg where it fits. */}
+        <nav className="hidden lg:flex flex-1 items-center justify-center gap-0.5 xl:gap-2">
           {links.map((l) => (
             <Link
               key={l.href + l.label}
               href={htmlPath(l.href)}
               target={"openInNewTab" in l && l.openInNewTab ? "_blank" : undefined}
-              className="px-4 py-2 font-medium text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition"
+              className="px-2.5 xl:px-4 py-2 font-medium text-sm whitespace-nowrap text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition"
             >
               {l.label}
             </Link>
@@ -77,14 +81,14 @@ export async function Navbar() {
         </nav>
         <Link
           href="/#contact"
-          className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-(--color-cyan)/40 text-sm text-(--color-cyan) hover:bg-(--color-cyan)/10 transition"
+          className="hidden lg:inline-flex shrink-0 items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-(--color-cyan)/40 text-sm whitespace-nowrap text-(--color-cyan) hover:bg-(--color-cyan)/10 transition"
         >
           Register Now
           <span aria-hidden>→</span>
         </Link>
 
         {/* Mobile quick-actions: phone + WhatsApp icons next to the burger */}
-        <div className="md:hidden flex items-center gap-1">
+        <div className="lg:hidden flex items-center gap-1 shrink-0">
           {contact.tel && (
             <a
               href={`tel:${contact.tel.replace(/\s+/g, "")}`}

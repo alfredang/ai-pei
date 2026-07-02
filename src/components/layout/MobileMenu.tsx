@@ -14,7 +14,7 @@ export function MobileMenu({ links }: { links: MenuLink[] }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
         aria-label={open ? "Close menu" : "Open menu"}
@@ -70,7 +70,7 @@ export function MobileMenu({ links }: { links: MenuLink[] }) {
               onClick={() => setOpen(false)}
               className="mt-2 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-white/5 border border-(--color-cyan)/40 text-base text-(--color-cyan) hover:bg-(--color-cyan)/10 transition"
             >
-              Get a quote
+              Register Now
               <span aria-hidden>→</span>
             </Link>
           </nav>
