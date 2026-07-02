@@ -10,11 +10,11 @@ import { FaWhatsapp } from "react-icons/fa6";
 import { HiPhone } from "react-icons/hi2";
 
 const FALLBACK = [
-  { label: "Home", href: "/index.html" },
+  { label: "Home", href: "/" },
   { label: "PEI Advanced Certificate", href: "/courses.html" },
   { label: "Study in Singapore", href: "/study-in-singapore.html" },
   { label: "Blog", href: "/blog.html" },
-  { label: "Contact", href: "/index.html#contact" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 let cachedMenuItems: any[] | null = null;
@@ -45,7 +45,7 @@ export async function Navbar() {
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-(--color-bg-elevated) border-b border-(--color-border) relative text-(--color-text)">
       <Container className="flex h-16 items-center justify-between">
-        <Link href="/index.html" className="flex items-center gap-2 group">
+        <Link href="/" className="flex items-center gap-2 group">
           {brand.logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -76,7 +76,7 @@ export async function Navbar() {
           ))}
         </nav>
         <Link
-          href="/index.html#contact"
+          href="/#contact"
           className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-(--color-cyan)/40 text-sm text-(--color-cyan) hover:bg-(--color-cyan)/10 transition"
         >
           Register Now

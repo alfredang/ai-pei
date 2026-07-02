@@ -24,9 +24,12 @@ export default function middleware(req: NextRequest) {
     !pathname.includes(".");
 
   if ((req.method === "GET" || req.method === "HEAD") && isPublicPageRequest) {
-    const url = req.nextUrl.clone();
-    url.pathname = htmlPath(pathname);
-    return NextResponse.redirect(url, 301);
+    const target = htmlPath(pathname);
+    if (target !== pathname) {
+      const url = req.nextUrl.clone();
+      url.pathname = target;
+      return NextResponse.redirect(url, 301);
+    }
   }
 
   const canRewriteHtml =
@@ -37,7 +40,12 @@ export default function middleware(req: NextRequest) {
 
   if (canRewriteHtml) {
     const url = req.nextUrl.clone();
-    url.pathname = pathname === "/index.html" ? "/" : pathname.slice(0, -5);
+    if (pathname === "/index.html") {
+      // The homepage canonical is "/" — send old /index.html links back to it.
+      url.pathname = "/";
+      return NextResponse.redirect(url, 301);
+    }
+    url.pathname = pathname.slice(0, -5);
     return NextResponse.rewrite(url);
   }
 

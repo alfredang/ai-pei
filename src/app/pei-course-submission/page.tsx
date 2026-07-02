@@ -267,8 +267,8 @@ const breadcrumbLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/index.html` },
-    { "@type": "ListItem", position: 2, name: "Services", item: `${SITE_URL}/index.html#services` },
+    { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+    { "@type": "ListItem", position: 2, name: "Services", item: `${SITE_URL}/#services` },
     { "@type": "ListItem", position: 3, name: "PEI Course Submission", item: PAGE_URL },
   ],
 };
@@ -595,7 +595,7 @@ export default function PeiCourseSubmissionPage() {
             </div>
             <p className="mt-5 text-center text-xs text-(--color-muted) font-mono">
               [ Looking at our other services?{" "}
-              <Link href="/index.html#services" className="hover:text-(--color-cyan)">
+              <Link href="/#services" className="hover:text-(--color-cyan)">
                 See all SSG services
               </Link>{" "}
               ]

@@ -154,7 +154,7 @@ export default function RealClientsPage() {
                   <HiCheckCircle className="text-(--color-cyan)" /> WSQ + TPQA experts
                   <HiCheckCircle className="text-(--color-cyan)" /> Claude Code-powered
                 </p>
-          <Link href="/index.html#contact" className="btn-primary">Request a demo →</Link>
+          <Link href="/#contact" className="btn-primary">Request a demo →</Link>
               </div>
             </div>
           </Container>

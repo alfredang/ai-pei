@@ -201,7 +201,7 @@ export default async function PostPage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/index.html` },
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
       { "@type": "ListItem", position: 2, name: "Journal", item: `${SITE_URL}/blog.html` },
       { "@type": "ListItem", position: 3, name: post.title, item: postUrl },
     ],

@@ -88,8 +88,8 @@ export function ServicePageTemplate({ content }: { content: ServicePageContent }
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/index.html` },
-      { "@type": "ListItem", position: 2, name: "Services", item: `${SITE_URL}/index.html#services` },
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+      { "@type": "ListItem", position: 2, name: "Services", item: `${SITE_URL}/#services` },
       { "@type": "ListItem", position: 3, name: content.title, item: pageUrl },
     ],
   };
@@ -338,7 +338,7 @@ export function ServicePageTemplate({ content }: { content: ServicePageContent }
             <ServiceLeadForm source={content.leadSource} />
             <p className="mt-5 text-center text-xs text-(--color-muted) font-mono">
               [{" "}
-              <Link href="/index.html#services" className="hover:text-(--color-cyan)">
+              <Link href="/#services" className="hover:text-(--color-cyan)">
                 See all services
               </Link>{" "}
               ]

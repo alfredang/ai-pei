@@ -26,7 +26,7 @@ export function htmlPath(path: string): string {
       const url = new URL(path, SITE_ORIGIN);
       if (url.origin !== SITE_ORIGIN) return path;
       const suffix = `${url.search}${url.hash}`;
-      return `${url.pathname === "/" ? "/index.html" : htmlPath(url.pathname)}${suffix}`;
+      return `${url.pathname === "/" ? "/" : htmlPath(url.pathname)}${suffix}`;
     } catch {
       return path;
     }
@@ -47,7 +47,7 @@ export function htmlPath(path: string): string {
   }
 
   const cleanPath = pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
-  const html = cleanPath === "/" ? "/index.html" : `${cleanPath}.html`;
+  const html = cleanPath === "/" ? "/" : `${cleanPath}.html`;
   return `${html}${suffix}`;
 }
 

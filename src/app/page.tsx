@@ -22,10 +22,10 @@ export const metadata: Metadata = {
     "Study Cybersecurity, AI, Blockchain & Quantum in Singapore — Asia's top tech hub. English-taught, globally recognised courses for foreign learners.",
   keywords:
     "study tech in Singapore, cybersecurity courses Singapore, study cybersecurity in Singapore, AI training for foreigners, AI courses Singapore for foreigners, blockchain academy Singapore, quantum computing courses Asia, tech courses Singapore for international students",
-  alternates: { canonical: "/index.html" },
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
-    url: "/index.html",
+    url: "/",
     title: "Study Tech in Singapore — Cyber, AI, Blockchain & Quantum",
     description:
       "English-taught Cybersecurity, AI, Blockchain & Quantum Computing courses for international learners in Asia's leading tech hub.",
