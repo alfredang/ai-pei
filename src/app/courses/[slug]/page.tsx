@@ -238,6 +238,182 @@ const AI_SECURITY_ANALYST_RECOMMENDED_COURSES = [
   },
 ];
 
+// ── PEI modular Advanced Certificates ──────────────────────────────────────
+// Every PEI Advanced Certificate is taught by Dr Ang Chew Hoe (full-time, per the
+// AEB teacher-deployment record). soloTrainer() keeps the shared fields DRY.
+const DR_ANG = {
+  name: "Dr Ang Chew Hoe",
+  qualification: "PhD in Electrical Engineering",
+  conferredBy: "National University of Singapore",
+  appointment: "Full-Time",
+};
+function soloTrainer(programme: string, modules: string[]) {
+  return [{ ...DR_ANG, programme, modules }];
+}
+
+// Employment opportunities (from each PEI course write-up).
+const CYBERSECURITY_OPERATIONS_JOB_ROLES = [
+  "Cybersecurity Operations Analyst",
+  "Security Operations Center (SOC) Analyst (Tier 1 / Tier 2)",
+  "Incident Detection and Response Analyst",
+  "Threat Detection / Threat Monitoring Analyst",
+  "Cyber Threat Intelligence Analyst",
+  "Incident Response Analyst",
+  "Vulnerability Management Analyst",
+  "Cybersecurity Analyst / Engineer",
+  "Security Monitoring Specialist",
+  "Cybersecurity Governance, Risk & Compliance (GRC) Analyst",
+];
+
+const AI_AUDIT_JOB_ROLES = [
+  "AI Auditor / AI Audit Specialist",
+  "AI Assurance Analyst",
+  "IT Auditor (AI-focused)",
+  "AI Governance, Risk & Compliance (GRC) Analyst",
+  "AI Risk & Assurance Specialist",
+  "Responsible AI / AI Compliance Officer",
+  "AI Governance Analyst",
+  "Internal Auditor (Technology / AI)",
+  "Data & AI Risk Analyst",
+  "Technology Risk Consultant",
+];
+
+const AI_RISK_JOB_ROLES = [
+  "AI Risk Analyst / AI Risk Manager",
+  "AI Governance, Risk & Compliance (GRC) Analyst",
+  "AI Risk & Assurance Specialist",
+  "AI Governance Analyst",
+  "Responsible AI / AI Compliance Officer",
+  "Technology Risk Analyst / Consultant",
+  "Enterprise Risk Analyst (AI-focused)",
+  "IT Risk & Controls Analyst",
+  "AI Audit & Assurance Analyst",
+  "Model Risk Analyst",
+];
+
+const AI_SECURITY_GOVERNANCE_JOB_ROLES = [
+  "AI Security Manager",
+  "AI Security Architect",
+  "AI Governance, Risk & Compliance (GRC) Analyst",
+  "AI Risk & Assurance Specialist",
+  "AI Security Program Manager",
+  "Information Security Manager (AI-focused)",
+  "Responsible AI / AI Compliance Officer",
+  "AI Security Analyst / Engineer",
+  "Technology Risk & Controls Analyst",
+  "Cybersecurity Manager / Lead",
+];
+
+const DIGITAL_ASSET_COMPLIANCE_JOB_ROLES = [
+  "Digital Asset Compliance Analyst",
+  "Crypto AML Analyst",
+  "Blockchain Transaction Monitoring Analyst",
+  "Virtual Asset Risk Analyst",
+  "Wallet Investigation Associate",
+  "Financial Crime Compliance Analyst",
+  "Sanctions Screening Analyst, Digital Assets",
+  "Crypto Fraud and Scam Investigation Analyst",
+  "Web3 Compliance Operations Executive",
+  "Fintech Compliance Associate",
+  "Blockchain Intelligence Analyst",
+  "Compliance Automation / RegTech Analyst",
+  "Digital Asset Governance and Risk Associate",
+];
+
+const ENTERPRISE_BLOCKCHAIN_JOB_ROLES = [
+  "Blockchain Solution Architect",
+  "Enterprise Blockchain Architect",
+  "Blockchain Developer / Engineer",
+  "Smart Contract Solution Designer",
+  "Distributed Ledger Technology Consultant",
+  "Web3 Solution Consultant",
+  "Blockchain Infrastructure Engineer",
+  "Blockchain Project Analyst",
+  "Digital Asset Technology Analyst",
+  "Enterprise Technology Consultant",
+  "Innovation / Digital Transformation Analyst",
+  "Technical Product Manager for Blockchain Solutions",
+];
+
+const ENTERPRISE_INFOSEC_JOB_ROLES = [
+  "Information Security Analyst",
+  "Cybersecurity Analyst / Engineer",
+  "Security Governance, Risk and Compliance (GRC) Analyst",
+  "Security Assurance Analyst",
+  "Cyber Defence Monitoring Analyst",
+  "Incident Response Analyst",
+  "Vulnerability Management Analyst",
+  "Identity and Access Control Analyst",
+  "Network Security Analyst",
+  "Application Security Analyst",
+  "Cyber Risk Analyst",
+  "Information Security Consultant",
+  "Assistant Information Security Manager",
+];
+
+const APPLIED_QUANTUM_JOB_ROLES = [
+  "Junior Quantum Software Developer",
+  "Quantum Computing Associate",
+  "Qiskit Developer / Quantum Circuit Programmer",
+  "Quantum Applications Analyst",
+  "Quantum Algorithm Assistant",
+  "Scientific Computing Programmer",
+  "Quantum Research Assistant",
+  "Quantum Solutions Associate",
+  "Quantum Cryptography Analyst",
+  "Emerging Technology Consultant",
+];
+
+// Related-course links (all sibling PEI Advanced Certificates on our own site).
+const REL_CYBERSECURITY_OPERATIONS = [
+  { title: "Advanced Certificate in Enterprise Information Security Leadership", href: "/courses/advanced-certificate-in-enterprise-information-security-leadership.html" },
+  { title: "Advanced Certificate in AI Security Analyst", href: "/courses/advanced-certificate-in-ai-security-analyst.html" },
+  { title: "Advanced Certificate in AI Security and Governance Management", href: "/courses/advanced-certificate-in-ai-security-and-governance-management.html" },
+  { title: "Advanced Certificate in AI Audit and Assurance", href: "/courses/advanced-certificate-in-ai-audit-and-assurance.html" },
+];
+const REL_AI_AUDIT = [
+  { title: "Advanced Certificate in AI Risk Management", href: "/courses/advanced-certificate-in-ai-risk-management.html" },
+  { title: "Advanced Certificate in AI Security and Governance Management", href: "/courses/advanced-certificate-in-ai-security-and-governance-management.html" },
+  { title: "Advanced Certificate in AI Security Analyst", href: "/courses/advanced-certificate-in-ai-security-analyst.html" },
+  { title: "Advanced Certificate in Enterprise Information Security Leadership", href: "/courses/advanced-certificate-in-enterprise-information-security-leadership.html" },
+];
+const REL_AI_RISK = [
+  { title: "Advanced Certificate in AI Audit and Assurance", href: "/courses/advanced-certificate-in-ai-audit-and-assurance.html" },
+  { title: "Advanced Certificate in AI Security and Governance Management", href: "/courses/advanced-certificate-in-ai-security-and-governance-management.html" },
+  { title: "Advanced Certificate in AI Security Analyst", href: "/courses/advanced-certificate-in-ai-security-analyst.html" },
+  { title: "Advanced Certificate in Enterprise Information Security Leadership", href: "/courses/advanced-certificate-in-enterprise-information-security-leadership.html" },
+];
+const REL_AI_SECURITY_GOVERNANCE = [
+  { title: "Advanced Certificate in AI Security Analyst", href: "/courses/advanced-certificate-in-ai-security-analyst.html" },
+  { title: "Advanced Certificate in AI Risk Management", href: "/courses/advanced-certificate-in-ai-risk-management.html" },
+  { title: "Advanced Certificate in AI Audit and Assurance", href: "/courses/advanced-certificate-in-ai-audit-and-assurance.html" },
+  { title: "Advanced Certificate in Enterprise Information Security Leadership", href: "/courses/advanced-certificate-in-enterprise-information-security-leadership.html" },
+];
+const REL_DIGITAL_ASSET_COMPLIANCE = [
+  { title: "Advanced Certificate in Enterprise Blockchain Solution Architecture", href: "/courses/advanced-certificate-in-enterprise-blockchain-solution-architecture.html" },
+  { title: "Advanced Certificate in AI Risk Management", href: "/courses/advanced-certificate-in-ai-risk-management.html" },
+  { title: "Advanced Certificate in AI Audit and Assurance", href: "/courses/advanced-certificate-in-ai-audit-and-assurance.html" },
+  { title: "Advanced Certificate in Cybersecurity Operations Analyst", href: "/courses/advanced-certificate-in-cybersecurity-operations-analyst.html" },
+];
+const REL_ENTERPRISE_BLOCKCHAIN = [
+  { title: "Advanced Certificate in Digital Asset Compliance and Blockchain Risk Operations", href: "/courses/advanced-certificate-in-digital-asset-compliance-and-blockchain-risk-operations.html" },
+  { title: "Advanced Certificate in Applied Quantum Computing and Qiskit Programming", href: "/courses/advanced-certificate-in-applied-quantum-computing-and-qiskit-programming.html" },
+  { title: "Advanced Certificate in AI Security Analyst", href: "/courses/advanced-certificate-in-ai-security-analyst.html" },
+  { title: "Advanced Certificate in Enterprise Information Security Leadership", href: "/courses/advanced-certificate-in-enterprise-information-security-leadership.html" },
+];
+const REL_ENTERPRISE_INFOSEC = [
+  { title: "Advanced Certificate in Cybersecurity Operations Analyst", href: "/courses/advanced-certificate-in-cybersecurity-operations-analyst.html" },
+  { title: "Advanced Certificate in AI Security and Governance Management", href: "/courses/advanced-certificate-in-ai-security-and-governance-management.html" },
+  { title: "Advanced Certificate in AI Security Analyst", href: "/courses/advanced-certificate-in-ai-security-analyst.html" },
+  { title: "Advanced Certificate in AI Audit and Assurance", href: "/courses/advanced-certificate-in-ai-audit-and-assurance.html" },
+];
+const REL_APPLIED_QUANTUM = [
+  { title: "Advanced Certificate in Enterprise Blockchain Solution Architecture", href: "/courses/advanced-certificate-in-enterprise-blockchain-solution-architecture.html" },
+  { title: "Advanced Certificate in Agentic AI Coding and Architecting", href: "/courses/advanced-certificate-in-agentic-ai-coding.html" },
+  { title: "Advanced Certificate in AI Security Analyst", href: "/courses/advanced-certificate-in-ai-security-analyst.html" },
+  { title: "Advanced Certificate in Cybersecurity Operations Analyst", href: "/courses/advanced-certificate-in-cybersecurity-operations-analyst.html" },
+];
+
 type CourseExtras = {
   jobRoles: string[];
   trainers: {
@@ -285,6 +461,137 @@ const COURSE_EXTRAS: Record<string, CourseExtras> = {
     recommended: AI_SECURITY_ANALYST_RECOMMENDED_COURSES,
     reviewSubject:
       "[MC] Advanced Certificate in AI Security Analyst (E-Learning)",
+    reviewQuestions: REVIEW_QUESTIONS,
+  },
+  "advanced-certificate-in-cybersecurity-operations-analyst": {
+    jobRoles: CYBERSECURITY_OPERATIONS_JOB_ROLES,
+    trainers: soloTrainer(
+      "Advanced Certificate in Cybersecurity Operations Analyst (E-Learning)",
+      [
+        "IT & Cloud Infrastructure Foundations",
+        "Security Monitoring & Incident Handling",
+        "Governance, Risk & Compliance",
+        "Protective Controls & Vulnerability Management",
+        "Threat Intelligence & Adversary Analysis",
+      ],
+    ),
+    recommended: REL_CYBERSECURITY_OPERATIONS,
+    reviewSubject:
+      "[MC] Advanced Certificate in Cybersecurity Operations Analyst (E-Learning)",
+    reviewQuestions: REVIEW_QUESTIONS,
+  },
+  "advanced-certificate-in-ai-audit-and-assurance": {
+    jobRoles: AI_AUDIT_JOB_ROLES,
+    trainers: soloTrainer(
+      "Advanced Certificate in AI Audit and Assurance (E-Learning)",
+      [
+        "AI Governance, Risk & Responsible AI",
+        "AI Operations & Solution Lifecycle Management",
+        "Auditing AI Systems – Tools & Techniques",
+      ],
+    ),
+    recommended: REL_AI_AUDIT,
+    reviewSubject:
+      "[MC] Advanced Certificate in AI Audit and Assurance (E-Learning)",
+    reviewQuestions: REVIEW_QUESTIONS,
+  },
+  "advanced-certificate-in-ai-risk-management": {
+    jobRoles: AI_RISK_JOB_ROLES,
+    trainers: soloTrainer(
+      "Advanced Certificate in AI Risk Management (E-Learning)",
+      [
+        "AI Governance, Compliance & Ethical Risk Foundations",
+        "Managing Risk Across the AI Life Cycle",
+      ],
+    ),
+    recommended: REL_AI_RISK,
+    reviewSubject:
+      "[MC] Advanced Certificate in AI Risk Management (E-Learning)",
+    reviewQuestions: REVIEW_QUESTIONS,
+  },
+  "advanced-certificate-in-ai-security-and-governance-management": {
+    jobRoles: AI_SECURITY_GOVERNANCE_JOB_ROLES,
+    trainers: soloTrainer(
+      "Advanced Certificate in AI Security and Governance Management (E-Learning)",
+      [
+        "AI Governance, Policy & Program Leadership",
+        "Managing AI Risks, Threats & Supply Chains",
+        "AI Security Architecture, Controls & Monitoring",
+      ],
+    ),
+    recommended: REL_AI_SECURITY_GOVERNANCE,
+    reviewSubject:
+      "[MC] Advanced Certificate in AI Security and Governance Management (E-Learning)",
+    reviewQuestions: REVIEW_QUESTIONS,
+  },
+  "advanced-certificate-in-digital-asset-compliance-and-blockchain-risk-operations": {
+    jobRoles: DIGITAL_ASSET_COMPLIANCE_JOB_ROLES,
+    trainers: soloTrainer(
+      "Advanced Certificate in Digital Asset Compliance and Blockchain Risk Operations (E-Learning)",
+      [
+        "Digital Asset Ecosystem, Market Infrastructure & Regulation",
+        "Customer Due Diligence, AML & Sanctions Controls",
+        "On-Chain Monitoring, Wallet Exposure Review & Investigations",
+        "DeFi, Token Risk, RegTech & AI-Assisted Monitoring",
+        "Governance, Reporting & Applied Compliance Projects",
+      ],
+    ),
+    recommended: REL_DIGITAL_ASSET_COMPLIANCE,
+    reviewSubject:
+      "[MC] Advanced Certificate in Digital Asset Compliance and Blockchain Risk Operations (E-Learning)",
+    reviewQuestions: REVIEW_QUESTIONS,
+  },
+  "advanced-certificate-in-enterprise-blockchain-solution-architecture": {
+    jobRoles: ENTERPRISE_BLOCKCHAIN_JOB_ROLES,
+    trainers: soloTrainer(
+      "Advanced Certificate in Enterprise Blockchain Solution Architecture (E-Learning)",
+      [
+        "Distributed Ledger & Blockchain Core Concepts",
+        "Blockchain Architecture & Enterprise Solution Design",
+        "Blockchain Development Infrastructure & Node Operations",
+        "Governance, Security, Risk & Decentralised Data Controls",
+        "Enterprise Blockchain Platform Architectures",
+      ],
+    ),
+    recommended: REL_ENTERPRISE_BLOCKCHAIN,
+    reviewSubject:
+      "[MC] Advanced Certificate in Enterprise Blockchain Solution Architecture (E-Learning)",
+    reviewQuestions: REVIEW_QUESTIONS,
+  },
+  "advanced-certificate-in-enterprise-information-security-leadership": {
+    jobRoles: ENTERPRISE_INFOSEC_JOB_ROLES,
+    trainers: soloTrainer(
+      "Advanced Certificate in Enterprise Information Security Leadership (E-Learning)",
+      [
+        "Enterprise Security Governance & Risk Stewardship",
+        "Information Asset Classification & Protection",
+        "Secure Architecture, Engineering & Cryptography",
+        "Protected Networks & Communications",
+        "Digital Identity & Access Control",
+        "Security Validation, Audit & Assurance",
+        "Cyber Defence Operations & Resilience",
+        "Secure Software Lifecycle & Application Protection",
+      ],
+    ),
+    recommended: REL_ENTERPRISE_INFOSEC,
+    reviewSubject:
+      "[MC] Advanced Certificate in Enterprise Information Security Leadership (E-Learning)",
+    reviewQuestions: REVIEW_QUESTIONS,
+  },
+  "advanced-certificate-in-applied-quantum-computing-and-qiskit-programming": {
+    jobRoles: APPLIED_QUANTUM_JOB_ROLES,
+    trainers: soloTrainer(
+      "Advanced Certificate in Applied Quantum Computing and Qiskit Programming (E-Learning)",
+      [
+        "Quantum Computing Foundations & Mathematical Models",
+        "Qiskit Development & Single-Qubit Circuit Programming",
+        "Multi-Qubit Circuits, Entanglement & Gate Equivalences",
+        "Quantum Algorithms & IBM Quantum Hardware Execution",
+      ],
+    ),
+    recommended: REL_APPLIED_QUANTUM,
+    reviewSubject:
+      "[MC] Advanced Certificate in Applied Quantum Computing and Qiskit Programming (E-Learning)",
     reviewQuestions: REVIEW_QUESTIONS,
   },
 };

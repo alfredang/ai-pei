@@ -17,6 +17,7 @@ const COURSE = {
   slug: SLUG,
   title: "Advanced Certificate in Enterprise Information Security Leadership",
   status: "published" as const,
+  fundingTags: ["PEI"],
   summary:
     "Develop enterprise-level competency to govern, design, validate and operate secure information systems — across eight stackable modules spanning governance, architecture, identity, assurance, cyber defence and secure software. A 240-hour, ~6-month live online Advanced Certificate.",
   overview: [

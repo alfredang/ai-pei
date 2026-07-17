@@ -17,6 +17,7 @@ const COURSE = {
   slug: SLUG,
   title: "Advanced Certificate in Cybersecurity Operations Analyst",
   status: "published" as const,
+  fundingTags: ["PEI"],
   summary:
     "Train as a front-line security operations analyst — monitor environments, detect and respond to incidents, manage vulnerabilities, and analyse adversary behaviour. A 150-hour, ~4-month live online Advanced Certificate.",
   overview: [

@@ -18,6 +18,7 @@ const COURSE = {
   slug: SLUG,
   title: "Advanced Certificate in AI Security and Governance Management",
   status: "published" as const,
+  fundingTags: ["PEI"],
   summary:
     "Build and lead enterprise AI security governance — develop AI policies and programmes, manage AI-related risks, threats and supply chains, and architect security controls and monitoring for AI systems. A 117-hour, ~3.25-month live online Advanced Certificate.",
   overview: [

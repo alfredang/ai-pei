@@ -20,6 +20,7 @@ const COURSE = {
   title:
     "Advanced Certificate in Digital Asset Compliance and Blockchain Risk Operations",
   status: "published" as const,
+  fundingTags: ["PEI"],
   summary:
     "Train to support digital asset compliance, AML controls and blockchain risk operations across cryptocurrency, fintech and Web3 — from customer due diligence and on-chain monitoring to wallet investigations, sanctions screening and RegTech. A 150-hour, ~4-month live online Advanced Certificate.",
   overview: [

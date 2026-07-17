@@ -17,6 +17,7 @@ const COURSE = {
   slug: SLUG,
   title: "Advanced Certificate in AI Audit and Assurance",
   status: "published" as const,
+  fundingTags: ["PEI"],
   summary:
     "Specialise in governing, assessing and auditing AI and machine-learning systems — AI governance and risk, AI operations and lifecycle management, and planning and conducting AI audits. A 90-hour, ~2.5-month live online Advanced Certificate.",
   overview: [

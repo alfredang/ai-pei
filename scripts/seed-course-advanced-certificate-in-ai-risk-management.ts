@@ -17,6 +17,7 @@ const COURSE = {
   slug: SLUG,
   title: "Advanced Certificate in AI Risk Management",
   status: "published" as const,
+  fundingTags: ["PEI"],
   summary:
     "Specialise in identifying, assessing, treating and governing the risks of AI and machine-learning systems — AI governance and ethics, risk across the AI life cycle, and an end-to-end AI risk program. A 90-hour, ~2.5-month live online Advanced Certificate.",
   overview: [

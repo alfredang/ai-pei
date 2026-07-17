@@ -19,6 +19,7 @@ const COURSE = {
   slug: SLUG,
   title: "Advanced Certificate in Applied Quantum Computing and Qiskit Programming",
   status: "published" as const,
+  fundingTags: ["PEI"],
   summary:
     "A hands-on, 150-hour live online Advanced Certificate in quantum computing and Qiskit programming — build quantum circuits in Python, run them on IBM Quantum hardware, and master gates, entanglement, the Deutsch-Jozsa algorithm and quantum communication across five stackable modules.",
   overview: [

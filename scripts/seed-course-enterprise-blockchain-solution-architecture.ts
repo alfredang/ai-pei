@@ -17,6 +17,7 @@ const COURSE = {
   slug: SLUG,
   title: "Advanced Certificate in Enterprise Blockchain Solution Architecture",
   status: "published" as const,
+  fundingTags: ["PEI"],
   summary:
     "Design enterprise-grade blockchain and distributed ledger solutions — from architecture and node operations to governance, security and platform selection across Ethereum, Hyperledger Fabric, Corda, Cardano and Quorum. A 150-hour, ~4-month live online Advanced Certificate.",
   overview: [
