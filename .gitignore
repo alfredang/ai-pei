@@ -38,3 +38,9 @@ wp-*.sql*
 # Confidential PEI licence / registration documents — never commit
 Tertiary Infotech Academy Pte Ltd/
 ~$*
+
+# Distribution archives (rebuildable — never pushed to GitHub)
+*.zip
+
+# Source material the project was derived from — not ours to republish.
+**/reference/

@@ -62,7 +62,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...peiEducationPosts
       .filter((p) => !dbPostSlugs.has(p.slug))
       .map((p) => ({
-        url: `${BASE}/blog/${p.slug}`,
+        url: url(`/blog/${p.slug}`),
         lastModified: staticPostDate,
         changeFrequency: "weekly" as const,
         priority: 0.7,

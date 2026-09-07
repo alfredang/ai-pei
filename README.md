@@ -41,6 +41,7 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 - **LocalBusiness** schema on `/contact` with opening hours
 - **Service** + **HowTo** + **FAQPage** + **BreadcrumbList** schema on every service landing page
 - Dynamic `sitemap.xml` + `robots.txt`, regenerated on every content edit via `revalidatePath`
+- Legacy-URL 301s in middleware — old Magento catalogue URLs indexed against this domain are redirected to their live counterpart instead of 404ing, so historic link equity is preserved
 - British / Singapore English spelling baked into the SEO skill
 
 ### Lead generation in every page
@@ -165,8 +166,8 @@ npm run dev
 ```
 
 Visit:
-- `http://localhost:3000` — public site
-- `http://localhost:3000/admin` — admin (redirects to `/admin/login`)
+- `http://localhost:3068` — public site
+- `http://localhost:3068/admin` — admin (redirects to `/admin/login`)
 
 ### Optional: Import from WordPress
 
