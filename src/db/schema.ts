@@ -248,6 +248,7 @@ export const affiliateReferrals = pgTable(
     nationality: varchar("nationality", { length: 100 }).notNull(),
     program: varchar("program", { length: 500 }).notNull(),
     preferredStart: varchar("preferred_start", { length: 50 }).notNull(),
+    mode: varchar("mode", { length: 20 }), // "Online" | "Physical"; null on rows before the field existed
     message: text("message"),
     // new | contacted | batch_confirmed | contract_sent | enrolled | withdrawn
     status: varchar("status", { length: 32 }).notNull().default("new"),

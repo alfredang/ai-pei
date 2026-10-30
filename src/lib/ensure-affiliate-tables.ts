@@ -53,11 +53,14 @@ async function create(): Promise<void> {
       nationality varchar(100) NOT NULL,
       program varchar(500) NOT NULL,
       preferred_start varchar(50) NOT NULL,
+      mode varchar(20),
       message text,
       status varchar(32) NOT NULL DEFAULT 'new',
       created_at timestamp NOT NULL DEFAULT now()
     );
   `);
+  // Added after the first deploy — upgrade tables created before it.
+  await db.execute(sql`ALTER TABLE affiliate_referrals ADD COLUMN IF NOT EXISTS mode varchar(20);`);
   await db.execute(
     sql`CREATE INDEX IF NOT EXISTS affiliate_referrals_affiliate_idx ON affiliate_referrals (affiliate_id);`,
   );

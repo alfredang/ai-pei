@@ -21,6 +21,7 @@ const schema = z.object({
   nationality: z.string().trim().min(1).max(100),
   program: z.string().trim().min(1).max(500),
   preferredStart: z.string().trim().min(1).max(50),
+  mode: z.enum(["Online", "Physical"]),
   message: z.string().max(5000).optional().nullable(),
   acknowledged: z.literal(true),
   ref: z.string().trim().max(64).optional().nullable(),
@@ -80,6 +81,7 @@ export async function POST(req: Request) {
     nationality: data.nationality,
     program: data.program,
     preferredStart: data.preferredStart,
+    mode: data.mode,
     message: data.message || null,
   });
 

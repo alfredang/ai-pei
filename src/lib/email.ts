@@ -135,6 +135,7 @@ export async function sendApplicationEmail(app: {
   nationality: string;
   program: string;
   preferredStart: string;
+  mode: string;
   message?: string | null;
   affiliate: string; // e.g. "Jane Tan (jane-tan-x7k2)" or "Direct (no affiliate)"
 }) {
@@ -147,6 +148,7 @@ export async function sendApplicationEmail(app: {
     ["Nationality", app.nationality],
     ["Programme", app.program],
     ["Preferred start (tentative)", app.preferredStart],
+    ["Study mode", app.mode === "Physical" ? "Physical (classroom in Singapore)" : "Online (live virtual classes)"],
     ["Message", app.message || "—"],
   ];
   const html = `<p>New international student application (exploratory phase).</p>
@@ -158,14 +160,14 @@ ${rows
   )
   .join("\n")}
 </table>
-<p style="font-size:12px;color:#666">Next steps: confirm the batch, then send the student contract. The student has acknowledged that the start date is tentative and that they arrange their own accommodation and flights.</p>`;
+<p style="font-size:12px;color:#666">Next steps: confirm the batch, then send the student contract. The student has acknowledged that the start date is tentative and that, for physical classes, they arrange their own accommodation and flights.</p>`;
 
   const raw = buildRawMessage({
     from: `"Tertiary Infotech Academy" <${fromUser}>`,
     to: APPLICATION_TO,
     cc: APPLICATION_CC,
     replyTo: app.email,
-    subject: `[Student Application] ${app.name} — ${app.program} (${app.affiliate})`,
+    subject: `[Student Application] ${app.name} — ${app.program}, ${app.mode} (${app.affiliate})`,
     html,
   });
   await gmail.users.messages.send({ userId: "me", requestBody: { raw } });

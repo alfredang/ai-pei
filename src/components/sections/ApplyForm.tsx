@@ -73,7 +73,18 @@ export function ApplyForm({
         options={[...programs, "Not sure yet — please advise"]}
         required
       />
-      <Select name="preferredStart" label="Preferred Start (tentative)" options={months} required />
+      <div className="grid md:grid-cols-2 gap-5">
+        <Select name="preferredStart" label="Preferred Start (tentative)" options={months} required />
+        <Select
+          name="mode"
+          label="Study Mode"
+          options={[
+            { value: "Online", label: "Online (live virtual classes)" },
+            { value: "Physical", label: "Physical (classroom in Singapore)" },
+          ]}
+          required
+        />
+      </div>
 
       <div>
         <label className="kicker block mb-2">Message (optional)</label>
@@ -90,7 +101,7 @@ export function ApplyForm({
         <ul className="list-disc pl-5 space-y-1">
           <li>Your preferred start date is tentative. We will email you to confirm once the intake batch is confirmed.</li>
           <li>Once your batch is confirmed, we will send you the student contract with the official fee schedule.</li>
-          <li>You are responsible for arranging your own accommodation and flights to Singapore.</li>
+          <li>For physical classes in Singapore, you are responsible for arranging your own accommodation and flights.</li>
         </ul>
         <label className="flex items-start gap-3 pt-2 cursor-pointer">
           <input type="checkbox" name="acknowledged" required className="mt-1 accent-(--color-cyan)" />
@@ -150,7 +161,7 @@ function Select({
 }: {
   name: string;
   label: string;
-  options: string[];
+  options: (string | { value: string; label: string })[];
   required?: boolean;
 }) {
   return (
@@ -165,11 +176,14 @@ function Select({
         <option value="" disabled className="bg-(--color-bg-elevated) text-white">
           Select an option
         </option>
-        {options.map((opt) => (
-          <option key={opt} value={opt} className="bg-(--color-bg-elevated) text-white">
-            {opt}
-          </option>
-        ))}
+        {options.map((opt) => {
+          const { value, label } = typeof opt === "string" ? { value: opt, label: opt } : opt;
+          return (
+            <option key={value} value={value} className="bg-(--color-bg-elevated) text-white">
+              {label}
+            </option>
+          );
+        })}
       </select>
     </div>
   );

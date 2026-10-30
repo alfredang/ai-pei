@@ -88,6 +88,7 @@ export default async function ReferralsPage({
                 <th className="px-2 py-2">Nationality</th>
                 <th className="px-2 py-2">Programme</th>
                 <th className="px-2 py-2">Preferred start</th>
+                <th className="px-2 py-2">Mode</th>
                 <th className="px-2 py-2">Affiliate</th>
                 <th className="px-2 py-2">Status</th>
               </tr>
@@ -108,6 +109,7 @@ export default async function ReferralsPage({
                   <td className="px-2 py-2">{r.nationality}</td>
                   <td className="px-2 py-2">{r.program}</td>
                   <td className="px-2 py-2 whitespace-nowrap">{r.preferredStart}</td>
+                  <td className="px-2 py-2">{r.mode ?? "—"}</td>
                   <td className="px-2 py-2 text-xs">
                     {affiliateName ?? (r.affiliateCode ? `Unknown "${r.affiliateCode}"` : "Direct")}
                   </td>
