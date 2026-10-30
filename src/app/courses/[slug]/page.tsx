@@ -7,6 +7,11 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { CourseRegisterForm } from "@/components/sections/CourseRegisterForm";
 import { InternationalStudentSupport } from "@/components/sections/InternationalStudentSupport";
+import {
+  KeywordFaqSection,
+  KeywordIntroSection,
+} from "@/components/sections/KeywordContent";
+import { COURSE_KEYWORD_SEO } from "@/lib/keyword-seo";
 import { fundingColor } from "@/lib/funding";
 import { courseFee, MODULE_FEE } from "@/lib/course-fee";
 import { absoluteHtmlUrl, htmlPath } from "@/lib/html-url";
@@ -620,19 +625,22 @@ export async function generateMetadata({
   const data = await getCourse(slug);
   if (!data) return { title: "Course not found" };
   const { course: c } = data;
-  const title = c.seoTitle || `${c.title} in Singapore`;
+  const seo = COURSE_KEYWORD_SEO[c.slug];
+  const title = seo?.title || c.seoTitle || `${c.title} in Singapore`;
   const description =
+    seo?.description ||
     c.seoDescription ||
     c.summary ||
     `${c.title} at Tertiary Infotech Academy — a hands-on Advanced Certificate in Singapore for international students and career switchers.`;
   return {
     title,
     description,
+    ...(seo ? { keywords: seo.keywords } : {}),
     alternates: { canonical: htmlPath(`/courses/${c.slug}`) },
     openGraph: {
       type: "website",
       url: htmlPath(`/courses/${c.slug}`),
-      title: `${c.title} | Tertiary Infotech Academy`,
+      title: `${seo?.title || c.title} | Tertiary Infotech Academy`,
       description,
       locale: "en_SG",
       siteName: "Tertiary Infotech Academy",
@@ -671,6 +679,7 @@ export default async function CourseDetail({
   const outcomeItems = lines(c.outcomes);
   const enrollItems = lines(c.whoShouldEnroll);
   const extras = COURSE_EXTRAS[c.slug] ?? null;
+  const seo = COURSE_KEYWORD_SEO[c.slug] ?? null;
 
   // Course fee is computed from the module count (modules × $1,800), shown
   // excl. and incl. GST. DB price fields are the fallback for module-less courses.
@@ -749,6 +758,11 @@ export default async function CourseDetail({
             <div className="kicker mb-4">[ WSQ ADVANCED CERTIFICATE ]</div>
             <h1 className="font-display text-[clamp(2rem,5vw,3.5rem)] font-extrabold leading-[1.05] max-w-4xl">
               {c.title}
+              {seo && (
+                <span className="block mt-3 text-[clamp(1.1rem,2.4vw,1.6rem)] font-bold gradient-text">
+                  {seo.h1Tagline}
+                </span>
+              )}
             </h1>
             {c.summary && (
               <p className="mt-5 text-(--color-muted) text-lg max-w-2xl">{c.summary}</p>
@@ -820,6 +834,8 @@ export default async function CourseDetail({
             </Container>
           </section>
         )}
+
+        {seo && <KeywordIntroSection intro={seo.intro} />}
 
         {/* Modules */}
         {modules.length > 0 && (
@@ -1218,6 +1234,8 @@ export default async function CourseDetail({
             </section>
           </>
         )}
+
+        {seo && <KeywordFaqSection heading={seo.faqHeading} faqs={seo.faqs} />}
 
         {/* International student support */}
         <InternationalStudentSupport />

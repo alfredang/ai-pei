@@ -8,6 +8,8 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { fundingColor } from "@/lib/funding";
 import { absoluteHtmlUrl, htmlPath } from "@/lib/html-url";
+import { COURSES_HUB_SEO as HUB } from "@/lib/keyword-seo";
+import { Emph, KeywordFaqSection } from "@/components/sections/KeywordContent";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -58,18 +60,15 @@ function categoryFor(c: { slug: string; title: string }): (typeof CATEGORY_ORDER
 }
 
 export const metadata: Metadata = {
-  title: "Advanced Certificate Courses in AI, Cyber Security & Blockchain",
-  description:
-    "Browse Advanced Certificate courses in AI, Cyber Security and Blockchain at Tertiary Infotech Academy — a Singapore Private Education Institution. Hands-on, industry-recognised certifications for international students and career switchers.",
-  keywords:
-    "advanced certificate courses Singapore, cyber security course Singapore, AI course Singapore, blockchain course Singapore, study tech in Singapore, courses for international students Singapore, Tertiary Infotech Academy courses",
+  title: HUB.title,
+  description: HUB.description,
+  keywords: HUB.keywords,
   alternates: { canonical: "/courses.html" },
   openGraph: {
     type: "website",
     url: "/courses.html",
-    title: "Advanced Certificate Courses in AI, Cyber Security & Blockchain | Tertiary Infotech Academy",
-    description:
-      "Advanced Certificate courses in AI, Cyber Security and Blockchain — hands-on, industry-recognised training in Singapore for international students.",
+    title: `${HUB.title} | Tertiary Infotech Academy`,
+    description: HUB.description,
     locale: "en_SG",
     siteName: "Tertiary Infotech Academy",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Tertiary Infotech Academy" }],
@@ -112,7 +111,7 @@ export default async function CoursesIndex() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "Courses",
+    name: HUB.title,
     url: absoluteHtmlUrl(BASE, "/courses"),
     hasPart: list.map((c) => ({
       "@type": "Course",
@@ -151,12 +150,11 @@ export default async function CoursesIndex() {
           <Container className="relative">
             <div className="kicker mb-4">[ COURSES ]</div>
             <h1 className="font-display text-[clamp(1.75rem,4vw,3rem)] font-extrabold leading-[1.15]">
-              Advanced Certificate <span className="gradient-text">Courses</span>
+              Advanced <span className="gradient-text">AI Certifications</span>{" "}
+              &amp; Cyber Security Courses
             </h1>
             <p className="mt-5 text-(--color-muted) text-lg max-w-2xl">
-              Hands-on, industry-recognised Advanced Certificate courses in AI, Cyber Security
-              and Blockchain — built for international students and career switchers. WSQ funding
-              available for eligible Singaporeans.
+              <Emph text={HUB.intro} />
             </p>
             <div className="mt-6">
               <Link href="/study-in-singapore.html" className="btn-primary">
@@ -176,8 +174,13 @@ export default async function CoursesIndex() {
                   <div key={cat} id={catSlug(cat)} className="scroll-mt-28">
                     <div className="kicker mb-3">[ {cat.toUpperCase()} ]</div>
                     <h2 className="font-display text-xl md:text-2xl font-extrabold mb-6">
-                      {cat}
+                      {HUB.categories[cat]?.heading ?? cat}
                     </h2>
+                    {HUB.categories[cat] && (
+                      <p className="-mt-3 mb-6 text-(--color-muted) leading-relaxed max-w-3xl">
+                        <Emph text={HUB.categories[cat].intro} />
+                      </p>
+                    )}
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {(grouped.get(cat) ?? []).map((c) => (
                         <Link
@@ -234,6 +237,8 @@ export default async function CoursesIndex() {
             )}
           </Container>
         </section>
+
+        <KeywordFaqSection heading={HUB.faqHeading} faqs={HUB.faqs} />
       </main>
       <Footer />
     </>

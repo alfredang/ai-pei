@@ -36,7 +36,9 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 
 ### SEO built into every route
 - Per-route `generateMetadata` — title, description, canonical URL, OG (with image + locale + type), Twitter card
-- Sitewide **Organization** JSON-LD with social `sameAs[]`, taxID, postal address
+- Sitewide **EducationalOrganization** JSON-LD with social `sameAs[]`, taxID, postal address
+- **Course** JSON-LD on every `/courses/<slug>` page; **CollectionPage** on the `/courses` catalogue
+- **Keyword-targeted course copy** — [`src/lib/keyword-seo.ts`](src/lib/keyword-seo.ts) maps target keywords to pages (*AI certifications* / *advanced AI certifications* → `/courses`, *advanced AI audit certification* → AI Audit and Assurance, *advanced cyber security certification* → Cyber Security). It supplies the title, meta description, an H1 tagline, a bold-keyword intro section and an FAQ (with **FAQPage** schema); `**keyword**` markers render bold via [`KeywordContent.tsx`](src/components/sections/KeywordContent.tsx)
 - **Article** + **BreadcrumbList** schema on every blog post (author, datePublished, dateModified, image, mainEntityOfPage)
 - **LocalBusiness** schema on `/contact` with opening hours
 - **Service** + **HowTo** + **FAQPage** + **BreadcrumbList** schema on every service landing page
@@ -193,6 +195,8 @@ src/
     page.tsx                  Landing (Hero, LMS/TMS, e-Learning, Services, FeaturedPosts, ContactForm)
     blog/[slug]/page.tsx      Single post
     [slug]/page.tsx           Dynamic CMS page (with redirects lookup)
+    courses/page.tsx          Course catalogue grouped by discipline (AI, Cyber Security, Blockchain, Quantum)
+    courses/[slug]/page.tsx   Course detail — DB course + modules, fee, job roles, trainers, keyword SEO block
     admin/
       posts/                  Filterable + paginated post list, TipTap editor
       pages/                  Same for pages
@@ -217,7 +221,7 @@ src/
     robots.ts
   components/
     layout/                   Navbar, Footer (DB-driven menus), Container
-    sections/                 Hero · AILmsTmsShowcase · ELearningShowcase · EdToolsShowcase · Services · WhyChooseUs · FeaturedPosts · ContactForm
+    sections/                 Hero · Programs · FaqSection · CourseRegisterForm · KeywordContent · FeaturedPosts · ContactForm · …
     admin/                    Editor, PostEditorForm, AIAssistButton, MediaUploader, CredentialsForm
     ui/                       ChatBot (AI Chatbot)
   db/                         Drizzle schema + connection
@@ -227,6 +231,8 @@ src/
     chatbot-settings.ts       AI Chatbot system prompt + FAQ read/write
     secrets.ts                AES-256-GCM credentials vault
     site-content.ts           Static feature copy
+    keyword-seo.ts            Keyword → page map: SEO titles, descriptions, bold-keyword copy, FAQs
+    course-fee.ts             Course fee = modules × $1,800 (excl. / incl. GST)
     site-settings.ts          Brand identity loader
     ai/claude.ts              Admin AI Assist runner
 scripts/
@@ -240,9 +246,9 @@ scripts/
 
 | Command | Purpose |
 |---------|---------|
-| `npm run dev` | Dev server (Turbopack) |
-| `npm run build` | Production build |
-| `npm run start` | Production server |
+| `npm run dev` | Dev server (Turbopack) on http://localhost:3068 |
+| `npm run build` | Production build (also the TypeScript check) |
+| `npm run start` | Production server on http://localhost:3068 |
 | `npm run db:push` | Apply schema to DB (dev only) |
 | `npm run db:migrate` | Run migrations (production) |
 | `npm run seed:admin` | Seed admin user + default menus |
