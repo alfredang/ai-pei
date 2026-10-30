@@ -218,6 +218,47 @@ export const leadBlocklist = pgTable(
   ],
 );
 
+// Affiliates who refer international students. `code` is the ?ref= value in
+// their tracking link — treat it as immutable once shared.
+export const affiliates = pgTable("affiliates", {
+  id: serial("id").primaryKey(),
+  code: varchar("code", { length: 64 }).notNull().unique(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }),
+  phone: varchar("phone", { length: 50 }),
+  country: varchar("country", { length: 100 }),
+  notes: text("notes"),
+  active: boolean("active").notNull().default(true),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Exploratory applications submitted via /apply.html. `affiliateCode` keeps
+// the raw ?ref= value even if it didn't match an active affiliate.
+export const affiliateReferrals = pgTable(
+  "affiliate_referrals",
+  {
+    id: serial("id").primaryKey(),
+    affiliateId: integer("affiliate_id").references(() => affiliates.id, {
+      onDelete: "set null",
+    }),
+    affiliateCode: varchar("affiliate_code", { length: 64 }),
+    name: varchar("name", { length: 255 }).notNull(),
+    email: varchar("email", { length: 255 }).notNull(),
+    phone: varchar("phone", { length: 50 }).notNull(),
+    nationality: varchar("nationality", { length: 100 }).notNull(),
+    program: varchar("program", { length: 500 }).notNull(),
+    preferredStart: varchar("preferred_start", { length: 50 }).notNull(),
+    message: text("message"),
+    // new | contacted | batch_confirmed | contract_sent | enrolled | withdrawn
+    status: varchar("status", { length: 32 }).notNull().default("new"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (t) => [
+    index("affiliate_referrals_affiliate_idx").on(t.affiliateId),
+    index("affiliate_referrals_created_idx").on(t.createdAt),
+  ],
+);
+
 export const settings = pgTable("settings", {
   key: varchar("key", { length: 100 }).primaryKey(),
   value: jsonb("value").notNull(),

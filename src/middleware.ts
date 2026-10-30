@@ -31,6 +31,7 @@ const OWN_ROUTES = new Set([
   "/ai-agent-deployment",
   "/ai-chatbot-portfolio",
   "/ai-solutions",
+  "/apply",
   "/blog",
   "/contact",
   "/content-management-system",

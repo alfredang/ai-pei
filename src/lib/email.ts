@@ -124,6 +124,53 @@ export async function sendLeadEmail(lead: {
   });
 }
 
+// Fixed recipients for international-student applications (/apply.html).
+const APPLICATION_TO = "angch@tertiaryinfotech.com";
+const APPLICATION_CC = ["tansc@tertiaryinfotech.com", "angss@tertiaryinfotech.com"];
+
+export async function sendApplicationEmail(app: {
+  name: string;
+  email: string;
+  phone: string;
+  nationality: string;
+  program: string;
+  preferredStart: string;
+  message?: string | null;
+  affiliate: string; // e.g. "Jane Tan (jane-tan-x7k2)" or "Direct (no affiliate)"
+}) {
+  const { gmail, user: fromUser } = await getGmailClient();
+  const rows: [string, string][] = [
+    ["Affiliate", app.affiliate],
+    ["Name", app.name],
+    ["Email", app.email],
+    ["Tel", app.phone],
+    ["Nationality", app.nationality],
+    ["Programme", app.program],
+    ["Preferred start (tentative)", app.preferredStart],
+    ["Message", app.message || "—"],
+  ];
+  const html = `<p>New international student application (exploratory phase).</p>
+<table cellpadding="6" style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px">
+${rows
+  .map(
+    ([k, v]) =>
+      `<tr><td style="border:1px solid #ddd;background:#f6f6f6"><b>${escape(k)}</b></td><td style="border:1px solid #ddd;white-space:pre-wrap">${escape(v)}</td></tr>`,
+  )
+  .join("\n")}
+</table>
+<p style="font-size:12px;color:#666">Next steps: confirm the batch, then send the student contract. The student has acknowledged that the start date is tentative and that they arrange their own accommodation and flights.</p>`;
+
+  const raw = buildRawMessage({
+    from: `"Tertiary Infotech Academy" <${fromUser}>`,
+    to: APPLICATION_TO,
+    cc: APPLICATION_CC,
+    replyTo: app.email,
+    subject: `[Student Application] ${app.name} — ${app.program} (${app.affiliate})`,
+    html,
+  });
+  await gmail.users.messages.send({ userId: "me", requestBody: { raw } });
+}
+
 function escape(s: string) {
   return s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]!));
 }
