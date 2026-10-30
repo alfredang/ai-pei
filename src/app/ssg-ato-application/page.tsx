@@ -103,21 +103,21 @@ const ACCENT: Record<
     ring: "border-(--color-cyan)/40",
     iconText: "text-(--color-cyan)",
     chip: "bg-(--color-cyan)/10 text-(--color-cyan)",
-    glow: "rgba(89,235,253,0.35)",
+    glow: "rgba(60,224,124,0.35)",
     line: "from-(--color-cyan)",
   },
   blue: {
     ring: "border-(--color-cyan)/40",
     iconText: "text-(--color-cyan)",
     chip: "bg-(--color-cyan)/10 text-(--color-cyan)",
-    glow: "rgba(89,235,253,0.3)",
+    glow: "rgba(60,224,124,0.3)",
     line: "from-(--color-cyan)",
   },
   purple: {
     ring: "border-(--color-purple)/50",
     iconText: "text-(--color-purple-light)",
     chip: "bg-(--color-purple)/15 text-(--color-purple-light)",
-    glow: "rgba(92,0,229,0.45)",
+    glow: "rgba(16,185,129,0.45)",
     line: "from-(--color-purple)",
   },
   amber: {
@@ -287,7 +287,7 @@ export default function SsgAtoApplicationPage() {
               left: "-5%",
               width: 520,
               height: 520,
-              background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)",
+              background: "radial-gradient(circle, #10B981 0%, transparent 70%)",
             }}
           />
           <div
@@ -297,7 +297,7 @@ export default function SsgAtoApplicationPage() {
               right: "-10%",
               width: 480,
               height: 480,
-              background: "radial-gradient(circle, rgba(89,235,253,0.5) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(60,224,124,0.5) 0%, transparent 70%)",
             }}
           />
           <Container>
@@ -650,7 +650,7 @@ export default function SsgAtoApplicationPage() {
               left: "0",
               width: 480,
               height: 480,
-              background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)",
+              background: "radial-gradient(circle, #10B981 0%, transparent 70%)",
             }}
           />
           <Container className="max-w-4xl relative">

@@ -40,7 +40,7 @@ export function ContactForm({
 
   return (
     <section id="contact" className="relative py-4 overflow-hidden">
-      <div className="glow-blob" style={{ top: "10%", right: "0", width: 480, height: 480, background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)" }} />
+      <div className="glow-blob" style={{ top: "10%", right: "0", width: 480, height: 480, background: "radial-gradient(circle, #10B981 0%, transparent 70%)" }} />
       <Container className="max-w-4xl relative">
         <div className="text-center mb-6">
           <div className="kicker mb-4">[ APPLY NOW ]</div>

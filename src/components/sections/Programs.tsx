@@ -96,7 +96,7 @@ export function Programs() {
           left: "30%",
           width: 600,
           height: 600,
-          background: "radial-gradient(circle, #5C00E5 0%, transparent 60%)",
+          background: "radial-gradient(circle, #10B981 0%, transparent 60%)",
           opacity: 0.1,
         }}
       />

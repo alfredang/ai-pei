@@ -44,8 +44,8 @@ export default function RealClientsPage() {
       <main>
         <section className="relative pt-12 pb-16 overflow-hidden">
           <div className="grid-bg opacity-60" />
-          <div className="glow-blob" style={{ top: "-20%", left: "10%", width: 500, height: 500, background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)" }} />
-          <div className="glow-blob" style={{ top: "20%", right: "0%", width: 420, height: 420, background: "radial-gradient(circle, #59EBFD 0%, transparent 70%)" }} />
+          <div className="glow-blob" style={{ top: "-20%", left: "10%", width: 500, height: 500, background: "radial-gradient(circle, #10B981 0%, transparent 70%)" }} />
+          <div className="glow-blob" style={{ top: "20%", right: "0%", width: 420, height: 420, background: "radial-gradient(circle, #3CE07C 0%, transparent 70%)" }} />
           <Container className="relative">
             <div className="kicker mb-4">[ REAL CLIENTS ]</div>
             <h1 className="font-display text-[clamp(2rem,5vw,4rem)] font-extrabold leading-[1.05] max-w-4xl">
@@ -122,7 +122,7 @@ export default function RealClientsPage() {
         </section>
 
         <section className="relative pt-10 pb-20 overflow-hidden">
-          <div className="glow-blob" style={{ bottom: "-20%", left: "40%", width: 500, height: 500, background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)", opacity: 0.3 }} />
+          <div className="glow-blob" style={{ bottom: "-20%", left: "40%", width: 500, height: 500, background: "radial-gradient(circle, #10B981 0%, transparent 70%)", opacity: 0.3 }} />
           <Container className="relative">
             <div className="kicker mb-4">[ WHAT CLIENTS SAY ]</div>
             <div className="grid md:grid-cols-2 gap-5">
@@ -143,7 +143,7 @@ export default function RealClientsPage() {
           <Container>
             <div className="glass p-10 md:p-14 relative overflow-hidden text-center">
               <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-(--color-cyan) to-transparent" />
-              <div className="glow-blob" style={{ top: "-50%", left: "30%", width: 600, height: 600, background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)", opacity: 0.35 }} />
+              <div className="glow-blob" style={{ top: "-50%", left: "30%", width: 600, height: 600, background: "radial-gradient(circle, #10B981 0%, transparent 70%)", opacity: 0.35 }} />
               <div className="relative">
                 <div className="kicker mb-4">[ WANT TO BE NEXT? ]</div>
                 <h2 className="font-display text-[clamp(1.75rem,4vw,3rem)] font-extrabold leading-tight mb-4">

@@ -1,6 +1,6 @@
 ---
 name: frontend-design
-description: Project-locked frontend design skill for the Tertiary Infotech CMS. Enforces a dark, sci-fi/robotics aesthetic matching www.tertiaryrobotics.com — Exo 2 + Inter typography, near-black backgrounds, cyan/purple/amber accents, animated glow gradients, hexagonal/grid motifs. Use whenever building or refining ANY UI in this repo.
+description: Project-locked frontend design skill for the Tertiary Infotech CMS. Enforces a dark, sci-fi/robotics aesthetic matching www.tertiaryrobotics.com — Exo 2 + Inter typography, matrix-green dark backgrounds, phosphor-green/emerald/teal + amber accents, animated glow gradients, hexagonal/grid motifs. Use whenever building or refining ANY UI in this repo.
 ---
 
 # Tertiary Infotech — Dark Robotics Aesthetic
@@ -12,17 +12,21 @@ This skill is locked to ONE design direction. Do not invent new palettes, fonts,
 Already defined in [src/app/globals.css](src/app/globals.css). When adding/editing UI, reference these and NEVER introduce off-palette colors.
 
 ```
---color-bg:           #060A14   /* page background */
---color-bg-elevated:  #0C0D1A   /* cards, footer, nav */
---color-bg-glass:     rgba(255,255,255,0.04)
---color-border:       rgba(255,255,255,0.08)
+Matrix-green theme (matches the hero's digital rain). Token NAMES are legacy —
+`--color-cyan` holds phosphor green and `--color-purple` holds emerald.
+
+--color-bg:           #04120B   /* page background — deep green-black */
+--color-bg-elevated:  #082016   /* cards, footer, nav */
+--color-bg-deeper:    #020B06
+--color-border:       rgba(60,224,124,0.12)
 --color-text:         #FFFFFF
---color-muted:        #AAA8B1
---color-accent-cyan:  #59EBFD
---color-accent-amber: #F6AE64
---color-accent-green: #01C982
---color-accent-purple:#5C00E5
---gradient-primary:   linear-gradient(90deg, #5C00E5 0%, #59EBFD 100%)
+--color-muted:        #A3BDAE
+--color-cyan:         #3CE07C   /* primary accent — matrix green */
+--color-purple:       #10B981   /* emerald */
+--color-purple-light: #2DD4BF   /* teal */
+--color-amber:        #F6AE64   /* warm contrast */
+--color-green:        #01C982
+--gradient-primary:   linear-gradient(90deg, #10B981 0%, #3CE07C 100%)   /* dark text on it */
 --gradient-warm:      linear-gradient(90deg, #F6AE64 0%, #59C09D 100%)
 ```
 
@@ -38,7 +42,7 @@ Already defined in [src/app/globals.css](src/app/globals.css). When adding/editi
 Every section MUST include at least one of:
 
 1. **Animated grid background** — 1px lines at 6% opacity using `linear-gradient` for x + y, optionally pan-animated.
-2. **Glow blob** — large radial-gradient circles (cyan / purple) with `filter: blur(80px)` behind hero/section headlines.
+2. **Glow blob** — large radial-gradient circles (green / emerald) with `filter: blur(80px)` behind hero/section headlines.
 3. **Hexagon / circuit accents** — `clip-path: polygon(...)` shapes, or SVG hex grids, for cards / badges.
 4. **Gradient stroke buttons** — primary CTA = `--gradient-primary` filled with crisp inner border + slight glow shadow on hover.
 5. **Kicker label** — small uppercase tag above headlines in mono, e.g. `[ AGENTIC AI · PHYSICAL AI ]`.
@@ -46,12 +50,12 @@ Every section MUST include at least one of:
 ## Component patterns
 
 - **Headlines**: huge (`clamp(2.5rem, 7vw, 6rem)`), `font-weight: 800`, white. Gradient-mask one keyword using `background-clip: text`.
-- **Cards**: `background: var(--color-bg-elevated)`, border `1px solid var(--color-border)`, optional top hairline using `--gradient-primary`. Subtle hover lift (`translateY(-4px)`) + cyan glow border on hover.
+- **Cards**: `background: var(--color-bg-elevated)`, border `1px solid var(--color-border)`, optional top hairline using `--gradient-primary`. Subtle hover lift (`translateY(-4px)`) + green glow border on hover.
 - **Buttons**:
-  - Primary: gradient-filled, rounded `0.6rem`, font-weight 600, slight shadow `0 0 40px rgba(89,235,253,0.25)`.
+  - Primary: gradient-filled, rounded `0.6rem`, font-weight 600, slight shadow `0 0 40px rgba(60,224,124,0.25)`.
   - Secondary: transparent, 1px white/15 border, hover bg `white/5`.
-- **Forms**: dark inputs (`bg-white/3`), focus ring cyan, never the default browser blue.
-- **Icons**: prefer outline icons (Heroicons outline, Lucide). Apply cyan or amber color from the palette — never raw white-on-black icons.
+- **Forms**: dark inputs (`bg-white/3`), focus ring `--color-cyan` (green), never the default browser blue.
+- **Icons**: prefer outline icons (Heroicons outline, Lucide). Apply `--color-cyan` (green) or amber from the palette — never raw white-on-black icons.
 - **Section padding**: `py-20 md:py-32`, generous breathing room.
 
 ## Motion

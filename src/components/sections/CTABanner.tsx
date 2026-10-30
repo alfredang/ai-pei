@@ -12,7 +12,7 @@ export function CTABanner() {
           transform: "translate(-50%, -50%)",
           width: 700,
           height: 700,
-          background: "radial-gradient(circle, #5C00E5 0%, transparent 60%)",
+          background: "radial-gradient(circle, #10B981 0%, transparent 60%)",
           opacity: 0.15,
         }}
       />

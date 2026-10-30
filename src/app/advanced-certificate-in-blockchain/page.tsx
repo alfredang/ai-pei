@@ -277,7 +277,7 @@ export default function AdvancedCertificateInBlockchainPage() {
               left: "-5%",
               width: 520,
               height: 520,
-              background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)",
+              background: "radial-gradient(circle, #10B981 0%, transparent 70%)",
             }}
           />
           <div
@@ -287,7 +287,7 @@ export default function AdvancedCertificateInBlockchainPage() {
               right: "-10%",
               width: 480,
               height: 480,
-              background: "radial-gradient(circle, rgba(89,235,253,0.5) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(60,224,124,0.5) 0%, transparent 70%)",
             }}
           />
           <Container>
@@ -520,7 +520,7 @@ export default function AdvancedCertificateInBlockchainPage() {
               left: "0",
               width: 480,
               height: 480,
-              background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)",
+              background: "radial-gradient(circle, #10B981 0%, transparent 70%)",
             }}
           />
           <Container className="max-w-4xl relative">

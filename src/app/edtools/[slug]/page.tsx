@@ -67,7 +67,7 @@ export default async function EdToolDetail({ params }: Props) {
               left: "20%",
               width: 480,
               height: 480,
-              background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)",
+              background: "radial-gradient(circle, #10B981 0%, transparent 70%)",
             }}
           />
           <Container className="relative">

@@ -100,11 +100,11 @@ export default function AiChatbotPortfolioPage() {
           <div className="grid-bg opacity-60" />
           <div
             className="glow-blob"
-            style={{ top: "-20%", left: "10%", width: 500, height: 500, background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)" }}
+            style={{ top: "-20%", left: "10%", width: 500, height: 500, background: "radial-gradient(circle, #10B981 0%, transparent 70%)" }}
           />
           <div
             className="glow-blob"
-            style={{ top: "20%", right: "0%", width: 420, height: 420, background: "radial-gradient(circle, #59EBFD 0%, transparent 70%)" }}
+            style={{ top: "20%", right: "0%", width: 420, height: 420, background: "radial-gradient(circle, #3CE07C 0%, transparent 70%)" }}
           />
           <Container className="relative">
             <div className="kicker mb-4">[ AI CHATBOT PORTFOLIO ]</div>
@@ -175,7 +175,7 @@ export default function AiChatbotPortfolioPage() {
         <section className="relative pt-10 pb-20 overflow-hidden">
           <div
             className="glow-blob"
-            style={{ bottom: "-20%", left: "40%", width: 500, height: 500, background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)", opacity: 0.3 }}
+            style={{ bottom: "-20%", left: "40%", width: 500, height: 500, background: "radial-gradient(circle, #10B981 0%, transparent 70%)", opacity: 0.3 }}
           />
           <Container className="relative">
             <div className="kicker mb-4">[ WHAT WE BUILD ]</div>

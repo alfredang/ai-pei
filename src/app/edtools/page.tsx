@@ -42,7 +42,7 @@ export default function EdToolsIndex() {
               left: "20%",
               width: 520,
               height: 520,
-              background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)",
+              background: "radial-gradient(circle, #10B981 0%, transparent 70%)",
             }}
           />
           <Container className="relative">
@@ -127,7 +127,7 @@ export default function EdToolsIndex() {
               right: "10%",
               width: 500,
               height: 500,
-              background: "radial-gradient(circle, #59EBFD 0%, transparent 70%)",
+              background: "radial-gradient(circle, #3CE07C 0%, transparent 70%)",
             }}
           />
           <Container className="relative">

@@ -29,13 +29,13 @@
   --color-cyan: #0E7490;
   --color-amber: #B45309;
   --color-green: #059669;
-  --color-purple: #5C00E5;
+  --color-purple: #10B981;
   --color-purple-light: #7C3AED;
 
   /* Gradient-text stops (theme-aware via the dark scope below) */
   --gt-from: #0E7490;
   --gt-via: #7C3AED;
-  --gt-to: #5C00E5;
+  --gt-to: #10B981;
 
   /* Legacy aliases used by older components - keep them mapped to new palette */
   --color-dark-primary: #FFFFFF;
@@ -43,7 +43,7 @@
   --color-dark-surface: #FFFFFF;
   --color-neon-blue: #0E7490;
   --color-neon-cyan: #0E7490;
-  --color-neon-purple: #5C00E5;
+  --color-neon-purple: #10B981;
   --color-neon-pink: #B45309;
 
   --font-display: var(--font-display-import), "Exo 2", system-ui, sans-serif;
@@ -51,7 +51,7 @@
   --font-mono: var(--font-mono-import), "JetBrains Mono", ui-monospace, monospace;
 
   --shadow-glow-cyan: 0 0 40px rgba(14, 116, 144, 0.18);
-  --shadow-glow-purple: 0 0 40px rgba(92, 0, 229, 0.20);
+  --shadow-glow-purple: 0 0 40px rgba(16, 185, 129, 0.20);
   --shadow-glow-amber: 0 0 40px rgba(180, 83, 9, 0.18);
   --shadow-card: 0 8px 30px rgba(15, 23, 42, 0.10);
 }
@@ -62,36 +62,39 @@
  * overriding them here flips the whole admin back to dark with no per-file edits.
  */
 [data-theme="dark"] {
-  --color-bg: #060A14;
-  --color-bg-elevated: #0C0D1A;
-  --color-bg-deeper: #03060E;
-  --color-border: rgba(255, 255, 255, 0.08);
+  /* Matrix green — deep green-black surfaces tuned to the hero's digital rain.
+   * Token names (cyan/purple) are kept for compatibility; values are now the
+   * phosphor-green / emerald / teal family. */
+  --color-bg: #04120B;
+  --color-bg-elevated: #082016;
+  --color-bg-deeper: #020B06;
+  --color-border: rgba(60, 224, 124, 0.12);
   --color-text: #FFFFFF;
-  --color-muted: #AAA8B1;
+  --color-muted: #A3BDAE;
 
   --color-white: #FFFFFF;
   --ink-rgb: 255 255 255;
 
-  --color-cyan: #59EBFD;
+  --color-cyan: #3CE07C;
   --color-amber: #F6AE64;
   --color-green: #01C982;
-  --color-purple: #5C00E5;
-  --color-purple-light: #8757F2;
+  --color-purple: #10B981;
+  --color-purple-light: #2DD4BF;
 
-  --gt-from: #59EBFD;
-  --gt-via: #8757F2;
-  --gt-to: #5C00E5;
+  --gt-from: #3CE07C;
+  --gt-via: #2DD4BF;
+  --gt-to: #10B981;
 
-  --color-dark-primary: #0C0D1A;
-  --color-dark-deeper: #060A14;
-  --color-dark-surface: #0C0D1A;
-  --color-neon-blue: #59EBFD;
-  --color-neon-cyan: #59EBFD;
-  --color-neon-purple: #5C00E5;
+  --color-dark-primary: #082016;
+  --color-dark-deeper: #04120B;
+  --color-dark-surface: #082016;
+  --color-neon-blue: #3CE07C;
+  --color-neon-cyan: #3CE07C;
+  --color-neon-purple: #10B981;
   --color-neon-pink: #F6AE64;
 
-  --shadow-glow-cyan: 0 0 40px rgba(89, 235, 253, 0.25);
-  --shadow-glow-purple: 0 0 40px rgba(92, 0, 229, 0.35);
+  --shadow-glow-cyan: 0 0 40px rgba(60, 224, 124, 0.25);
+  --shadow-glow-purple: 0 0 40px rgba(16, 185, 129, 0.35);
   --shadow-glow-amber: 0 0 40px rgba(246, 174, 100, 0.25);
   --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.45);
 
@@ -177,7 +180,7 @@
   inset-inline: 0;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--color-cyan), transparent);
-  box-shadow: 0 0 24px 2px rgba(89, 235, 253, 0.6);
+  box-shadow: 0 0 24px 2px rgba(60, 224, 124, 0.6);
   animation: scanline 8s ease-in-out infinite;
 }
 
@@ -203,8 +206,8 @@
   inset: -10% -15%;
   z-index: -1;
   background:
-    radial-gradient(ellipse 60% 60% at 25% 40%, rgba(92, 0, 229, 0.35), transparent 70%),
-    radial-gradient(ellipse 55% 55% at 75% 60%, rgba(89, 235, 253, 0.30), transparent 70%);
+    radial-gradient(ellipse 60% 60% at 25% 40%, rgba(16, 185, 129, 0.35), transparent 70%),
+    radial-gradient(ellipse 55% 55% at 75% 60%, rgba(60, 224, 124, 0.30), transparent 70%);
   filter: blur(50px);
   opacity: 0.9;
   pointer-events: none;
@@ -241,7 +244,7 @@ body::before {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 15% -10%, rgba(92, 0, 229, 0.07), transparent 50%),
+    radial-gradient(ellipse at 15% -10%, rgba(16, 185, 129, 0.07), transparent 50%),
     radial-gradient(ellipse at 85% 0%, rgba(14, 116, 144, 0.06), transparent 50%);
   z-index: 0;
 }
@@ -314,8 +317,8 @@ body::before {
 }
 .card-hover:hover {
   transform: translateY(-4px);
-  border-color: rgba(89, 235, 253, 0.35);
-  box-shadow: 0 12px 40px rgba(89, 235, 253, 0.12);
+  border-color: rgba(60, 224, 124, 0.35);
+  box-shadow: 0 12px 40px rgba(60, 224, 124, 0.12);
 }
 
 /* Primary gradient button */
@@ -328,8 +331,8 @@ body::before {
   font-weight: 600;
   font-family: var(--font-display);
   letter-spacing: 0.02em;
-  color: white;
-  background: linear-gradient(90deg, #5C00E5 0%, #59EBFD 100%);
+  color: #02140B;
+  background: linear-gradient(90deg, #10B981 0%, #3CE07C 100%);
   background-size: 200% auto;
   box-shadow: var(--shadow-glow-cyan);
   transition: background-position 350ms ease, transform 200ms ease;
@@ -390,13 +393,13 @@ body::before {
   height: 1.25em;
   border-radius: 0.45em;
   background:
-    linear-gradient(135deg, rgba(89, 235, 253, 0.22), rgba(92, 0, 229, 0.22)),
-    rgba(89, 235, 253, 0.04);
-  border: 1px solid rgba(89, 235, 253, 0.4);
-  box-shadow: 0 0 0 1px rgba(89, 235, 253, 0.08), inset 0 0 8px rgba(89, 235, 253, 0.15);
+    linear-gradient(135deg, rgba(60, 224, 124, 0.22), rgba(16, 185, 129, 0.22)),
+    rgba(60, 224, 124, 0.04);
+  border: 1px solid rgba(60, 224, 124, 0.4);
+  box-shadow: 0 0 0 1px rgba(60, 224, 124, 0.08), inset 0 0 8px rgba(60, 224, 124, 0.15);
   background-image:
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2359EBFD' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'><polyline points='4 12.5 10 18.5 20 6.5'/></svg>"),
-    linear-gradient(135deg, rgba(89, 235, 253, 0.22), rgba(92, 0, 229, 0.22));
+    linear-gradient(135deg, rgba(60, 224, 124, 0.22), rgba(16, 185, 129, 0.22));
   background-repeat: no-repeat, no-repeat;
   background-size: 0.85em 0.85em, 100% 100%;
   background-position: center center, 0 0;
@@ -417,8 +420,8 @@ body::before {
   font-size: 0.72em;
   font-weight: 700;
   color: var(--color-cyan);
-  background: rgba(89, 235, 253, 0.08);
-  border: 1px solid rgba(89, 235, 253, 0.3);
+  background: rgba(60, 224, 124, 0.08);
+  border: 1px solid rgba(60, 224, 124, 0.3);
   border-radius: 9999px;
   line-height: 1;
 }
@@ -427,8 +430,8 @@ body::before {
   background-image:
     url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23B98CFF' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'><polyline points='9 6 16 12 9 18'/></svg>"),
     transparent;
-  border-color: rgba(185, 140, 255, 0.4);
-  box-shadow: inset 0 0 6px rgba(92, 0, 229, 0.18);
+  border-color: rgba(94, 234, 212, 0.4);
+  box-shadow: inset 0 0 6px rgba(16, 185, 129, 0.18);
 }
 .prose-dark img { border-radius: 0.75rem; margin: 1.6em auto; max-width: 100%; max-height: 420px; width: auto; height: auto; display: block; }
 .prose-dark blockquote {
@@ -490,7 +493,7 @@ body::before {
 .prose-dark table td:last-child { border-right: none; }
 .prose-dark table tbody tr:last-child td { border-bottom: none; }
 .prose-dark table tbody tr:nth-child(even) td { background: rgb(var(--ink-rgb) / 0.025); }
-.prose-dark table tbody tr:hover td { background: rgba(92, 0, 229, 0.05); }
+.prose-dark table tbody tr:hover td { background: rgba(16, 185, 129, 0.05); }
 .prose-dark table a { color: var(--color-cyan); }
 
 /* ===== COURSE REVAMP UTILITIES ===== */
@@ -534,9 +537,9 @@ body::before {
 .badge-shimmer {
   background: linear-gradient(
     90deg,
-    rgba(89, 235, 253, 0.15) 0%,
-    rgba(89, 235, 253, 0.35) 50%,
-    rgba(89, 235, 253, 0.15) 100%
+    rgba(60, 224, 124, 0.15) 0%,
+    rgba(60, 224, 124, 0.35) 50%,
+    rgba(60, 224, 124, 0.15) 100%
   );
   background-size: 200% auto;
   animation: shimmer 3s linear infinite;
@@ -555,7 +558,7 @@ body::before {
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(89, 235, 253, 0.3), rgba(92, 0, 229, 0.3));
+  background: linear-gradient(135deg, rgba(60, 224, 124, 0.3), rgba(16, 185, 129, 0.3));
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
   -webkit-mask-composite: xor;
@@ -565,7 +568,7 @@ body::before {
 .module-card:hover::before { opacity: 1; }
 .module-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 20px 60px rgba(89, 235, 253, 0.1), 0 0 0 1px rgba(89, 235, 253, 0.2);
+  box-shadow: 0 20px 60px rgba(60, 224, 124, 0.1), 0 0 0 1px rgba(60, 224, 124, 0.2);
 }
 
 /* Module number indicator */
@@ -579,8 +582,8 @@ body::before {
   font-family: var(--font-mono);
   font-weight: 700;
   font-size: 0.85rem;
-  border: 1px solid rgba(89, 235, 253, 0.3);
-  background: rgba(89, 235, 253, 0.08);
+  border: 1px solid rgba(60, 224, 124, 0.3);
+  background: rgba(60, 224, 124, 0.08);
   color: var(--color-cyan);
 }
 
@@ -597,8 +600,8 @@ body::before {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--color-cyan);
-  background: rgba(89, 235, 253, 0.1);
-  border: 1px solid rgba(89, 235, 253, 0.25);
+  background: rgba(60, 224, 124, 0.1);
+  border: 1px solid rgba(60, 224, 124, 0.25);
 }
 .tag-elective {
   display: inline-flex;
@@ -722,8 +725,8 @@ body::before {
   transition: all 250ms ease;
 }
 .role-card:hover {
-  background: rgba(89, 235, 253, 0.04);
-  border-color: rgba(89, 235, 253, 0.2);
+  background: rgba(60, 224, 124, 0.04);
+  border-color: rgba(60, 224, 124, 0.2);
   transform: translateY(-2px);
 }
 
@@ -739,11 +742,11 @@ body::before {
   width: 100%;
 }
 .funding-option:hover {
-  border-color: rgba(89, 235, 253, 0.3);
-  background: rgba(89, 235, 253, 0.04);
+  border-color: rgba(60, 224, 124, 0.3);
+  background: rgba(60, 224, 124, 0.04);
 }
 .funding-option.funding-active {
   border-color: var(--color-cyan);
-  background: rgba(89, 235, 253, 0.08);
-  box-shadow: 0 0 20px rgba(89, 235, 253, 0.1);
+  background: rgba(60, 224, 124, 0.08);
+  box-shadow: 0 0 20px rgba(60, 224, 124, 0.1);
 }

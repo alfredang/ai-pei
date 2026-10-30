@@ -33,7 +33,7 @@ export function WhyChooseInstitute() {
           right: "-5%",
           width: 500,
           height: 500,
-          background: "radial-gradient(circle, #5C00E5 0%, transparent 60%)",
+          background: "radial-gradient(circle, #10B981 0%, transparent 60%)",
           opacity: 0.12,
         }}
       />

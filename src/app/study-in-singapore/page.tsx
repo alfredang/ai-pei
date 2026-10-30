@@ -178,11 +178,11 @@ export default function StudyInSingaporePage() {
         <section className="relative pt-6 pb-10 md:pt-8 md:pb-14 overflow-hidden">
           <div
             className="glow-blob"
-            style={{ top: "-10%", left: "-5%", width: 520, height: 520, background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)" }}
+            style={{ top: "-10%", left: "-5%", width: 520, height: 520, background: "radial-gradient(circle, #10B981 0%, transparent 70%)" }}
           />
           <div
             className="glow-blob"
-            style={{ top: "20%", right: "-10%", width: 480, height: 480, background: "radial-gradient(circle, rgba(89,235,253,0.5) 0%, transparent 70%)" }}
+            style={{ top: "20%", right: "-10%", width: 480, height: 480, background: "radial-gradient(circle, rgba(60,224,124,0.5) 0%, transparent 70%)" }}
           />
           <Container>
             <div className="grid lg:grid-cols-12 gap-8 items-start relative">

@@ -45,7 +45,7 @@ export default function TermsPage() {
             left: "10%",
             width: 480,
             height: 480,
-            background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)",
+            background: "radial-gradient(circle, #10B981 0%, transparent 70%)",
           }}
         />
         <div
@@ -55,7 +55,7 @@ export default function TermsPage() {
             right: "5%",
             width: 420,
             height: 420,
-            background: "radial-gradient(circle, #59EBFD 0%, transparent 70%)",
+            background: "radial-gradient(circle, #3CE07C 0%, transparent 70%)",
           }}
         />
 

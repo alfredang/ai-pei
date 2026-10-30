@@ -59,7 +59,7 @@ export function InternationalStudentSupport({
           right: "-8%",
           width: 460,
           height: 460,
-          background: "radial-gradient(circle, rgba(89,235,253,0.4) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(60,224,124,0.4) 0%, transparent 70%)",
         }}
       />
       <Container className="relative">

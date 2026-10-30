@@ -23,7 +23,7 @@ export async function Hero() {
           left: "-8%",
           width: 640,
           height: 640,
-          background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)",
+          background: "radial-gradient(circle, #10B981 0%, transparent 70%)",
         }}
       />
       <div
@@ -33,7 +33,7 @@ export async function Hero() {
           right: "-12%",
           width: 600,
           height: 600,
-          background: "radial-gradient(circle, #59EBFD 0%, transparent 70%)",
+          background: "radial-gradient(circle, #3CE07C 0%, transparent 70%)",
         }}
       />
       <div
@@ -51,7 +51,7 @@ export async function Hero() {
       {/* orbiting particles around the right edge */}
       <div className="absolute top-1/2 right-[12%] hidden lg:block pointer-events-none">
         <div
-          className="orbit-dot bg-(--color-cyan) shadow-[0_0_12px_4px_rgba(89,235,253,0.7)]"
+          className="orbit-dot bg-(--color-cyan) shadow-[0_0_12px_4px_rgba(60,224,124,0.7)]"
           style={{ ["--orbit-r" as string]: "220px" }}
         />
         <div

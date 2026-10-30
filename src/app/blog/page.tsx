@@ -236,7 +236,7 @@ export default async function BlogIndex({
               left: "20%",
               width: 500,
               height: 500,
-              background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)",
+              background: "radial-gradient(circle, #10B981 0%, transparent 70%)",
             }}
           />
           <Container className="relative">

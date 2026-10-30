@@ -64,7 +64,7 @@ export function CourseRegisterForm({
           right: "0",
           width: 480,
           height: 480,
-          background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)",
+          background: "radial-gradient(circle, #10B981 0%, transparent 70%)",
         }}
       />
       <Container className="max-w-4xl relative">

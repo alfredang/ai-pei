@@ -141,7 +141,7 @@ export default async function CmsPage({
               right: "10%",
               width: 460,
               height: 460,
-              background: "radial-gradient(circle, #59EBFD 0%, transparent 70%)",
+              background: "radial-gradient(circle, #3CE07C 0%, transparent 70%)",
               opacity: 0.35,
             }}
           />

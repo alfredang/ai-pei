@@ -30,7 +30,7 @@ export function ELearningShowcase() {
           right: "20%",
           width: 560,
           height: 560,
-          background: "radial-gradient(circle, #59EBFD 0%, transparent 70%)",
+          background: "radial-gradient(circle, #3CE07C 0%, transparent 70%)",
           opacity: 0.25,
         }}
       />

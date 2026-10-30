@@ -750,7 +750,7 @@ export default async function CourseDetail({
               right: "5%",
               width: 520,
               height: 520,
-              background: "radial-gradient(circle, #59EBFD 0%, transparent 65%)",
+              background: "radial-gradient(circle, #3CE07C 0%, transparent 65%)",
               opacity: 0.1,
             }}
           />

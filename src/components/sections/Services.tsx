@@ -7,7 +7,7 @@ import { HiArrowRight } from "react-icons/hi2";
 
 const accentMap: Record<string, { glow: string; text: string; line: string }> = {
   blue: {
-    glow: "rgba(89,235,253,0.35)",
+    glow: "rgba(60,224,124,0.35)",
     text: "text-(--color-cyan)",
     line: "from-(--color-cyan) to-transparent",
   },
@@ -17,7 +17,7 @@ const accentMap: Record<string, { glow: string; text: string; line: string }> = 
     line: "from-(--color-green) to-transparent",
   },
   purple: {
-    glow: "rgba(92,0,229,0.45)",
+    glow: "rgba(16,185,129,0.45)",
     text: "text-(--color-purple-light)",
     line: "from-(--color-purple) to-transparent",
   },

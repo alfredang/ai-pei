@@ -34,7 +34,7 @@ export function CMSShowcase() {
           left: "10%",
           width: 560,
           height: 560,
-          background: "radial-gradient(circle, #5C00E5 0%, transparent 70%)",
+          background: "radial-gradient(circle, #10B981 0%, transparent 70%)",
           opacity: 0.28,
         }}
       />

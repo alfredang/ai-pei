@@ -18,7 +18,7 @@ export function HeroBanner() {
           left: "5%",
           width: 600,
           height: 600,
-          background: "radial-gradient(circle, #5C00E5 0%, transparent 60%)",
+          background: "radial-gradient(circle, #10B981 0%, transparent 60%)",
           opacity: 0.2,
         }}
       />
@@ -29,7 +29,7 @@ export function HeroBanner() {
           right: "0%",
           width: 500,
           height: 500,
-          background: "radial-gradient(circle, #59EBFD 0%, transparent 60%)",
+          background: "radial-gradient(circle, #3CE07C 0%, transparent 60%)",
           opacity: 0.12,
         }}
       />

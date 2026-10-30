@@ -63,7 +63,7 @@ function MatrixRain() {
     let raf = 0;
     function frame() {
       raf = requestAnimationFrame(frame);
-      ctx!.clearRect(0, 0, w, h); // transparent — lets the blue backdrop show through
+      ctx!.clearRect(0, 0, w, h); // transparent — lets the green backdrop show through
       for (let i = 0; i < heads.length; i++) {
         heads[i] += speeds[i];
         const headRow = Math.floor(heads[i] / cell);
@@ -123,19 +123,19 @@ export function HomeHero() {
       data-theme="dark"
       className="relative isolate overflow-hidden text-white"
     >
-      {/* Matrix character-rain over a blue backdrop — applies only to this hero */}
+      {/* Matrix character-rain over a green backdrop — applies only to this hero */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
-        {/* blue gradient base (matches the reference image) */}
+        {/* green gradient base — fades into the site's --color-bg */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 95% 85% at 50% 22%, #19386f 0%, #0d2150 45%, #060a16 100%)",
+              "radial-gradient(ellipse 95% 85% at 50% 22%, #0f4a2b 0%, #082a19 45%, #04120B 100%)",
           }}
         />
         <MatrixRain />
         {/* readability scrim — keeps the left-side headline legible */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#020B06]/80 via-[#020B06]/30 to-transparent" />
       </div>
 
       <Container className="relative z-10">

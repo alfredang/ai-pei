@@ -10,7 +10,7 @@ export function AdmissionsSection() {
           right: "0%",
           width: 480,
           height: 480,
-          background: "radial-gradient(circle, #59EBFD 0%, transparent 60%)",
+          background: "radial-gradient(circle, #3CE07C 0%, transparent 60%)",
           opacity: 0.07,
         }}
       />
