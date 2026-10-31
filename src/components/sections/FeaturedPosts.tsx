@@ -4,6 +4,7 @@ import { posts } from "@/db/schema";
 import { and, desc, eq } from "drizzle-orm";
 import { Container } from "@/components/layout/Container";
 import { htmlPath } from "@/lib/html-url";
+import { buildPostCoverSvg } from "@/lib/post-cover-svg";
 import { HiArrowUpRight, HiStar } from "react-icons/hi2";
 
 function snippetFromHtml(html: string | null | undefined, max = 200): string {
@@ -78,7 +79,12 @@ function PostCard({ p }: { p: PostLite }) {
             className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-(--color-purple)/30 to-(--color-cyan)/20" />
+          // Same branded fallback cover the /blog list uses when a post has no
+          // stored featuredImage.
+          <div
+            className="absolute inset-0 [&>svg]:w-full [&>svg]:h-full"
+            dangerouslySetInnerHTML={{ __html: buildPostCoverSvg(p.title, "Journal") }}
+          />
         )}
       </div>
       <div className="p-6 flex-1 flex flex-col">

@@ -5,55 +5,57 @@
 @source not "../../node_modules";
 
 @theme {
-  /* ===== LIGHT THEME (default, public site) ===== */
-  --color-bg: #F7F9FC;
+  /* ===== LIGHT THEME (default, public site) =====
+   * Soft mint-white surfaces with deep-green ink and emerald accents, so the
+   * page reads as the daylight counterpart of the matrix-green hero. */
+  --color-bg: #F3F8F5;
   --color-bg-elevated: #FFFFFF;
-  --color-bg-deeper: #EDF1F7;
-  --color-border: rgba(15, 23, 42, 0.10);
-  --color-text: #0B1220;
-  --color-muted: #5A6473;
+  --color-bg-deeper: #E6F0EA;
+  --color-border: rgba(6, 78, 59, 0.12);
+  --color-text: #0B1F17;
+  --color-muted: #4F6358;
 
   /*
    * `--color-white` deliberately overrides Tailwind's default white so that the
    * many hardcoded `text-white` / `bg-white/10` / `border-white/12` utilities —
    * originally "light-on-dark" contrast — invert to "ink-on-light" on the white
-   * theme. The dark admin scope restores it to real white below.
+   * theme. The dark scope (hero, admin) restores it to real white below.
    * `--ink-rgb` is the matching raw channel triple for literal rgba() tints in
    * the shared component classes further down this file.
    */
-  --color-white: #0B1220;
-  --ink-rgb: 15 23 42;
+  --color-white: #0B1F17;
+  --ink-rgb: 11 31 23;
 
-  /* Accents — darkened just enough to stay readable as text on white while
-   * keeping the cyan / amber / green / purple brand family. */
-  --color-cyan: #0E7490;
+  /* Accents — emerald / teal family, dark enough to read as text on white.
+   * Token names (cyan/purple) are legacy; values are the green palette. */
+  --color-cyan: #047857;
   --color-amber: #B45309;
   --color-green: #059669;
-  --color-purple: #10B981;
-  --color-purple-light: #7C3AED;
+  --color-purple: #065F46;
+  --color-purple-light: #0D9488;
 
   /* Gradient-text stops (theme-aware via the dark scope below) */
-  --gt-from: #0E7490;
-  --gt-via: #7C3AED;
-  --gt-to: #10B981;
+  --gt-from: #059669;
+  --gt-via: #0D9488;
+  --gt-to: #065F46;
 
   /* Legacy aliases used by older components - keep them mapped to new palette */
   --color-dark-primary: #FFFFFF;
-  --color-dark-deeper: #F7F9FC;
+  --color-dark-deeper: #F3F8F5;
   --color-dark-surface: #FFFFFF;
-  --color-neon-blue: #0E7490;
-  --color-neon-cyan: #0E7490;
-  --color-neon-purple: #10B981;
+  --color-neon-blue: #047857;
+  --color-neon-cyan: #047857;
+  --color-neon-purple: #065F46;
   --color-neon-pink: #B45309;
 
   --font-display: var(--font-display-import), "Exo 2", system-ui, sans-serif;
   --font-sans: var(--font-sans-import), Inter, system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-mono-import), "JetBrains Mono", ui-monospace, monospace;
 
-  --shadow-glow-cyan: 0 0 40px rgba(14, 116, 144, 0.18);
-  --shadow-glow-purple: 0 0 40px rgba(16, 185, 129, 0.20);
+  --shadow-glow-cyan: 0 0 40px rgba(4, 120, 87, 0.16);
+  --shadow-glow-purple: 0 0 40px rgba(6, 95, 70, 0.18);
   --shadow-glow-amber: 0 0 40px rgba(180, 83, 9, 0.18);
-  --shadow-card: 0 8px 30px rgba(15, 23, 42, 0.10);
+  --shadow-card: 0 8px 30px rgba(6, 78, 59, 0.08);
 }
 
 /* ===== DARK THEME (scoped to /admin) =====
@@ -331,8 +333,8 @@ body::before {
   font-weight: 600;
   font-family: var(--font-display);
   letter-spacing: 0.02em;
-  color: #02140B;
-  background: linear-gradient(90deg, #10B981 0%, #3CE07C 100%);
+  color: #FFFFFF;
+  background: linear-gradient(90deg, #065F46 0%, #059669 100%);
   background-size: 200% auto;
   box-shadow: var(--shadow-glow-cyan);
   transition: background-position 350ms ease, transform 200ms ease;

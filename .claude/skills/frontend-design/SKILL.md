@@ -1,6 +1,6 @@
 ---
 name: frontend-design
-description: Project-locked frontend design skill for the Tertiary Infotech CMS. Enforces a dark, sci-fi/robotics aesthetic matching www.tertiaryrobotics.com — Exo 2 + Inter typography, matrix-green dark backgrounds, phosphor-green/emerald/teal + amber accents, animated glow gradients, hexagonal/grid motifs. Use whenever building or refining ANY UI in this repo.
+description: Project-locked frontend design skill for the Tertiary Infotech CMS. Enforces a dark, sci-fi/robotics aesthetic matching www.tertiaryrobotics.com — Exo 2 + Inter typography, light mint-white public pages with a dark matrix-green hero, emerald/teal + amber accents, animated glow gradients, hexagonal/grid motifs. Use whenever building or refining ANY UI in this repo.
 ---
 
 # Tertiary Infotech — Dark Robotics Aesthetic
@@ -12,8 +12,17 @@ This skill is locked to ONE design direction. Do not invent new palettes, fonts,
 Already defined in [src/app/globals.css](src/app/globals.css). When adding/editing UI, reference these and NEVER introduce off-palette colors.
 
 ```
-Matrix-green theme (matches the hero's digital rain). Token NAMES are legacy —
-`--color-cyan` holds phosphor green and `--color-purple` holds emerald.
+Public site = LIGHT green theme (root @theme). The matrix hero and /admin use
+the DARK scope (`data-theme="dark"`) with the values below. Token NAMES are
+legacy — `--color-cyan` holds the primary green, `--color-purple` emerald.
+
+Light (public pages):
+--color-bg: #F3F8F5  --color-bg-elevated: #FFFFFF  --color-bg-deeper: #E6F0EA
+--color-text: #0B1F17  --color-muted: #4F6358  --color-border: rgba(6,78,59,0.12)
+--color-cyan: #047857  --color-purple: #065F46  --color-purple-light: #0D9488
+--btn-primary: linear-gradient(90deg, #065F46 0%, #059669 100%), white text
+
+Dark scope (hero, admin):
 
 --color-bg:           #04120B   /* page background — deep green-black */
 --color-bg-elevated:  #082016   /* cards, footer, nav */
@@ -26,7 +35,6 @@ Matrix-green theme (matches the hero's digital rain). Token NAMES are legacy —
 --color-purple-light: #2DD4BF   /* teal */
 --color-amber:        #F6AE64   /* warm contrast */
 --color-green:        #01C982
---gradient-primary:   linear-gradient(90deg, #10B981 0%, #3CE07C 100%)   /* dark text on it */
 --gradient-warm:      linear-gradient(90deg, #F6AE64 0%, #59C09D 100%)
 ```
 

@@ -101,7 +101,7 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 ### Platform — auth, security, design
 - **Auth.js v5** — credentials provider with bcrypt, JWT sessions, persistent 10-year sliding cookie, middleware-protected `/admin/*`
 - **Never-logout admin** — cookie-presence guard everywhere; no code path in the admin chrome calls `auth()` and risks emitting a clearing `Set-Cookie`
-- **Matrix-green design system** — deep green-black surfaces, matrix digital-rain hero, Exo 2 + Inter, phosphor-green / emerald / teal accents with amber highlights, custom Tailwind 4 design tokens
+- **Green design system** — light mint-white pages with deep-green ink and emerald / teal accents, a dark matrix digital-rain hero, branded green blog covers, Exo 2 + Inter, custom Tailwind 4 design tokens (dark scope kept for the hero and `/admin`)
 
 ## Tech Stack
 
@@ -117,7 +117,7 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 | **Editor** | TipTap 2 with image upload + slash commands |
 | **Email** | Nodemailer + Gmail OAuth2 (via `googleapis`) |
 | **Encryption** | AES-256-GCM (Node `crypto`) for credentials at rest |
-| **UI** | Tailwind CSS 4 (matrix-green dark theme) · Framer Motion 12 · react-icons · custom design tokens |
+| **UI** | Tailwind CSS 4 (light green theme + dark matrix hero) · Framer Motion 12 · react-icons · custom design tokens |
 | **Validation** | Zod 3 |
 | **Deploy** | Coolify · multi-stage `Dockerfile` (Node 22 Alpine) · Next.js `standalone` output |
 

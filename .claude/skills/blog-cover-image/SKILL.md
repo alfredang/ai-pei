@@ -17,7 +17,7 @@ Every change to the cover image must obey **all** of these:
 4. **Font family = `sans-serif`** (no Inter, Exo 2, JetBrains Mono). `sharp`/libvips's SVG renderer **does not have webfonts available** — anything other than a generic CSS family falls back silently to a wider default and breaks the safe-area assumptions.
 5. **Title font auto-sizes**. Use `fitFontSize(title)` — never hardcode the title size. The helper probes 80→32px and re-wraps the title so the longest line fits within `WIDTH - 2*PADDING_X`.
 6. **Title is at most 3 lines.** `wrapTitle()` ellipses anything that would spill past line 3.
-7. **Brand colors**: bg gradient `#0a0118 → #1a0533 → #020611`; purple glow `#5C00E5`; cyan accent `#59EBFD`. No other hues — these are the site's design tokens.
+7. **Brand colors**: bg gradient `#03140c → #0b3a24 → #020b06`; emerald glow `#10B981`; matrix-green accent `#3CE07C`. No other hues — these are the site's design tokens.
 8. **Output = PNG**, content-type `image/png`, key `blog/ai-<timestamp>-<slug>.png`, uploaded via `uploadToR2()`.
 
 ## Where the code lives
@@ -30,16 +30,16 @@ Every change to the cover image must obey **all** of these:
 - **Trigger from editor** — [src/components/admin/PostEditorForm.tsx](src/components/admin/PostEditorForm.tsx)
   - Called automatically after "Generate full post" when Claude returns a title.
   - The "✨ AI Regenerate Image" button on the Featured image card re-runs it with the current title + suggested category as the kicker.
-  - Kickers align to Tertiary Infotech Academy's three pillars plus a general bucket: **AI**, **Cybersecurity**, **Blockchain**, and **Career / Study in Singapore**. Illustrative accent mapping within the existing palette — Cybersecurity → cyan, AI → purple, Blockchain → amber. The color tokens and dimensions below are unchanged regardless of kicker.
+  - Kickers align to Tertiary Infotech Academy's three pillars plus a general bucket: **AI**, **Cybersecurity**, **Blockchain**, and **Career / Study in Singapore**. Illustrative accent mapping within the existing palette — Cybersecurity → green, AI → emerald, Blockchain → amber. The color tokens and dimensions below are unchanged regardless of kicker.
 - **Consumed in** — [src/app/blog/page.tsx](src/app/blog/page.tsx) (list, inside `<div className="aspect-[16/10] overflow-hidden">`) and [src/app/blog/[slug]/page.tsx](src/app/blog/[slug]/page.tsx) (post detail, full bleed).
 
 ## SVG anatomy (mental model)
 
 ```
 0 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1200
-│   ──── 2px cyan top border ────                       │
+│   ──── 2px green top border ────                       │
 │                                                       │
-│   100 ─→  [ CYBERSECURITY ]   (kicker, cyan mono 20) │
+│   100 ─→  [ CYBERSECURITY ]   (kicker, green mono 20) │
 │                                                       │
 │   100 ─→  Why Study an                                │
 │           Advanced Certificate                         │
@@ -52,7 +52,7 @@ Every change to the cover image must obey **all** of these:
 0 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 750
 ```
 
-Background = `#0a0118→#1a0533→#020611` diagonal gradient, with a `#5C00E5` purple glow at top-left and a `#59EBFD` cyan glow at bottom-right, plus a 40-px cyan grid pattern at 0.08 opacity.
+Background = `#03140c→#0b3a24→#020b06` diagonal gradient, with a `#10B981` emerald glow at top-left and a `#3CE07C` matrix-green glow at bottom-right, plus a 40-px green grid pattern at 0.08 opacity.
 
 ## Helpers you must reuse
 
