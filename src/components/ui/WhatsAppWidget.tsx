@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { FaWhatsapp } from "react-icons/fa6";
 import { HiXMark } from "react-icons/hi2";
@@ -8,6 +9,7 @@ import { HiXMark } from "react-icons/hi2";
 const PHONE = "6588666375";
 const PREFILL = "Hi Tertiary Infotech Academy, I'd like to know more about your Advanced Certificate courses.";
 const WA_URL = `https://wa.me/${PHONE}?text=${encodeURIComponent(PREFILL)}`;
+const AVATAR = "/images/chat-avatar.svg";
 
 export function WhatsAppWidget() {
   const pathname = usePathname();
@@ -21,9 +23,7 @@ export function WhatsAppWidget() {
       {open && (
         <div className="glass w-[min(88vw,300px)] rounded-2xl border border-white/15 overflow-hidden shadow-[var(--shadow-glow-blue-lg)]">
           <header className="flex items-center gap-3 bg-[#075E54] px-4 py-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20">
-              <FaWhatsapp className="h-6 w-6 text-white" />
-            </span>
+            <Image src={AVATAR} alt="" width={40} height={40} className="h-10 w-10 rounded-full ring-2 ring-white/40" />
             <div className="leading-tight">
               <p className="font-bold text-white">Course Assistant</p>
               <p className="text-xs text-white/90">Ask about any course</p>
@@ -56,15 +56,20 @@ export function WhatsAppWidget() {
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close WhatsApp chat" : "Chat on WhatsApp"}
-        className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#075E54] shadow-[var(--shadow-glow-blue-lg)] hover:scale-105 transition"
+        className="relative flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-[var(--shadow-glow-blue-lg)] ring-2 ring-white hover:scale-105 transition"
       >
         {!open && (
-          <span className="wa-pulse pointer-events-none absolute inset-0 rounded-full border-2 border-[#075E54]" />
+          <span className="wa-pulse pointer-events-none absolute inset-0 rounded-full border-2 border-[#25D366]" />
         )}
         {open ? (
-          <HiXMark className="relative h-6 w-6 text-white" />
+          <HiXMark className="relative h-7 w-7 text-[#075E54]" />
         ) : (
-          <FaWhatsapp className="relative h-7 w-7 text-white" />
+          <>
+            <Image src={AVATAR} alt="" width={64} height={64} priority className="relative h-16 w-16 rounded-full" />
+            <span className="absolute -bottom-0.5 -right-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-[#25D366] ring-2 ring-white">
+              <FaWhatsapp className="h-3.5 w-3.5 text-white" />
+            </span>
+          </>
         )}
       </button>
     </div>
