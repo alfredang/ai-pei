@@ -58,10 +58,10 @@ export function WhyChooseInstitute() {
             return (
               <div
                 key={reason.title}
-                className="relative rounded-2xl border border-white/10 bg-white/3 p-6 sm:pl-24 group"
+                className="relative rounded-2xl border border-white/10 bg-white/3 p-6 sm:pl-28 group"
               >
-                <div className="sm:absolute sm:left-6 sm:top-6 w-12 h-12 rounded-xl bg-(--color-cyan)/10 border border-(--color-cyan)/20 flex items-center justify-center mb-4 sm:mb-0 group-hover:scale-110 transition-transform">
-                  <Icon className="w-6 h-6 text-(--color-cyan)" />
+                <div className="sm:absolute sm:left-6 sm:top-6 w-16 h-16 rounded-xl bg-(--color-cyan)/10 border border-(--color-cyan)/20 flex items-center justify-center mb-4 sm:mb-0 group-hover:scale-110 transition-transform">
+                  <Icon className="w-9 h-9 text-(--color-cyan)" />
                 </div>
                 <h3 className="font-display font-bold text-lg text-white mb-3 leading-snug">
                   {reason.title}

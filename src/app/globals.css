@@ -754,10 +754,10 @@ body::before {
 }
 
 /* Homepage editorial layout. Kept local to public sections and cards. */
-.home-page > section:not(#hero) { padding-block: clamp(3rem, 5vw, 5.5rem); }
-.home-page > .home-benefits { padding-block: 1.75rem; background: #fff; border-bottom: 1px solid var(--color-border); }
+.home-page > section:not(:where(#hero)) { padding-block: 1rem; }
+.home-page > .home-benefits { padding-block: .75rem; background: #fff; border-bottom: 1px solid var(--color-border); }
 .programmes-section { scroll-margin-top: 4rem; background: radial-gradient(ellipse at 10% 0%, #dceee3 0%, transparent 55%), #f3f8f5; }
-.programmes-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; margin-bottom: 2.75rem; }
+.programmes-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; margin-bottom: 1rem; }
 .programme-card { border: 1px solid #d6e3db; border-radius: 1.5rem; overflow: hidden; background: #fff; box-shadow: 0 6px 24px #0b1f1705; transition: box-shadow 220ms, border-color 220ms; scroll-margin-top: 6rem; }
 .programme-card:hover, .programme-card:focus-within { border-color: var(--programme-accent); box-shadow: 0 18px 48px #0b1f1712; }
 .programme-art { position: relative; aspect-ratio: 1.9; overflow: hidden; background: #04120b; }
@@ -773,10 +773,58 @@ body::before {
 .home-singapore { background: radial-gradient(ellipse at 0% 0%, #0c3c2c, transparent 70%), #04120b; }
 .home-cta { background: radial-gradient(ellipse at 90% 50%, #104b38, transparent 70%), #04120b; }
 @media (max-width: 767px) {
-  .programmes-heading { flex-direction: column; align-items: flex-start; gap: 1.25rem; margin-bottom: 2rem; }
+  .programmes-heading { flex-direction: column; align-items: flex-start; gap: 1.25rem; margin-bottom: 1rem; }
   .programme-art { aspect-ratio: 1.25; }
   .programme-tag { font-size: .6rem; padding: .4rem .55rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .programme-card, .programme-art img, .programme-arrow { transition: none; }
+}
+
+/* Compact homepage spacing: adjacent sections have 32px total separation. */
+.home-page > section > div > .mb-8 { margin-bottom: 1rem; }
+.home-page > section .kicker.mb-4 { margin-bottom: .5rem; }
+.home-page #hero > div.relative > div { min-height: 0; padding-block: 1.5rem; }
+.home-page #hero [role="img"] { max-width: 460px; }
+.home-page #hero h1 { font-size: clamp(2.3rem, 4.6vw, 4rem); }
+.home-page #hero .mt-9 { margin-top: 1.25rem; }
+.home-page #hero .mt-8 { margin-top: 1.25rem; }
+.home-page #why-us > div.relative { gap: 2rem; }
+.home-page #why-us .lg\:sticky { position: static; }
+.home-page #careers .glass { padding: 1.25rem; }
+.home-page #faq > div { max-width: 1200px; }
+.home-page .home-journal { scroll-margin-top: 5rem; }
+.feature-illustration { width: 92px; height: 92px; flex-shrink: 0; object-fit: contain; filter: drop-shadow(0 6px 8px #064e3b15); }
+.admissions-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.admissions-photo { position: relative; aspect-ratio: 2.4; overflow: hidden; background: var(--color-bg-deeper); }
+.admissions-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 30%, #04120bbf); }
+.admissions-country { position: absolute; left: 1.25rem; bottom: 1rem; z-index: 1; color: #fff; }
+.admissions-country strong { display: block; font-size: 1.25rem; font-family: var(--font-display); }
+.admissions-country span { font-size: .75rem; opacity: .85; }
+.admissions-note { margin-top: .75rem; padding: .75rem 1rem; border-left: 3px solid var(--color-cyan); background: var(--color-bg-deeper); border-radius: .5rem; font-size: .75rem; color: var(--color-muted); line-height: 1.6; }
+.enquiry-section { scroll-margin-top: 4rem; background: #dceee3; border-block: 1px solid #bcd9c8; }
+.enquiry-layout { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 1rem; align-items: stretch; }
+.enquiry-intro { padding: clamp(1.5rem, 3vw, 2.75rem); border-radius: 1rem; background: radial-gradient(ellipse at top right, #105039, transparent 75%), #04120b; display: flex; flex-direction: column; justify-content: center; }
+.enquiry-intro h2 { font-size: clamp(2rem, 3.2vw, 3.25rem); }
+.enquiry-form { border: 1px solid #9fc7af; box-shadow: 0 8px 24px #064e3b0d; }
+.enquiry-form input, .enquiry-form select, .enquiry-form textarea { background: #f7faf8; border-color: #bdd1c4; }
+.enquiry-form button[type="submit"] { width: 100%; justify-content: center; padding-block: 1rem; font-size: 1rem; }
+@media (max-width: 767px) {
+  .feature-illustration { width: 80px; height: 80px; }
+  .admissions-grid, .enquiry-layout { grid-template-columns: minmax(0, 1fr); }
+  .admissions-photo { aspect-ratio: 1.9; }
+  .home-page #hero > div.relative > div { padding-block: 1.25rem; gap: 1.5rem; }
+  .home-page #hero [role="img"] { max-width: 320px; }
+}
+
+.home-page > section[id] { scroll-margin-top: 4rem; }
+.home-page > section:not(:where(#hero)) h2 { font-size: clamp(1.75rem, 3vw, 2.5rem); }
+.home-page > section .text-center > p { margin-top: .5rem; }
+.enquiry-intro { justify-content: flex-start; }
+.enquiry-form input, .enquiry-form select { padding-block: .65rem; }
+
+@media (max-width: 767px) {
+  .enquiry-intro > ul, .enquiry-intro > div.relative { display: none; }
+  .enquiry-intro { padding: 1.25rem; }
+  .enquiry-intro h2 { margin-bottom: .75rem; }
 }

@@ -5,7 +5,7 @@ import { and, asc, desc, eq, ilike, inArray, or, sql } from "drizzle-orm";
 import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { buildPostCoverSvg } from "@/lib/post-cover-svg";
+import { PostCover } from "@/components/blog/PostCover";
 import { htmlPath } from "@/lib/html-url";
 import {
   peiEducationPosts,
@@ -227,7 +227,7 @@ export default async function BlogIndex({
     <>
       <Navbar />
       <main>
-        <section className="relative pt-10 pb-10 overflow-hidden">
+        <section className="relative pt-5 pb-5 overflow-hidden">
           <div className="grid-bg opacity-60" />
           <div
             className="glow-blob"
@@ -359,7 +359,7 @@ export default async function BlogIndex({
           </Container>
         </section>
 
-        <section className="pb-24 pt-6">
+        <section className="pb-6 pt-2">
           <Container>
             {items.length === 0 ? (
               <p className="text-(--color-muted) font-mono">[ NO POSTS MATCH ]</p>
@@ -371,32 +371,7 @@ export default async function BlogIndex({
                     href={htmlPath(`/blog/${p.slug}`)}
                     className="card-hover glass overflow-hidden flex flex-col group"
                   >
-                    <div className="aspect-[16/10] overflow-hidden bg-(--color-bg-deeper) relative">
-                      {p.featuredImage ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={p.featuredImage}
-                          alt={p.title}
-                          loading="lazy"
-                          className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
-                        />
-                      ) : (
-                        // Branded fallback cover when the post has no featured
-                        // image — renders the SAME SVG as the R2-stored covers
-                        // so cards match tertiaryinfotech.com pixel-for-pixel.
-                        <div
-                          className="absolute inset-0 [&>svg]:w-full [&>svg]:h-full"
-                          dangerouslySetInnerHTML={{
-                            __html: buildPostCoverSvg(
-                              p.title,
-                              p.categoryId
-                                ? categoryNameById.get(p.categoryId) ?? "Journal"
-                                : "Journal",
-                            ),
-                          }}
-                        />
-                      )}
-                    </div>
+                    <PostCover slug={p.slug} title={p.title} image={p.featuredImage} kicker={p.categoryId ? categoryNameById.get(p.categoryId) ?? "Journal" : "Journal"} />
                     <div className="p-6 flex-1 flex flex-col">
                       {p.publishedAt && (
                         <div className="kicker mb-3">

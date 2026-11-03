@@ -22,7 +22,7 @@
 
 ## Screenshot
 
-![Homepage with generated technology programme images](screenshot.png)
+![Compact homepage with prominent programme enquiry form](screenshot.png)
 
 ## About
 
@@ -103,7 +103,9 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 ### Visual programme discovery
 - Four original, coordinated technology images in `public/images/programmes/` — cybersecurity, artificial intelligence, blockchain and quantum computing; optimized WebP assets served with responsive Next.js Image sizing and descriptive alt text
 - Full-width programme grid with image banners, green overlays, discipline accents, clear course links and a single-column mobile layout
-- Spacious homepage sections, a contrasting Singapore feature section, and a four-image application banner
+- Compact homepage sections, larger custom illustrated feature icons, and a contrasting Singapore feature section
+- India and Vietnam online-learning admissions imagery with a prominent short programme enquiry form
+- Ten original editorial blog banners shared by homepage cards, the journal index, article heroes and social metadata; custom CMS images retain precedence
 
 ### Platform — auth, security, design
 - **Auth.js v5** — credentials provider with bcrypt, JWT sessions, persistent 10-year sliding cookie, middleware-protected `/admin/*`

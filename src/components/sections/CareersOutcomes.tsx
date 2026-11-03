@@ -55,7 +55,7 @@ export function CareersOutcomes() {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {OUTCOMES.map((o) => {
             const Icon = o.icon;
             return (
@@ -64,10 +64,10 @@ export function CareersOutcomes() {
                 className="glass p-6 hover:border-white/15 transition-all duration-300 group"
               >
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-transform group-hover:scale-110"
+                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-3 transition-transform group-hover:scale-110"
                   style={{ background: `color-mix(in srgb, ${o.color} 12%, transparent)` }}
                 >
-                  <Icon className="w-6 h-6" style={{ color: o.color }} />
+                  <Icon className="w-9 h-9" style={{ color: o.color }} />
                 </div>
                 <div className="font-display font-bold text-base text-white mb-2">{o.label}</div>
                 <p className="text-sm text-(--color-muted) leading-relaxed">{o.description}</p>

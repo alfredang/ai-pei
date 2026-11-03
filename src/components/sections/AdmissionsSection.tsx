@@ -1,82 +1,64 @@
+import Image from "next/image";
 import { Container } from "@/components/layout/Container";
+import { HiAcademicCap, HiGlobeAlt } from "react-icons/hi2";
+
+const OPTIONS = [
+  {
+    country: "India", image: "india", icon: HiAcademicCap, heading: "Who Can Apply",
+    alt: "Illustration of Indian adult learners studying online together from India",
+    points: [
+      "Age: 21 years old and above",
+      "Open to applicants from any country",
+      "Provide your relevant education certificates",
+      "English-taught — a short English placement check may apply",
+      "Recognition of Prior Learning exemptions available on verification",
+    ],
+  },
+  {
+    country: "Vietnam", image: "vietnam", icon: HiGlobeAlt, heading: "Study Online from Anywhere",
+    alt: "Illustration of Vietnamese adult learners studying online together from Vietnam",
+    points: [
+      "Live online classes, three evenings a week (Singapore time)",
+      "No relocation and no Student's Pass needed to study online",
+      "Already in Singapore? Ask us about in-person sessions, subject to your pass conditions",
+      "A Short-Term Visit Pass does not allow you to take a multi-module course in Singapore",
+    ],
+  },
+];
 
 export function AdmissionsSection() {
   return (
-    <section id="admissions" className="relative py-4 overflow-hidden">
-      <div
-        className="glow-blob"
-        style={{
-          bottom: "10%",
-          right: "0%",
-          width: 480,
-          height: 480,
-          background: "radial-gradient(circle, #3CE07C 0%, transparent 60%)",
-          opacity: 0.07,
-        }}
-      />
-
-      <Container className="relative">
-        <div className="text-center mb-8">
-          <div className="kicker mb-4">[ ADMISSIONS ]</div>
-          <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
-            Admissions for <span className="gradient-text">International Learners</span>
+    <section id="admissions" className="relative overflow-hidden" aria-labelledby="admissions-title">
+      <Container>
+        <div className="mb-4">
+          <div className="kicker mb-2">[ ADMISSIONS · INTERNATIONAL LEARNERS ]</div>
+          <h2 id="admissions-title" className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-extrabold leading-tight">
+            A Singapore qualification. <span className="gradient-text">Your world of possibilities.</span>
           </h2>
-          <p className="mt-4 text-(--color-muted) text-lg max-w-2xl mx-auto">
-            A simple, foreigner-friendly path to a Singapore tech qualification — taught live
-            online, so you can study from your home country.
-          </p>
+          <p className="mt-2 text-(--color-muted)">Join live online from India, Vietnam or anywhere in the world. All programmes are taught in English.</p>
         </div>
-
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {/* Who can apply */}
-          <div className="glass p-6">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-2xl">🎓</span>
-              <h3 className="font-display font-bold text-xl text-white">Who Can Apply</h3>
-            </div>
-            <ul className="space-y-4">
-              {[
-                "Age: 21 years old and above",
-                "Open to applicants from any country",
-                "Provide your relevant education certificates",
-                "English-taught — a short English placement check may apply",
-                "Recognition of Prior Learning exemptions available on verification",
-              ].map((req) => (
-                <li key={req} className="flex items-start gap-3">
-                  <span className="w-1.5 h-1.5 rounded-full bg-(--color-cyan) shrink-0 mt-2" />
-                  <span className="text-sm text-white/80 leading-relaxed">{req}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Online study & passes — wording follows ICA rules */}
-          <div className="glass p-6">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-2xl">🌏</span>
-              <h3 className="font-display font-bold text-xl text-white">Study Online from Anywhere</h3>
-            </div>
-            <ul className="space-y-4">
-              {[
-                "Live online classes, three evenings a week (Singapore time)",
-                "No relocation and no Student's Pass needed to study online",
-                "Already in Singapore? Ask us about in-person sessions, subject to your pass conditions",
-                "A Short-Term Visit Pass does not allow you to take a multi-module course in Singapore",
-              ].map((req) => (
-                <li key={req} className="flex items-start gap-3">
-                  <span className="w-1.5 h-1.5 rounded-full bg-(--color-amber) shrink-0 mt-2" />
-                  <span className="text-sm text-white/80 leading-relaxed">{req}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-5 p-4 rounded-lg bg-white/3 border border-white/6">
-              <p className="text-xs text-(--color-muted) leading-relaxed">
-                Under ICA rules, a Student&apos;s Pass is only issued for approved full-time courses.
-                Our programmes are part-time and do not lead to a Student&apos;s Pass. Pass rules are
-                set by Singapore&apos;s Immigration &amp; Checkpoints Authority (ICA).
-              </p>
-            </div>
-          </div>
+        <div className="admissions-grid">
+          {OPTIONS.map((option) => {
+            const Icon = option.icon;
+            return (
+              <article key={option.country} className="glass overflow-hidden">
+                <div className="admissions-photo">
+                  <Image src={`/images/admissions/admissions-${option.image}.webp`} alt={option.alt} fill sizes="(max-width: 767px) 100vw, 50vw" className="object-cover" />
+                  <div className="admissions-country"><strong>Learn from {option.country}</strong><span>Live online · Singapore-based trainers</span></div>
+                </div>
+                <div className="p-5">
+                  <h3 className="flex items-center gap-3 font-display font-bold text-xl mb-3"><Icon className="w-9 h-9 shrink-0 text-(--color-cyan)" aria-hidden />{option.heading}</h3>
+                  <ul className="space-y-2">
+                    {option.points.map((point) => <li key={point} className="flex gap-2 text-sm leading-relaxed text-(--color-muted)"><span className="text-(--color-cyan) shrink-0" aria-hidden>✓</span><span>{point}</span></li>)}
+                  </ul>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+        <div className="admissions-note">
+          Under ICA rules, a Student&apos;s Pass is only issued for approved full-time courses. Our programmes are part-time and do not lead to a Student&apos;s Pass. Pass rules are set by Singapore&apos;s Immigration &amp; Checkpoints Authority (ICA).
+          <span className="block mt-1 opacity-80">Student images are illustrative.</span>
         </div>
       </Container>
     </section>

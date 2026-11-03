@@ -8,7 +8,6 @@ import { Programs } from "@/components/sections/Programs";
 import { CareersOutcomes } from "@/components/sections/CareersOutcomes";
 import { AdmissionsSection } from "@/components/sections/AdmissionsSection";
 import { FaqSection } from "@/components/sections/FaqSection";
-import { CTABanner } from "@/components/sections/CTABanner";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { FeaturedPosts } from "@/components/sections/FeaturedPosts";
 import { Navbar } from "@/components/layout/Navbar";
@@ -106,10 +105,9 @@ export default function HomePage() {
         <WhyChooseInstitute />
         <CareersOutcomes />
         <AdmissionsSection />
+        <ContactForm enquiry />
         <FeaturedPosts />
         <FaqSection />
-        <CTABanner />
-        <ContactForm />
       </main>
       <Footer />
     </>

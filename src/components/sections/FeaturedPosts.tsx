@@ -4,7 +4,7 @@ import { posts } from "@/db/schema";
 import { and, desc, eq } from "drizzle-orm";
 import { Container } from "@/components/layout/Container";
 import { htmlPath } from "@/lib/html-url";
-import { buildPostCoverSvg } from "@/lib/post-cover-svg";
+import { PostCover } from "@/components/blog/PostCover";
 import { HiArrowUpRight, HiStar } from "react-icons/hi2";
 
 function snippetFromHtml(html: string | null | undefined, max = 200): string {
@@ -70,24 +70,8 @@ function PostCard({ p }: { p: PostLite }) {
       href={htmlPath(`/blog/${p.slug}`)}
       className="card-hover glass overflow-hidden flex flex-col group"
     >
-      <div className="aspect-[16/10] overflow-hidden bg-(--color-bg-deeper) relative">
-        {p.featuredImage ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={p.featuredImage}
-            alt={p.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
-          />
-        ) : (
-          // Same branded fallback cover the /blog list uses when a post has no
-          // stored featuredImage.
-          <div
-            className="absolute inset-0 [&>svg]:w-full [&>svg]:h-full"
-            dangerouslySetInnerHTML={{ __html: buildPostCoverSvg(p.title, "Journal") }}
-          />
-        )}
-      </div>
-      <div className="p-6 flex-1 flex flex-col">
+      <PostCover slug={p.slug} title={p.title} image={p.featuredImage} />
+      <div className="p-5 flex-1 flex flex-col">
         {p.publishedAt && (
           <div className="kicker mb-3">
             {new Date(p.publishedAt).toLocaleDateString("en-SG", {
@@ -119,10 +103,10 @@ export async function FeaturedPosts() {
   if (featured.length === 0 && latest.length === 0) return null;
 
   return (
-    <section className="relative py-4 space-y-16">
+    <section id="journal" className="home-journal relative py-4 space-y-6">
       {featured.length > 0 && (
         <Container>
-          <div className="flex items-end justify-between mb-6 gap-6 flex-wrap">
+          <div className="flex items-end justify-between mb-4 gap-4 flex-wrap">
             <div>
               <div className="kicker mb-4 flex items-center gap-2">
                 <HiStar className="w-4 h-4 text-(--color-amber)" />
@@ -139,7 +123,7 @@ export async function FeaturedPosts() {
               ALL ARTICLES <HiArrowUpRight className="w-4 h-4" />
             </Link>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-4">
             {featured.map((p) => (
               <PostCard key={p.id} p={p} />
             ))}
@@ -149,7 +133,7 @@ export async function FeaturedPosts() {
 
       {latest.length > 0 && (
         <Container>
-          <div className="flex items-end justify-between mb-6 gap-6 flex-wrap">
+          <div className="flex items-end justify-between mb-4 gap-4 flex-wrap">
             <div>
               <div className="kicker mb-4">[ LATEST ]</div>
               <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
@@ -163,7 +147,7 @@ export async function FeaturedPosts() {
               ALL ARTICLES <HiArrowUpRight className="w-4 h-4" />
             </Link>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-4">
             {latest.map((p) => (
               <PostCard key={p.id} p={p} />
             ))}

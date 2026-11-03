@@ -7,7 +7,8 @@ import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ShareButtons } from "@/components/blog/ShareButtons";
-import { buildPostCoverSvg } from "@/lib/post-cover-svg";
+import { PostCover } from "@/components/blog/PostCover";
+import { postHeroImage } from "@/lib/post-hero-images";
 import { absoluteHtmlUrl, htmlPath } from "@/lib/html-url";
 import {
   getPeiEducationPost,
@@ -101,7 +102,7 @@ export async function generateMetadata({
   const post = (await getPost(slug)) ?? staticPostAsRow(slug);
   if (!post) return { title: "Not found" };
   const canonical = htmlPath(post.canonicalUrl ?? `/blog/${post.slug}`);
-  const ogImage = post.ogImage ?? post.featuredImage ?? "/opengraph-image";
+  const ogImage = postHeroImage(post.slug, post.ogImage ?? post.featuredImage) ?? "/opengraph-image";
   return {
     title: post.seoTitle ?? post.title,
     description: post.seoDescription ?? post.excerpt ?? undefined,
@@ -183,7 +184,7 @@ export default async function PostPage({
     description: post.seoDescription ?? post.excerpt ?? undefined,
     datePublished: post.publishedAt?.toISOString(),
     dateModified: (post.updatedAt ?? post.publishedAt)?.toISOString(),
-    image: post.featuredImage ? new URL(post.featuredImage, SITE_URL).toString() : undefined,
+    image: postHeroImage(post.slug, post.featuredImage) ? new URL(postHeroImage(post.slug, post.featuredImage)!, SITE_URL).toString() : undefined,
     mainEntityOfPage: { "@type": "WebPage", "@id": postUrl },
     author: {
       "@type": "Organization",
@@ -210,28 +211,11 @@ export default async function PostPage({
   return (
     <>
       <Navbar />
-      <main className="pt-16">
+      <main className="pt-2">
         <article className="py-6">
           <Container className="max-w-4xl">
-            <div className="grid md:grid-cols-2 gap-8 items-start mb-6">
-              {post.featuredImage ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={post.featuredImage}
-                  alt={post.title}
-                  className="w-full rounded-xl border border-white/10"
-                />
-              ) : (
-                // Branded fallback cover when the post has no featured image —
-                // renders the SAME SVG as the R2-stored covers so it matches
-                // tertiaryinfotech.com pixel-for-pixel.
-                <div
-                  className="w-full aspect-[16/10] rounded-xl border border-white/10 overflow-hidden [&>svg]:w-full [&>svg]:h-full"
-                  dangerouslySetInnerHTML={{
-                    __html: buildPostCoverSvg(post.title, category?.name ?? "Journal"),
-                  }}
-                />
-              )}
+            <div className="grid gap-5 items-start mb-5">
+              <PostCover slug={post.slug} title={post.title} image={post.featuredImage} kicker={category?.name ?? "Journal"} wide priority className="rounded-xl border border-white/10" />
               <div>
                 <h1 className="text-3xl md:text-4xl font-bold mb-3 leading-tight">
                   {post.title}
