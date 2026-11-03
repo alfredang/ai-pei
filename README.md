@@ -101,6 +101,7 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 - **`POST /api/admin/sync/posts` debug probe** — a GET variant inspects what would sync without mutating prod
 
 ### Visual programme discovery
+- High-contrast dark green Register Now buttons with white text in desktop and mobile navigation
 - Four original, coordinated technology images in `public/images/programmes/` — cybersecurity, artificial intelligence, blockchain and quantum computing; optimized WebP assets served with responsive Next.js Image sizing and descriptive alt text
 - Full-width programme grid with image banners, green overlays, discipline accents, clear course links and a single-column mobile layout
 - Compact homepage sections, larger custom illustrated feature icons, and a contrasting Singapore feature section

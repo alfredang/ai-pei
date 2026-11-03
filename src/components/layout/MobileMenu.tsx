@@ -68,7 +68,7 @@ export function MobileMenu({ links }: { links: MenuLink[] }) {
             <Link
               href="/#contact"
               onClick={() => setOpen(false)}
-              className="mt-2 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-white/5 border border-(--color-cyan)/40 text-base text-(--color-cyan) hover:bg-(--color-cyan)/10 transition"
+              className="mt-2 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-[#065F46] border border-[#065F46] text-base font-semibold text-[#FFFFFF] hover:bg-[#064E3B] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#065F46] transition-colors"
             >
               Register Now
               <span aria-hidden>→</span>

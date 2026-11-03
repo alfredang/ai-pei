@@ -81,7 +81,7 @@ export async function Navbar() {
         </nav>
         <Link
           href="/#contact"
-          className="hidden lg:inline-flex shrink-0 items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-(--color-cyan)/40 text-sm whitespace-nowrap text-(--color-cyan) hover:bg-(--color-cyan)/10 transition"
+          className="hidden lg:inline-flex shrink-0 items-center gap-2 px-4 py-2 rounded-lg bg-[#065F46] border border-[#065F46] text-sm font-semibold whitespace-nowrap text-[#FFFFFF] hover:bg-[#064E3B] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#065F46] transition-colors"
         >
           Register Now
           <span aria-hidden>→</span>
