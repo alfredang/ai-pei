@@ -36,7 +36,7 @@ const PROGRAMS: Program[] = [
       "Career paths: Security Analyst, SOC Engineer, Penetration Tester",
       "Globally portable, industry-aligned certifications",
     ],
-    cta: { label: "Explore Cybersecurity courses in Singapore", href: "/courses" },
+    cta: { label: "Advanced Certificate in Cyber Security in Singapore", href: "/courses/advanced-certificate-in-cyber-security" },
     accent: "var(--color-cyan)",
   },
   {
@@ -51,7 +51,7 @@ const PROGRAMS: Program[] = [
       "Career paths: AI Engineer, ML Engineer, Data Scientist",
       "Project portfolio built on production-grade tooling",
     ],
-    cta: { label: "Explore AI training for foreigners", href: "/courses" },
+    cta: { label: "Advanced Certificate in Artificial Intelligence in Singapore", href: "/advanced-certificate-in-artificial-intelligence" },
     accent: "var(--color-purple-light)",
   },
   {
@@ -66,7 +66,7 @@ const PROGRAMS: Program[] = [
       "Career paths: Blockchain Developer, Web3 Engineer, Solutions Architect",
       "Gateway to ASEAN fintech employers and startups",
     ],
-    cta: { label: "Explore the Blockchain academy in Singapore", href: "/courses" },
+    cta: { label: "Advanced Certificate in Blockchain in Singapore", href: "/advanced-certificate-in-blockchain" },
     accent: "var(--color-amber)",
   },
   {
@@ -81,7 +81,7 @@ const PROGRAMS: Program[] = [
       "Career paths: Quantum Developer, Research Engineer, R&D Specialist",
       "Early-mover advantage in a high-growth Asian field",
     ],
-    cta: { label: "Explore Quantum Computing courses in Asia", href: "/courses" },
+    cta: { label: "Advanced Certificate in Quantum Computing in Singapore", href: "/courses/advanced-certificate-in-applied-quantum-computing-and-qiskit-programming" },
     accent: "var(--color-cyan)",
   },
 ];

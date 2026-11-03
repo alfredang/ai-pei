@@ -27,6 +27,7 @@ const OWN_ROUTES = new Set([
   "/",
   "/advanced-certificate-in-agentic-ai-coding",
   "/advanced-certificate-in-ai-security-analyst",
+  "/advanced-certificate-in-artificial-intelligence",
   "/advanced-certificate-in-blockchain",
   "/ai-agent-deployment",
   "/ai-chatbot-portfolio",

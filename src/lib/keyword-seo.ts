@@ -3,7 +3,12 @@
 // JSON-LD by plain(). Keyword → page map:
 //   "AI certifications", "advanced AI certifications"  → /courses
 //   "advanced AI audit certification(s)"               → /courses/advanced-certificate-in-ai-audit-and-assurance
+//   "Advanced Certificate in Cyber Security in Singapore",
 //   "advanced cyber security certification"            → /courses/advanced-certificate-in-cyber-security
+//   "Advanced Certificate in Quantum Computing in Singapore"
+//                → /courses/advanced-certificate-in-applied-quantum-computing-and-qiskit-programming
+// (AI, Blockchain and "Higher Education in Singapore" have their own routes —
+// see DISCIPLINE_PAGES in src/lib/course-categories.ts.)
 // Lives in code (not the courses table) because course copy is plain text and
 // can't carry bold markup. Title/description here override the DB seo fields.
 
@@ -74,6 +79,50 @@ export const COURSES_HUB_SEO = {
 };
 
 export const COURSE_KEYWORD_SEO: Record<string, CourseKeywordSeo> = {
+  "advanced-certificate-in-applied-quantum-computing-and-qiskit-programming": {
+    title: "Advanced Certificate in Quantum Computing in Singapore",
+    description:
+      "Earn an Advanced Certificate in Quantum Computing in Singapore: 150 hours of live online Qiskit programming on IBM Quantum systems. Enquire for the next intake.",
+    keywords:
+      "Advanced Certificate in Quantum Computing in Singapore, quantum computing course Singapore, quantum computing certificate, Qiskit course, IBM Quantum training, learn quantum programming, quantum computing for international students, Tertiary Infotech Academy",
+    h1Tagline: "Your Advanced Certificate in Quantum Computing in Singapore",
+    intro: {
+      kicker: "QUANTUM COMPUTING CERTIFICATE",
+      heading: "Why Take an **Advanced Certificate in Quantum Computing** in Singapore",
+      paragraphs: [
+        "Quantum computing is moving from research labs into industry, and employers need people who can actually program quantum circuits. This **Advanced Certificate in Quantum Computing** from Tertiary Infotech Academy, a registered Singapore Private Education Institution, teaches you to build circuits in Python with Qiskit, run them on IBM Quantum systems and interpret the results from both simulators and real hardware.",
+        "Across five 30-hour modules you progress from qubits, state vectors and the underlying linear algebra to single- and multi-qubit gates, entanglement, the Deutsch-Jozsa algorithm, and quantum communication concepts such as quantum key distribution and teleportation — finishing with an applied practice portfolio.",
+        "Classes are live online, three evenings a week (7:00 PM – 10:00 PM Singapore time), over about four months — so you can earn a **quantum computing certificate** from Singapore while you keep working, wherever you live. Basic programming knowledge is recommended for the hands-on Qiskit labs.",
+      ],
+      link: {
+        href: "/courses#quantum-computing",
+        label: "See all Quantum Computing courses",
+      },
+    },
+    faqHeading: "**Advanced Certificate in Quantum Computing** FAQs",
+    faqs: [
+      {
+        q: "What will I learn in the Advanced Certificate in Quantum Computing?",
+        a: "You learn quantum computing foundations and the maths behind them, set up a Qiskit development environment, program single- and multi-qubit circuits, implement the Deutsch-Jozsa algorithm on IBM Quantum hardware, and study quantum key distribution and quantum teleportation.",
+      },
+      {
+        q: "Do I need a physics or maths degree?",
+        a: "No. You must be at least 21 with at least a C6 pass at GCE 'O' Level in any three subjects (or equivalent), or be a mature candidate aged 25 or above with four years of work experience. Basic programming knowledge is recommended; the linear algebra you need is taught in Module 1.",
+      },
+      {
+        q: "How long does the programme take?",
+        a: "150 hours over about four months — five modules of 10 live online sessions each (9 teaching + 1 assessment), three evenings a week from 7:00 PM to 10:00 PM Singapore time.",
+      },
+      {
+        q: "Can international students enrol?",
+        a: "Yes. The programme is taught in English and delivered live online, so you can study from your home country. It is a part-time course, so it does not lead to a Student's Pass — under ICA rules those are only issued for approved full-time courses — and you do not need one to study online.",
+      },
+      {
+        q: "What jobs can a quantum computing certificate lead to?",
+        a: "Graduates target roles such as Junior Quantum Software Developer, Qiskit Developer, Quantum Computing Associate, Quantum Applications Analyst and Quantum Cryptography Analyst, or apply quantum skills in research, cyber security and emerging-technology consulting.",
+      },
+    ],
+  },
   "advanced-certificate-in-ai-audit-and-assurance": {
     title: "Advanced AI Audit Certification | AI Audit & Assurance",
     description:
@@ -119,17 +168,17 @@ export const COURSE_KEYWORD_SEO: Record<string, CourseKeywordSeo> = {
     ],
   },
   "advanced-certificate-in-cyber-security": {
-    title: "Advanced Cyber Security Certification | CompTIA, WSQ Funded",
+    title: "Advanced Certificate in Cyber Security in Singapore",
     description:
-      "Earn an advanced cyber security certification in Singapore via four stackable CompTIA modules: A+, Security+, Linux+, CySA+ or PenTest+. Register your interest.",
+      "Study the Advanced Certificate in Cyber Security in Singapore: CompTIA-aligned modules in A+, Security+, Linux+, then CySA+ or PenTest+. Register today.",
     keywords:
-      "advanced cyber security certification, cyber security certification Singapore, advanced certificate in cyber security Singapore, CompTIA certification Singapore, CompTIA Security+ course, CySA+ course, PenTest+ course, WSQ cyber security course",
-    h1Tagline: "Advanced Cyber Security Certification with CompTIA",
+      "Advanced Certificate in Cyber Security in Singapore, advanced certificate in cyber security, cyber security course Singapore, advanced cyber security certification, cyber security certification Singapore, advanced certificate in cyber security Singapore, CompTIA certification Singapore, CompTIA Security+ course, CySA+ course, PenTest+ course, WSQ cyber security course",
+    h1Tagline: "in Singapore — an Advanced Cyber Security Certification with CompTIA",
     intro: {
       kicker: "CYBER SECURITY CERTIFICATION",
       heading: "An **Advanced Cyber Security Certification** Built on CompTIA",
       paragraphs: [
-        "The Advanced Certificate in Cyber Security is an **advanced cyber security certification** pathway from Tertiary Infotech Academy that takes you from IT fundamentals to job-ready security operations. You complete three foundation modules — CompTIA A+, Security+ and Linux+ — and one elective, CompTIA CySA+ or PenTest+, each following the official CompTIA syllabus.",
+        "The **Advanced Certificate in Cyber Security** is an **advanced cyber security certification** pathway in Singapore from Tertiary Infotech Academy, a registered Private Education Institution, that takes you from IT fundamentals to job-ready security operations. You complete three foundation modules — CompTIA A+, Security+ and Linux+ — and one elective, CompTIA CySA+ or PenTest+, each following the official CompTIA syllabus.",
         "Because every module maps to a globally recognised CompTIA exam, this **cyber security certification** is portable across Singapore, Asia and beyond. Hands-on practice covers IT support, system administration, network security, threat detection and vulnerability assessment, preparing you for roles such as SOC Analyst, Cybersecurity Analyst and Junior Penetration Tester.",
         "Singapore Citizens and Permanent Residents can receive up to 70% WSQ funding and use SkillsFuture Credit for the balance. Want to go further? Our Cybersecurity Operations Analyst and Enterprise Information Security Leadership certificates extend this **advanced cyber security certification** into SOC operations and security leadership.",
       ],
@@ -153,8 +202,12 @@ export const COURSE_KEYWORD_SEO: Record<string, CourseKeywordSeo> = {
         a: "Yes. All four modules are eligible for up to 70% WSQ funding for Singapore Citizens and Permanent Residents, and the balance can be paid with SkillsFuture Credit. International students pay the full course fee.",
       },
       {
+        q: "Is the Advanced Certificate in Cyber Security available online?",
+        a: "Yes. Like all our programmes, it is delivered primarily as live online classes, so you can study from anywhere. All teaching is in English.",
+      },
+      {
         q: "Can international students take this certification?",
-        a: "Yes. All classes are taught in English. Register your interest below and our team will advise you on schedules, fees and study options in Singapore.",
+        a: "Yes. Because classes are primarily live online, you can study from your home country without relocating. The programme does not come with a Student's Pass — under ICA rules those are only issued for approved full-time courses — and you do not need one to study online. Register your interest and our team will advise you on schedules and fees.",
       },
       {
         q: "What jobs can I get with this certification?",

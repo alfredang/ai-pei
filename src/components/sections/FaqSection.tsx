@@ -4,7 +4,7 @@ import { Container } from "@/components/layout/Container";
 export const HOME_FAQ = [
   {
     q: "Can foreigners study cybersecurity, AI, blockchain or quantum computing in Singapore?",
-    a: "Yes. Our programmes are designed for international professionals and students. All courses are taught in English, and we guide you on the visa or pass options that fit part-time or full-time study so you can train in Singapore with confidence.",
+    a: "Yes. Our programmes are designed for international professionals and students. All courses are taught in English and delivered primarily as live online classes, so you can study from your home country. They are part-time, so they do not lead to a Student's Pass — under ICA rules those are only issued for approved full-time courses — and you do not need one to study online.",
   },
   {
     q: "Are the courses taught in English?",
@@ -20,7 +20,7 @@ export const HOME_FAQ = [
   },
   {
     q: "Will studying here help me get a tech job in Singapore or Asia?",
-    a: "Singapore is a leading tech and fintech hub in Asia, home to the regional offices of major MNCs, startups and government tech agencies. Your skills are built to be job-ready and globally portable, and we share guidance on career pathways and work-pass options across the region.",
+    a: "Singapore is a leading tech and fintech hub in Asia, home to the regional offices of major MNCs, startups and government tech agencies. Your skills are built to be job-ready and globally portable, and we share guidance on career pathways across the region.",
   },
 ];
 

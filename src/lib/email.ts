@@ -160,7 +160,7 @@ ${rows
   )
   .join("\n")}
 </table>
-<p style="font-size:12px;color:#666">Next steps: confirm the batch, then send the student contract. The student has acknowledged that the start date is tentative and that, for physical classes, they arrange their own accommodation and flights.</p>`;
+<p style="font-size:12px;color:#666">Next steps: confirm the batch, then send the student contract. The student has acknowledged that the start date is tentative and that physical classes are only for applicants already living in Singapore on a pass that allows study (our part-time programmes do not lead to a Student&#39;s Pass). If they chose Physical, confirm their pass before enrolling.</p>`;
 
   const raw = buildRawMessage({
     from: `"Tertiary Infotech Academy" <${fromUser}>`,

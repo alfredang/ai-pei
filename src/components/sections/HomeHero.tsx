@@ -16,10 +16,10 @@ import {
 // Values come from the dark-scope palette in globals.css; quantum uses the
 // matrix-rain highlight so all four fibre colours stay distinct.
 const DISCIPLINES = [
-  { id: "ai", label: "Artificial Intelligence", icon: HiCpuChip, color: "#2DD4BF", href: "/courses.html#artificial-intelligence" },
-  { id: "cybersecurity", label: "Cyber Security", icon: HiShieldCheck, color: "#3CE07C", href: "/courses.html#cyber-security" },
-  { id: "blockchain", label: "Blockchain", icon: HiCubeTransparent, color: "#F6AE64", href: "/courses.html#blockchain" },
-  { id: "quantum", label: "Quantum Computing", icon: HiSparkles, color: "#CDFFD7", href: "/courses.html#quantum-computing" },
+  { id: "ai", label: "Artificial Intelligence", icon: HiCpuChip, color: "#2DD4BF", href: "/advanced-certificate-in-artificial-intelligence.html" },
+  { id: "cybersecurity", label: "Cyber Security", icon: HiShieldCheck, color: "#3CE07C", href: "/courses/advanced-certificate-in-cyber-security.html" },
+  { id: "blockchain", label: "Blockchain", icon: HiCubeTransparent, color: "#F6AE64", href: "/advanced-certificate-in-blockchain.html" },
+  { id: "quantum", label: "Quantum Computing", icon: HiSparkles, color: "#CDFFD7", href: "/courses/advanced-certificate-in-applied-quantum-computing-and-qiskit-programming.html" },
 ];
 const FIBER_COLORS = DISCIPLINES.map((d) => d.color);
 
@@ -201,7 +201,7 @@ export function HomeHero() {
 
             {/* Trust line */}
             <p className="mt-8 text-sm text-white/55 reveal reveal-d2">
-              English-taught · Globally recognised · Visa &amp; relocation guidance
+              Live online classes · Study from anywhere · English-taught
             </p>
           </div>
 

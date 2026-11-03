@@ -37,14 +37,16 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 ### SEO built into every route
 - Per-route `generateMetadata` — title, description, canonical URL, OG (with image + locale + type), Twitter card
 - Sitewide **EducationalOrganization** JSON-LD with social `sameAs[]`, taxID, postal address
-- **Course** JSON-LD on every `/courses/<slug>` page; **CollectionPage** on the `/courses` catalogue
-- **Keyword-targeted course copy** — [`src/lib/keyword-seo.ts`](src/lib/keyword-seo.ts) maps target keywords to pages (*AI certifications* / *advanced AI certifications* → `/courses`, *advanced AI audit certification* → AI Audit and Assurance, *advanced cyber security certification* → Cyber Security). It supplies the title, meta description, an H1 tagline, a bold-keyword intro section and an FAQ (with **FAQPage** schema); `**keyword**` markers render bold via [`KeywordContent.tsx`](src/components/sections/KeywordContent.tsx)
+- **Course** (with `EducationalOccupationalCredential`, `courseMode: Online`) + **BreadcrumbList** JSON-LD on every `/courses/<slug>` page; **CollectionPage** on the `/courses` catalogue
+- **Keyword landing pages** — one page per target keyword: *Higher Education in Singapore* → `/study-in-singapore`, *Advanced Certificate in Artificial Intelligence in Singapore* → `/advanced-certificate-in-artificial-intelligence` (hub of the five AI programmes, **CollectionPage** + **ItemList** schema), *…Cyber Security in Singapore* → the cyber course page, *…Blockchain in Singapore* → `/advanced-certificate-in-blockchain`, *…Quantum Computing in Singapore* → the quantum course page. [`src/lib/course-categories.ts`](src/lib/course-categories.ts) holds the discipline → page map used for keyword-anchored internal links (homepage hero, programmes section, `/courses` hub)
+- **Keyword-targeted course copy** — [`src/lib/keyword-seo.ts`](src/lib/keyword-seo.ts) maps target keywords to pages (*AI certifications* / *advanced AI certifications* → `/courses`, *advanced AI audit certification* → AI Audit and Assurance, *Advanced Certificate in Cyber Security in Singapore* / *advanced cyber security certification* → Cyber Security, *Advanced Certificate in Quantum Computing in Singapore* → Applied Quantum Computing and Qiskit Programming). It supplies the title, meta description, an H1 tagline, a bold-keyword intro section and an FAQ (with **FAQPage** schema); `**keyword**` markers render bold via [`KeywordContent.tsx`](src/components/sections/KeywordContent.tsx)
 - **Article** + **BreadcrumbList** schema on every blog post (author, datePublished, dateModified, image, mainEntityOfPage)
 - **LocalBusiness** schema on `/contact` with opening hours
 - **Service** + **HowTo** + **FAQPage** + **BreadcrumbList** schema on every service landing page
 - Dynamic `sitemap.xml` + `robots.txt`, regenerated on every content edit via `revalidatePath`
 - Legacy-URL 301s in middleware — old Magento catalogue URLs indexed against this domain are redirected to their live counterpart instead of 404ing, so historic link equity is preserved
 - British / Singapore English spelling baked into the SEO skill
+- **ICA-compliant study messaging** — every programme is stated as **live online** (study from anywhere). Pass/visa copy follows the Immigration & Checkpoints Authority's published rules: part-time courses do not lead to a Student's Pass, and a Short-Term Visit Pass does not cover a multi-module course — with links to the official ICA pages
 
 ### Lead generation in every page
 - **Dedicated service landing pages** with visual 5-step timeline, sticky lead form, FAQ accordion, benefits grid
@@ -197,6 +199,9 @@ src/
     [slug]/page.tsx           Dynamic CMS page (with redirects lookup)
     courses/page.tsx          Course catalogue grouped by discipline (AI, Cyber Security, Blockchain, Quantum)
     courses/[slug]/page.tsx   Course detail — DB course + modules, fee, job roles, trainers, keyword SEO block
+    study-in-singapore/       "Higher Education in Singapore" pillar — ICA-accurate study-from-overseas guidance
+    advanced-certificate-in-artificial-intelligence/  AI discipline hub (five AI Advanced Certificates)
+    advanced-certificate-in-blockchain/               Blockchain discipline landing page
     admin/
       posts/                  Filterable + paginated post list, TipTap editor
       pages/                  Same for pages
@@ -233,6 +238,7 @@ src/
     site-content.ts           Static feature copy
     globe-land.ts             Base64 2° land mask (Natural Earth 110m) for the hero globe
     keyword-seo.ts            Keyword → page map: SEO titles, descriptions, bold-keyword copy, FAQs
+    course-categories.ts      Course → discipline grouping + discipline keyword landing pages
     course-fee.ts             Course fee = modules × $1,800 (excl. / incl. GST)
     site-settings.ts          Brand identity loader
     ai/claude.ts              Admin AI Assist runner

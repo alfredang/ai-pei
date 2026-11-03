@@ -29,7 +29,7 @@ const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.tertiaryinfotech.e
 
 // Shared boilerplate — identical for every course, edited here once.
 const VENUE =
-  "12 Woodlands Square #07-85/86/87 Woods Square Tower 1, Singapore 737715. 5 mins walk from Woodlands (NS9) MRT station. The venue is disabled-friendly.";
+  "Classes are delivered primarily live online in a virtual classroom, so you can join from anywhere. Any in-person sessions are held at 12 Woodlands Square #07-85/86/87 Woods Square Tower 1, Singapore 737715 — 5 mins walk from Woodlands (NS9) MRT station. The venue is disabled-friendly.";
 const CERTIFICATION_STATEMENTS = [
   "Certificate of Completion from Tertiary Infotech — upon meeting at least 75% attendance and passing the assessment(s).",
   "OpenCerts (Statement of Achievement) from SkillsFuture Singapore — after passing the assessment(s) and achieving at least 75% attendance.",
@@ -697,7 +697,14 @@ export default async function CourseDetail({
       : {}),
     ...(c.courseCode ? { courseCode: c.courseCode } : {}),
     inLanguage: "en",
-    ...(c.certificate ? { educationalCredentialAwarded: "Advanced Certificate" } : {}),
+    ...(c.certificate
+      ? {
+          educationalCredentialAwarded: {
+            "@type": "EducationalOccupationalCredential",
+            credentialCategory: "Advanced Certificate",
+          },
+        }
+      : {}),
     ...(fee
       ? {
           offers: {
@@ -714,21 +721,21 @@ export default async function CourseDetail({
       url: BASE,
       sameAs: BASE,
     },
+    // All programmes are delivered primarily as live online classes.
     hasCourseInstance: {
       "@type": "CourseInstance",
-      courseMode: "Onsite",
-      location: {
-        "@type": "Place",
-        name: "Tertiary Infotech Academy",
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: "12 Woodlands Square #07-85/86/87 Woods Square Tower 1",
-          addressLocality: "Singapore",
-          postalCode: "737715",
-          addressCountry: "SG",
-        },
-      },
+      courseMode: "Online",
     },
+  };
+
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${BASE}/` },
+      { "@type": "ListItem", position: 2, name: "Courses", item: absoluteHtmlUrl(BASE, "/courses") },
+      { "@type": "ListItem", position: 3, name: c.title, item: absoluteHtmlUrl(BASE, `/courses/${c.slug}`) },
+    ],
   };
 
   return (
@@ -738,6 +745,10 @@ export default async function CourseDetail({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
         />
 
         {/* Hero */}
@@ -758,6 +769,7 @@ export default async function CourseDetail({
             <div className="kicker mb-4">[ WSQ ADVANCED CERTIFICATE ]</div>
             <h1 className="font-display text-[clamp(2rem,5vw,3.5rem)] font-extrabold leading-[1.05] max-w-4xl">
               {c.title}
+              {seo && " "}
               {seo && (
                 <span className="block mt-3 text-[clamp(1.1rem,2.4vw,1.6rem)] font-bold gradient-text">
                   {seo.h1Tagline}
@@ -769,6 +781,10 @@ export default async function CourseDetail({
             )}
 
             <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full font-mono text-xs bg-(--color-cyan)/10 text-(--color-cyan) border border-(--color-cyan)/30">
+                <span className="w-1.5 h-1.5 rounded-full bg-(--color-cyan)" aria-hidden />
+                Live online classes · study from anywhere
+              </span>
               {c.courseCode && (
                 <span className="font-mono text-white/60">
                   Course Code: <span className="text-white">{c.courseCode}</span>
@@ -1101,7 +1117,7 @@ export default async function CourseDetail({
             <div className="glass card-hover p-7">
               <div className="flex items-center gap-2 mb-4">
                 <HiMapPin className="w-5 h-5 text-(--color-cyan)" />
-                <h2 className="font-display font-bold text-xl">Venue</h2>
+                <h2 className="font-display font-bold text-xl">Delivery &amp; Venue</h2>
               </div>
               <p className="text-sm text-(--color-muted) leading-relaxed">{VENUE}</p>
             </div>

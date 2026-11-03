@@ -52,7 +52,7 @@ export function ContactForm({
             )}
           </h2>
           <p className="text-(--color-muted) text-lg max-w-xl mx-auto">
-            Tell us your goals and we&apos;ll guide you on programmes, fees and visa options.
+            Tell us your goals and we&apos;ll guide you on programmes, fees and intakes — all live online.
             International learners welcome — our team replies within 3-5 business days.
           </p>
         </div>

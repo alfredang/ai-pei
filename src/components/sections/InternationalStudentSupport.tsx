@@ -1,7 +1,7 @@
 import { Container } from "@/components/layout/Container";
 import {
   HiBolt,
-  HiIdentification,
+  HiComputerDesktop,
   HiHomeModern,
   HiAcademicCap,
   HiGlobeAsiaAustralia,
@@ -15,14 +15,14 @@ const BENEFITS = [
     body: "Earn an industry-recognised Advanced Certificate in just 3 to 6 months — start your tech career fast, without committing years to a degree.",
   },
   {
-    icon: HiIdentification,
-    title: "Student Pass application assistance",
-    body: "We guide you through the ICA Student's Pass application end-to-end — eligibility, documents and submission — so you can study in Singapore with confidence.",
+    icon: HiComputerDesktop,
+    title: "Live online — study from anywhere",
+    body: "Classes run live online in English, in Singapore-time evening sessions, so you can earn a Singapore Advanced Certificate from your home country. No relocation and no Student's Pass needed.",
   },
   {
     icon: HiHomeModern,
-    title: "Accommodation & logistics support",
-    body: "Arriving from overseas? We help you sort accommodation, airport arrival and settling-in logistics so you can focus on your studies.",
+    title: "Visiting Singapore? Practical tips",
+    body: "Planning a trip for a networking event or to meet your trainers? We share tips on accommodation and getting around — check ICA's entry and visa requirements before you travel.",
   },
   {
     icon: HiAcademicCap,
@@ -32,12 +32,12 @@ const BENEFITS = [
   {
     icon: HiGlobeAsiaAustralia,
     title: "One-day Singapore tour",
-    body: "Get oriented with a complimentary one-day tour of Singapore — see the city, the campus area and student life before classes begin.",
+    body: "If you visit Singapore, join a complimentary one-day tour of the city and our campus area to meet the team and fellow learners.",
   },
   {
     icon: HiUserGroup,
     title: "Social & networking activities",
-    body: "Join a community of international students and tech professionals through regular social and industry-networking activities.",
+    body: "Join a community of international students and tech professionals through regular online and in-person networking activities.",
   },
 ];
 
@@ -74,8 +74,8 @@ export function InternationalStudentSupport({
             )}
           </h2>
           <p className="text-(--color-muted) mt-4">
-            We don&apos;t just teach the course — we help you get here, settle in, and build a
-            network. Full support for foreign students, included.
+            Study live online from your home country — we support you from enquiry to graduation,
+            and help you build a network in Singapore&apos;s tech scene.
           </p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">

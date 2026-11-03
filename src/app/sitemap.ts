@@ -23,6 +23,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: url("/pei-course-submission"), changeFrequency: "monthly", priority: 0.8 },
     { url: url("/advanced-certificate-in-ai-security-analyst"), changeFrequency: "monthly", priority: 0.9 },
     { url: url("/advanced-certificate-in-agentic-ai-coding"), changeFrequency: "monthly", priority: 0.9 },
+    { url: url("/advanced-certificate-in-artificial-intelligence"), changeFrequency: "monthly", priority: 0.9 },
     { url: url("/advanced-certificate-in-blockchain"), changeFrequency: "monthly", priority: 0.9 },
     { url: url("/study-in-singapore"), changeFrequency: "monthly", priority: 0.9 },
     { url: url("/apply"), changeFrequency: "monthly", priority: 0.7 },

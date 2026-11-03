@@ -80,7 +80,7 @@ export function ApplyForm({
           label="Study Mode"
           options={[
             { value: "Online", label: "Online (live virtual classes)" },
-            { value: "Physical", label: "Physical (classroom in Singapore)" },
+            { value: "Physical", label: "Physical (only if you already live in Singapore)" },
           ]}
           required
         />
@@ -101,7 +101,7 @@ export function ApplyForm({
         <ul className="list-disc pl-5 space-y-1">
           <li>Your preferred start date is tentative. We will email you to confirm once the intake batch is confirmed.</li>
           <li>Once your batch is confirmed, we will send you the student contract with the official fee schedule.</li>
-          <li>For physical classes in Singapore, you are responsible for arranging your own accommodation and flights.</li>
+          <li>Physical classes are only for applicants already living in Singapore on a pass that allows them to study. Our programmes are part-time and do not lead to a Student&apos;s Pass, and a Short-Term Visit Pass or entry visa does not allow you to take a multi-module course in Singapore — choose Online if you are overseas.</li>
         </ul>
         <label className="flex items-start gap-3 pt-2 cursor-pointer">
           <input type="checkbox" name="acknowledged" required className="mt-1 accent-(--color-cyan)" />

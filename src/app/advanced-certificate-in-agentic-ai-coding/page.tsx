@@ -219,7 +219,7 @@ const FAQ = [
   },
   {
     q: "Is the course online or onsite?",
-    a: "We offer onsite delivery at our Woods Square campus in Singapore, and we can advise on flexible and online options for international learners depending on the intake. Tell a course advisor your situation and we'll recommend the best mode for you.",
+    a: "Online. Classes are delivered primarily live online — three evenings a week, 7:00 PM to 10:00 PM Singapore time — so you can study from anywhere. The course is part-time, so it does not lead to a Student's Pass (ICA issues those only for approved full-time courses), and you do not need one to study online.",
   },
 ];
 
@@ -238,19 +238,8 @@ const courseLd = {
   },
   hasCourseInstance: {
     "@type": "CourseInstance",
-    courseMode: "Onsite",
+    courseMode: "Online",
     inLanguage: "en",
-    location: {
-      "@type": "Place",
-      name: "Tertiary Infotech Academy",
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: "12 Woodlands Square #07-85/86/87 Woods Square Tower 1",
-        addressLocality: "Singapore",
-        postalCode: "737715",
-        addressCountry: "SG",
-      },
-    },
   },
   url: PAGE_URL,
 };
@@ -571,9 +560,8 @@ export default function AgenticAiCodingPage() {
             <div className="glass p-5 mt-8 flex gap-3 items-start max-w-2xl mx-auto">
               <HiCheckBadge className="w-5 h-5 text-(--color-green) shrink-0 mt-0.5" />
               <p className="text-sm text-white/85 leading-relaxed">
-                Onsite delivery at{" "}
-                <strong className="text-white">{ADDRESS}</strong>. Flexible and online
-                options may be available depending on the intake — ask a course advisor.
+                <strong className="text-white">Live online classes</strong> — study from anywhere,
+                three evenings a week (Singapore time). Any in-person sessions are held at {ADDRESS}.
               </p>
             </div>
             <p className="mt-6 text-center text-xs text-(--color-muted) font-mono">

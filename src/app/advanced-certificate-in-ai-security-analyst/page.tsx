@@ -237,18 +237,7 @@ const courseLd = {
   url: PAGE_URL,
   hasCourseInstance: {
     "@type": "CourseInstance",
-    courseMode: "Onsite",
-    location: {
-      "@type": "Place",
-      name: "Tertiary Infotech Academy",
-      address: {
-        "@type": "PostalAddress",
-        streetAddress:
-          "12 Woodlands Square #07-85/86/87 Woods Square Tower 1",
-        postalCode: "737715",
-        addressCountry: "SG",
-      },
-    },
+    courseMode: "Online",
   },
 };
 
@@ -595,7 +584,7 @@ export default function AiSecurityAnalystPage() {
             </p>
             <p className="mt-2 flex items-center justify-center gap-2 text-center text-xs text-(--color-muted) font-mono">
               <HiSparkles className="w-4 h-4 text-(--color-cyan)" />
-              Onsite at Woods Square Tower 1, Woodlands, Singapore
+              Live online classes · study from anywhere
             </p>
           </Container>
         </section>

@@ -22,31 +22,45 @@ import { InternationalStudentSupport } from "@/components/sections/International
 const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
 const PAGE_URL = `${SITE_URL}/advanced-certificate-in-blockchain.html`;
 
+const TITLE = "Advanced Certificate in Blockchain in Singapore";
+const DESCRIPTION =
+  "Study an Advanced Certificate in Blockchain in Singapore: live online programmes in enterprise blockchain architecture and digital asset compliance. Enquire.";
+
 export const metadata: Metadata = {
-  title: "Advanced Certificate in Blockchain — Study in Singapore",
-  description:
-    "Build on the blockchain — smart contracts, DApps and Web3 — at a Singapore Private Education Institution. A hands-on Advanced Certificate in Blockchain for international students and career switchers. Talk to a course advisor.",
+  title: TITLE,
+  description: DESCRIPTION,
   keywords:
-    "Advanced Certificate in Blockchain, blockchain course Singapore, study blockchain Singapore, smart contract development course, Solidity course, Web3 developer course, DApp development, international students blockchain Singapore",
-  alternates: { canonical: PAGE_URL },
+    "Advanced Certificate in Blockchain in Singapore, Advanced Certificate in Blockchain, blockchain certificate Singapore, enterprise blockchain course, digital asset compliance course, blockchain course Singapore, study blockchain Singapore, smart contract development course, Solidity course, Web3 developer course, DApp development, international students blockchain Singapore",
+  alternates: { canonical: PAGE_URL, languages: { "en-SG": PAGE_URL, "x-default": PAGE_URL } },
   openGraph: {
     type: "website",
     locale: "en_SG",
     url: PAGE_URL,
-    title: "Advanced Certificate in Blockchain — Study in Singapore",
-    description:
-      "A hands-on Advanced Certificate in Blockchain — smart contracts, DApps and Web3 — for international students and career switchers, at a Singapore Private Education Institution.",
+    title: `${TITLE} | Tertiary Infotech Academy`,
+    description: DESCRIPTION,
     siteName: "Tertiary Infotech Academy",
     images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Advanced Certificate in Blockchain — Tertiary Infotech Academy" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Advanced Certificate in Blockchain — Study in Singapore",
-    description:
-      "Smart contracts, DApps and Web3 — a hands-on Advanced Certificate in Blockchain for international students at a Singapore PEI.",
+    title: TITLE,
+    description: DESCRIPTION,
     images: ["/opengraph-image"],
   },
 };
+
+const CATALOGUE = [
+  {
+    slug: "advanced-certificate-in-enterprise-blockchain-solution-architecture",
+    name: "Advanced Certificate in Enterprise Blockchain Solution Architecture",
+    body: "Design secure enterprise blockchain and distributed-ledger solutions across Ethereum, Hyperledger Fabric, Corda and Quorum.",
+  },
+  {
+    slug: "advanced-certificate-in-digital-asset-compliance-and-blockchain-risk-operations",
+    name: "Advanced Certificate in Digital Asset Compliance and Blockchain Risk Operations",
+    body: "Crypto AML, sanctions screening, on-chain monitoring, wallet investigations and RegTech for digital-asset compliance roles.",
+  },
+];
 
 const MODULES = [
   {
@@ -192,6 +206,14 @@ const TOOLS = [
 
 const FAQ = [
   {
+    q: "Which Advanced Certificate in Blockchain programmes can I take in Singapore?",
+    a: "Two: the Advanced Certificate in Enterprise Blockchain Solution Architecture and the Advanced Certificate in Digital Asset Compliance and Blockchain Risk Operations. Each is 150 hours over about four months, taught live online three evenings a week (7:00 PM to 10:00 PM Singapore time).",
+  },
+  {
+    q: "Can international students study blockchain with you from overseas?",
+    a: "Yes. Our programmes are delivered primarily as live online classes in English, so you can study from your home country. They do not come with a Student's Pass — under ICA rules a Student's Pass is only issued for approved full-time courses — and you do not need one to study online.",
+  },
+  {
     q: "What are the prerequisites for international students?",
     a: "Basic programming familiarity and comfort with general computer use are the most helpful starting points. The course begins with blockchain foundations and builds up to Solidity and DApp development, so you do not need prior blockchain experience. Contact a course advisor to confirm entry requirements for your background.",
   },
@@ -220,7 +242,10 @@ const courseLd = {
   description:
     "A hands-on Advanced Certificate in Blockchain covering distributed-ledger foundations, smart contract development with Solidity on Ethereum/EVM, decentralised applications and Web3 integration, blockchain security and smart-contract auditing, and a deploy-to-testnet capstone. Designed for international students and career switchers studying at a Singapore Private Education Institution.",
   inLanguage: "en",
-  educationalCredentialAwarded: "Advanced Certificate",
+  educationalCredentialAwarded: {
+    "@type": "EducationalOccupationalCredential",
+    credentialCategory: "Advanced Certificate",
+  },
   provider: {
     "@type": "EducationalOrganization",
     name: "Tertiary Infotech Academy",
@@ -228,17 +253,7 @@ const courseLd = {
   },
   hasCourseInstance: {
     "@type": "CourseInstance",
-    courseMode: "Onsite",
-    location: {
-      "@type": "Place",
-      name: "Tertiary Infotech Academy",
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: "12 Woodlands Square #07-85/86/87 Woods Square Tower 1",
-        postalCode: "737715",
-        addressCountry: "SG",
-      },
-    },
+    courseMode: "Online",
   },
   url: PAGE_URL,
 };
@@ -259,7 +274,7 @@ const breadcrumbLd = {
   itemListElement: [
     { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
     { "@type": "ListItem", position: 2, name: "Courses", item: `${SITE_URL}/courses.html` },
-    { "@type": "ListItem", position: 3, name: "Advanced Certificate in Blockchain", item: PAGE_URL },
+    { "@type": "ListItem", position: 3, name: TITLE, item: PAGE_URL },
   ],
 };
 
@@ -294,9 +309,11 @@ export default function AdvancedCertificateInBlockchainPage() {
             <div className="max-w-3xl relative">
               <div className="kicker mb-4">[ STUDY IN SINGAPORE · BLOCKCHAIN · WEB3 ]</div>
               <h1 className="font-display text-[clamp(2.25rem,5.2vw,3.75rem)] font-extrabold leading-[1.04] mb-5">
-                Build on the{" "}
-                <span className="gradient-text">blockchain</span> — smart contracts, DApps and Web3.
+                Advanced Certificate in <span className="gradient-text">Blockchain</span> in Singapore
               </h1>
+              <p className="text-white/85 text-xl font-display font-semibold mb-4">
+                Build on the blockchain — smart contracts, DApps and Web3.
+              </p>
               <p className="text-(--color-muted) text-lg mb-6">
                 The <strong className="text-white">Advanced Certificate in Blockchain</strong> at
                 Tertiary Infotech Academy, a Singapore Private Education Institution, is a
@@ -305,6 +322,9 @@ export default function AdvancedCertificateInBlockchainPage() {
                 the world&apos;s leading fintech and Web3 hubs.
               </p>
               <div className="flex flex-wrap items-center gap-3 mb-6">
+                <span className="px-3 py-1.5 rounded-full text-xs font-mono bg-(--color-cyan)/10 text-(--color-cyan) border border-(--color-cyan)/30">
+                  Live online · 7–10 PM SGT
+                </span>
                 <span className="px-3 py-1.5 rounded-full text-xs font-mono bg-(--color-cyan)/10 text-(--color-cyan) border border-(--color-cyan)/30">
                   Hands-on capstone
                 </span>
@@ -326,6 +346,38 @@ export default function AdvancedCertificateInBlockchainPage() {
                   Enquire about intakes
                 </a>
               </div>
+            </div>
+          </Container>
+        </section>
+
+        {/* PROGRAMMES — the blockchain Advanced Certificates in the catalogue */}
+        <section id="programmes" className="relative py-10 scroll-mt-20">
+          <Container>
+            <div className="max-w-3xl mb-6">
+              <div className="kicker mb-3">[ BLOCKCHAIN PROGRAMMES ]</div>
+              <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.5rem)] font-extrabold leading-tight">
+                Choose your <span className="gradient-text">blockchain specialisation</span>
+              </h2>
+              <p className="mt-3 text-(--color-muted) leading-relaxed">
+                150 hours each, about four months part-time, live online three evenings a week.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+              {CATALOGUE.map((c) => (
+                <Link
+                  key={c.slug}
+                  href={`/courses/${c.slug}.html`}
+                  className="glass card-hover p-6 group"
+                >
+                  <h3 className="font-display font-bold text-lg leading-snug group-hover:text-(--color-cyan) transition">
+                    {c.name}
+                  </h3>
+                  <p className="mt-2 text-sm text-(--color-muted) leading-relaxed">{c.body}</p>
+                  <span className="mt-4 inline-block text-sm font-semibold text-(--color-cyan)">
+                    View course, fees &amp; modules →
+                  </span>
+                </Link>
+              ))}
             </div>
           </Container>
         </section>

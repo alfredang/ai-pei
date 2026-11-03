@@ -9,55 +9,13 @@ import { Footer } from "@/components/layout/Footer";
 import { fundingColor } from "@/lib/funding";
 import { absoluteHtmlUrl, htmlPath } from "@/lib/html-url";
 import { COURSES_HUB_SEO as HUB } from "@/lib/keyword-seo";
+import { CATEGORY_ORDER, DISCIPLINE_PAGES, catSlug, categoryFor } from "@/lib/course-categories";
 import { Emph, KeywordFaqSection } from "@/components/sections/KeywordContent";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.tertiaryinfotech.edu.sg";
-
-// Display order of the course categories.
-const CATEGORY_ORDER = [
-  "Artificial Intelligence",
-  "Cyber Security",
-  "Blockchain",
-  "Quantum Computing",
-] as const;
-
-// Stable anchor slug per category — lets the homepage hero deep-link to a
-// discipline's section (e.g. /courses.html#artificial-intelligence).
-const catSlug = (c: string) => c.toLowerCase().replace(/\s+/g, "-");
-
-// Explicit slug → category map for the current catalogue.
-const COURSE_CATEGORY: Record<string, (typeof CATEGORY_ORDER)[number]> = {
-  "advanced-certificate-in-ai-security-analyst": "Artificial Intelligence",
-  "advanced-certificate-in-agentic-ai-coding": "Artificial Intelligence",
-  "advanced-certificate-in-ai-audit-and-assurance": "Artificial Intelligence",
-  "advanced-certificate-in-ai-risk-management": "Artificial Intelligence",
-  "advanced-certificate-in-ai-security-and-governance-management": "Artificial Intelligence",
-  "advanced-certificate-in-cyber-security": "Cyber Security",
-  "advanced-certificate-in-cybersecurity-operations-analyst": "Cyber Security",
-  "advanced-certificate-in-enterprise-information-security-leadership": "Cyber Security",
-  "advanced-certificate-in-enterprise-blockchain-solution-architecture": "Blockchain",
-  "advanced-certificate-in-digital-asset-compliance-and-blockchain-risk-operations": "Blockchain",
-  "advanced-certificate-in-applied-quantum-computing-and-qiskit-programming": "Quantum Computing",
-};
-
-// Categorize a course: explicit map first, then a keyword fallback so future
-// courses still land in a sensible group. Order matters — AI wins over Cyber
-// for "AI Security" titles, which is the intended placement.
-function categoryFor(c: { slug: string; title: string }): (typeof CATEGORY_ORDER)[number] {
-  const mapped = COURSE_CATEGORY[c.slug];
-  if (mapped) return mapped;
-  const t = `${c.slug} ${c.title}`.toLowerCase();
-  if (t.includes("quantum")) return "Quantum Computing";
-  if (t.includes("blockchain") || t.includes("digital asset") || t.includes("web3"))
-    return "Blockchain";
-  if (t.includes("ai") || t.includes("artificial intelligence") || t.includes("agentic"))
-    return "Artificial Intelligence";
-  if (t.includes("security") || t.includes("cyber")) return "Cyber Security";
-  return "Artificial Intelligence";
-}
 
 export const metadata: Metadata = {
   title: HUB.title,
@@ -180,6 +138,14 @@ export default async function CoursesIndex() {
                       <p className="-mt-3 mb-6 text-(--color-muted) leading-relaxed max-w-3xl">
                         <Emph text={HUB.categories[cat].intro} />
                       </p>
+                    )}
+                    {cat in DISCIPLINE_PAGES && (
+                      <Link
+                        href={htmlPath(DISCIPLINE_PAGES[cat as keyof typeof DISCIPLINE_PAGES].href)}
+                        className="-mt-2 mb-6 inline-block text-sm font-semibold text-(--color-cyan) hover:underline"
+                      >
+                        {DISCIPLINE_PAGES[cat as keyof typeof DISCIPLINE_PAGES].keyword} →
+                      </Link>
                     )}
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {(grouped.get(cat) ?? []).map((c) => (

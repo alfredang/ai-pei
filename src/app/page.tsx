@@ -20,7 +20,7 @@ const SITE_URL = "https://www.tertiaryinfotech.edu.sg";
 export const metadata: Metadata = {
   title: { absolute: "Study Tech in Singapore — Cyber, AI, Blockchain, Quantum" },
   description:
-    "Study Cybersecurity, AI, Blockchain & Quantum in Singapore — Asia's top tech hub. English-taught, globally recognised courses for foreign learners.",
+    "Earn a Singapore Advanced Certificate in Cyber Security, AI, Blockchain or Quantum Computing — live online, English-taught, for international learners.",
   keywords:
     "study tech in Singapore, cybersecurity courses Singapore, study cybersecurity in Singapore, AI training for foreigners, AI courses Singapore for foreigners, blockchain academy Singapore, quantum computing courses Asia, tech courses Singapore for international students",
   alternates: { canonical: "/" },
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     url: "/",
     title: "Study Tech in Singapore — Cyber, AI, Blockchain & Quantum",
     description:
-      "English-taught Cybersecurity, AI, Blockchain & Quantum Computing courses for international learners in Asia's leading tech hub.",
+      "Live online, English-taught Cyber Security, AI, Blockchain & Quantum Computing Advanced Certificates from a Singapore PEI.",
     locale: "en_SG",
     siteName: "Tertiary Infotech Academy",
     images: [
@@ -45,16 +45,17 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Study Tech in Singapore — Cyber, AI, Blockchain & Quantum",
     description:
-      "English-taught future-tech courses for foreigners in Asia's leading tech hub. Globally recognised, career-ready.",
+      "Live online future-tech Advanced Certificates from a Singapore PEI — study from anywhere. Career-ready.",
     images: ["/images/hero-classroom.png"],
   },
 };
 
+// Each discipline points at its keyword landing page.
 const DISCIPLINES = [
-  { name: "Cybersecurity Courses in Singapore", desc: "Hands-on cybersecurity training for international learners — SOC operations, threat hunting and penetration testing." },
-  { name: "AI Training for Foreigners in Singapore", desc: "Applied artificial intelligence — machine learning, generative AI and agentic-AI engineering, taught in English." },
-  { name: "Blockchain Academy in Singapore", desc: "Smart contracts, Web3 and distributed-ledger development in a leading global fintech hub." },
-  { name: "Quantum Computing Courses in Asia", desc: "Foundational quantum algorithms and programming for the next computing era." },
+  { name: "Advanced Certificate in Cyber Security in Singapore", path: "/courses/advanced-certificate-in-cyber-security.html", desc: "CompTIA-aligned cyber security training — A+, Security+, Linux+, then CySA+ or PenTest+. Live online." },
+  { name: "Advanced Certificate in Artificial Intelligence in Singapore", path: "/advanced-certificate-in-artificial-intelligence.html", desc: "Five AI programmes — AI security, agentic AI, audit, risk and governance. Live online." },
+  { name: "Advanced Certificate in Blockchain in Singapore", path: "/advanced-certificate-in-blockchain.html", desc: "Enterprise blockchain architecture and digital asset compliance. Live online." },
+  { name: "Advanced Certificate in Quantum Computing in Singapore", path: "/courses/advanced-certificate-in-applied-quantum-computing-and-qiskit-programming.html", desc: "Qiskit programming on IBM Quantum systems. Live online." },
 ];
 
 const educationalOrgLd = {
@@ -65,7 +66,7 @@ const educationalOrgLd = {
   url: SITE_URL,
   logo: `${SITE_URL}/favicon.ico`,
   description:
-    "A Singapore academy offering English-taught Cybersecurity, Artificial Intelligence, Blockchain and Quantum Computing programmes for international learners.",
+    "A Singapore Private Education Institution offering live online, English-taught Cyber Security, Artificial Intelligence, Blockchain and Quantum Computing programmes for international learners.",
   knowsLanguage: "en",
   areaServed: [
     { "@type": "Country", name: "Singapore" },
@@ -82,6 +83,7 @@ const educationalOrgLd = {
     itemListElement: DISCIPLINES.map((d) => ({
       "@type": "Course",
       name: d.name,
+      url: `${SITE_URL}${d.path}`,
       description: d.desc,
       provider: { "@type": "Organization", name: "Tertiary Infotech Academy", sameAs: SITE_URL },
     })),

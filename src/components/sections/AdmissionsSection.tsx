@@ -17,13 +17,13 @@ export function AdmissionsSection() {
 
       <Container className="relative">
         <div className="text-center mb-8">
-          <div className="kicker mb-4">[ ADMISSIONS & VISA ]</div>
+          <div className="kicker mb-4">[ ADMISSIONS ]</div>
           <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
             Admissions for <span className="gradient-text">International Learners</span>
           </h2>
           <p className="mt-4 text-(--color-muted) text-lg max-w-2xl mx-auto">
-            A simple, foreigner-friendly path to studying tech in Singapore — with guidance on
-            the visa and pass options that fit your plans.
+            A simple, foreigner-friendly path to a Singapore tech qualification — taught live
+            online, so you can study from your home country.
           </p>
         </div>
 
@@ -50,18 +50,18 @@ export function AdmissionsSection() {
             </ul>
           </div>
 
-          {/* Visa & relocation */}
+          {/* Online study & passes — wording follows ICA rules */}
           <div className="glass p-6">
             <div className="flex items-center gap-3 mb-6">
               <span className="text-2xl">🌏</span>
-              <h3 className="font-display font-bold text-xl text-white">Visa &amp; Relocation</h3>
+              <h3 className="font-display font-bold text-xl text-white">Study Online from Anywhere</h3>
             </div>
             <ul className="space-y-4">
               {[
-                "Guidance on the right pass for your study plan",
-                "Part-time study suits Employment Pass / S Pass holders already in Singapore",
-                "Support documents for your visa or pass application",
-                "Practical relocation tips — housing, banking and settling in",
+                "Live online classes, three evenings a week (Singapore time)",
+                "No relocation and no Student's Pass needed to study online",
+                "Already in Singapore? Ask us about in-person sessions, subject to your pass conditions",
+                "A Short-Term Visit Pass does not allow you to take a multi-module course in Singapore",
               ].map((req) => (
                 <li key={req} className="flex items-start gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-(--color-amber) shrink-0 mt-2" />
@@ -71,8 +71,9 @@ export function AdmissionsSection() {
             </ul>
             <div className="mt-5 p-4 rounded-lg bg-white/3 border border-white/6">
               <p className="text-xs text-(--color-muted) leading-relaxed">
-                Pass eligibility is set by Singapore&apos;s authorities and depends on your
-                circumstances. Our admissions team will advise you on the best route.
+                Under ICA rules, a Student&apos;s Pass is only issued for approved full-time courses.
+                Our programmes are part-time and do not lead to a Student&apos;s Pass. Pass rules are
+                set by Singapore&apos;s Immigration &amp; Checkpoints Authority (ICA).
               </p>
             </div>
           </div>

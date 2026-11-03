@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     template: "%s | Tertiary Infotech Academy",
   },
   description:
-    "Study Advanced Certificate courses in AI, Cyber Security and Blockchain at Tertiary Infotech Academy — a Singapore Private Education Institution. Industry-recognised, hands-on certifications for international students and career switchers.",
+    "Study live online Advanced Certificate courses in AI, Cyber Security, Blockchain and Quantum Computing at Tertiary Infotech Academy — a Singapore Private Education Institution — from anywhere in the world.",
   keywords:
     "advanced certificate Singapore, cyber security course Singapore, AI course Singapore, blockchain course Singapore, study cyber security in Singapore, study AI in Singapore, international students Singapore, CompTIA certification Singapore, Private Education Institution Singapore, Tertiary Infotech Academy",
   openGraph: {

@@ -13,14 +13,14 @@ const PROPS = [
     icon: HiLanguage,
     title: "English-Taught, Foreigner-Ready",
     description:
-      "Every programme is delivered in English in one of the world's safest, most English-fluent cities — so you can settle in fast and focus on learning, not logistics.",
+      "Every programme is taught in English by Singapore-based trainers in live online classes — so you can focus on learning from wherever you are.",
     color: "var(--color-purple-light)",
   },
   {
     icon: HiBriefcase,
-    title: "Career & Relocation Pathways",
+    title: "Career Pathways",
     description:
-      "Train where the jobs are. We guide you on visa and relocation options and connect your new skills to MNCs, startups and government tech employers across Asia.",
+      "Learn live online from anywhere and build skills for MNCs, startups and government tech employers across Asia — with career guidance from our team.",
     color: "var(--color-amber)",
   },
 ];
