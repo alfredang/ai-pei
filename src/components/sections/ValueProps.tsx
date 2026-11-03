@@ -27,7 +27,7 @@ const PROPS = [
 
 export function ValueProps() {
   return (
-    <section className="relative py-4 overflow-hidden">
+    <section className="home-benefits relative overflow-hidden">
       <Container>
         <div className="grid md:grid-cols-3 gap-6">
           {PROPS.map((prop) => {
@@ -35,16 +35,18 @@ export function ValueProps() {
             return (
               <div
                 key={prop.title}
-                className="glass p-6 group hover:border-white/15 transition-all duration-300"
+                className="flex items-start gap-4 py-4 group"
               >
                 <div
-                  className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110"
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
                   style={{ background: `color-mix(in srgb, ${prop.color} 12%, transparent)` }}
                 >
-                  <Icon className="w-7 h-7" style={{ color: prop.color }} />
+                  <Icon className="w-6 h-6" style={{ color: prop.color }} />
                 </div>
-                <h3 className="font-display font-bold text-xl text-white mb-3">{prop.title}</h3>
-                <p className="text-sm text-(--color-muted) leading-relaxed">{prop.description}</p>
+                <div>
+                  <h3 className="font-display font-bold text-lg text-white mb-2">{prop.title}</h3>
+                  <p className="text-sm text-(--color-muted) leading-relaxed">{prop.description}</p>
+                </div>
               </div>
             );
           })}

@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
+import type { CSSProperties } from "react";
 import { Container } from "@/components/layout/Container";
 import { htmlPath } from "@/lib/html-url";
 import {
@@ -13,6 +15,9 @@ import type { IconType } from "react-icons";
 type Program = {
   id: string;
   icon: IconType;
+  image: string;
+  imageAlt: string;
+  focus: string;
   /** Discipline name — used for the H3 keyword anchor. */
   discipline: string;
   /** Benefit-driven headline. */
@@ -27,6 +32,9 @@ const PROGRAMS: Program[] = [
   {
     id: "cybersecurity",
     icon: HiShieldCheck,
+    image: "/images/programmes/cybersecurity.webp",
+    imageAlt: "Emerald glass shield surrounded by illuminated server circuits",
+    focus: "Security & resilience",
     discipline: "Cybersecurity",
     headline: "Defend the Smart Nation",
     pitch:
@@ -42,6 +50,9 @@ const PROGRAMS: Program[] = [
   {
     id: "ai",
     icon: HiCpuChip,
+    image: "/images/programmes/artificial-intelligence.webp",
+    imageAlt: "Luminous teal neural network suspended above a microchip",
+    focus: "Intelligence & innovation",
     discipline: "Artificial Intelligence",
     headline: "Build the Models Powering Asia",
     pitch:
@@ -57,6 +68,9 @@ const PROGRAMS: Program[] = [
   {
     id: "blockchain",
     icon: HiCubeTransparent,
+    image: "/images/programmes/blockchain.webp",
+    imageAlt: "Amber glass blocks connected across a distributed network",
+    focus: "Trust & digital finance",
     discipline: "Blockchain",
     headline: "Engineer the Future of Finance",
     pitch:
@@ -72,6 +86,9 @@ const PROGRAMS: Program[] = [
   {
     id: "quantum",
     icon: HiSparkles,
+    image: "/images/programmes/quantum-computing.webp",
+    imageAlt: "Copper quantum computing apparatus in an illuminated laboratory",
+    focus: "Discovery & possibility",
     discipline: "Quantum Computing",
     headline: "Get Ahead of the Next Computing Era",
     pitch:
@@ -88,93 +105,73 @@ const PROGRAMS: Program[] = [
 
 export function Programs() {
   return (
-    <section id="programs" className="relative py-4 overflow-hidden">
-      <div
-        className="glow-blob"
-        style={{
-          top: "0%",
-          left: "30%",
-          width: 600,
-          height: 600,
-          background: "radial-gradient(circle, #10B981 0%, transparent 60%)",
-          opacity: 0.1,
-        }}
-      />
-
-      <Container className="relative">
-        <div className="text-center mb-8">
-          <div className="kicker mb-4">[ OUR PROGRAMMES ]</div>
-          <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
-            Four Future-Tech Disciplines.{" "}
-            <span className="gradient-text">One Launchpad.</span>
-          </h2>
-          <p className="mt-4 text-(--color-muted) text-lg max-w-2xl mx-auto">
+    <section id="programs" className="programmes-section relative overflow-hidden" aria-labelledby="programmes-title">
+      <Container width="full" className="relative">
+        <div className="programmes-heading">
+          <div>
+            <div className="kicker mb-4">[ EXPLORE YOUR NEXT CHAPTER ]</div>
+            <h2 id="programmes-title" className="font-display text-[clamp(2rem,4.5vw,3.5rem)] font-extrabold leading-[1.08] tracking-tight">
+              Four Future-Tech Disciplines.<br />
+              <span className="gradient-text">One Launchpad.</span>
+            </h2>
+          </div>
+          <p className="text-(--color-muted) text-base leading-relaxed max-w-md">
             English-taught, career-focused programmes in the four fields shaping the next
             decade — designed for international learners who want to study tech in Singapore.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
-          {PROGRAMS.map((p) => {
+        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+          {PROGRAMS.map((p, index) => {
             const Icon = p.icon;
             return (
-              <div
+              <article
                 key={p.id}
                 id={p.id}
-                className="card-hover glass p-6 flex flex-col group relative overflow-hidden"
+                className="programme-card group flex flex-col"
+                style={{ "--programme-accent": p.accent } as CSSProperties}
+                aria-labelledby={`${p.id}-title`}
               >
-                {/* top accent line (per discipline) */}
-                <div
-                  className="absolute top-0 inset-x-0 h-px"
-                  style={{ background: `linear-gradient(to right, ${p.accent}, transparent)` }}
-                />
-                {/* corner glow — fades in on hover */}
-                <div
-                  className="absolute -top-12 -right-12 w-40 h-40 rounded-full opacity-0 group-hover:opacity-60 transition duration-500"
-                  style={{
-                    background: `radial-gradient(circle, color-mix(in srgb, ${p.accent} 40%, transparent) 0%, transparent 70%)`,
-                  }}
-                />
-                <div className="flex items-center gap-4 mb-5">
-                  <div
-                    className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
-                    style={{ background: `color-mix(in srgb, ${p.accent} 12%, transparent)` }}
-                  >
-                    <Icon className="w-7 h-7" style={{ color: p.accent }} />
+                <div className="programme-art" data-theme="dark">
+                  <Image
+                    src={p.image}
+                    alt={p.imageAlt}
+                    fill
+                    sizes="(max-width: 767px) 100vw, 50vw"
+                    className="object-cover transition-transform duration-700 motion-safe:group-hover:scale-105"
+                  />
+                  <div className="programme-art-scrim" />
+                  <div className="absolute top-5 left-5 right-5 flex justify-between items-center text-white">
+                    <span className="programme-tag"><Icon className="w-4 h-4" aria-hidden /> {p.focus}</span>
+                    <span className="font-mono text-xs tracking-widest text-white/70" aria-hidden>0{index + 1} / 04</span>
                   </div>
-                  <div>
-                    {/* H3 carries the discipline keyword */}
-                    <h3 className="font-display font-extrabold text-xl text-white leading-tight">
+                  <div className="absolute bottom-6 left-6 right-6 lg:bottom-8 lg:left-8 lg:right-8">
+                    <h3 id={`${p.id}-title`} className="font-display text-[clamp(1.65rem,2.7vw,2.75rem)] font-bold tracking-tight leading-tight text-white">
                       {p.discipline}
                     </h3>
-                    <p className="text-sm font-medium" style={{ color: p.accent }}>
-                      {p.headline}
-                    </p>
+                    <p className="mt-2 text-sm sm:text-base text-white/85">{p.headline}</p>
                   </div>
                 </div>
 
-                <p className="text-sm text-(--color-muted) leading-relaxed mb-6">{p.pitch}</p>
-
-                <ul className="space-y-3 mb-8">
-                  {p.outcomes.map((o) => (
-                    <li key={o} className="flex items-start gap-3">
-                      <span
-                        className="w-1.5 h-1.5 rounded-full shrink-0 mt-2"
-                        style={{ background: p.accent }}
-                      />
-                      <span className="text-sm text-white/80 leading-relaxed">{o}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <Link
-                  href={htmlPath(p.cta.href)}
-                  className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-white/90 hover:text-white transition-colors"
-                >
-                  {p.cta.label}
-                  <HiArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
+                <div className="p-6 lg:p-8 flex flex-col flex-1">
+                  <div className="programme-meta mb-5">
+                    <span>Advanced Certificate</span><span>Live online</span>
+                  </div>
+                  <p className="text-sm lg:text-base text-(--color-muted) leading-relaxed mb-6">{p.pitch}</p>
+                  <ul className="space-y-3 mb-7">
+                    {p.outcomes.map((outcome) => (
+                      <li key={outcome} className="flex items-start gap-3 text-sm leading-relaxed">
+                        <span className="programme-check" aria-hidden>✓</span>
+                        <span>{outcome}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link href={htmlPath(p.cta.href)} className="programme-link mt-auto" aria-label={p.cta.label}>
+                    <span>Explore {p.discipline} <span className="sr-only">Advanced Certificate in Singapore</span></span>
+                    <span className="programme-arrow"><HiArrowRight className="w-5 h-5" aria-hidden /></span>
+                  </Link>
+                </div>
+              </article>
             );
           })}
         </div>

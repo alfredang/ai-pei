@@ -95,15 +95,15 @@ export default function HomePage() {
     <>
       <HomeUrlCleanup />
       <Navbar />
-      <main>
+      <main className="home-page">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(educationalOrgLd) }}
         />
         <HomeHero />
         <ValueProps />
-        <WhyChooseInstitute />
         <Programs />
+        <WhyChooseInstitute />
         <CareersOutcomes />
         <AdmissionsSection />
         <FeaturedPosts />

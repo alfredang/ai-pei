@@ -162,7 +162,7 @@ export async function Footer() {
             © {new Date().getFullYear()} {brand.fullName.toUpperCase()}
             {brand.uen ? ` · UEN ${brand.uen}` : ""}
           </p>
-          <p>BUILT WITH NEXT.JS · POSTGRES · CLAUDE AGENT SDK</p>
+          <p className="powered-by">Powered by <a href="https://www.tertiaryinfotech.com/" target="_blank" rel="noopener noreferrer" className="hover:underline">Tertiary Infotech Academy Pte Ltd</a></p>
         </div>
       </Container>
     </footer>

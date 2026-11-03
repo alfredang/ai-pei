@@ -22,7 +22,7 @@
 
 ## Screenshot
 
-![Screenshot](public/screenshot-cms.png)
+![Homepage with generated technology programme images](screenshot.png)
 
 ## About
 
@@ -100,6 +100,11 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 - **Resilient by design** — `blog_schedule_runs` is created on boot and every run is recorded; the schedule page loads tolerantly even before the first run exists, and a failed run never blocks the next one
 - **`POST /api/admin/sync/posts` debug probe** — a GET variant inspects what would sync without mutating prod
 
+### Visual programme discovery
+- Four original, coordinated technology images in `public/images/programmes/` — cybersecurity, artificial intelligence, blockchain and quantum computing; optimized WebP assets served with responsive Next.js Image sizing and descriptive alt text
+- Full-width programme grid with image banners, green overlays, discipline accents, clear course links and a single-column mobile layout
+- Spacious homepage sections, a contrasting Singapore feature section, and a four-image application banner
+
 ### Platform — auth, security, design
 - **Auth.js v5** — credentials provider with bcrypt, JWT sessions, persistent 10-year sliding cookie, middleware-protected `/admin/*`
 - **Never-logout admin** — cookie-presence guard everywhere; no code path in the admin chrome calls `auth()` and risks emitting a clearing `Set-Cookie`
@@ -156,8 +161,8 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 ### Installation
 
 ```bash
-git clone https://github.com/alfredang/ai-cms.git
-cd ai-cms
+git clone https://github.com/alfredang/ai-pei.git
+cd ai-pei
 
 cp .env.example .env
 # Fill DATABASE_URL, AUTH_SECRET, ADMIN_EMAIL, ADMIN_PASSWORD,

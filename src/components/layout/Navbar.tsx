@@ -45,13 +45,13 @@ export async function Navbar() {
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl bg-(--color-bg-elevated) border-b border-(--color-border) relative text-(--color-text)">
       <Container className="flex h-16 items-center justify-between gap-2">
-        <Link href="/" className="flex items-center gap-2 group shrink-0">
+        <Link href="/" className="flex min-w-0 items-center gap-2 group">
           {brand.logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={brand.logoUrl}
               alt={brand.shortName}
-              className="w-9 h-9 rounded-md object-contain"
+              className="w-9 h-9 shrink-0 rounded-md object-contain"
             />
           ) : (
             <span
@@ -61,7 +61,7 @@ export async function Navbar() {
               TI
             </span>
           )}
-          <span className="font-display font-bold text-base sm:text-lg tracking-tight whitespace-nowrap">
+          <span className="font-display font-bold text-sm sm:text-lg tracking-tight truncate">
             {brand.shortName}
           </span>
         </Link>

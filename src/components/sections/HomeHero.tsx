@@ -144,9 +144,9 @@ export function HomeHero() {
       </div>
 
       <Container className="relative z-10">
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center min-h-[70vh] py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center min-h-[70vh] py-16">
           {/* LEFT — copy + discipline dropdown */}
-          <div className="max-w-xl">
+          <div className="min-w-0 max-w-xl">
             <div className="kicker mb-5 reveal">
               [ STUDY TECH IN SINGAPORE · ASIA&apos;S LEADING TECH HUB ]
             </div>
@@ -206,7 +206,7 @@ export function HomeHero() {
           </div>
 
           {/* RIGHT — rotating Earth with discipline-coloured light racing along fibre routes */}
-          <div className="relative reveal reveal-d1">
+          <div className="relative min-w-0 reveal reveal-d1">
             <div
               role="img"
               aria-label="Rotating globe with light pulses travelling between cities worldwide and Singapore, representing AI, Cyber Security, Blockchain and Quantum Computing"

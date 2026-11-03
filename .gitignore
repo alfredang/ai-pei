@@ -44,3 +44,14 @@ Tertiary Infotech Academy Pte Ltd/
 
 # Source material the project was derived from — not ours to republish.
 **/reference/
+
+# Local browser review artifacts and sensitive credential files
+output/
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+secrets.json

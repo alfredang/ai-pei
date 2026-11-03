@@ -24,7 +24,7 @@ const REASONS = [
 
 export function WhyChooseInstitute() {
   return (
-    <section id="why-us" className="relative py-4 overflow-hidden">
+    <section id="why-us" data-theme="dark" className="home-singapore relative overflow-hidden">
       <div className="grid-bg opacity-30" />
       <div
         className="glow-blob"
@@ -38,8 +38,8 @@ export function WhyChooseInstitute() {
         }}
       />
 
-      <Container className="relative">
-        <div className="max-w-3xl mx-auto text-center mb-8">
+      <Container className="relative grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-20 items-start">
+        <div className="lg:sticky lg:top-28">
           <div className="kicker mb-4">[ WHY SINGAPORE ]</div>
           <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
             Why Study Tech in <span className="gradient-text">Singapore</span>?
@@ -52,15 +52,15 @@ export function WhyChooseInstitute() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div className="grid gap-4">
           {REASONS.map((reason) => {
             const Icon = reason.icon;
             return (
               <div
                 key={reason.title}
-                className="glass p-6 hover:border-white/15 transition-all duration-300 group"
+                className="relative rounded-2xl border border-white/10 bg-white/3 p-6 sm:pl-24 group"
               >
-                <div className="w-12 h-12 rounded-xl bg-(--color-cyan)/10 border border-(--color-cyan)/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <div className="sm:absolute sm:left-6 sm:top-6 w-12 h-12 rounded-xl bg-(--color-cyan)/10 border border-(--color-cyan)/20 flex items-center justify-center mb-4 sm:mb-0 group-hover:scale-110 transition-transform">
                   <Icon className="w-6 h-6 text-(--color-cyan)" />
                 </div>
                 <h3 className="font-display font-bold text-lg text-white mb-3 leading-snug">
