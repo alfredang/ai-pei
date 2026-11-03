@@ -101,7 +101,7 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 ### Platform — auth, security, design
 - **Auth.js v5** — credentials provider with bcrypt, JWT sessions, persistent 10-year sliding cookie, middleware-protected `/admin/*`
 - **Never-logout admin** — cookie-presence guard everywhere; no code path in the admin chrome calls `auth()` and risks emitting a clearing `Set-Cookie`
-- **Green design system** — light mint-white pages with deep-green ink and emerald / teal accents, a dark matrix digital-rain hero, branded green blog covers, Exo 2 + Inter, custom Tailwind 4 design tokens (dark scope kept for the hero and `/admin`)
+- **Green design system** — light mint-white pages with deep-green ink and emerald / teal accents, a dark matrix digital-rain hero with a futuristic rotating **fibre-optic globe** (Canvas 2D, zero dependencies — discipline-coloured light pulses race between world cities and the Singapore hub, HUD rings, orbiting satellites, holographic scan sweep; pauses off-screen and honours `prefers-reduced-motion`), branded green blog covers, Exo 2 + Inter, custom Tailwind 4 design tokens (dark scope kept for the hero and `/admin`)
 
 ## Tech Stack
 
@@ -117,7 +117,7 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 | **Editor** | TipTap 2 with image upload + slash commands |
 | **Email** | Nodemailer + Gmail OAuth2 (via `googleapis`) |
 | **Encryption** | AES-256-GCM (Node `crypto`) for credentials at rest |
-| **UI** | Tailwind CSS 4 (light green theme + dark matrix hero) · Framer Motion 12 · react-icons · custom design tokens |
+| **UI** | Tailwind CSS 4 (light green theme + dark matrix hero) · Canvas 2D hero globe · Framer Motion 12 · react-icons · custom design tokens |
 | **Validation** | Zod 3 |
 | **Deploy** | Coolify · multi-stage `Dockerfile` (Node 22 Alpine) · Next.js `standalone` output |
 
@@ -126,7 +126,7 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 ```
 ┌────────────────────────────────────────────────────────────────────┐
 │                       Public site (Next.js)                        │
-│   Hero · LMS/TMS showcase · e-Learning · Services · Blog · Leads   │
+│   Globe hero · Programmes · Careers · Admissions · Blog · Leads    │
 │   AI chatbot widget (Claude Agent SDK · OAuth subscription)      │
 └────────────────────────────┬───────────────────────────────────────┘
                              │
@@ -192,7 +192,7 @@ npm run migrate:wp    # parses a wp_*.sql dump, imports posts/pages,
 ```
 src/
   app/
-    page.tsx                  Landing (Hero, LMS/TMS, e-Learning, Services, FeaturedPosts, ContactForm)
+    page.tsx                  Landing (HomeHero, ValueProps, WhyChooseInstitute, Programs, CareersOutcomes, Admissions, FeaturedPosts, FAQ, CTA, ContactForm)
     blog/[slug]/page.tsx      Single post
     [slug]/page.tsx           Dynamic CMS page (with redirects lookup)
     courses/page.tsx          Course catalogue grouped by discipline (AI, Cyber Security, Blockchain, Quantum)
@@ -221,7 +221,7 @@ src/
     robots.ts
   components/
     layout/                   Navbar, Footer (DB-driven menus), Container
-    sections/                 Hero · Programs · FaqSection · CourseRegisterForm · KeywordContent · FeaturedPosts · ContactForm · …
+    sections/                 HomeHero · FiberGlobe · Programs · FaqSection · CourseRegisterForm · KeywordContent · FeaturedPosts · ContactForm · …
     admin/                    Editor, PostEditorForm, AIAssistButton, MediaUploader, CredentialsForm
     ui/                       ChatBot (AI Chatbot)
   db/                         Drizzle schema + connection
@@ -231,6 +231,7 @@ src/
     chatbot-settings.ts       AI Chatbot system prompt + FAQ read/write
     secrets.ts                AES-256-GCM credentials vault
     site-content.ts           Static feature copy
+    globe-land.ts             Base64 2° land mask (Natural Earth 110m) for the hero globe
     keyword-seo.ts            Keyword → page map: SEO titles, descriptions, bold-keyword copy, FAQs
     course-fee.ts             Course fee = modules × $1,800 (excl. / incl. GST)
     site-settings.ts          Brand identity loader

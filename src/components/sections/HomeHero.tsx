@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Container } from "@/components/layout/Container";
+import { FiberGlobe } from "@/components/sections/FiberGlobe";
 import {
   HiShieldCheck,
   HiCpuChip,
@@ -11,12 +12,16 @@ import {
   HiArrowRight,
 } from "react-icons/hi2";
 
+// `color` is a hex (not a CSS var) because the globe paints these on a canvas.
+// Values come from the dark-scope palette in globals.css; quantum uses the
+// matrix-rain highlight so all four fibre colours stay distinct.
 const DISCIPLINES = [
-  { id: "ai", label: "Artificial Intelligence", icon: HiCpuChip, color: "var(--color-purple-light)", href: "/courses.html#artificial-intelligence" },
-  { id: "cybersecurity", label: "Cyber Security", icon: HiShieldCheck, color: "var(--color-cyan)", href: "/courses.html#cyber-security" },
-  { id: "blockchain", label: "Blockchain", icon: HiCubeTransparent, color: "var(--color-amber)", href: "/courses.html#blockchain" },
-  { id: "quantum", label: "Quantum Computing", icon: HiSparkles, color: "var(--color-cyan)", href: "/courses.html#quantum-computing" },
+  { id: "ai", label: "Artificial Intelligence", icon: HiCpuChip, color: "#2DD4BF", href: "/courses.html#artificial-intelligence" },
+  { id: "cybersecurity", label: "Cyber Security", icon: HiShieldCheck, color: "#3CE07C", href: "/courses.html#cyber-security" },
+  { id: "blockchain", label: "Blockchain", icon: HiCubeTransparent, color: "#F6AE64", href: "/courses.html#blockchain" },
+  { id: "quantum", label: "Quantum Computing", icon: HiSparkles, color: "#CDFFD7", href: "/courses.html#quantum-computing" },
 ];
+const FIBER_COLORS = DISCIPLINES.map((d) => d.color);
 
 /** Matrix-style digital rain of falling characters (top → bottom). Hero only. */
 function MatrixRain() {
@@ -200,51 +205,37 @@ export function HomeHero() {
             </p>
           </div>
 
-          {/* RIGHT — designed visual: the four disciplines (swap for a photo anytime) */}
+          {/* RIGHT — rotating Earth with discipline-coloured light racing along fibre routes */}
           <div className="relative reveal reveal-d1">
-            <div className="glass p-6 md:p-8">
-              <div className="text-xs font-mono uppercase tracking-wider text-(--color-muted) mb-5">
-                Choose your future-tech path
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                {DISCIPLINES.map((d) => {
-                  const Icon = d.icon;
-                  return (
-                    <a
-                      key={d.id}
-                      href={d.href}
-                      className="group/card text-left rounded-2xl p-5 border bg-white/3 border-white/10 transition-all duration-300 hover:bg-white/10 hover:border-white/30 hover:scale-[1.02]"
-                    >
-                      <div
-                        className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform"
-                        style={{ background: `color-mix(in srgb, ${d.color} 16%, transparent)` }}
-                      >
-                        <Icon className="w-6 h-6" style={{ color: d.color }} />
-                      </div>
-                      <div className="font-display font-bold text-sm text-white leading-snug">
-                        {d.label}
-                      </div>
-                      <div
-                        className="mt-2 text-[0.7rem] font-mono uppercase tracking-wider opacity-60 transition-opacity group-hover/card:opacity-100"
-                        style={{ color: d.color }}
-                      >
-                        View Courses →
-                      </div>
-                    </a>
-                  );
-                })}
-              </div>
+            <div
+              role="img"
+              aria-label="Rotating globe with light pulses travelling between cities worldwide and Singapore, representing AI, Cyber Security, Blockchain and Quantum Computing"
+              className="relative mx-auto aspect-square w-full max-w-[560px] flex items-center justify-center"
+            >
+              <FiberGlobe colors={FIBER_COLORS} />
             </div>
 
-            {/* Subtle floating accent */}
-            <div
-              className="hidden lg:block absolute -bottom-5 -right-5 glass px-5 py-3"
-              aria-hidden
-            >
-              <span className="text-xs font-mono text-(--color-muted)">
-                Future-tech disciplines · one launchpad
-              </span>
-            </div>
+            <ul className="mt-2 flex flex-wrap justify-center gap-2.5">
+              {DISCIPLINES.map((d) => {
+                const Icon = d.icon;
+                return (
+                  <li key={d.id}>
+                    <a
+                      href={d.href}
+                      className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-[#04120B]/75 backdrop-blur-sm px-3.5 py-2 text-xs font-mono uppercase tracking-wider text-white/80 transition-colors duration-200 hover:border-white/30 hover:bg-white/10 hover:text-white"
+                    >
+                      <span
+                        className="h-2 w-2 rounded-full"
+                        style={{ background: d.color, boxShadow: `0 0 8px ${d.color}` }}
+                        aria-hidden
+                      />
+                      <Icon className="h-4 w-4" style={{ color: d.color }} aria-hidden />
+                      {d.label}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </div>
       </Container>
