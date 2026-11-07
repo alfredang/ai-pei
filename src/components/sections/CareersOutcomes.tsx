@@ -43,37 +43,34 @@ export function CareersOutcomes() {
       <div className="grid-bg opacity-25" />
 
       <Container className="relative">
-        <div className="text-center mb-8">
-          <div className="kicker mb-4">[ CAREER OUTCOMES ]</div>
-          <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
-            Skills That Travel. <span className="gradient-text">Careers That Scale.</span>
-          </h2>
-          <p className="mt-4 text-(--color-muted) text-lg max-w-2xl mx-auto">
-            Singapore&apos;s tech economy is hungry for talent, and your qualification is built
-            to be globally recognised. Train here, then build your career across the MNCs,
-            startups and government employers driving Asia&apos;s digital growth.
-          </p>
-        </div>
+        <div className="grid lg:grid-cols-12 gap-8 items-center">
+          {/* Mirrors the "Why Singapore" band above: panel left, copy right */}
+          <div className="lg:col-span-5 lg:order-2">
+            <div className="kicker mb-3">[ CAREER OUTCOMES ]</div>
+            <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
+              Skills That Travel. <span className="gradient-text">Careers That Scale.</span>
+            </h2>
+            <p className="mt-4 text-(--color-muted) text-lg">
+              Singapore&apos;s tech economy is hungry for talent, and your qualification is built
+              to be globally recognised. Train live online, then build your career across the MNCs,
+              startups and government employers driving Asia&apos;s digital growth.
+            </p>
+          </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {OUTCOMES.map((o) => {
-            const Icon = o.icon;
-            return (
-              <div
-                key={o.label}
-                className="glass p-6 hover:border-white/15 transition-all duration-300 group"
-              >
-                <div
-                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-3 transition-transform group-hover:scale-110"
-                  style={{ background: `color-mix(in srgb, ${o.color} 12%, transparent)` }}
-                >
-                  <Icon className="w-9 h-9" style={{ color: o.color }} />
+          <div className="lg:col-span-7 lg:order-1 grid sm:grid-cols-2 gap-px rounded-2xl overflow-hidden border border-(--color-border) bg-(--color-border)">
+            {OUTCOMES.map((o) => {
+              const Icon = o.icon;
+              return (
+                <div key={o.label} className="bg-(--color-bg-elevated) p-5">
+                  <div className="flex items-center gap-2.5 mb-2">
+                    <Icon className="w-6 h-6 shrink-0" style={{ color: o.color }} aria-hidden />
+                    <div className="font-display font-bold text-base text-white">{o.label}</div>
+                  </div>
+                  <p className="text-sm text-(--color-muted) leading-relaxed">{o.description}</p>
                 </div>
-                <div className="font-display font-bold text-base text-white mb-2">{o.label}</div>
-                <p className="text-sm text-(--color-muted) leading-relaxed">{o.description}</p>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </Container>
     </section>

@@ -6,7 +6,6 @@ import { courseFee } from "@/lib/course-fee";
 import { Container } from "@/components/layout/Container";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { fundingColor } from "@/lib/funding";
 import { absoluteHtmlUrl, htmlPath } from "@/lib/html-url";
 import { COURSES_HUB_SEO as HUB } from "@/lib/keyword-seo";
 import { CATEGORY_ORDER, DISCIPLINE_PAGES, catSlug, categoryFor } from "@/lib/course-categories";
@@ -147,22 +146,16 @@ export default async function CoursesIndex() {
                         {DISCIPLINE_PAGES[cat as keyof typeof DISCIPLINE_PAGES].keyword} →
                       </Link>
                     )}
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid-fill grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {(grouped.get(cat) ?? []).map((c) => (
                         <Link
                           key={c.id}
                           href={htmlPath(`/courses/${c.slug}`)}
                           className="card-hover glass overflow-hidden flex flex-col group p-6"
                         >
-                          <div className="flex flex-wrap gap-1.5 mb-4">
+                          <div className="meta-line mb-3">
                             {(c.fundingTags ?? []).slice(0, 3).map((t) => (
-                              <span
-                                key={t}
-                                style={{ backgroundColor: fundingColor(t) }}
-                                className="px-2 py-0.5 rounded-full text-[10px] font-semibold text-white"
-                              >
-                                {t}
-                              </span>
+                              <span key={t}>{t}</span>
                             ))}
                           </div>
                           <h3 className="font-display font-bold text-lg text-white group-hover:text-(--color-cyan) transition mb-2 leading-tight">

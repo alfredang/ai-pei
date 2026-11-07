@@ -212,14 +212,14 @@ export default function StudyInSingaporePage() {
                   <strong className="text-white">live online</strong> in English, three evenings a week,
                   so you can study from your home country without relocating.
                 </p>
-                <div className="flex flex-wrap items-center gap-3 mb-6">
-                  <span className="px-3 py-1.5 rounded-full text-xs font-mono bg-(--color-cyan)/10 text-(--color-cyan) border border-(--color-cyan)/30">
+                <div className="meta-line mb-6">
+                  <span>
                     <HiComputerDesktop className="inline w-3.5 h-3.5 mr-1 -mt-0.5" />Live online · study from anywhere
                   </span>
-                  <span className="px-3 py-1.5 rounded-full text-xs font-mono bg-(--color-purple)/15 text-(--color-purple-light) border border-(--color-purple)/40">
+                  <span>
                     <HiBolt className="inline w-3.5 h-3.5 mr-1 -mt-0.5" />Months, not years
                   </span>
-                  <span className="px-3 py-1.5 rounded-full text-xs font-mono bg-(--color-amber)/10 text-(--color-amber) border border-(--color-amber)/30">
+                  <span>
                     English-taught
                   </span>
                 </div>
@@ -234,6 +234,19 @@ export default function StudyInSingaporePage() {
                     See the courses
                   </Link>
                 </div>
+                <ul className="mt-6 max-w-2xl divide-y divide-(--color-border) border-y border-(--color-border)">
+                  {COURSES.map((c) => (
+                    <li key={c.href}>
+                      <Link
+                        href={htmlPath(c.href)}
+                        className="flex min-h-11 items-center justify-between gap-4 py-2 text-sm font-medium text-white transition hover:text-(--color-cyan)"
+                      >
+                        <span>{c.title}</span>
+                        <span className="meta-label shrink-0 text-(--color-cyan)">Live online →</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
               <div className="lg:col-span-5 lg:sticky lg:top-24">
                 <div id="enquire" className="scroll-mt-24">
@@ -321,7 +334,7 @@ export default function StudyInSingaporePage() {
                   <Link key={c.href} href={htmlPath(c.href)} className="glass card-hover p-6 group flex gap-4">
                     <Icon className="w-8 h-8 text-(--color-cyan) shrink-0" />
                     <div>
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold text-(--color-cyan) border border-(--color-cyan)/40 bg-(--color-cyan)/10">
+                      <span className="meta-label text-(--color-cyan)">
                         {c.tag}
                       </span>
                       <h3 className="font-display font-bold text-lg mt-2 mb-1.5 group-hover:text-(--color-cyan) transition">
@@ -355,7 +368,7 @@ export default function StudyInSingaporePage() {
                     </div>
                     <div className="glass p-5">
                       <div className="flex items-center gap-2 mb-1.5">
-                        <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-(--color-cyan)/10 text-(--color-cyan)">
+                        <span className="meta-label text-(--color-cyan)">
                           Step {i + 1}
                         </span>
                       </div>

@@ -215,14 +215,14 @@ export function HomeHero() {
               <FiberGlobe colors={FIBER_COLORS} />
             </div>
 
-            <ul className="mt-2 flex flex-wrap justify-center gap-2.5">
+            <ul className="mt-2 flex flex-wrap justify-center gap-x-5">
               {DISCIPLINES.map((d) => {
                 const Icon = d.icon;
                 return (
                   <li key={d.id}>
                     <a
                       href={d.href}
-                      className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-[#04120B]/75 backdrop-blur-sm px-3.5 py-2 text-xs font-mono uppercase tracking-wider text-white/80 transition-colors duration-200 hover:border-white/30 hover:bg-white/10 hover:text-white"
+                      className="inline-flex min-h-11 items-center gap-2 text-xs font-mono uppercase tracking-wider text-white/90 [text-shadow:0_1px_6px_#020B06] transition-colors duration-200 hover:text-(--color-cyan)"
                     >
                       <span
                         className="h-2 w-2 rounded-full"

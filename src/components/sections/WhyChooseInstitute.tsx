@@ -6,13 +6,13 @@ const REASONS = [
     icon: HiBuildingOffice2,
     title: "Asia's Leading Tech & Fintech Hub",
     description:
-      "Singapore's Smart Nation initiative has drawn the regional headquarters of the world's biggest technology, banking and fintech companies. Study here and you study minutes from the MNCs, startups and government employers hiring future-tech talent.",
+      "Singapore's Smart Nation initiative has drawn the regional headquarters of the world's biggest technology, banking and fintech companies. Your qualification comes from the same market as the MNCs, startups and government employers hiring future-tech talent.",
   },
   {
     icon: HiShieldCheck,
     title: "Safe, English-Speaking & Easy for Foreigners",
     description:
-      "Ranked among the world's safest cities, Singapore is English-speaking, clean and welcoming to international learners. Settling in is simple — so you can focus on your studies and your career from day one.",
+      "Ranked among the world's safest cities, Singapore is English-speaking, clean and welcoming to international learners. Our live online classes bring that environment to you, wherever you are.",
   },
   {
     icon: HiGlobeAlt,

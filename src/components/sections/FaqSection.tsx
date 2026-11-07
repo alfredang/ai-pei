@@ -37,32 +37,36 @@ export function FaqSection() {
 
   return (
     <section id="faq" className="relative py-4 overflow-hidden">
-      <Container className="max-w-4xl relative">
-        <div className="text-center mb-8">
-          <div className="kicker mb-3">[ FAQ ]</div>
-          <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
-            Foreign Learner <span className="gradient-text">Questions</span>
-          </h2>
-          <p className="mt-4 text-(--color-muted) text-lg max-w-2xl mx-auto">
-            Everything international students ask about studying tech in Singapore.
-          </p>
-        </div>
-
-        <div className="space-y-3">
-          {HOME_FAQ.map((f) => (
-            <details
-              key={f.q}
-              className="glass p-5 group [&_summary::-webkit-details-marker]:hidden"
-            >
-              <summary className="cursor-pointer flex justify-between items-center gap-4">
-                <span className="font-display font-semibold text-base text-white">{f.q}</span>
-                <span className="text-(--color-cyan) font-mono text-lg transition group-open:rotate-45">
-                  +
-                </span>
-              </summary>
-              <p className="text-sm text-(--color-muted) leading-relaxed mt-3">{f.a}</p>
-            </details>
-          ))}
+      <Container className="relative">
+        <div className="grid lg:grid-cols-12 gap-8 items-start">
+          <div className="lg:col-span-4">
+            <div className="kicker mb-3">[ FAQ ]</div>
+            <h2 className="font-display text-[clamp(2rem,4.5vw,3.25rem)] font-extrabold leading-[1.05]">
+              Foreign Learner <span className="gradient-text">Questions</span>
+            </h2>
+            <p className="mt-4 text-(--color-muted) text-lg">
+              Everything international students ask about studying tech with a Singapore institution.
+            </p>
+            <a href="#contact" className="btn-primary mt-6">
+              Ask us about your programme →
+            </a>
+          </div>
+          <div className="lg:col-span-8 space-y-3">
+            {HOME_FAQ.map((f) => (
+              <details
+                key={f.q}
+                className="glass p-5 group [&_summary::-webkit-details-marker]:hidden"
+              >
+                <summary className="cursor-pointer flex justify-between items-center gap-4">
+                  <span className="font-display font-semibold text-base text-white">{f.q}</span>
+                  <span className="text-(--color-cyan) font-mono text-lg transition group-open:rotate-45">
+                    +
+                  </span>
+                </summary>
+                <p className="text-sm text-(--color-muted) leading-relaxed mt-3">{f.a}</p>
+              </details>
+            ))}
+          </div>
         </div>
       </Container>
 

@@ -285,14 +285,14 @@ export default async function BlogIndex({
               </form>
               <div>
                 <div className="kicker mb-2">Categories</div>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-x-4 gap-y-1">
                   <Link
                     href={filterHref({ category: null, page: 1 })}
-                    className={`px-3 py-1.5 rounded-full border text-xs font-mono transition ${
-                      !selectedCategory
-                        ? "bg-(--color-cyan)/15 border-(--color-cyan)/40 text-(--color-cyan)"
-                        : "bg-white/3 border-white/10 text-white/70 hover:text-white hover:border-white/30"
-                    }`}
+                    className={`py-1 text-sm transition ${
+                        !selectedCategory
+                          ? "font-semibold text-(--color-cyan) underline underline-offset-4"
+                          : "text-white/70 hover:text-(--color-cyan)"
+                      }`}
                   >
                     All
                   </Link>
@@ -300,10 +300,10 @@ export default async function BlogIndex({
                     <Link
                       key={c.id}
                       href={filterHref({ category: c.slug, page: 1 })}
-                      className={`px-3 py-1.5 rounded-full border text-xs font-mono transition ${
+                      className={`py-1 text-sm transition ${
                         selectedCategory === c.slug
-                          ? "bg-(--color-cyan)/15 border-(--color-cyan)/40 text-(--color-cyan)"
-                          : "bg-white/3 border-white/10 text-white/70 hover:text-white hover:border-white/30"
+                          ? "font-semibold text-(--color-cyan) underline underline-offset-4"
+                          : "text-white/70 hover:text-(--color-cyan)"
                       }`}
                     >
                       {c.name}
@@ -315,13 +315,13 @@ export default async function BlogIndex({
               {mergedTags.length > 0 && (
                 <div>
                   <div className="kicker mb-2">Tags</div>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-x-4 gap-y-1">
                     <Link
                       href={filterHref({ tag: null, page: 1 })}
-                      className={`px-3 py-1 rounded-full border text-xs transition ${
+                      className={`py-1 text-sm transition ${
                         !selectedTag
-                          ? "bg-(--color-purple)/15 border-(--color-purple)/40 text-(--color-purple)"
-                          : "bg-white/3 border-white/10 text-white/60 hover:text-white hover:border-white/30"
+                          ? "font-semibold text-(--color-cyan) underline underline-offset-4"
+                          : "text-white/70 hover:text-(--color-cyan)"
                       }`}
                     >
                       All
@@ -330,11 +330,11 @@ export default async function BlogIndex({
                       <Link
                         key={t.id}
                         href={filterHref({ tag: t.slug, page: 1 })}
-                        className={`px-3 py-1 rounded-full border text-xs transition ${
-                          selectedTag === t.slug
-                            ? "bg-(--color-purple)/15 border-(--color-purple)/40 text-(--color-purple)"
-                            : "bg-white/3 border-white/10 text-white/60 hover:text-white hover:border-white/30"
-                        }`}
+                        className={`py-1 text-sm transition ${
+                        selectedTag === t.slug
+                          ? "font-semibold text-(--color-cyan) underline underline-offset-4"
+                          : "text-white/70 hover:text-(--color-cyan)"
+                      }`}
                       >
                         #{t.name}
                       </Link>
@@ -342,7 +342,7 @@ export default async function BlogIndex({
                     {mergedTags.length > TOP_TAG_LIMIT && (
                       <Link
                         href="/blog/tags.html"
-                        className="px-3 py-1 rounded-full border text-xs transition border-(--color-cyan)/40 text-(--color-cyan) hover:bg-(--color-cyan)/10"
+                        className="py-1 text-sm font-semibold text-(--color-cyan) hover:underline"
                       >
                         See all {mergedTags.length} tags →
                       </Link>

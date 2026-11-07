@@ -100,14 +100,9 @@ export default function EdToolsIndex() {
                         <p className="text-sm text-(--color-muted) line-clamp-3 leading-relaxed flex-1">
                           {t.description}
                         </p>
-                        <div className="mt-3 flex flex-wrap gap-1">
+                        <div className="mt-3 meta-line">
                           {(t.stack ?? []).slice(0, 3).map((s) => (
-                            <span
-                              key={s}
-                              className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/5 text-white/50 border border-white/10"
-                            >
-                              {s}
-                            </span>
+                            <span key={s}>{s}</span>
                           ))}
                         </div>
                       </Link>

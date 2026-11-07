@@ -97,40 +97,35 @@ const TIMELINE = [
 
 const ACCENT: Record<
   string,
-  { ring: string; iconText: string; chip: string; glow: string; line: string }
+  { ring: string; iconText: string; glow: string; line: string }
 > = {
   cyan: {
     ring: "border-(--color-cyan)/40",
     iconText: "text-(--color-cyan)",
-    chip: "bg-(--color-cyan)/10 text-(--color-cyan)",
     glow: "rgba(60,224,124,0.35)",
     line: "from-(--color-cyan)",
   },
   blue: {
     ring: "border-(--color-cyan)/40",
     iconText: "text-(--color-cyan)",
-    chip: "bg-(--color-cyan)/10 text-(--color-cyan)",
     glow: "rgba(60,224,124,0.3)",
     line: "from-(--color-cyan)",
   },
   purple: {
     ring: "border-(--color-purple)/50",
     iconText: "text-(--color-purple-light)",
-    chip: "bg-(--color-purple)/15 text-(--color-purple-light)",
     glow: "rgba(16,185,129,0.45)",
     line: "from-(--color-purple)",
   },
   amber: {
     ring: "border-(--color-amber)/50",
     iconText: "text-(--color-amber)",
-    chip: "bg-(--color-amber)/10 text-(--color-amber)",
     glow: "rgba(246,174,100,0.35)",
     line: "from-(--color-amber)",
   },
   green: {
     ring: "border-(--color-green)/50",
     iconText: "text-(--color-green)",
-    chip: "bg-(--color-green)/10 text-(--color-green)",
     glow: "rgba(1,201,130,0.35)",
     line: "from-(--color-green)",
   },
@@ -323,14 +318,14 @@ export default function SsgAtoApplicationPage() {
                   submission and the half-day onsite SSG assessment. Fixed-fee. Predictable
                   timeline.
                 </p>
-                <div className="flex flex-wrap items-center gap-3 mb-6">
-                  <span className="px-3 py-1.5 rounded-full text-xs font-mono bg-(--color-cyan)/10 text-(--color-cyan) border border-(--color-cyan)/30">
+                <div className="meta-line mb-6">
+                  <span>
                     10–14 week typical timeline
                   </span>
-                  <span className="px-3 py-1.5 rounded-full text-xs font-mono bg-(--color-purple)/15 text-(--color-purple-light) border border-(--color-purple)/40">
+                  <span>
                     Fixed-fee engagement
                   </span>
-                  <span className="px-3 py-1.5 rounded-full text-xs font-mono bg-(--color-amber)/10 text-(--color-amber) border border-(--color-amber)/30">
+                  <span>
                     Free 30-min consultation
                   </span>
                 </div>
@@ -428,7 +423,7 @@ export default function SsgAtoApplicationPage() {
                       </div>
                       <div className="text-center">
                         <span
-                          className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-mono ${a.chip} mb-2`}
+                          className={`meta-label block ${a.iconText} mb-2`}
                         >
                           {s.duration}
                         </span>
@@ -458,7 +453,7 @@ export default function SsgAtoApplicationPage() {
                     <div className="glass p-5">
                       <div className="flex items-center gap-2 mb-2">
                         <span
-                          className={`px-2 py-0.5 rounded-full text-[10px] font-mono ${a.chip}`}
+                          className={`meta-label ${a.iconText}`}
                         >
                           Step {i + 1}
                         </span>

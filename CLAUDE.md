@@ -97,7 +97,7 @@ Every public form (contact form, SSG ATO consultation form, etc.) POSTs to `/api
 
 ### Design system
 
-Dark sci-fi/robotics aesthetic. Tailwind 4 with `@theme` design tokens in [src/app/globals.css](src/app/globals.css) — colors are CSS vars consumed as `(--color-cyan)`, `(--color-purple)`, etc. Utility classes: `glass`, `card-hover`, `btn-primary`, `kicker`, `gradient-text`, `gradient-text-warm`, `glow-blob`. Fonts: Exo 2 (display), Inter (sans), JetBrains Mono (mono) — already loaded in [src/app/layout.tsx](src/app/layout.tsx) via `next/font`; do not re-import Google Fonts elsewhere. All UI work in this repo should follow [.claude/skills/frontend-design/SKILL.md](.claude/skills/frontend-design/SKILL.md).
+Light mint public pages with a dark animated matrix-green hero; `/admin` stays dark. Tailwind 4 with `@theme` design tokens in [src/app/globals.css](src/app/globals.css) — colors are CSS vars consumed as `(--color-cyan)`, `(--color-purple)`, etc. Utility classes: `glass`, `card-hover`, `btn-primary`, `kicker`, `gradient-text`, `gradient-text-warm`, `glow-blob`. Fonts: Exo 2 (display), Inter (sans), JetBrains Mono (mono) — already loaded in [src/app/layout.tsx](src/app/layout.tsx) via `next/font`; do not re-import Google Fonts elsewhere. All UI work in this repo should follow [.claude/skills/tia-frontend-design-site/SKILL.md](.claude/skills/tia-frontend-design-site/SKILL.md) together with the user-level `tia-frontend-design` skill.
 
 ## Deployment
 

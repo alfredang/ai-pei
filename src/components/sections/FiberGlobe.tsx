@@ -526,9 +526,9 @@ export function FiberGlobe({ colors }: { colors: string[] }) {
         <span className={`${corner} bottom-0 right-0 border-b border-r`} />
         <div className="absolute left-7 top-1.5 flex items-center gap-2">
           <span className="h-1.5 w-1.5 rounded-full bg-(--color-cyan) shadow-[0_0_8px_var(--color-cyan)] animate-pulse" />
-          Global tech grid · live
+          Tech grid · live
         </div>
-        <div className="absolute right-7 top-1.5 hidden text-right sm:block">4 disciplines · 1 launchpad</div>
+        <div className="absolute right-7 top-1.5 hidden text-right sm:block">4 fields · 1 launchpad</div>
         <div className="absolute bottom-1.5 left-7 hidden sm:block">Hub 01.35°N 103.82°E</div>
         <div className="absolute bottom-1.5 right-7 text-right">
           Packets <span ref={counterRef} className="text-white/90">000000</span>

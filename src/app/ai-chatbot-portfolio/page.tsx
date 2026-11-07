@@ -76,12 +76,6 @@ const PROJECTS: Project[] = [
   },
 ];
 
-const typeBadge: Record<Project["type"], string> = {
-  "Voice + Web Chat": "bg-(--color-purple)/20 text-(--color-purple-light) border-(--color-purple)/40",
-  "Voice Agent": "bg-(--color-cyan)/15 text-(--color-cyan) border-(--color-cyan)/30",
-  "Web Chatbot": "bg-(--color-amber)/15 text-(--color-amber) border-(--color-amber)/30",
-};
-
 const CAPABILITIES = [
   "Inbound & outbound voice agents (Retell AI / Retell.io)",
   "Web chatbots with Gemini, Claude, or open-source LLMs",
@@ -136,14 +130,14 @@ export default function AiChatbotPortfolioPage() {
                       <div className="kicker mb-1 truncate">{p.category}</div>
                       <h2 className="font-display font-bold text-2xl text-white truncate">{p.name}</h2>
                     </div>
-                    <span className={`shrink-0 font-mono text-[10px] px-2 py-1 rounded border ${typeBadge[p.type]}`}>
+                    <span className="meta-label shrink-0 text-(--color-cyan)">
                       {p.type}
                     </span>
                   </div>
                   <p className="text-sm text-(--color-muted) leading-relaxed mb-5 flex-1">{p.description}</p>
-                  <div className="flex flex-wrap gap-1.5 mb-5">
+                  <div className="meta-line mb-5">
                     {p.stack.map((s) => (
-                      <span key={s} className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 border border-white/10 text-(--color-muted)">
+                      <span key={s}>
                         {s}
                       </span>
                     ))}

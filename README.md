@@ -22,7 +22,7 @@
 
 ## Screenshot
 
-![Compact homepage with prominent programme enquiry form](screenshot.png)
+![Homepage with the animated fibre-optic globe hero](screenshot.png)
 
 ## About
 
@@ -104,9 +104,14 @@ Originally built to replace a legacy WordPress site for Tertiary Infotech Pte Lt
 - High-contrast dark green Register Now buttons with white text in desktop and mobile navigation
 - Four original, coordinated technology images in `public/images/programmes/` — cybersecurity, artificial intelligence, blockchain and quantum computing; optimized WebP assets served with responsive Next.js Image sizing and descriptive alt text
 - Full-width programme grid with image banners, green overlays, discipline accents, clear course links and a single-column mobile layout
-- Compact homepage sections, larger custom illustrated feature icons, and a contrasting Singapore feature section
+- Compact homepage sections with no chips or centred template layouts: labels are plain text, Career Outcomes and the FAQs use mirrored splits and joined panels, and card grids leave no orphan rows
+- Larger custom illustrated feature icons and a contrasting Singapore feature section
 - India and Vietnam online-learning admissions imagery with a prominent short programme enquiry form
 - Ten original editorial blog banners shared by homepage cards, the journal index, article heroes and social metadata; custom CMS images retain precedence
+
+### Design standard
+- UI work follows two Claude Code skills: the user-level `tia-frontend-design` (group rules) and [`.claude/skills/tia-frontend-design-site`](.claude/skills/tia-frontend-design-site/SKILL.md) (this site's theme, components and known violations)
+- Light theme by default, an animated hero, generated images instead of library images, no dead space and no template look
 
 ### Platform — auth, security, design
 - **Auth.js v5** — credentials provider with bcrypt, JWT sessions, persistent 10-year sliding cookie, middleware-protected `/admin/*`

@@ -124,14 +124,9 @@ export default async function EdToolDetail({ params }: Props) {
                 {tool.stack && tool.stack.length > 0 && (
                   <div>
                     <h2 className="font-display text-2xl md:text-3xl font-bold mb-4">Tech stack</h2>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="meta-line">
                       {tool.stack.map((s) => (
-                        <span
-                          key={s}
-                          className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm text-white/80 font-mono"
-                        >
-                          {s}
-                        </span>
+                        <span key={s}>{s}</span>
                       ))}
                     </div>
                   </div>

@@ -77,17 +77,17 @@ export default async function AllTagsPage() {
 
         <section className="pb-24">
           <Container>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-x-5 gap-y-1">
               {sorted.map((t) => {
                 const count = countByTagId.get(t.id) ?? 0;
                 return (
                   <Link
                     key={t.id}
                     href={htmlPath(`/blog?tag=${encodeURIComponent(t.slug)}`)}
-                    className="px-3 py-1.5 rounded-full border text-sm transition bg-white/3 border-white/10 text-white/70 hover:text-white hover:border-(--color-cyan)/40 hover:bg-(--color-cyan)/5"
+                    className="py-1 text-sm text-white/70 transition hover:text-(--color-cyan)"
                   >
                     #{t.name}
-                    <span className="ml-2 text-xs text-white/40">{count}</span>
+                    <span className="ml-1.5 text-xs text-white/50">{count}</span>
                   </Link>
                 );
               })}

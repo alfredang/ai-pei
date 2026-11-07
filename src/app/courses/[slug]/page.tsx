@@ -12,7 +12,6 @@ import {
   KeywordIntroSection,
 } from "@/components/sections/KeywordContent";
 import { COURSE_KEYWORD_SEO } from "@/lib/keyword-seo";
-import { fundingColor } from "@/lib/funding";
 import { courseFee, MODULE_FEE } from "@/lib/course-fee";
 import { absoluteHtmlUrl, htmlPath } from "@/lib/html-url";
 import {
@@ -781,7 +780,7 @@ export default async function CourseDetail({
             )}
 
             <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full font-mono text-xs bg-(--color-cyan)/10 text-(--color-cyan) border border-(--color-cyan)/30">
+              <span className="meta-label inline-flex items-center gap-2 font-semibold text-(--color-cyan)">
                 <span className="w-1.5 h-1.5 rounded-full bg-(--color-cyan)" aria-hidden />
                 Live online classes · study from anywhere
               </span>
@@ -805,15 +804,9 @@ export default async function CourseDetail({
             </div>
 
             {(c.fundingTags ?? []).length > 0 && (
-              <div className="mt-5 flex flex-wrap gap-2">
+              <div className="mt-5 meta-line">
                 {(c.fundingTags ?? []).map((t) => (
-                  <span
-                    key={t}
-                    style={{ backgroundColor: fundingColor(t) }}
-                    className="px-3 py-1 rounded-full text-xs font-semibold text-white"
-                  >
-                    {t}
-                  </span>
+                  <span key={t}>{t}</span>
                 ))}
               </div>
             )}
@@ -872,10 +865,8 @@ export default async function CourseDetail({
                       </span>
                       {m.kind && (
                         <span
-                          className={`px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wide border ${
-                            m.kind === "elective"
-                              ? "text-(--color-amber) border-(--color-amber)/40 bg-(--color-amber)/10"
-                              : "text-(--color-cyan) border-(--color-cyan)/40 bg-(--color-cyan)/10"
+                          className={`meta-label ${
+                            m.kind === "elective" ? "text-(--color-amber)" : "text-(--color-cyan)"
                           }`}
                         >
                           {m.kind}
@@ -1065,16 +1056,7 @@ export default async function CourseDetail({
                             {trainer.programme}
                           </td>
                           <td className="px-4 py-4">
-                            <div className="flex flex-wrap gap-1.5">
-                              {trainer.modules.map((module) => (
-                                <span
-                                  key={module}
-                                  className="px-2 py-1 rounded-full text-xs text-(--color-cyan) bg-(--color-cyan)/10 border border-(--color-cyan)/25"
-                                >
-                                  {module}
-                                </span>
-                              ))}
-                            </div>
+                            <span className="text-xs text-(--color-cyan)">{trainer.modules.join(" · ")}</span>
                           </td>
                         </tr>
                       ))}

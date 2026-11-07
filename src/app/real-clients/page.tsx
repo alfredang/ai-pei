@@ -31,12 +31,6 @@ export const metadata: Metadata = {
   },
 };
 
-const productBadge: Record<string, string> = {
-  LMS: "bg-(--color-cyan)/15 text-(--color-cyan) border-(--color-cyan)/30",
-  TMS: "bg-(--color-amber)/15 text-(--color-amber) border-(--color-amber)/30",
-  "LMS + TMS": "bg-(--color-purple)/20 text-(--color-purple-light) border-(--color-purple)/40",
-};
-
 export default function RealClientsPage() {
   return (
     <>
@@ -78,7 +72,7 @@ export default function RealClientsPage() {
                         <h2 className="font-display font-bold text-2xl text-white truncate">{c.name}</h2>
                       </div>
                     </div>
-                    <span className={`shrink-0 font-mono text-[10px] px-2 py-1 rounded border ${productBadge[c.product]}`}>
+                    <span className="meta-label shrink-0 text-(--color-cyan)">
                       {c.product}
                     </span>
                   </div>

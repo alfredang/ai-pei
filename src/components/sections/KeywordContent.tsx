@@ -78,15 +78,15 @@ export function KeywordFaqSection({
   };
 
   return (
-    <section className="py-12">
-      <Container className="max-w-4xl">
-        <div className="text-center mb-8">
+    <section className="py-8">
+      <Container className="grid lg:grid-cols-12 gap-8 items-start">
+        <div className="lg:col-span-4">
           <div className="kicker mb-3">[ FAQ ]</div>
           <h2 className="font-display text-2xl md:text-3xl font-extrabold">
             <Emph text={heading} strongClass="gradient-text font-extrabold" />
           </h2>
         </div>
-        <div className="space-y-3">
+        <div className="lg:col-span-8 space-y-3">
           {faqs.map((f) => (
             <details
               key={f.q}

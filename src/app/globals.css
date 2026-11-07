@@ -257,6 +257,39 @@ body::before {
 .font-display { font-family: var(--font-display); letter-spacing: -0.02em; }
 .font-mono { font-family: var(--font-mono); }
 
+/* Label text instead of chips: `.meta-line` is a row with · separators,
+   `.meta-label` a single label. Colour the label where it is used. */
+.meta-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-cyan);
+}
+.meta-line > * + *::before { content: "·"; margin-inline: 0.6rem; opacity: 0.6; }
+/* Last card spans the empty cells, so card grids never leave an orphan row.
+   .grid-fill = md:2 / lg:3 columns; .grid-fill-2 = md:2 columns. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .grid-fill > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+@media (min-width: 1024px) {
+  .grid-fill > :last-child:nth-child(3n + 1) { grid-column: 1 / -1; }
+  .grid-fill > :last-child:nth-child(3n + 2) { grid-column: span 2; }
+}
+@media (min-width: 768px) {
+  .grid-fill-2 > :last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+.meta-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .kicker {
   font-family: var(--font-mono);
   font-size: 0.7rem;
@@ -762,9 +795,9 @@ body::before {
 .programme-card:hover, .programme-card:focus-within { border-color: var(--programme-accent); box-shadow: 0 18px 48px #0b1f1712; }
 .programme-art { position: relative; aspect-ratio: 1.9; overflow: hidden; background: #04120b; }
 .programme-art-scrim { position: absolute; inset: 0; background: linear-gradient(180deg, #020b0670, transparent 40%, #020b06d9); }
-.programme-tag { display: inline-flex; gap: .5rem; align-items: center; padding: .5rem .75rem; border-radius: 999px; border: 1px solid #ffffff38; background: #04120b80; backdrop-filter: blur(10px); font-size: .7rem; letter-spacing: .04em; }
-.programme-meta { display: flex; flex-wrap: wrap; gap: .65rem; font-size: .65rem; font-weight: 600; text-transform: uppercase; letter-spacing: .09em; color: var(--programme-accent); }
-.programme-meta span { padding: .4rem .65rem; background: color-mix(in srgb, var(--programme-accent) 7%, white); border-radius: .35rem; }
+.programme-tag { display: inline-flex; gap: .5rem; align-items: center; font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; text-shadow: 0 1px 6px #020b06; }
+.programme-meta { display: flex; flex-wrap: wrap; font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .09em; color: var(--programme-accent); }
+.programme-meta span + span::before { content: "·"; margin-inline: .5rem; }
 .programme-check { display: grid; place-items: center; flex-shrink: 0; width: 1.25rem; height: 1.25rem; margin-top: .1rem; border-radius: 50%; background: color-mix(in srgb, var(--programme-accent) 9%, white); color: var(--programme-accent); font-size: .75rem; }
 .programme-link { display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-top: 1px solid var(--color-border); padding-top: 1.25rem; font-weight: 600; font-size: .9rem; }
 .programme-arrow { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 50%; flex-shrink: 0; color: var(--programme-accent); background: color-mix(in srgb, var(--programme-accent) 8%, white); transition: color 180ms, background 180ms; }
@@ -775,7 +808,6 @@ body::before {
 @media (max-width: 767px) {
   .programmes-heading { flex-direction: column; align-items: flex-start; gap: 1.25rem; margin-bottom: 1rem; }
   .programme-art { aspect-ratio: 1.25; }
-  .programme-tag { font-size: .6rem; padding: .4rem .55rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .programme-card, .programme-art img, .programme-arrow { transition: none; }
@@ -791,8 +823,6 @@ body::before {
 .home-page #hero .mt-8 { margin-top: 1.25rem; }
 .home-page #why-us > div.relative { gap: 2rem; }
 .home-page #why-us .lg\:sticky { position: static; }
-.home-page #careers .glass { padding: 1.25rem; }
-.home-page #faq > div { max-width: 1200px; }
 .home-page .home-journal { scroll-margin-top: 5rem; }
 .feature-illustration { width: 92px; height: 92px; flex-shrink: 0; object-fit: contain; filter: drop-shadow(0 6px 8px #064e3b15); }
 .admissions-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }

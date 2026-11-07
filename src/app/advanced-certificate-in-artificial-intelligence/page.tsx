@@ -179,14 +179,14 @@ export default function AdvancedCertificateInAIPage() {
                   securing AI systems and building AI agents to auditing, risk and governance. Taught in
                   English, live online, three evenings a week.
                 </p>
-                <div className="flex flex-wrap items-center gap-3 mb-6">
-                  <span className="px-3 py-1.5 rounded-full text-xs font-mono bg-(--color-cyan)/10 text-(--color-cyan) border border-(--color-cyan)/30">
+                <div className="meta-line mb-6">
+                  <span>
                     <HiClock className="inline w-3.5 h-3.5 mr-1 -mt-0.5" />90–150 hours
                   </span>
-                  <span className="px-3 py-1.5 rounded-full text-xs font-mono bg-(--color-purple)/15 text-(--color-purple-light) border border-(--color-purple)/40">
+                  <span>
                     <HiBolt className="inline w-3.5 h-3.5 mr-1 -mt-0.5" />Live online · 7–10 PM SGT
                   </span>
-                  <span className="px-3 py-1.5 rounded-full text-xs font-mono bg-(--color-amber)/10 text-(--color-amber) border border-(--color-amber)/30">
+                  <span>
                     <HiSquares2X2 className="inline w-3.5 h-3.5 mr-1 -mt-0.5" />Stackable modules
                   </span>
                 </div>
@@ -201,7 +201,20 @@ export default function AdvancedCertificateInAIPage() {
                     Compare the AI programmes
                   </a>
                 </div>
-                <p className="mt-6 text-xs font-mono text-white/45">Last updated {LAST_UPDATED}</p>
+                <ul className="mt-6 max-w-2xl divide-y divide-(--color-border) border-y border-(--color-border)">
+                  {PROGRAMMES.map((p) => (
+                    <li key={p.slug}>
+                      <Link
+                        href={htmlPath(`/courses/${p.slug}`)}
+                        className="flex min-h-11 items-center justify-between gap-4 py-2 text-sm font-medium text-white transition hover:text-(--color-cyan)"
+                      >
+                        <span>{p.name.replace("Advanced Certificate in ", "")}</span>
+                        <span className="meta-label shrink-0 text-(--color-cyan)">{p.hours} hours →</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-4 text-xs font-mono text-white/60">Last updated {LAST_UPDATED}</p>
               </div>
               <div className="lg:col-span-5 lg:sticky lg:top-24">
                 <div id="enquire" className="scroll-mt-24">
@@ -232,7 +245,7 @@ export default function AdvancedCertificateInAIPage() {
                 Modules stack, so you earn a modular certificate for each one you complete.
               </p>
             </div>
-            <div className="grid md:grid-cols-2 gap-5">
+            <div className="grid-fill-2 grid md:grid-cols-2 gap-4">
               {PROGRAMMES.map((p) => (
                 <Link
                   key={p.slug}
@@ -245,11 +258,11 @@ export default function AdvancedCertificateInAIPage() {
                   <p className="mt-2 text-sm text-(--color-muted) leading-relaxed">{p.bestFor}.</p>
                   <dl className="mt-4 grid grid-cols-2 gap-3 text-sm">
                     <div>
-                      <dt className="text-[10px] font-mono uppercase tracking-wider text-white/45">Hours</dt>
+                      <dt className="meta-label text-white/60">Hours</dt>
                       <dd className="text-white">{p.hours} hours</dd>
                     </div>
                     <div>
-                      <dt className="text-[10px] font-mono uppercase tracking-wider text-white/45">Duration</dt>
+                      <dt className="meta-label text-white/60">Duration</dt>
                       <dd className="text-white">{p.duration}</dd>
                     </div>
                   </dl>
@@ -353,17 +366,17 @@ export default function AdvancedCertificateInAIPage() {
         <section className="relative py-12">
           <Container className="max-w-4xl text-center">
             <h2 className="font-display font-extrabold text-xl mb-5">Explore other future-tech pathways</h2>
-            <div className="flex flex-wrap justify-center gap-3 text-sm">
-              <Link href={htmlPath("/courses/advanced-certificate-in-cyber-security")} className="px-4 py-2 rounded-full border border-white/15 hover:border-(--color-cyan)/50 hover:text-(--color-cyan) transition">
+            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+              <Link href={htmlPath("/courses/advanced-certificate-in-cyber-security")} className="font-semibold text-(--color-cyan) underline-offset-4 hover:underline">
                 Advanced Certificate in Cyber Security
               </Link>
-              <Link href={htmlPath("/advanced-certificate-in-blockchain")} className="px-4 py-2 rounded-full border border-white/15 hover:border-(--color-cyan)/50 hover:text-(--color-cyan) transition">
+              <Link href={htmlPath("/advanced-certificate-in-blockchain")} className="font-semibold text-(--color-cyan) underline-offset-4 hover:underline">
                 Advanced Certificate in Blockchain
               </Link>
-              <Link href={htmlPath("/courses/advanced-certificate-in-applied-quantum-computing-and-qiskit-programming")} className="px-4 py-2 rounded-full border border-white/15 hover:border-(--color-cyan)/50 hover:text-(--color-cyan) transition">
+              <Link href={htmlPath("/courses/advanced-certificate-in-applied-quantum-computing-and-qiskit-programming")} className="font-semibold text-(--color-cyan) underline-offset-4 hover:underline">
                 Advanced Certificate in Quantum Computing
               </Link>
-              <Link href={htmlPath("/study-in-singapore")} className="px-4 py-2 rounded-full border border-white/15 hover:border-(--color-cyan)/50 hover:text-(--color-cyan) transition">
+              <Link href={htmlPath("/study-in-singapore")} className="font-semibold text-(--color-cyan) underline-offset-4 hover:underline">
                 Higher education in Singapore
               </Link>
             </div>

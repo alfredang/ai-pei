@@ -96,36 +96,31 @@ const MODULES = [
 
 const ACCENT: Record<
   string,
-  { ring: string; iconText: string; chip: string; line: string }
+  { ring: string; iconText: string; line: string }
 > = {
   cyan: {
     ring: "border-(--color-cyan)/40",
     iconText: "text-(--color-cyan)",
-    chip: "bg-(--color-cyan)/10 text-(--color-cyan)",
     line: "from-(--color-cyan)",
   },
   blue: {
     ring: "border-(--color-cyan)/40",
     iconText: "text-(--color-cyan)",
-    chip: "bg-(--color-cyan)/10 text-(--color-cyan)",
     line: "from-(--color-cyan)",
   },
   purple: {
     ring: "border-(--color-purple)/50",
     iconText: "text-(--color-purple-light)",
-    chip: "bg-(--color-purple)/15 text-(--color-purple-light)",
     line: "from-(--color-purple)",
   },
   amber: {
     ring: "border-(--color-amber)/50",
     iconText: "text-(--color-amber)",
-    chip: "bg-(--color-amber)/10 text-(--color-amber)",
     line: "from-(--color-amber)",
   },
   green: {
     ring: "border-(--color-green)/50",
     iconText: "text-(--color-green)",
-    chip: "bg-(--color-green)/10 text-(--color-green)",
     line: "from-(--color-green)",
   },
 };
@@ -309,14 +304,14 @@ export default function AiSecurityAnalystPage() {
                 systems themselves. Built for international students and career
                 switchers ready to enter one of technology&apos;s fastest-growing fields.
               </p>
-              <div className="flex flex-wrap items-center gap-3 mb-6">
-                <span className="px-3 py-1.5 rounded-full text-xs font-mono bg-(--color-cyan)/10 text-(--color-cyan) border border-(--color-cyan)/30">
+              <div className="meta-line mb-6">
+                <span>
                   Advanced Certificate
                 </span>
-                <span className="px-3 py-1.5 rounded-full text-xs font-mono bg-(--color-purple)/15 text-(--color-purple-light) border border-(--color-purple)/40">
+                <span>
                   Hands-on capstone
                 </span>
-                <span className="px-3 py-1.5 rounded-full text-xs font-mono bg-(--color-amber)/10 text-(--color-amber) border border-(--color-amber)/30">
+                <span>
                   Open to international students
                 </span>
               </div>
@@ -365,7 +360,7 @@ export default function AiSecurityAnalystPage() {
                     <div className="glass p-5">
                       <div className="flex items-center gap-2 mb-2">
                         <span
-                          className={`px-2 py-0.5 rounded-full text-[10px] font-mono ${a.chip}`}
+                          className={`meta-label ${a.iconText}`}
                         >
                           Module {i + 1}
                         </span>
